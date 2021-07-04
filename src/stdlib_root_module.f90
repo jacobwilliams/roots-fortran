@@ -55,6 +55,27 @@
     procedure,public :: find_root => anderson_bjorck
     end type anderson_bjorck_solver
 
+    type,extends(root_solver),public :: ridders_solver
+    !! anderson bjorck root solver
+    private
+    real(wp) :: tol = 1.0e-6_wp     !! relative tol for x
+    integer  :: maxiter = 1000      !! maximum number of iterations
+    contains
+    private
+    procedure,public :: find_root => ridders
+    end type ridders_solver
+
+    type,extends(root_solver),public :: pegasus_solver
+    !! anderson bjorck root solver
+    private
+    real(wp) :: rtol = 1.0e-6_wp    !! relative tol for x
+    real(wp) :: atol = 1.0e-12_wp   !! absolute tol for x
+    integer  :: maxiter = 1000      !! maximum number of iterations
+    contains
+    private
+    procedure,public :: find_root => pegasus
+    end type pegasus_solver
+
     abstract interface
         function func(me,x) result(f)
             !! Interface to the function to be minimized
@@ -105,7 +126,7 @@
     procedure(func2)              :: fun      !! user function to find the root of
     real(wp),intent(in)           :: ax       !! left endpoint of initial interval
     real(wp),intent(in)           :: bx       !! right endpoint of initial interval
-    real(wp),intent(out)          :: xzero    !! abscissa approximating a 0.0_wp of `f` in the interval `ax`,`bx`
+    real(wp),intent(out)          :: xzero    !! abscissa approximating a zero of `f` in the interval `ax`,`bx`
     real(wp),intent(out)          :: fzero    !! value of `f` at the root (`f(xzero)`)
     integer,intent(out)           :: iflag    !! status flag (`-1`=error, `0`=root found, `-999`=invalid method)
     real(wp),intent(in),optional  :: ftol     !! absolute tolerance for `f=0`
@@ -152,6 +173,29 @@
             call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
         end block
 
+    case('ridders')
+
+        block
+            type(ridders_solver) :: s
+            if (present(ftol))    s%ftol    = ftol
+            if (present(tol))     s%tol     = tol
+            if (present(maxiter)) s%maxiter = maxiter
+            s%f => func_wrapper
+            call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
+        end block
+
+    case('pegasus')
+
+        block
+            type(pegasus_solver) :: s
+            if (present(ftol))    s%ftol    = ftol
+            if (present(rtol))    s%rtol    = rtol
+            if (present(atol))    s%atol    = atol
+            if (present(maxiter)) s%maxiter = maxiter
+            s%f => func_wrapper
+            call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
+        end block
+
     case default
         ! invalid method
         iflag = -999
@@ -181,7 +225,7 @@
     class(root_solver),intent(inout) :: me
     real(wp),intent(in)              :: ax      !! left endpoint of initial interval
     real(wp),intent(in)              :: bx      !! right endpoint of initial interval
-    real(wp),intent(out)             :: xzero   !! abscissa approximating a 0.0_wp of `f` in the interval `ax`,`bx`
+    real(wp),intent(out)             :: xzero   !! abscissa approximating a zero of `f` in the interval `ax`,`bx`
     real(wp),intent(out)             :: fzero   !! value of `f` at the root (`f(xzero)`)
     integer,intent(out)              :: iflag   !! status flag (`-1`=error, `0`=root found)
     real(wp),intent(in),optional     :: fax     !! if `f(ax)` is already known, it can be input here
@@ -280,7 +324,7 @@
     real(wp),intent(in)    :: bx      !! right endpoint of initial interval
     real(wp),intent(in)    :: fax     !! `f(ax)`
     real(wp),intent(in)    :: fbx     !! `f(ax)`
-    real(wp),intent(out)   :: xzero   !! abscissa approximating a 0.0_wp of `f` in the interval `ax`,`bx`
+    real(wp),intent(out)   :: xzero   !! abscissa approximating a zero of `f` in the interval `ax`,`bx`
     real(wp),intent(out)   :: fzero   !! value of `f` at the root (`f(xzero)`)
     integer,intent(out)    :: iflag   !! status flag (`0`=root found)
 
@@ -392,7 +436,7 @@
     real(wp),intent(in)    :: bx      !! right endpoint of initial interval
     real(wp),intent(in)    :: fax     !! `f(ax)`
     real(wp),intent(in)    :: fbx     !! `f(ax)`
-    real(wp),intent(out)   :: xzero   !! abscissa approximating a 0.0_wp of `f` in the interval `ax`,`bx`
+    real(wp),intent(out)   :: xzero   !! abscissa approximating a zero of `f` in the interval `ax`,`bx`
     real(wp),intent(out)   :: fzero   !! value of `f` at the root (`f(xzero)`)
     integer,intent(out)    :: iflag   !! status flag (`0`=root found, `-2`=max iterations reached)
 
@@ -469,7 +513,7 @@
     real(wp),intent(in)    :: bx      !! right endpoint of initial interval
     real(wp),intent(in)    :: fax     !! `f(ax)`
     real(wp),intent(in)    :: fbx     !! `f(ax)`
-    real(wp),intent(out)   :: xzero   !! abscissa approximating a 0.0_wp of `f` in the interval `ax`,`bx`
+    real(wp),intent(out)   :: xzero   !! abscissa approximating a zero of `f` in the interval `ax`,`bx`
     real(wp),intent(out)   :: fzero   !! value of `f` at the root (`f(xzero)`)
     integer,intent(out)    :: iflag   !! status flag (`0`=root found, `-2`=max iterations reached)
 
@@ -530,6 +574,165 @@
     end do
 
     end subroutine anderson_bjorck
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Ridders method to find a root of f(x).
+!
+!### See also
+!  * Press, et al, "Numerical Recipies in Fortran 77", Ch. 9.
+!  * Ridders, C., "A new algorithm for computing a single root of a real continuous function",
+!    IEEE Trans. on Circuits and Systems, Vol 26, Issue 11.
+
+    subroutine ridders(me,ax,bx,fax,fbx,xzero,fzero,iflag)
+
+    implicit none
+
+    class(ridders_solver),intent(inout) :: me
+    real(wp),intent(in)  :: ax      !! left endpoint of initial interval
+    real(wp),intent(in)  :: bx      !! right endpoint of initial interval
+    real(wp),intent(in)  :: fax     !! `f(ax)`
+    real(wp),intent(in)  :: fbx     !! `f(ax)`
+    real(wp),intent(out) :: xzero   !! abscissa approximating a zero of `f` in the interval `ax`,`bx`
+    real(wp),intent(out) :: fzero   !! value of `f` at the root (`f(xzero)`)
+    integer,intent(out)  :: iflag   !! status flag (`0`=root found, `-2`=max iterations reached, `-3`=singularity in the algorithm)
+
+    integer  :: i !! counter
+    real(wp) :: fh,fl,fm,fnew,denom,xh,xl,xm,xnew
+
+    iflag = 0
+    fl    = fax
+    fh    = fbx
+    xl    = ax
+    xh    = bx
+
+    do i = 1, me%maxiter
+
+        xm = (xl+xh)/2.0_wp
+        fm = me%f(xm)
+        if (abs(fm) <= me%ftol) then
+            ! abs convergence in f
+            xzero = xm
+            fzero = fm
+            exit
+        end if
+
+        denom = sqrt(fm**2-fl*fh)
+        if (denom == 0.0_wp) then
+            xzero = xm
+            fzero = fm
+            iflag = -3        ! can't proceed: denominator is zero
+            exit
+        end if
+
+        xnew = xm+(xm-xl)*(sign(1.0_wp,fl-fh)*fm/denom)
+        if (abs(xnew-xzero) <= me%tol) then
+            ! relative convergence in x
+            exit
+        end if
+
+        xzero = xnew
+        fnew = me%f(xzero)
+        fzero = fnew
+        if (abs(fnew) <= me%ftol) then
+            ! abs convergence in f
+            exit
+        end if
+
+        ! to keep the root bracketed:
+        if (sign(fm,fnew) /= fm) then
+            xl = xm
+            fl = fm
+            xh = xzero
+            fh = fnew
+        else if (sign(fl,fnew) /= fl) then
+            xh = xzero
+            fh = fnew
+        else if (sign(fh,fnew) /= fh) then
+            xl = xzero
+            fl = fnew
+        end if
+
+        if (abs(xh-xl) <= me%tol) then
+            ! relative convergence in x
+            exit
+        else if (i == me%maxiter) then
+            iflag = -2    ! max iterations exceeded
+        end if
+
+    end do
+
+    end subroutine ridders
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Pegasus method to find a root of f(x).
+!
+!### See also
+!  * G.E. Mullges & F. Uhlig, "Numerical Algorithms with Fortran",
+!    Springer, 1996. Section 2.8.2, p 35.
+
+    subroutine pegasus(me,ax,bx,fax,fbx,xzero,fzero,iflag)
+
+    implicit none
+
+    class(pegasus_solver),intent(inout) :: me
+    real(wp),intent(in)  :: ax      !! left endpoint of initial interval
+    real(wp),intent(in)  :: bx      !! right endpoint of initial interval
+    real(wp),intent(in)  :: fax     !! `f(ax)`
+    real(wp),intent(in)  :: fbx     !! `f(ax)`
+    real(wp),intent(out) :: xzero   !! abscissa approximating a zero of `f` in the interval `ax`,`bx`
+    real(wp),intent(out) :: fzero   !! value of `f` at the root (`f(xzero)`)
+    integer,intent(out)  :: iflag   !! status flag (`0`=root found, `-2`=max iterations reached)
+
+    integer :: i !! counter
+    real(wp) :: x1,x2,x3,f1,f2,f3,s12
+
+    ! initialize:
+    x1    = ax
+    x2    = bx
+    f1    = fax
+    f2    = fbx
+    iflag = 0
+
+    ! main loop:
+    do i = 1, me%maxiter
+
+        s12 = (f2 - f1) / (x2 - x1) ! secant step
+        x3  = x2 - f2 / s12         ! intersection of this secant with the x-axis
+        f3  = me%f(x3)              ! calculate f3
+
+        if (f3==0.0_wp)  then ! f3 is a root
+            fzero = f3
+            xzero = x3
+            iflag = 0
+            return
+        end if
+
+        ! determine a new inclusion interval:
+        if (f2*f3<=0.0_wp) then
+            x1 = x2
+            f1 = f2
+        else
+            f1 = f1 * f2 / (f2 + f3)
+        end if
+
+        x2 = x3
+        f2 = f3
+
+        ! Check for break-off condition:
+        if (abs(f2)<me%ftol) exit
+        if (abs(x2-x1)<=abs(x2)*me%rtol + me%atol) exit
+        if (i == me%maxiter) iflag = -2   ! max iterations exceeded
+
+    end do
+
+    fzero = f2
+    xzero = x2
+
+    end subroutine pegasus
 !*****************************************************************************************
 
 !*****************************************************************************************
