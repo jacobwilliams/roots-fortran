@@ -76,6 +76,15 @@
     procedure,public :: find_root => pegasus
     end type pegasus_solver
 
+    type,extends(root_solver),public :: bdqrf_solver
+    !! anderson bjorck root solver
+    private
+    integer  :: maxiter = 1000      !! maximum number of iterations
+    contains
+    private
+    procedure,public :: find_root => bdqrf
+    end type bdqrf_solver
+
     abstract interface
         function func(me,x) result(f)
             !! Interface to the function to be minimized
@@ -196,6 +205,16 @@
             call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
         end block
 
+    case('bdqrf')
+
+        block
+            type(bdqrf_solver) :: s
+            if (present(ftol))    s%ftol    = ftol
+            if (present(maxiter)) s%maxiter = maxiter
+            s%f => func_wrapper
+            call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
+        end block
+
     case default
         ! invalid method
         iflag = -999
@@ -235,7 +254,7 @@
 
     call me%get_fa_fb(ax,bx,fax,fbx,fa,fb)
 
-    !check trivial cases first:
+    ! check trivial cases first:
     if (abs(fa)<=me%ftol) then
 
         iflag = 0
@@ -273,13 +292,13 @@
 
     implicit none
 
-    class(root_solver),intent(inout)   :: me
-    real(wp),intent(in)                :: ax      !! left endpoint of initial interval
-    real(wp),intent(in)                :: bx      !! right endpoint of initial interval
-    real(wp),intent(in),optional       :: fax     !! if `f(ax)` is already known, it can be input here
-    real(wp),intent(in),optional       :: fbx     !! if `f(ax)` is already known, it can be input here
-    real(wp),intent(out)               :: fa      !! `f(ax)` to use
-    real(wp),intent(out)               :: fb      !! `f(ax)` to use
+    class(root_solver),intent(inout) :: me
+    real(wp),intent(in)              :: ax      !! left endpoint of initial interval
+    real(wp),intent(in)              :: bx      !! right endpoint of initial interval
+    real(wp),intent(in),optional     :: fax     !! if `f(ax)` is already known, it can be input here
+    real(wp),intent(in),optional     :: fbx     !! if `f(ax)` is already known, it can be input here
+    real(wp),intent(out)             :: fa      !! `f(ax)` to use
+    real(wp),intent(out)             :: fb      !! `f(ax)` to use
 
     if (present(fax)) then
         fa = fax
@@ -320,17 +339,18 @@
     implicit none
 
     class(zeroin_solver),intent(inout) :: me
-    real(wp),intent(in)    :: ax      !! left endpoint of initial interval
-    real(wp),intent(in)    :: bx      !! right endpoint of initial interval
-    real(wp),intent(in)    :: fax     !! `f(ax)`
-    real(wp),intent(in)    :: fbx     !! `f(ax)`
-    real(wp),intent(out)   :: xzero   !! abscissa approximating a zero of `f` in the interval `ax`,`bx`
-    real(wp),intent(out)   :: fzero   !! value of `f` at the root (`f(xzero)`)
-    integer,intent(out)    :: iflag   !! status flag (`0`=root found)
+    real(wp),intent(in)    :: ax    !! left endpoint of initial interval
+    real(wp),intent(in)    :: bx    !! right endpoint of initial interval
+    real(wp),intent(in)    :: fax   !! `f(ax)`
+    real(wp),intent(in)    :: fbx   !! `f(ax)`
+    real(wp),intent(out)   :: xzero !! abscissa approximating a zero of `f` in the interval `ax`,`bx`
+    real(wp),intent(out)   :: fzero !! value of `f` at the root (`f(xzero)`)
+    integer,intent(out)    :: iflag !! status flag (`0`=root found)
 
     real(wp),parameter :: eps = epsilon(1.0_wp)  !! d1mach(4) in original code
     real(wp) :: a,b,c,d,e,fa,fb,fc,tol1,xm,p,q,r,s
 
+    ! initialize:
     iflag = 0
     tol1  = eps+1.0_wp
     a     = ax
@@ -581,7 +601,6 @@
 !  Ridders method to find a root of f(x).
 !
 !### See also
-!  * Press, et al, "Numerical Recipies in Fortran 77", Ch. 9.
 !  * Ridders, C., "A new algorithm for computing a single root of a real continuous function",
 !    IEEE Trans. on Circuits and Systems, Vol 26, Issue 11.
 
@@ -601,6 +620,7 @@
     integer  :: i !! counter
     real(wp) :: fh,fl,fm,fnew,denom,xh,xl,xm,xnew
 
+    ! initialize:
     iflag = 0
     fl    = fax
     fh    = fbx
@@ -691,11 +711,11 @@
     real(wp) :: x1,x2,x3,f1,f2,f3,s12
 
     ! initialize:
+    iflag = 0
     x1    = ax
     x2    = bx
     f1    = fax
     f2    = fbx
-    iflag = 0
 
     ! main loop:
     do i = 1, me%maxiter
@@ -733,6 +753,93 @@
     xzero = x2
 
     end subroutine pegasus
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Bisected Direct Quadratic Regula Falsi (BDQRF) root solver method
+!  to find the root of a 1D function.
+!
+!### See also
+!  * R. G. Gottlieb, B. F. Thompson, "Bisected Direct Quadratic Regula Falsi",
+!    Applied Mathematical Sciences, Vol. 4, 2010, no. 15, 709-718.
+
+    subroutine bdqrf(me,ax,bx,fax,fbx,xzero,fzero,iflag)
+
+    implicit none
+
+    class(bdqrf_solver),intent(inout) :: me
+    real(wp),intent(in)  :: ax      !! left endpoint of initial interval
+    real(wp),intent(in)  :: bx      !! right endpoint of initial interval
+    real(wp),intent(in)  :: fax     !! `f(ax)`
+    real(wp),intent(in)  :: fbx     !! `f(ax)`
+    real(wp),intent(out) :: xzero   !! abscissa approximating a zero of `f` in the interval `ax`,`bx`
+    real(wp),intent(out) :: fzero   !! value of `f` at the root (`f(xzero)`)
+    integer,intent(out)  :: iflag   !! status flag (`0`=root found, `-2`=max iterations reached, `-3`=limit of precision reached)
+
+    real(wp) :: xdn,ydn,xup,yup,xlast,d,xm,ym,a,b,y2
+    integer :: i !! counter
+
+    ! initialize:
+    iflag = 0
+    xzero = ax
+    fzero = fax
+    y2    = fbx
+    xlast = huge(1.0_wp)
+
+    if (fzero<0.0_wp) then
+        xdn = ax
+        ydn = fzero
+        xup = bx
+        yup = y2
+    else
+        xup = ax
+        yup = fzero
+        xdn = bx
+        ydn = y2
+    end if
+
+    ! main loop:
+    do i = 1, me%maxiter
+
+        d = (xup - xdn) / 2.0_wp
+        xm = (xup + xdn) / 2.0_wp
+        ym = me%f(xm)
+        a = (yup + ydn - 2.0_wp*ym)/(2.0_wp*d**2)
+        b = (yup - ydn)/(2.0_wp*d)
+        xzero = xm - 2.0_wp*ym / (b * (1.0_wp + sqrt(1.0_wp - 4.0_wp*a*ym/b**2)))
+
+        if (xzero==xlast) then
+            iflag = -3  ! limit of computing precision has been reached.
+            exit
+        end if
+
+        xlast = xzero
+        fzero = me%f(xzero)
+
+        if (abs(fzero)<=me%ftol) exit ! Convergence
+
+        if (fzero>0.0_wp) then
+            yup = fzero
+            xup = xzero
+            if (ym<0.0_wp) then
+                ydn = ym
+                xdn = xm
+            end if
+        else
+            ydn = fzero
+            xdn = xzero
+            if (ym>0.0_wp) then
+                yup = ym
+                xup = xm
+            end if
+        end if
+
+        if (i==me%maxiter) iflag = -2 ! maximum number of iterations
+
+    end do
+
+    end subroutine bdqrf
 !*****************************************************************************************
 
 !*****************************************************************************************
