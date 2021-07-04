@@ -38,7 +38,7 @@
     private
     real(wp) :: rtol = 1.0e-6_wp    !! relative tol for x
     real(wp) :: atol = 1.0e-12_wp   !! absolute tol for x
-    integer  :: maxiter = 1000      !! maximum number of iterations
+    integer  :: maxiter = 2000      !! maximum number of iterations
     contains
     private
     procedure,public :: find_root => bisection
@@ -49,7 +49,7 @@
     private
     real(wp) :: rtol = 1.0e-6_wp    !! relative tol for x
     real(wp) :: atol = 1.0e-12_wp   !! absolute tol for x
-    integer  :: maxiter = 1000      !! maximum number of iterations
+    integer  :: maxiter = 2000      !! maximum number of iterations
     contains
     private
     procedure,public :: find_root => anderson_bjorck
@@ -59,7 +59,7 @@
     !! anderson bjorck root solver
     private
     real(wp) :: tol = 1.0e-6_wp     !! relative tol for x
-    integer  :: maxiter = 1000      !! maximum number of iterations
+    integer  :: maxiter = 2000      !! maximum number of iterations
     contains
     private
     procedure,public :: find_root => ridders
@@ -70,7 +70,7 @@
     private
     real(wp) :: rtol = 1.0e-6_wp    !! relative tol for x
     real(wp) :: atol = 1.0e-12_wp   !! absolute tol for x
-    integer  :: maxiter = 1000      !! maximum number of iterations
+    integer  :: maxiter = 2000      !! maximum number of iterations
     contains
     private
     procedure,public :: find_root => pegasus
@@ -79,11 +79,22 @@
     type,extends(root_solver),public :: bdqrf_solver
     !! anderson bjorck root solver
     private
-    integer  :: maxiter = 1000      !! maximum number of iterations
+    integer  :: maxiter = 2000      !! maximum number of iterations
     contains
     private
     procedure,public :: find_root => bdqrf
     end type bdqrf_solver
+
+    type,extends(root_solver),public :: muller_solver
+    !! anderson bjorck root solver
+    private
+    real(wp) :: rtol = 1.0e-6_wp    !! relative tol for x
+    real(wp) :: atol = 1.0e-12_wp   !! absolute tol for x
+    integer  :: maxiter = 2000      !! maximum number of iterations
+    contains
+    private
+    procedure,public :: find_root => muller
+    end type muller_solver
 
     abstract interface
         function func(me,x) result(f)
@@ -215,6 +226,18 @@
             call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
         end block
 
+    case('muller')
+
+        block
+            type(muller_solver) :: s
+            if (present(ftol))    s%ftol    = ftol
+            if (present(rtol))    s%rtol    = rtol
+            if (present(atol))    s%atol    = atol
+            if (present(maxiter)) s%maxiter = maxiter
+            s%f => func_wrapper
+            call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
+        end block
+
     case default
         ! invalid method
         iflag = -999
@@ -229,6 +252,28 @@
             real(wp) :: f
             f = fun(x)
         end function func_wrapper
+
+        pure function lowercase(str) result(s_lower)
+
+        implicit none
+
+        character(len=*),intent(in) :: str      !! input string
+        character(len=(len(str)))   :: s_lower  !! lowercase version of the string
+
+        integer :: i  !! counter
+        integer :: j  !! index of uppercase character
+
+        character(len=*),parameter :: upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' !! uppercase characters
+        character(len=*),parameter :: lower = 'abcdefghijklmnopqrstuvwxyz' !! lowercase characters
+
+        s_lower = str
+
+        do i = 1, len_trim(str)
+            j = index(upper,s_lower(i:i))
+            if (j>0) s_lower(i:i) = lower(j:j)
+        end do
+
+        end function lowercase
 
     end subroutine root_scalar
 !*****************************************************************************************
@@ -246,38 +291,52 @@
     real(wp),intent(in)              :: bx      !! right endpoint of initial interval
     real(wp),intent(out)             :: xzero   !! abscissa approximating a zero of `f` in the interval `ax`,`bx`
     real(wp),intent(out)             :: fzero   !! value of `f` at the root (`f(xzero)`)
-    integer,intent(out)              :: iflag   !! status flag (`-1`=error, `0`=root found)
+    integer,intent(out)              :: iflag   !! status flag (`-1`=error, `0`=root found, `-4`=ax must be /= bx)
     real(wp),intent(in),optional     :: fax     !! if `f(ax)` is already known, it can be input here
     real(wp),intent(in),optional     :: fbx     !! if `f(ax)` is already known, it can be input here
 
     real(wp) :: fa, fb
 
-    call me%get_fa_fb(ax,bx,fax,fbx,fa,fb)
-
-    ! check trivial cases first:
-    if (abs(fa)<=me%ftol) then
-
-        iflag = 0
-        xzero = ax
-        fzero = fa
-
-    elseif (abs(fb)<=me%ftol) then
-
-        iflag = 0
-        xzero = bx
-        fzero = fb
-
-    elseif (fa*fb>0.0_wp) then
-
-        ! f(ax) and f(bx) do not have different signs
-        iflag = -1
+    if (ax==bx) then
+        ! ax must be /= bx
+        iflag = -4
         xzero = ax  ! just to return something
         fzero = fa  !
-
     else
 
-        ! call the root solver
-        call me%find_root(ax,bx,fa,fb,xzero,fzero,iflag)
+        call me%get_fa_fb(ax,bx,fax,fbx,fa,fb)
+
+        ! check trivial cases first:
+        if (abs(fa)<=me%ftol) then
+
+            iflag = 0
+            xzero = ax
+            fzero = fa
+
+        elseif (abs(fb)<=me%ftol) then
+
+            iflag = 0
+            xzero = bx
+            fzero = fb
+
+        elseif (fa*fb>0.0_wp) then
+
+            ! f(ax) and f(bx) do not have different signs
+            iflag = -1
+            xzero = ax  ! just to return something
+            fzero = fa  !
+
+        else
+
+            ! call the root solver.
+            ! make sure order is correct.
+            if (ax<bx) then
+                call me%find_root(ax,bx,fa,fb,xzero,fzero,iflag)
+            else
+                call me%find_root(bx,ax,fb,fa,xzero,fzero,iflag)
+            end if
+
+        end if
 
     end if
 
@@ -317,7 +376,7 @@
 
 !*****************************************************************************************
 !>
-!  Find a 0.0_wp of the function \( f(x) \) in the given interval
+!  Find a zero of the function \( f(x) \) in the given interval
 !  \( [a_x,b_x] \) to within a tolerance \( 4 \epsilon |x| + tol \),
 !  where \( \epsilon \) is the relative machine precision defined as
 !  the smallest representable number such that \( 1.0 + \epsilon > 1.0 \).
@@ -326,7 +385,7 @@
 !
 !### References
 !  * R. P. Brent, "[An algorithm with guaranteed convergence for
-!    finding a 0.0_wp of a function](http://maths-people.anu.edu.au/~brent/pd/rpb005.pdf)",
+!    finding a zero of a function](http://maths-people.anu.edu.au/~brent/pd/rpb005.pdf)",
 !    The Computer Journal, Vol 14, No. 4., 1971.
 !  * R. P. Brent, "[Algorithms for minimization without derivatives](http://maths-people.anu.edu.au/~brent/pub/pub011.html)",
 !    Prentice-Hall, Inc., 1973.
@@ -569,10 +628,10 @@
         ! determine a new inclusion interval:
         if (f2*f3<0.0_wp) then
             ! zero lies between x2 and x3
-            x1 = x3
-            x2 = x2
-            f1 = f3
-            f2 = f2
+            x1 = x2
+            x2 = x3
+            f1 = f2
+            f2 = f3
         else
             ! zero lies between x1 and x3
             g = 1.0_wp-f3/f2
@@ -809,10 +868,7 @@
         b = (yup - ydn)/(2.0_wp*d)
         xzero = xm - 2.0_wp*ym / (b * (1.0_wp + sqrt(1.0_wp - 4.0_wp*a*ym/b**2)))
 
-        if (xzero==xlast) then
-            iflag = -3  ! limit of computing precision has been reached.
-            exit
-        end if
+        if (xzero==xlast) exit ! limit of computing precision has been reached.
 
         xlast = xzero
         fzero = me%f(xzero)
@@ -844,29 +900,135 @@
 
 !*****************************************************************************************
 !>
-!  Returns the lowercase version of the string
+!   Muller's method to find a real root of f(x).
 
-    pure function lowercase(str) result(s_lower)
+    ! this one seems to fail for some cases ...
+
+    subroutine muller (me,ax,bx,fax,fbx,xzero,fzero,iflag)
 
     implicit none
 
-    character(len=*),intent(in) :: str      !! input string
-    character(len=(len(str)))   :: s_lower  !! lowercase version of the string
+    class(muller_solver),intent(inout) :: me
+    real(wp),intent(in)  :: ax      !! left endpoint of initial interval
+    real(wp),intent(in)  :: bx      !! right endpoint of initial interval
+    real(wp),intent(in)  :: fax     !! `f(ax)`
+    real(wp),intent(in)  :: fbx     !! `f(ax)`
+    real(wp),intent(out) :: xzero   !! abscissa approximating a zero of `f` in the interval `ax`,`bx`
+    real(wp),intent(out) :: fzero   !! value of `f` at the root (`f(xzero)`)
+    integer,intent(out)  :: iflag   !! status flag (`0`=root found, `-2`=max iterations reached, `-3`=singularity in the algorithm)
 
-    integer :: i  !! counter
-    integer :: j  !! index of uppercase character
+    real(wp)  :: a,b,c,a2,d
+    real(wp)  :: fminus,fplus,fxmid,fxnew,fxold
+    real(wp)  :: x_ave,x_inc,xlast,xmid,xminus,xold,xplus
+    integer   :: i !! iteration counter
 
-    character(len=*),parameter :: upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' !! uppercase characters
-    character(len=*),parameter :: lower = 'abcdefghijklmnopqrstuvwxyz' !! lowercase characters
+    iflag = 0
+    xzero = ax
+    xold  = bx
+    fxnew = fax
+    fxold = fbx
+    fzero = fxnew
 
-    s_lower = str
+    xmid  = (ax + bx) / 2.0_wp   ! pick a third point in the middle
+    fxmid = me%f(xmid)
+    if (abs(fxmid)<me%ftol) then
+        xzero = xmid
+        fzero = fxmid
+        return
+    end if
 
-    do i = 1, len_trim(str)
-        j = index(upper,s_lower(i:i))
-        if (j>0) s_lower(i:i) = lower(j:j)
+    ! main loop:
+    do i = 1, me%maxiter
+
+        if ( abs(fxnew) >= abs(fxmid) ) then
+            call swap ( xzero, xmid )
+            call swap ( fxnew, fxmid )
+        end if
+
+        xlast = xzero
+
+        a = (xmid-xzero)*(fxold-fxnew)-(xold-xzero)*(fxmid-fxnew)
+        b = (xold-xzero)**2*(fxmid-fxnew)-(xmid-xzero)**2*(fxold-fxnew)
+        c = (xold-xzero)*(xmid-xzero)*(xold-xmid)*fxnew
+
+        if ( a == 0.0_wp ) then
+            iflag = -3
+            exit
+        end if
+
+        xold = xmid
+        xmid = xzero
+
+        !  Apply the quadratic formula to get roots xplus and xminus.
+        d = b**2 - 4.0_wp * a * c
+        if ( d < 0.0_wp ) then
+            d = 0.0_wp  ! to avoid complex roots
+        else
+            d = sqrt(d)
+        end if
+        a2 = 2.0_wp*a
+
+        xplus  = xzero + ( - b + d ) / a2
+        xminus = xzero + ( - b - d ) / a2
+
+        fplus  = me%f(xplus)
+        if ( abs(fplus) <= me%ftol ) then
+            ! Absolute convergence in f
+            xzero = xplus
+            fzero = fplus
+            exit
+        end if
+
+        fminus = me%f(xminus)
+        if ( abs(fminus) <= me%ftol ) then
+            ! Absolute convergence in f
+            xzero = xminus
+            fzero = fminus
+            exit
+        end if
+
+        !  Take whichever of the two quadratic roots is closest to a root of the function.
+        if ( abs(fminus) < abs(fplus) ) then
+            xzero = xminus
+            fzero = fminus
+        else
+            xzero = xplus
+            fzero = fplus
+        end if
+
+        fxold = fxmid
+        fxmid = fxnew
+        fxnew = fzero
+
+        x_inc = xzero - xmid
+        if ( abs ( x_inc ) <= me%atol ) exit ! Absolute convergence in X
+
+        x_ave = ( abs ( xzero ) + abs ( xmid ) + abs ( xold ) ) / 3.0_wp
+        if ( abs ( x_inc ) <= me%rtol * x_ave ) exit ! Relative convergence in X
+
+        if ( i == me%maxiter ) iflag = -2 ! max iterations exceeded
+
     end do
 
-    end function lowercase
+    contains
+
+        pure elemental subroutine swap(a,b)
+
+        !! Swap two real(wp) values.
+        implicit none
+
+        real(wp),intent(inout) :: a
+        real(wp),intent(inout) :: b
+
+        real(wp) :: tmp
+
+        tmp = a
+        a   = b
+        b   = tmp
+
+        end subroutine swap
+
+    end subroutine muller
 !*****************************************************************************************
 
 !*****************************************************************************************
