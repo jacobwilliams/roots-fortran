@@ -24,9 +24,11 @@
     character(len=1000) :: line
 
     integer,parameter :: number_of_cases = 17 !! number of functions to test
-    integer,parameter :: number_of_methods = 7 !! number of methods to test
+    integer,parameter :: number_of_methods = 9 !! number of methods to test
     character(len=100),dimension(number_of_methods),parameter :: methods = [ &
-        'zeroin         ', &
+        'brent          ', &
+        'brentq         ', &
+        'brenth         ', &
         'bisection      ', &
         'anderson_bjorck', &
         'ridders        ', &

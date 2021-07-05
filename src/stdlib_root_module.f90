@@ -23,15 +23,15 @@
     procedure :: get_fa_fb
     end type root_solver
 
-    type,extends(root_solver),public :: zeroin_solver
-    !! Classic zeroin root solver
+    type,extends(root_solver),public :: brent_solver
+    !! Classic brent (zeroin) root solver
     private
     real(wp) :: tol = 1.0e-6_wp     !! desired length of the interval of
                                     !! uncertainty of the final result (>=0)
     contains
     private
-    procedure,public :: find_root => zeroin
-    end type zeroin_solver
+    procedure,public :: find_root => brent
+    end type brent_solver
 
     type,extends(root_solver),public :: bisection_solver
     !! Classic bisection root solver
@@ -96,6 +96,28 @@
     procedure,public :: find_root => muller
     end type muller_solver
 
+    type,extends(root_solver),public :: brenth_solver
+    !! anderson bjorck root solver
+    private
+    real(wp) :: rtol = 1.0e-6_wp    !! relative tol for x
+    real(wp) :: atol = 1.0e-12_wp   !! absolute tol for x
+    integer  :: maxiter = 2000      !! maximum number of iterations
+    contains
+    private
+    procedure,public :: find_root => brenth
+    end type brenth_solver
+
+    type,extends(root_solver),public :: brentq_solver
+    !! anderson bjorck root solver
+    private
+    real(wp) :: rtol = 1.0e-6_wp    !! relative tol for x
+    real(wp) :: atol = 1.0e-12_wp   !! absolute tol for x
+    integer  :: maxiter = 2000      !! maximum number of iterations
+    contains
+    private
+    procedure,public :: find_root => brentq
+    end type brentq_solver
+
     abstract interface
         function func(me,x) result(f)
             !! Interface to the function to be minimized
@@ -159,10 +181,10 @@
 
     select case (lowercase(method))
 
-    case('zeroin')
+    case('brent')
 
         block
-            type(zeroin_solver) :: s
+            type(brent_solver) :: s
             if (present(ftol)) s%ftol = ftol
             if (present(tol))  s%tol  = tol
             s%f => func_wrapper
@@ -230,6 +252,30 @@
 
         block
             type(muller_solver) :: s
+            if (present(ftol))    s%ftol    = ftol
+            if (present(rtol))    s%rtol    = rtol
+            if (present(atol))    s%atol    = atol
+            if (present(maxiter)) s%maxiter = maxiter
+            s%f => func_wrapper
+            call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
+        end block
+
+    case('brenth')
+
+        block
+            type(brenth_solver) :: s
+            if (present(ftol))    s%ftol    = ftol
+            if (present(rtol))    s%rtol    = rtol
+            if (present(atol))    s%atol    = atol
+            if (present(maxiter)) s%maxiter = maxiter
+            s%f => func_wrapper
+            call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
+        end block
+
+    case('brentq')
+
+        block
+            type(brentq_solver) :: s
             if (present(ftol))    s%ftol    = ftol
             if (present(rtol))    s%rtol    = rtol
             if (present(atol))    s%atol    = atol
@@ -393,11 +439,11 @@
 !### See also
 !  1. [zeroin.f](http://www.netlib.org/go/zeroin.f) from Netlib
 
-    subroutine zeroin(me,ax,bx,fax,fbx,xzero,fzero,iflag)
+    subroutine brent(me,ax,bx,fax,fbx,xzero,fzero,iflag)
 
     implicit none
 
-    class(zeroin_solver),intent(inout) :: me
+    class(brent_solver),intent(inout) :: me
     real(wp),intent(in)    :: ax    !! left endpoint of initial interval
     real(wp),intent(in)    :: bx    !! right endpoint of initial interval
     real(wp),intent(in)    :: fax   !! `f(ax)`
@@ -493,7 +539,7 @@
     xzero = b
     fzero = fb
 
-    end subroutine zeroin
+    end subroutine brent
 !*****************************************************************************************
 
 !*****************************************************************************************
@@ -1029,6 +1075,215 @@
         end subroutine swap
 
     end subroutine muller
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Brent’s method with hyperbolic extrapolation.
+!
+!  A variation on the classic Brent routine to find a zero of the function f
+!  between the arguments ax and bx that uses hyperbolic extrapolation instead
+!  of inverse quadratic extrapolation.
+!
+!### Reference
+!  * SciPy `brenth.c`
+
+    subroutine brenth(me,ax,bx,fax,fbx,xzero,fzero,iflag)
+
+    implicit none
+
+    class(brenth_solver),intent(inout) :: me
+    real(wp),intent(in)  :: ax      !! left endpoint of initial interval
+    real(wp),intent(in)  :: bx      !! right endpoint of initial interval
+    real(wp),intent(in)  :: fax     !! `f(ax)`
+    real(wp),intent(in)  :: fbx     !! `f(ax)`
+    real(wp),intent(out) :: xzero   !! abscissa approximating a zero of `f` in the interval `ax`,`bx`
+    real(wp),intent(out) :: fzero   !! value of `f` at the root (`f(xzero)`)
+    integer,intent(out)  :: iflag   !! status flag (`0`=root found, `-2`=max iterations reached)
+
+    real(wp) :: xpre,xcur,xblk,fpre,fcur,fblk,spre,&
+                scur,sbis,delta,stry,dpre,dblk,xdelta
+    integer :: i !! iteration counter
+
+    iflag = 0
+    xpre = ax
+    xcur = bx
+    fpre = fax
+    fcur = fbx
+
+    do i = 1, me%maxiter
+
+        if (fpre*fcur < 0.0_wp) then
+            xblk = xpre
+            fblk = fpre
+            scur = xcur - xpre
+            spre = scur
+        end if
+        if (abs(fblk) < abs(fcur)) then
+            xpre = xcur
+            xcur = xblk
+            xblk = xpre
+            fpre = fcur
+            fcur = fblk
+            fblk = fpre
+        end if
+
+        delta = (me%atol + me%rtol*abs(xcur))/2.0_wp
+        sbis = (xblk - xcur)/2.0_wp
+        if (abs(fcur) <= me%ftol .or. abs(sbis) < delta) exit ! converged
+
+        if (abs(spre) > delta .and. abs(fcur) < abs(fpre)) then
+            if (xpre == xblk) then
+                ! interpolate
+                stry = -fcur*(xcur - xpre)/(fcur - fpre)
+            else
+                ! extrapolate
+                dpre = (fpre - fcur)/(xpre - xcur)
+                dblk = (fblk - fcur)/(xblk - xcur)
+                stry = -fcur*(fblk - fpre)/(fblk*dpre - fpre*dblk)  ! only difference from brentq
+            end if
+
+            if (2.0_wp*abs(stry) < min(abs(spre), 3.0_wp*abs(sbis) - delta)) then
+                ! accept step
+                spre = scur
+                scur = stry
+            else
+                ! bisect
+                spre = sbis
+                scur = sbis
+            end if
+        else
+            ! bisect
+            spre = sbis
+            scur = sbis
+        end if
+
+        xpre = xcur
+        fpre = fcur
+        if (abs(scur) > delta) then
+            xcur = xcur + scur
+        else
+            if (sbis > 0.0_wp) then
+                xdelta = delta
+            else
+                xdelta = -delta
+            end if
+            xcur = xcur + xdelta
+        end if
+
+        fcur = me%f(xcur)
+        if (abs(fcur) <= me%ftol) exit ! converged
+        if (i == me%maxiter) iflag = -2 ! max iterations reached
+
+    end do
+
+    xzero = xcur
+    fzero = fcur
+
+    end subroutine brenth
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Classic Brent's method to find a zero of the function f on the sign
+!  changing interval [ax, bx], but with a different formula for the extrapolation step.
+!
+!### Reference
+!  * SciPy brentq.c
+
+    subroutine brentq(me,ax,bx,fax,fbx,xzero,fzero,iflag)
+
+    implicit none
+
+    class(brentq_solver),intent(inout) :: me
+    real(wp),intent(in)  :: ax      !! left endpoint of initial interval
+    real(wp),intent(in)  :: bx      !! right endpoint of initial interval
+    real(wp),intent(in)  :: fax     !! `f(ax)`
+    real(wp),intent(in)  :: fbx     !! `f(ax)`
+    real(wp),intent(out) :: xzero   !! abscissa approximating a zero of `f` in the interval `ax`,`bx`
+    real(wp),intent(out) :: fzero   !! value of `f` at the root (`f(xzero)`)
+    integer,intent(out)  :: iflag   !! status flag (`0`=root found, `-2`=max iterations reached)
+
+    real(wp) :: xpre,xcur,xblk,fpre,fcur,fblk,spre,&
+                scur,sbis,delta,stry,dpre,dblk,xdelta
+    integer :: i !! iteration counter
+
+    iflag = 0
+    xpre = ax
+    xcur = bx
+    fpre = fax
+    fcur = fbx
+
+    do i = 1, me%maxiter
+
+        if (fpre*fcur < 0.0_wp) then
+            xblk = xpre
+            fblk = fpre
+            scur = xcur - xpre
+            spre = scur
+        end if
+        if (abs(fblk) < abs(fcur)) then
+            xpre = xcur
+            xcur = xblk
+            xblk = xpre
+            fpre = fcur
+            fcur = fblk
+            fblk = fpre
+        end if
+
+        delta = (me%atol + me%rtol*abs(xcur))/2.0_wp
+        sbis = (xblk - xcur)/2.0_wp
+        if (abs(fcur) <= me%ftol .or. abs(sbis) < delta) exit ! converged
+
+        if (abs(spre) > delta .and. abs(fcur) < abs(fpre)) then
+            if (xpre == xblk) then
+                ! interpolate
+                stry = -fcur*(xcur - xpre)/(fcur - fpre)
+            else
+                ! extrapolate
+                dpre = (fpre - fcur)/(xpre - xcur)
+                dblk = (fblk - fcur)/(xblk - xcur)
+                stry = -fcur*(fblk*dblk - fpre*dpre)/(dblk*dpre*(fblk - fpre))  ! only difference from brenth
+            end if
+
+            if (2.0_wp*abs(stry) < min(abs(spre), 3.0_wp*abs(sbis) - delta)) then
+                ! accept step
+                spre = scur
+                scur = stry
+            else
+                ! bisect
+                spre = sbis
+                scur = sbis
+            end if
+        else
+            ! bisect
+            spre = sbis
+            scur = sbis
+        end if
+
+        xpre = xcur
+        fpre = fcur
+        if (abs(scur) > delta) then
+            xcur = xcur + scur
+        else
+            if (sbis > 0.0_wp) then
+                xdelta = delta
+            else
+                xdelta = -delta
+            end if
+            xcur = xcur + xdelta
+        end if
+
+        fcur = me%f(xcur)
+        if (abs(fcur) <= me%ftol) exit ! converged
+        if (i == me%maxiter) iflag = -2 ! max iterations reached
+
+    end do
+
+    xzero = xcur
+    fzero = fcur
+
+    end subroutine brentq
 !*****************************************************************************************
 
 !*****************************************************************************************
