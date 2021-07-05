@@ -437,7 +437,7 @@
 !    Prentice-Hall, Inc., 1973.
 !
 !### See also
-!  1. [zeroin.f](http://www.netlib.org/go/zeroin.f) from Netlib
+!  * [zeroin.f](http://www.netlib.org/go/zeroin.f) from Netlib
 
     subroutine brent(me,ax,bx,fax,fbx,xzero,fzero,iflag)
 
@@ -664,7 +664,6 @@
 
         ! calculate f3:
         f3 = me%f(x3)
-
         if (abs(f3)<=me%ftol)  then  ! f3 is a root
             xzero = x3
             fzero = f3
@@ -829,7 +828,7 @@
         x3  = x2 - f2 / s12         ! intersection of this secant with the x-axis
         f3  = me%f(x3)              ! calculate f3
 
-        if (f3==0.0_wp)  then ! f3 is a root
+        if (abs(f3)<=me%ftol)  then ! f3 is a root
             fzero = f3
             xzero = x3
             iflag = 0
@@ -910,6 +909,12 @@
         d = (xup - xdn) / 2.0_wp
         xm = (xup + xdn) / 2.0_wp
         ym = me%f(xm)
+        if (abs(ym)<=me%ftol) then
+            xzero = xm
+            fzero = ym
+            exit ! Convergence
+        end if
+
         a = (yup + ydn - 2.0_wp*ym)/(2.0_wp*d**2)
         b = (yup - ydn)/(2.0_wp*d)
         xzero = xm - 2.0_wp*ym / (b * (1.0_wp + sqrt(1.0_wp - 4.0_wp*a*ym/b**2)))
@@ -918,7 +923,6 @@
 
         xlast = xzero
         fzero = me%f(xzero)
-
         if (abs(fzero)<=me%ftol) exit ! Convergence
 
         if (fzero>0.0_wp) then
