@@ -1079,7 +1079,7 @@
 
 !*****************************************************************************************
 !>
-!  Brent’s method with hyperbolic extrapolation.
+!  Brent's method with hyperbolic extrapolation.
 !
 !  A variation on the classic Brent routine to find a zero of the function f
 !  between the arguments ax and bx that uses hyperbolic extrapolation instead
