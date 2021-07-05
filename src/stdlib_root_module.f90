@@ -11,6 +11,8 @@
 
     implicit none
 
+    private
+
     type,abstract,public :: root_solver
     !! abstract class for the root solver methods
     private
@@ -133,6 +135,8 @@
             integer(ip),intent(out)   :: iflag
         end subroutine root_f
     end interface
+
+    public :: root_scalar
 
     contains
 !*****************************************************************************************
