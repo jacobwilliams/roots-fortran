@@ -15,9 +15,13 @@
     !! abstract class for the root solver methods
     private
     procedure(func),pointer :: f => null()  !! user function to find the root of
-    real(wp) :: ftol = 0.0_wp   !! absolute tolerance for `f=0`
+    real(wp) :: ftol = 0.0_wp       !! absolute tolerance for `f=0`
+    real(wp) :: rtol = 1.0e-6_wp    !! relative tol for x
+    real(wp) :: atol = 1.0e-12_wp   !! absolute tol for x [not used by all methods]
+    integer  :: maxiter = 2000      !! maximum number of iterations [not used by all methods]
     contains
     private
+    procedure,public :: initialize => initialize_root_solver !! initialize the class [must be called first]
     procedure,public :: solve !! main routine for finding the root
     procedure(root_f),deferred :: find_root !! root solver function
     procedure :: get_fa_fb
@@ -26,8 +30,6 @@
     type,extends(root_solver),public :: brent_solver
     !! Classic brent (zeroin) root solver
     private
-    real(wp) :: tol = 1.0e-6_wp     !! desired length of the interval of
-                                    !! uncertainty of the final result (>=0)
     contains
     private
     procedure,public :: find_root => brent
@@ -36,9 +38,6 @@
     type,extends(root_solver),public :: bisection_solver
     !! Classic bisection root solver
     private
-    real(wp) :: rtol = 1.0e-6_wp    !! relative tol for x
-    real(wp) :: atol = 1.0e-12_wp   !! absolute tol for x
-    integer  :: maxiter = 2000      !! maximum number of iterations
     contains
     private
     procedure,public :: find_root => bisection
@@ -47,9 +46,6 @@
     type,extends(root_solver),public :: anderson_bjorck_solver
     !! anderson bjorck root solver
     private
-    real(wp) :: rtol = 1.0e-6_wp    !! relative tol for x
-    real(wp) :: atol = 1.0e-12_wp   !! absolute tol for x
-    integer  :: maxiter = 2000      !! maximum number of iterations
     contains
     private
     procedure,public :: find_root => anderson_bjorck
@@ -58,8 +54,6 @@
     type,extends(root_solver),public :: ridders_solver
     !! anderson bjorck root solver
     private
-    real(wp) :: tol = 1.0e-6_wp     !! relative tol for x
-    integer  :: maxiter = 2000      !! maximum number of iterations
     contains
     private
     procedure,public :: find_root => ridders
@@ -68,9 +62,6 @@
     type,extends(root_solver),public :: pegasus_solver
     !! anderson bjorck root solver
     private
-    real(wp) :: rtol = 1.0e-6_wp    !! relative tol for x
-    real(wp) :: atol = 1.0e-12_wp   !! absolute tol for x
-    integer  :: maxiter = 2000      !! maximum number of iterations
     contains
     private
     procedure,public :: find_root => pegasus
@@ -79,7 +70,6 @@
     type,extends(root_solver),public :: bdqrf_solver
     !! anderson bjorck root solver
     private
-    integer  :: maxiter = 2000      !! maximum number of iterations
     contains
     private
     procedure,public :: find_root => bdqrf
@@ -88,31 +78,22 @@
     type,extends(root_solver),public :: muller_solver
     !! anderson bjorck root solver
     private
-    real(wp) :: rtol = 1.0e-6_wp    !! relative tol for x
-    real(wp) :: atol = 1.0e-12_wp   !! absolute tol for x
-    integer  :: maxiter = 2000      !! maximum number of iterations
     contains
     private
     procedure,public :: find_root => muller
     end type muller_solver
 
     type,extends(root_solver),public :: brenth_solver
-    !! anderson bjorck root solver
+    !! brenth root solver
     private
-    real(wp) :: rtol = 1.0e-6_wp    !! relative tol for x
-    real(wp) :: atol = 1.0e-12_wp   !! absolute tol for x
-    integer  :: maxiter = 2000      !! maximum number of iterations
     contains
     private
     procedure,public :: find_root => brenth
     end type brenth_solver
 
     type,extends(root_solver),public :: brentq_solver
-    !! anderson bjorck root solver
+    !! brentq root solver
     private
-    real(wp) :: rtol = 1.0e-6_wp    !! relative tol for x
-    real(wp) :: atol = 1.0e-12_wp   !! absolute tol for x
-    integer  :: maxiter = 2000      !! maximum number of iterations
     contains
     private
     procedure,public :: find_root => brentq
@@ -158,9 +139,33 @@
 
 !*****************************************************************************************
 !>
+!  Initialize the [[root_solver]] class.
+
+    subroutine initialize_root_solver(me,f,ftol,rtol,atol,maxiter)
+
+    implicit none
+
+    class(root_solver),intent(out) :: me
+    procedure(func)               :: f        !! user function to find the root of
+    real(wp),intent(in),optional  :: ftol     !! absolute tolerance for `f=0`
+    real(wp),intent(in),optional  :: rtol     !! relative tol for x
+    real(wp),intent(in),optional  :: atol     !! absolute tol for x
+    integer,intent(in),optional   :: maxiter  !! maximum number of iterations
+
+    me%f => f
+    if (present(ftol))    me%ftol    = ftol
+    if (present(rtol))    me%rtol    = rtol
+    if (present(atol))    me%atol    = atol
+    if (present(maxiter)) me%maxiter = maxiter
+
+    end subroutine initialize_root_solver
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Non-object-oriented wrapper.
 
-    subroutine root_scalar(method,fun,ax,bx,xzero,fzero,iflag,ftol,tol,rtol,atol,maxiter,fax,fbx)
+    subroutine root_scalar(method,fun,ax,bx,xzero,fzero,iflag,ftol,rtol,atol,maxiter,fax,fbx)
 
     implicit none
 
@@ -172,117 +177,69 @@
     real(wp),intent(out)          :: fzero    !! value of `f` at the root (`f(xzero)`)
     integer,intent(out)           :: iflag    !! status flag (`-1`=error, `0`=root found, `-999`=invalid method)
     real(wp),intent(in),optional  :: ftol     !! absolute tolerance for `f=0`
-    real(wp),intent(in),optional  :: tol      !! desired length of the interval of uncertainty of the final result (>=0)
     real(wp),intent(in),optional  :: rtol     !! relative tol for x
     real(wp),intent(in),optional  :: atol     !! absolute tol for x
     integer,intent(in),optional   :: maxiter  !! maximum number of iterations
     real(wp),intent(in),optional  :: fax      !! if `f(ax)` is already known, it can be input here
     real(wp),intent(in),optional  :: fbx      !! if `f(ax)` is already known, it can be input here
 
+    class(root_solver),allocatable :: s
+
     select case (lowercase(method))
 
     case('brent')
 
-        block
-            type(brent_solver) :: s
-            if (present(ftol)) s%ftol = ftol
-            if (present(tol))  s%tol  = tol
-            s%f => func_wrapper
-            call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
-        end block
+        allocate(brent_solver :: s)
+        call s%initialize(func_wrapper,ftol,rtol,atol,maxiter)
+        call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
 
     case('bisection')
 
-        block
-            type(bisection_solver) :: s
-            if (present(ftol))    s%ftol    = ftol
-            if (present(rtol))    s%rtol    = rtol
-            if (present(atol))    s%atol    = atol
-            if (present(maxiter)) s%maxiter = maxiter
-            s%f => func_wrapper
-            call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
-        end block
+        allocate(bisection_solver :: s)
+        call s%initialize(func_wrapper,ftol,rtol,atol,maxiter)
+        call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
 
     case('anderson_bjorck', 'anderson-bjorck')
 
-        block
-            type(anderson_bjorck_solver) :: s
-            if (present(ftol))    s%ftol    = ftol
-            if (present(rtol))    s%rtol    = rtol
-            if (present(atol))    s%atol    = atol
-            if (present(maxiter)) s%maxiter = maxiter
-            s%f => func_wrapper
-            call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
-        end block
+        allocate(anderson_bjorck_solver :: s)
+        call s%initialize(func_wrapper,ftol,rtol,atol,maxiter)
+        call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
 
     case('ridders')
 
-        block
-            type(ridders_solver) :: s
-            if (present(ftol))    s%ftol    = ftol
-            if (present(tol))     s%tol     = tol
-            if (present(maxiter)) s%maxiter = maxiter
-            s%f => func_wrapper
-            call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
-        end block
+        allocate(ridders_solver :: s)
+        call s%initialize(func_wrapper,ftol,rtol,atol,maxiter)
+        call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
 
     case('pegasus')
 
-        block
-            type(pegasus_solver) :: s
-            if (present(ftol))    s%ftol    = ftol
-            if (present(rtol))    s%rtol    = rtol
-            if (present(atol))    s%atol    = atol
-            if (present(maxiter)) s%maxiter = maxiter
-            s%f => func_wrapper
-            call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
-        end block
+        allocate(pegasus_solver :: s)
+        call s%initialize(func_wrapper,ftol,rtol,atol,maxiter)
+        call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
 
     case('bdqrf')
 
-        block
-            type(bdqrf_solver) :: s
-            if (present(ftol))    s%ftol    = ftol
-            if (present(maxiter)) s%maxiter = maxiter
-            s%f => func_wrapper
-            call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
-        end block
+        allocate(bdqrf_solver :: s)
+        call s%initialize(func_wrapper,ftol,rtol,atol,maxiter)
+        call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
 
     case('muller')
 
-        block
-            type(muller_solver) :: s
-            if (present(ftol))    s%ftol    = ftol
-            if (present(rtol))    s%rtol    = rtol
-            if (present(atol))    s%atol    = atol
-            if (present(maxiter)) s%maxiter = maxiter
-            s%f => func_wrapper
-            call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
-        end block
+        allocate(muller_solver :: s)
+        call s%initialize(func_wrapper,ftol,rtol,atol,maxiter)
+        call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
 
     case('brenth')
 
-        block
-            type(brenth_solver) :: s
-            if (present(ftol))    s%ftol    = ftol
-            if (present(rtol))    s%rtol    = rtol
-            if (present(atol))    s%atol    = atol
-            if (present(maxiter)) s%maxiter = maxiter
-            s%f => func_wrapper
-            call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
-        end block
+        allocate(brenth_solver :: s)
+        call s%initialize(func_wrapper,ftol,rtol,atol,maxiter)
+        call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
 
     case('brentq')
 
-        block
-            type(brentq_solver) :: s
-            if (present(ftol))    s%ftol    = ftol
-            if (present(rtol))    s%rtol    = rtol
-            if (present(atol))    s%atol    = atol
-            if (present(maxiter)) s%maxiter = maxiter
-            s%f => func_wrapper
-            call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
-        end block
+        allocate(brentq_solver :: s)
+        call s%initialize(func_wrapper,ftol,rtol,atol,maxiter)
+        call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
 
     case default
         ! invalid method
@@ -300,6 +257,8 @@
         end function func_wrapper
 
         pure function lowercase(str) result(s_lower)
+
+        !! lowercase a string.
 
         implicit none
 
@@ -478,7 +437,7 @@
             fc=fa
         end if
 
-        tol1 = 2.0_wp*eps*abs(b)+0.5_wp*me%tol
+        tol1 = 2.0_wp*eps*abs(b)+0.5_wp*me%rtol
         xm = 0.5_wp*(c-b)
         if ((abs(xm)<=tol1).or.(fb==0.0_wp)) exit
 
@@ -751,7 +710,7 @@
         end if
 
         xnew = xm+(xm-xl)*(sign(1.0_wp,fl-fh)*fm/denom)
-        if (abs(xnew-xzero) <= me%tol) then
+        if (abs(xnew-xzero) <= me%rtol) then
             ! relative convergence in x
             exit
         end if
@@ -778,7 +737,7 @@
             fl = fnew
         end if
 
-        if (abs(xh-xl) <= me%tol) then
+        if (abs(xh-xl) <= me%rtol) then
             ! relative convergence in x
             exit
         else if (i == me%maxiter) then

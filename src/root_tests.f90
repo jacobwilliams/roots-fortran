@@ -165,7 +165,7 @@
             ifunc = 0 ! reset function eval counter
 
             call root_scalar(methods(imeth),test_func,x1,x2,xzero,fzero,iflag,&
-                                tol = 1.0e-12_wp, atol = 1.0e-16_wp, rtol = 1.0e-12_wp)
+                                atol = 1.0e-16_wp, rtol = 1.0e-12_wp)
 
             error = xzero-root
             write(line, '(A20,1X,I3,1X,E25.10,1X,E25.10,1X,E25.6,1X,I5,1X,I5)') &
