@@ -101,6 +101,14 @@
     procedure,public :: find_root => brentq
     end type brentq_solver
 
+    type,extends(root_solver),public :: chandrupatla_solver
+    !! chandrupatla root solver
+    private
+    contains
+    private
+    procedure,public :: find_root => chandrupatla
+    end type chandrupatla_solver
+
     abstract interface
         function func(me,x) result(f)
             !! Interface to the function to be minimized
@@ -242,6 +250,12 @@
     case('brentq')
 
         allocate(brentq_solver :: s)
+        call s%initialize(func_wrapper,ftol,rtol,atol,maxiter)
+        call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
+
+    case('chandrupatla')
+
+        allocate(chandrupatla_solver :: s)
         call s%initialize(func_wrapper,ftol,rtol,atol,maxiter)
         call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
 
@@ -1251,6 +1265,98 @@
     fzero = fcur
 
     end subroutine brentq
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Chandrupatla's method.
+!
+!### Reference
+!  * T.R. Chandrupatla, "A new hybrid quadratic/bisection algorithm for
+!    finding the zero of a nonlinear function without derivatives," Advances in
+!    Engineering Software, Vol 28, 1997, pp. 145-149.
+!  * P. Scherer, "Computational Physics: Simulation of Classical and Quantum Systems",
+!    Section 6.1.7.3. [this routine was coded from that description]
+!  * Python version: https://www.embeddedrelated.com/showarticle/855.php
+
+    subroutine chandrupatla(me,ax,bx,fax,fbx,xzero,fzero,iflag)
+
+    implicit none
+
+    class(chandrupatla_solver),intent(inout) :: me
+    real(wp),intent(in)  :: ax      !! left endpoint of initial interval
+    real(wp),intent(in)  :: bx      !! right endpoint of initial interval
+    real(wp),intent(in)  :: fax     !! `f(ax)`
+    real(wp),intent(in)  :: fbx     !! `f(ax)`
+    real(wp),intent(out) :: xzero   !! abscissa approximating a zero of `f` in the interval `ax`,`bx`
+    real(wp),intent(out) :: fzero   !! value of `f` at the root (`f(xzero)`)
+    integer,intent(out)  :: iflag   !! status flag (`0`=root found, `-2`=max iterations reached)
+
+    real(wp) :: a,b,c,fa,fb,fc,t,xt,ft,tol,tl,xi,phi,xm,fm
+    integer :: i !! iteration counter
+
+    ! initialization:
+    iflag = 0
+    b  = ax
+    a  = bx
+    c  = bx
+    fa = fbx
+    fb = fax
+    fc = fb
+    t  = 0.5_wp
+
+    ! main loop:
+    do i = 1, me%maxiter
+
+        xt = a + t*(b-a)
+        ft = me%f(xt)
+
+        if (ft*fa>0.0_wp) then
+            c = a
+            fc = fa
+        else
+            c = b
+            b = a
+            fc = fb
+            fb = fa
+        end if
+        a = xt
+        fa = ft
+
+        if (abs(fb) < abs(fa)) then
+            xm = b
+            fm = fb
+        else
+            xm = a
+            fm = fa
+        end if
+        if (abs(fm) <= me%ftol) exit
+
+        tol = 2.0_wp*me%rtol*abs(xm) + me%atol
+        tl = tol/abs(b-c)
+        if (tl > 0.5_wp) exit
+
+        xi  = (a-b)/(c-b)
+        phi = (fa-fb)/(fc-fb)
+
+        if (1.0_wp - sqrt(1.0_wp - xi) < phi .and. phi < sqrt(xi)) then
+            ! inverse quadratic interpolation
+            t = (fa/(fb-fa)) * (fc/(fb-fc)) + ((c-a)/(b-a)) * (fa/(fc-fa)) * (fb/(fc-fb))
+        else
+            ! bisection
+            t = 0.5_wp
+        end if
+
+        t = min(1.0_wp-tl, max(tl, t))
+
+        if (i == me%maxiter) iflag = -2 ! max iterations reached
+
+    end do
+
+    xzero = xm
+    fzero = fm
+
+    end subroutine chandrupatla
 !*****************************************************************************************
 
 !*****************************************************************************************
