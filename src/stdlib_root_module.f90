@@ -109,6 +109,14 @@
     procedure,public :: find_root => chandrupatla
     end type chandrupatla_solver
 
+    type,extends(root_solver),public :: toms748_solver
+    !! TOMS748 root solver
+    private
+    contains
+    private
+    procedure,public :: find_root => toms748
+    end type toms748_solver
+
     abstract interface
         function func(me,x) result(f)
             !! Interface to the function to be minimized
@@ -152,23 +160,25 @@
 !*****************************************************************************************
 !>
 !  Initialize the [[root_solver]] class.
+!
+!  Note that all optional inputs are not used for all methods.
 
     subroutine initialize_root_solver(me,f,ftol,rtol,atol,maxiter)
 
     implicit none
 
     class(root_solver),intent(out) :: me
-    procedure(func)               :: f        !! user function to find the root of
+    procedure(func)               :: f        !! user function `f(x)` to find the root of
     real(wp),intent(in),optional  :: ftol     !! absolute tolerance for `f=0`
     real(wp),intent(in),optional  :: rtol     !! relative tol for x
     real(wp),intent(in),optional  :: atol     !! absolute tol for x
     integer,intent(in),optional   :: maxiter  !! maximum number of iterations
 
     me%f => f
-    if (present(ftol))    me%ftol    = ftol
-    if (present(rtol))    me%rtol    = rtol
-    if (present(atol))    me%atol    = atol
-    if (present(maxiter)) me%maxiter = maxiter
+    if (present(ftol))    me%ftol    = abs(ftol)
+    if (present(rtol))    me%rtol    = abs(rtol)
+    if (present(atol))    me%atol    = abs(atol)
+    if (present(maxiter)) me%maxiter = abs(maxiter)
 
     end subroutine initialize_root_solver
 !*****************************************************************************************
@@ -259,6 +269,12 @@
         call s%initialize(func_wrapper,ftol,rtol,atol,maxiter)
         call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
 
+    case('toms748')
+
+        allocate(toms748_solver :: s)
+        call s%initialize(func_wrapper,ftol,rtol,atol,maxiter)
+        call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
+
     case default
         ! invalid method
         iflag = -999
@@ -336,13 +352,13 @@
             xzero = ax
             fzero = fa
 
-        elseif (abs(fb)<=me%ftol) then
+        else if (abs(fb)<=me%ftol) then
 
             iflag = 0
             xzero = bx
             fzero = fb
 
-        elseif (fa*fb>0.0_wp) then
+        else if (fa*fb>0.0_wp) then
 
             ! f(ax) and f(bx) do not have different signs
             iflag = -1
@@ -457,10 +473,10 @@
 
         tol1 = 2.0_wp*eps*abs(b)+0.5_wp*me%rtol
         xm = 0.5_wp*(c-b)
-        if ((abs(xm)<=tol1).or.(fb==0.0_wp)) exit
+        if ((abs(xm)<=tol1) .or. (fb==0.0_wp)) exit
 
         ! see if a bisection is forced
-        if ((abs(e)>=tol1).and.(abs(fa)>abs(fb))) then
+        if ((abs(e)>=tol1) .and. (abs(fa)>abs(fb))) then
             s=fb/fa
             if (a/=c) then
                 ! inverse quadratic interpolation
@@ -927,9 +943,7 @@
 
 !*****************************************************************************************
 !>
-!   Muller's method to find a real root of f(x).
-
-    ! this one seems to fail for some cases ...
+!  Muller's method to find a real root of f(x).
 
     subroutine muller (me,ax,bx,fax,fbx,xzero,fzero,iflag)
 
@@ -1357,6 +1371,381 @@
     fzero = fm
 
     end subroutine chandrupatla
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  TOMS748 rootfinding method.
+!
+!  Finds either an exact solution or an approximate solution of the
+!  equation `f(x)=0` in the interval [ax,bx]. At the begining of each
+!  iteration, the current enclosing interval is recorded as [a0,b0].
+!  The first iteration is simply a secant step. Starting with the
+!  second iteration, three steps are taken in each iteration. First
+!  two steps are either quadratic interpolation or cubic inverse
+!  interpolation. The third step is a double-size secant step. If the
+!  diameter of the enclosing interval obtained after those three steps
+!  is larger than 0.5*(b0-a0), then an additional bisection step will
+!  be taken.
+!
+!### References
+!  * http://www.netlib.org/toms/748
+!  * G. E. Alefeld, F. A. Potra and Yixun Shi,
+!    "Algorithm 748: Enclosing Zeros of Continuous Functions",
+!    ACM Transactions on Mathematica1 Software,
+!    Vol. 21. No. 3. September 1995. Pages 327-344.
+
+    subroutine toms748(me,ax,bx,fax,fbx,xzero,fzero,iflag)
+
+    implicit none
+
+    class(toms748_solver),intent(inout) :: me
+    real(wp),intent(in)  :: ax      !! left endpoint of initial interval
+    real(wp),intent(in)  :: bx      !! right endpoint of initial interval
+    real(wp),intent(in)  :: fax     !! `f(ax)`
+    real(wp),intent(in)  :: fbx     !! `f(ax)`
+    real(wp),intent(out) :: xzero   !! abscissa approximating a zero of `f` in the interval `ax`,`bx`
+    real(wp),intent(out) :: fzero   !! value of `f` at the root (`f(xzero)`)
+    integer,intent(out)  :: iflag   !! status flag (`0`=root found, `-2`=max iterations reached)
+
+    integer  :: itnum
+    real(wp) :: a,b,fa,fb,c,u,fu,a0,b0,tol,d,fd
+    real(wp) :: prof,e,fe,tmpc
+
+    a = ax
+    b = bx
+    fa = fax
+    fb = fbx
+
+    ! initialization. set the number of iteration as 0.
+    ! set dumb values for the variables "e" and "fe".
+    e  = huge(1.0_wp)
+    fe = huge(1.0_wp)
+
+    ! iteration starts. the enclosing interval before executing the
+    ! iteration is recorded as [a0, b0].
+    do itnum = 1, me%maxiter
+
+        a0 = a
+        b0 = b
+
+        ! calculates the termination criterion. stops the procedure if the
+        ! criterion is satisfied.
+        if (abs(fb) <= abs(fa)) then
+            tol = get_tolerance(b)
+        else
+            tol = get_tolerance(a)
+        end if
+        if ((b-a)<=tol) exit
+
+        ! for the first iteration, secant step is taken.
+        if (itnum == 1) then
+
+            c=a-(fa/(fb-fa))*(b-a)
+
+            ! call subroutine "bracket" to get a shrinked enclosing interval as
+            ! well as to update the termination criterion. stop the procedure
+            ! if the criterion is satisfied or the exact solution is obtained.
+            call bracket(a,b,c,fa,fb,tol,d,fd)
+            if ((abs(fa)<=me%ftol) .or. ((b-a)<=tol)) exit
+
+            cycle
+
+        end if
+
+        ! starting with the second iteration, in the first two steps, either
+        ! quadratic interpolation is used by calling the subroutine "newqua"
+        ! or the cubic inverse interpolation is used by calling the subroutine
+        ! "pzero". in the following, if "prof" is not equal to 0, then the
+        ! four function values "fa", "fb", "fd", and "fe" are distinct, and
+        ! hence "pzero" will be called.
+        prof=(fa-fb)*(fa-fd)*(fa-fe)*(fb-fd)*(fb-fe)*(fd-fe)
+        if ((itnum == 2) .or. (prof == 0.0_wp)) then
+            call newqua(a,b,d,fa,fb,fd,c,2)
+        else
+            c = pzero(a,b,d,e,fa,fb,fd,fe)
+            if ((c-a)*(c-b) >= 0.0_wp) then
+                call newqua(a,b,d,fa,fb,fd,c,2)
+            end if
+        end if
+        e=d
+        fe=fd
+
+        ! call subroutine "bracket" to get a shrinked enclosing interval as
+        ! well as to update the termination criterion. stop the procedure
+        ! if the criterion is satisfied or the exact solution is obtained.
+        call bracket(a,b,c,fa,fb,tol,d,fd)
+        if ((abs(fa)<=me%ftol) .or. ((b-a)<=tol)) exit
+        prof=(fa-fb)*(fa-fd)*(fa-fe)*(fb-fd)*(fb-fe)*(fd-fe)
+        if (prof == 0.0_wp) then
+            call newqua(a,b,d,fa,fb,fd,c,3)
+        else
+            c = pzero(a,b,d,e,fa,fb,fd,fe)
+            if ((c-a)*(c-b) >= 0.0_wp) then
+                call newqua(a,b,d,fa,fb,fd,c,3)
+            end if
+        end if
+
+        ! call subroutine "bracket" to get a shrinked enclosing interval as
+        ! well as to update the termination criterion. stop the procedure
+        ! if the criterion is satisfied or the exact solution is obtained.
+        call bracket(a,b,c,fa,fb,tol,d,fd)
+        if ((abs(fa)<=me%ftol) .or. ((b-a)<=tol)) exit
+        e=d
+        fe=fd
+
+        ! takes the double-size secant step.
+        if (abs(fa) < abs(fb)) then
+            u=a
+            fu=fa
+        else
+            u=b
+            fu=fb
+        end if
+        c=u-2.0_wp*(fu/(fb-fa))*(b-a)
+        if (abs(c-u) > (0.5_wp*(b-a))) then
+            c=a+0.5_wp*(b-a)
+        end if
+
+        ! call subroutine bracket to get a shrinked enclosing interval as
+        ! well as to update the termination criterion. stop the procedure
+        ! if the criterion is satisfied or the exact solution is obtained.
+        call bracket(a,b,c,fa,fb,tol,d,fd)
+        if ((abs(fa)<=me%ftol) .or. ((b-a)<=tol)) exit
+
+        ! determines whether an additional bisection step is needed. and takes
+        ! it if necessary.
+        if ((b-a) < (0.5_wp*(b0-a0))) cycle
+        e=d
+        fe=fd
+
+        ! call subroutine "bracket" to get a shrinked enclosing interval as
+        ! well as to update the termination criterion. stop the procedure
+        ! if the criterion is satisfied or the exact solution is obtained.
+        tmpc = a+0.5_wp*(b-a)
+        call bracket(a,b,tmpc,fa,fb,tol,d,fd)
+        if ((abs(fa)<=me%ftol) .or. ((b-a)<=tol)) exit
+
+        if (itnum == me%maxiter) iflag = -2    ! maximum iterations reached
+
+    end do
+
+    !return result:
+    xzero = a
+    fzero = fa
+
+    contains
+!**********************************************************************************
+
+    !************************************************************************
+    subroutine bracket(a,b,c,fa,fb,tol,d,fd)
+
+    !!  Given current enclosing interval [a,b] and a number c in (a,b), if
+    !!  f(c)=0 then sets the output a=c. Otherwise determines the new
+    !!  enclosing interval: [a,b]=[a,c] or [a,b]=[c,b]. Also updates the
+    !!  termination criterion corresponding to the new enclosing interval.
+
+    implicit none
+
+    real(wp),intent(inout)  :: a    !! input as the current left point of the
+                                    !! enclosing interval and output as the shrinked
+                                    !! new enclosing interval
+    real(wp),intent(inout)  :: b    !! input as the current right point of the
+                                    !! enclosing interval and output as the shrinked
+                                    !! new enclosing interval
+    real(wp),intent(inout)  :: c    !! used to determine the new enclosing interval
+    real(wp),intent(inout)  :: fa   !! f(a)
+    real(wp),intent(inout)  :: fb   !! f(b)
+    real(wp),intent(inout)  :: tol  !! input as the current termination
+                                    !! criterion and output as the updated termination
+                                    !! criterion according to the new enclosing interval
+    real(wp),intent(out)    :: d    !! if the new enclosing interval
+                                    !! is [a,c] then d=b, otherwise d=a;
+    real(wp),intent(out)    :: fd   !! f(d)
+
+    real(wp) :: fc
+
+    ! adjust c if (b-a) is very small or if c is very close to a or b.
+    tol = 0.7_wp*tol
+    if ((b-a) <= 2.0_wp*tol) then
+        c = a+0.5_wp*(b-a)
+    else if (c <= a+tol) then
+        c = a+tol
+    else
+        if (c >= b-tol) c = b-tol
+    end if
+
+    ! call subroutine to obtain f(c)
+    fc = me%f(c)
+
+    ! if c is a root, then set a=c and return. this will terminate the
+    ! procedure in the calling routine.
+    if (abs(fc) <= me%ftol) then
+
+        a   = c
+        fa  = fc
+        d   = 0.0_wp
+        fd  = 0.0_wp
+
+    else
+
+        ! if c is not a root, then determine the new enclosing interval.
+        if ((isign(fa)*isign(fc)) < 0) then
+            d   = b
+            fd  = fb
+            b   = c
+            fb  = fc
+        else
+            d   = a
+            fd  = fa
+            a   = c
+            fa  = fc
+        end if
+
+        ! update the termination criterion according to the new enclosing interval.
+        if (abs(fb) <= abs(fa)) then
+            tol = get_tolerance(b)
+        else
+            tol = get_tolerance(a)
+        end if
+
+    end if
+
+    end subroutine bracket
+    !************************************************************************
+
+    !************************************************************************
+    pure function isign(x) result(i)
+
+    !! sign of the variable `x` (note: return `0` if `x=0`)
+
+    implicit none
+
+    integer :: i
+    real(wp),intent(in) :: x
+
+    if (x > 0.0_wp) then
+        i = 1
+    else if (x == 0.0_wp) then
+        i = 0
+    else
+        i = -1
+    end if
+
+    end function isign
+    !************************************************************************
+
+    !************************************************************************
+    pure function get_tolerance(b) result(tol)
+
+    !! determines the termination criterion.
+
+    implicit none
+
+    real(wp),intent(in) :: b
+    real(wp) :: tol  !! termination criterion: 2*(2*rtol*|b| + atol)
+
+    tol = 2.0_wp * (me%atol + 2.0_wp*abs(b)*me%rtol)
+
+    end function get_tolerance
+    !************************************************************************
+
+    !************************************************************************
+    pure subroutine newqua(a,b,d,fa,fb,fd,c,k)
+
+    !! uses k newton steps to approximate the zero in (a,b) of the
+    !! quadratic polynomial interpolating f(x) at a, b, and d.
+    !! safeguard is used to avoid overflow.
+
+    implicit none
+
+    real(wp),intent(in)  :: a
+    real(wp),intent(in)  :: b
+    real(wp),intent(in)  :: d  !! d lies outside the interval [a,b]
+    real(wp),intent(in)  :: fa !! f(a), f(a)f(b)<0
+    real(wp),intent(in)  :: fb !! f(b), f(a)f(b)<0
+    real(wp),intent(in)  :: fd !! f(d)
+    real(wp),intent(out) :: c  !! the approximate zero
+                               !! in (a,b) of the quadratic polynomial.
+    integer,intent(in)   :: k  !! number of newton steps to take.
+
+    integer  :: ierror,i
+    real(wp) :: a0,a1,a2,pc,pdc
+
+    ! initialization
+    ! find the coefficients of the quadratic polynomial
+    ierror = 0
+    a0 = fa
+    a1 = (fb-fa)/(b-a)
+    a2 = ((fd-fb)/(d-b)-a1)/(d-a)
+
+    do    ! main loop
+
+        ! safeguard to avoid overflow
+        if ((a2 == 0.0_wp) .or. (ierror == 1)) then
+            c=a-a0/a1
+            return
+        end if
+
+        ! determine the starting point of newton steps
+        if (isign(a2)*isign(fa) > 0) then
+            c=a
+        else
+            c=b
+        end if
+
+        ! start the safeguarded newton steps
+        do i=1,k
+            if (ierror == 0) then
+                pc=a0+(a1+a2*(c-b))*(c-a)
+                pdc=a1+a2*((2.0_wp*c)-(a+b))
+                if (pdc == 0.0_wp) then
+                    ierror=1
+                else
+                    c=c-pc/pdc
+                end if
+            end if
+        end do
+        if (ierror/=1) exit
+
+    end do
+
+    end subroutine newqua
+    !************************************************************************
+
+    !************************************************************************
+    pure function pzero(a,b,d,e,fa,fb,fd,fe) result(c)
+
+    !! uses cubic inverse interpolation of f(x) at a, b, d, and e to
+    !! get an approximate root of f(x). this procedure is a slight
+    !! modification of aitken-neville algorithm for interpolation
+    !! described by stoer and bulirsch in "Intro. to numerical analysis"
+    !! springer-verlag. new york (1980).
+
+    implicit none
+
+    real(wp),intent(in) :: a,b,d,e,fa,fb,fd,fe
+    real(wp) :: c
+
+    real(wp) :: q11,q21,q31,d21,d31,q22,q32,d32,q33
+
+    q11 = (d-e)*fd/(fe-fd)
+    q21 = (b-d)*fb/(fd-fb)
+    q31 = (a-b)*fa/(fb-fa)
+    d21 = (b-d)*fd/(fd-fb)
+    d31 = (a-b)*fb/(fb-fa)
+
+    q22 = (d21-q11)*fb/(fe-fb)
+    q32 = (d31-q21)*fa/(fd-fa)
+    d32 = (d31-q21)*fd/(fd-fa)
+    q33 = (d32-q22)*fa/(fe-fa)
+
+    c = a + q31+q32+q33
+
+    end function pzero
+    !************************************************************************
+
+    end subroutine toms748
 !*****************************************************************************************
 
 !*****************************************************************************************
