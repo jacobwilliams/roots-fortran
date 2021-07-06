@@ -22,6 +22,9 @@ program root_tests
     integer :: ifunc !! number of function evaluations
     real(wp) :: root !! known root value
 
+    character(len=*),parameter :: fmt  = '(A20,1X,A3,1X,A4,1X,A25,   1X,A25,   1X,A25,  1X,A5,1X,A5)' !! format for header
+    character(len=*),parameter :: dfmt = '(A20,1X,I3,1X,I4,1X,E25.10,1X,E25.10,1X,E25.6,1X,I5,1X,I5)' !! format for results
+
     integer,parameter :: number_of_methods = 11 !! number of methods to test
     character(len=100),dimension(number_of_methods),parameter :: methods = [ &
         'brent          ', &
@@ -38,14 +41,16 @@ program root_tests
 
     do imeth = 1, number_of_methods
 
-        write(output_unit, '(A20,1X,A3,1X,A4,1X,A25,1X,A25,1X,A25,1X,A5,1X,A5)') &
-        repeat('-',20),repeat('-',3),repeat('-',4),repeat('-',25),repeat('-',25),repeat('-',25),repeat('-',5),repeat('-',5)
+        write(output_unit,fmt) &
+            repeat('-',20),repeat('-',3),repeat('-',4),repeat('-',25),&
+            repeat('-',25),repeat('-',25),repeat('-',5),repeat('-',5)
 
-        write(output_unit, '(A20,1X,A3,1X,A4,1X,A25,1X,A25,1X,A25,1X,A5,1X,A5)') &
-        'method','function','n','error','x','f','evals','iflag'
+        write(output_unit,fmt) &
+            'method','function','n','error','x','f','evals','iflag'
 
-        write(output_unit, '(A20,1X,A3,1X,A4,1X,A25,1X,A25,1X,A25,1X,A5,1X,A5)') &
-        repeat('-',20),repeat('-',3),repeat('-',4),repeat('-',25),repeat('-',25),repeat('-',25),repeat('-',5),repeat('-',5)
+        write(output_unit,fmt) &
+            repeat('-',20),repeat('-',3),repeat('-',4),repeat('-',25),&
+            repeat('-',25),repeat('-',25),repeat('-',5),repeat('-',5)
 
         ! run the tests:
         nprob = 101; n = 1;   root = asin(2.0_wp/3.0_wp);    call test()
@@ -65,7 +70,6 @@ program root_tests
         nprob = 115; n = 1;   root = -0.640083696085_wp;     call test()
         nprob = 116; n = 20;  root = 0.05_wp;                call test()
         nprob = 117; n = 1;   root = 0.0_wp;                 call test()
-
         nprob = 1;  n = 1;    root = 1.8954942670340_wp;     call test()
         nprob = 2;  n = 1;    root = 3.0229153472731_wp;     call test()
         nprob = 3;  n = 1;    root = 6.6837535608081_wp;     call test()
@@ -240,13 +244,12 @@ program root_tests
                             atol = 1.0e-16_wp, rtol = 1.0e-12_wp, maxiter = 1000)
 
         error = xzero-root
-        write(line, '(A20,1X,I3,1X,I4,1X,E25.10,1X,E25.10,1X,E25.6,1X,I5,1X,I5)') &
-                trim(methods(imeth)),nprob,n,xzero-root,xzero,fzero,ifunc,iflag
+        write(line, dfmt) trim(methods(imeth)),nprob,n,xzero-root,xzero,fzero,ifunc,iflag
 
         if (abs(fzero) <= 1.0e-9_wp .or. abs(error) <= 1.0e-9_wp) then
             write(output_unit, '(A)') trim(line)
         else
-            write(output_unit, '(A)') colorize(trim(line), color_fg='red')
+            write(output_unit, '(A)') colorize(trim(line), color_fg='red') ! failed case
         end if
 
     end subroutine test
