@@ -300,10 +300,10 @@ program root_tests_2
             a = -1.0_wp
             b = 4.0_wp
         case (27)
-            a = -10000
+            a = -10000.0_wp
             b = pi/2.0_wp
         case (28)
-            a = -10000
+            a = -10000.0_wp
             b = 1.0e-4_wp
         end select
 
