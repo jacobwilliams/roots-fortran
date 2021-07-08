@@ -758,10 +758,7 @@
         end if
 
         xnew = xm+(xm-xl)*(sign(1.0_wp,fl-fh)*fm/denom)
-        if (abs(xnew-xzero) <= me%rtol) then
-            ! relative convergence in x
-            exit
-        end if
+        if (me%converged(xzero,xnew)) exit  ! relative convergence in x
 
         xzero = xnew
         fnew = me%f(xzero)
@@ -926,8 +923,7 @@
         a = (yup + ydn - 2.0_wp*ym)/(2.0_wp*d**2)
         b = (yup - ydn)/(2.0_wp*d)
         xzero = xm - 2.0_wp*ym / (b * (1.0_wp + sqrt(1.0_wp - 4.0_wp*a*ym/b**2)))
-
-        if (xzero==xlast) exit ! limit of computing precision has been reached.
+        if (me%converged(xzero,xlast)) exit
 
         xlast = xzero
         fzero = me%f(xzero)
