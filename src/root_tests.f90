@@ -25,7 +25,7 @@ program root_tests
     character(len=*),parameter :: fmt  = '(A20,1X,A3,1X,A4,1X,A25,   1X,A25,   1X,A25,  1X,A5,1X,A5)' !! format for header
     character(len=*),parameter :: dfmt = '(A20,1X,I3,1X,I4,1X,E25.10,1X,E25.10,1X,E25.6,1X,I5,1X,I5)' !! format for results
 
-    integer,parameter :: number_of_methods = 11 !! number of methods to test
+    integer,parameter :: number_of_methods = 12 !! number of methods to test
     character(len=100),dimension(number_of_methods),parameter :: methods = [ &
         'brent          ', &
         'brentq         ', &
@@ -37,7 +37,8 @@ program root_tests
         'bdqrf          ', &
         'muller         ', &
         'chandrupatla   ', &
-        'toms748        ' ] !! method names
+        'toms748        ', &
+        'zhang          ' ] !! method names
 
     do imeth = 1, number_of_methods
 
@@ -224,6 +225,7 @@ program root_tests
         nprob = 28; n = 800;  root = 1.5481615698859e-06_wp; call test()
         nprob = 28; n = 900;  root = 1.3763345366022e-06_wp; call test()
         nprob = 28; n = 1000; root = 1.2388385788997e-06_wp; call test()
+        nprob = 29; n = 1;    root = 0.8654740331e+00_wp; call test()
 
     end do
 
@@ -241,12 +243,13 @@ program root_tests
         ifunc = 0 ! reset func evals counter
         call get_bounds(ax, bx)
         call root_scalar(methods(imeth),func,ax,bx,xzero,fzero,iflag,&
+                            !atol = 1.0e-5_wp, rtol = 1.0e-5_wp, maxiter = 1000)
                             atol = 1.0e-16_wp, rtol = 1.0e-12_wp, maxiter = 1000)
 
         error = xzero-root
-        write(line, dfmt) trim(methods(imeth)),nprob,n,xzero-root,xzero,fzero,ifunc,iflag
+        write(line, dfmt) trim(methods(imeth)),nprob,n,error,xzero,fzero,ifunc,iflag
 
-        if (abs(fzero) <= 1.0e-9_wp .or. abs(error) <= 1.0e-9_wp) then
+        if (abs(fzero) <= 1.0e-9_wp .and. abs(error) <= 1.0e-9_wp) then
             write(output_unit, '(A)') trim(line)
         else
             write(output_unit, '(A)') colorize(trim(line), color_fg='red') ! failed case
@@ -326,6 +329,9 @@ program root_tests
         case (28)
             a = -10000.0_wp
             b = 1.0e-4_wp
+        case (29)
+            a = 0.0_wp
+            b = 4.0_wp
         case (101)
             a = 0.0_wp
             b = 1.0_wp
@@ -457,6 +463,9 @@ program root_tests
             else
                 f = -0.859_wp
             end if
+        case (29)
+            ! Zhang test case
+            f = cos(x) - x**3
         case (101)
            ! Gottlieb's paper [table 1 & 2]
            f = 3.0_wp * sin(x) - 2.0_wp

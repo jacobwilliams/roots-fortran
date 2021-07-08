@@ -12,7 +12,6 @@
     implicit none
 
     private
-
     type,abstract,public :: root_solver
     !! abstract class for the root solver methods
     private
@@ -27,6 +26,7 @@
     procedure,public :: solve !! main routine for finding the root
     procedure(root_f),deferred :: find_root !! root solver function
     procedure :: get_fa_fb
+    procedure :: converged
     end type root_solver
 
     type,extends(root_solver),public :: brent_solver
@@ -54,7 +54,7 @@
     end type anderson_bjorck_solver
 
     type,extends(root_solver),public :: ridders_solver
-    !! anderson bjorck root solver
+    !! ridders root solver
     private
     contains
     private
@@ -62,7 +62,7 @@
     end type ridders_solver
 
     type,extends(root_solver),public :: pegasus_solver
-    !! anderson bjorck root solver
+    !! pegasus root solver
     private
     contains
     private
@@ -70,7 +70,7 @@
     end type pegasus_solver
 
     type,extends(root_solver),public :: bdqrf_solver
-    !! anderson bjorck root solver
+    !! bdqrf root solver
     private
     contains
     private
@@ -78,7 +78,7 @@
     end type bdqrf_solver
 
     type,extends(root_solver),public :: muller_solver
-    !! anderson bjorck root solver
+    !! muller root solver
     private
     contains
     private
@@ -116,6 +116,14 @@
     private
     procedure,public :: find_root => toms748
     end type toms748_solver
+
+    type,extends(root_solver),public :: zhang_solver
+    !! zhang root solver
+    private
+    contains
+    private
+    procedure,public :: find_root => zhang
+    end type zhang_solver
 
     abstract interface
         function func(me,x) result(f)
@@ -272,6 +280,12 @@
     case('toms748')
 
         allocate(toms748_solver :: s)
+        call s%initialize(func_wrapper,ftol,rtol,atol,maxiter)
+        call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
+
+    case('zhang')
+
+        allocate(zhang_solver :: s)
         call s%initialize(func_wrapper,ftol,rtol,atol,maxiter)
         call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
 
@@ -599,7 +613,7 @@
         end if
 
         ! check for convergence:
-        root_found = abs(x2-x1) <= abs(x2) * me%rtol + me%atol
+        root_found = me%converged(x1,x2)
         if (root_found .or. i==me%maxiter) then
             xzero = x2
             fzero = f2
@@ -680,7 +694,7 @@
         end if
 
         ! check for convergence:
-        root_found = abs(x2-x1) <= abs(x2)*me%rtol + me%atol
+        root_found = me%converged(x1,x2)
         if (root_found .or. i == me%maxiter) then
             xzero = x2
             fzero = f2
@@ -771,7 +785,7 @@
             fl = fnew
         end if
 
-        if (abs(xh-xl) <= me%rtol) then
+        if (me%converged(xl,xh)) then
             ! relative convergence in x
             exit
         else if (i == me%maxiter) then
@@ -841,7 +855,8 @@
 
         ! Check for break-off condition:
         if (abs(f2)<me%ftol) exit
-        if (abs(x2-x1)<=abs(x2)*me%rtol + me%atol) exit
+        if (me%converged(x1,x2)) exit
+
         if (i == me%maxiter) iflag = -2   ! max iterations exceeded
 
     end do
@@ -1050,24 +1065,6 @@
         if ( i == me%maxiter ) iflag = -2 ! max iterations exceeded
 
     end do
-
-    contains
-
-        pure elemental subroutine swap(a,b)
-
-        !! Swap two real(wp) values.
-        implicit none
-
-        real(wp),intent(inout) :: a
-        real(wp),intent(inout) :: b
-
-        real(wp) :: tmp
-
-        tmp = a
-        a   = b
-        b   = tmp
-
-        end subroutine swap
 
     end subroutine muller
 !*****************************************************************************************
@@ -1746,6 +1743,189 @@
     !************************************************************************
 
     end subroutine toms748
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Zhang's method (with corrections from Stage).
+!
+!### Reference
+!  * A. Zhang, "An Improvement to the Brent's Method",
+!    International Journal of Experimental Algorithms (IJEA), Volume (2) : Issue (1) : 2011.
+!    https://www.cscjournals.org/download/issuearchive/IJEA/Volume2/IJEA_V2_I1.pdf
+!  * S. A. Stage, "Comments on An Improvement to the Brent's Method",
+!    https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.740.923&rep=rep1&type=pdf
+
+    subroutine zhang(me,ax,bx,fax,fbx,xzero,fzero,iflag)
+
+    implicit none
+
+    class(zhang_solver),intent(inout) :: me
+    real(wp),intent(in)  :: ax      !! left endpoint of initial interval
+    real(wp),intent(in)  :: bx      !! right endpoint of initial interval
+    real(wp),intent(in)  :: fax     !! `f(ax)`
+    real(wp),intent(in)  :: fbx     !! `f(ax)`
+    real(wp),intent(out) :: xzero   !! abscissa approximating a zero of `f` in the interval `ax`,`bx`
+    real(wp),intent(out) :: fzero   !! value of `f` at the root (`f(xzero)`)
+    integer,intent(out)  :: iflag   !! status flag (`0`=root found, `-2`=max iterations reached)
+
+    real(wp) :: a,b,c,fa,fb,fc,s,fs
+    integer :: i !! iteration counter
+
+    iflag = 0
+    a  = ax
+    b  = bx
+    fa = fax
+    fb = fbx
+
+    if (b<a) then ! swap and a and b
+        call swap(a,b)
+        call swap(fa,fb)
+    end if
+
+    do i = 1, me%maxiter
+
+        c = (a + b) / 2.0_wp
+        fc = me%f(c)
+        if (abs(fc)<=me%ftol) then
+            xzero = c
+            fzero = fc
+            return
+        end if
+        if (fa/=fc .and. fb/=fc) then
+            ! inverse quadratic interpolation
+            s = inverse_quadratic_interpolation(a,fa,b,fb,c,fc)
+            if (a<s .and. s<b) then
+                fs = me%f(s)
+                if (abs(fs)<=me%ftol) then
+                    xzero = s
+                    fzero = fs
+                    return
+                end if
+            else
+                ! s is not in (a,b)
+                s = c ! just use this (there are 3 options in the reference)
+                fs = fc
+            end if
+        else
+            ! secant
+            if (fa*fc<0.0_wp) then ! root in [a,c]
+                s = c - fc / ((fc - fa) / (c - a))
+            else ! root in [c,b]
+                s = b - fb / ((fb - fc) / (b - c))
+            end if
+            fs = me%f(s)
+            if (abs(fs)<=me%ftol) then
+                xzero = s
+                fzero = fs
+                return
+            end if
+        end if
+
+        if (c>s) then
+            ! ensures a <= c <= s <= b
+            call swap(s,c)
+            call swap(fs,fc)
+        end if
+
+        if (fc*fs<0.0_wp) then       ! root on [c,s]
+            a = c
+            b = s
+            fa = fc
+            fb = fs
+        else if (fa*fc<0.0_wp) then  ! root on [a,c]
+            b = c
+            fb = fc
+        else                         ! root on [s,b]
+            a = s
+            fa = fs
+        end if
+
+        if (me%converged(a,b)) exit
+        if (i == me%maxiter) iflag = -2 ! max iterations reached
+
+    end do
+
+    ! pick the one closest to the root:
+    if (abs(fa)<abs(fb)) then
+        xzero = a
+        fzero = fa
+    else
+        xzero = b
+        fzero = fb
+    end if
+
+    contains
+
+    pure function inverse_quadratic_interpolation(a,fa,b,fb,c,fc) result(s)
+
+    implicit none
+
+    real(wp),intent(in) :: a,fa,b,fb,c,fc
+    real(wp) :: s
+
+    s = a*fb*fc/((fa-fb)*(fa-fc)) + &
+        b*fa*fc/((fb-fa)*(fb-fc)) + &
+        c*fa*fb/((fc-fa)*(fc-fb))
+
+    end function inverse_quadratic_interpolation
+
+    end subroutine zhang
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Determines convergence in x based on if the reltol or abstol is satisfied.
+
+    function converged(me,a,b)
+
+    implicit none
+
+    class(root_solver),intent(inout) :: me
+    real(wp),intent(in) :: a !! old value
+    real(wp),intent(in) :: b !! new value
+    logical :: converged
+
+    real(wp) :: d
+
+    ! original way:
+    ! converged = (abs(b-a) <= abs(b)*me%rtol + me%atol) exit
+
+    d = abs(b-a)
+
+    if (d <= me%atol) then
+        ! absolute
+        converged = .true.
+    else
+        ! relative
+        if (a /= 0.0_wp) then
+            converged = d / abs(a) <= me%rtol
+        else
+            converged = .false.
+        end if
+    end if
+
+    end function converged
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Swap two real(wp) values.
+
+    pure elemental subroutine swap(a,b)
+
+    implicit none
+
+    real(wp),intent(inout) :: a
+    real(wp),intent(inout) :: b
+
+    real(wp) :: tmp
+
+    tmp = a
+    a   = b
+    b   = tmp
+
+    end subroutine swap
 !*****************************************************************************************
 
 !*****************************************************************************************
