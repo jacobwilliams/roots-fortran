@@ -125,6 +125,14 @@
     procedure,public :: find_root => zhang
     end type zhang_solver
 
+    type,extends(root_solver),public :: anderson_bjorck_king_solver
+    !! anderson-bjorck-king root solver
+    private
+    contains
+    private
+    procedure,public :: find_root => anderson_bjorck_king
+    end type anderson_bjorck_king_solver
+
     abstract interface
         function func(me,x) result(f)
             !! Interface to the function to be minimized
@@ -286,6 +294,12 @@
     case('zhang')
 
         allocate(zhang_solver :: s)
+        call s%initialize(func_wrapper,ftol,rtol,atol,maxiter)
+        call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
+
+    case('anderson_bjorck_king')
+
+        allocate(anderson_bjorck_king_solver :: s)
         call s%initialize(func_wrapper,ftol,rtol,atol,maxiter)
         call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
 
@@ -696,8 +710,13 @@
         ! check for convergence:
         root_found = me%converged(x1,x2)
         if (root_found .or. i == me%maxiter) then
-            xzero = x2
-            fzero = f2
+            if (abs(f1)<abs(f2)) then
+                xzero = x1
+                fzero = f1
+            else
+                xzero = x2
+                fzero = f2
+            end if
             if (.not. root_found) iflag = -2  ! max iterations reached
             exit
         end if
@@ -1867,6 +1886,114 @@
     end function inverse_quadratic_interpolation
 
     end subroutine zhang
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Modified anderson-bjorck-king method. Same as anderson_bjorck, but with
+!  an extra initial bisection step.
+!
+!### See also
+!  * https://link.springer.com/content/pdf/bbm%3A978-3-642-05175-3%2F1.pdf
+
+    subroutine anderson_bjorck_king(me,ax,bx,fax,fbx,xzero,fzero,iflag)
+
+    implicit none
+
+    class(anderson_bjorck_king_solver),intent(inout) :: me
+    real(wp),intent(in)    :: ax      !! left endpoint of initial interval
+    real(wp),intent(in)    :: bx      !! right endpoint of initial interval
+    real(wp),intent(in)    :: fax     !! `f(ax)`
+    real(wp),intent(in)    :: fbx     !! `f(ax)`
+    real(wp),intent(out)   :: xzero   !! abscissa approximating a zero of `f` in the interval `ax`,`bx`
+    real(wp),intent(out)   :: fzero   !! value of `f` at the root (`f(xzero)`)
+    integer,intent(out)    :: iflag   !! status flag (`0`=root found, `-2`=max iterations reached)
+
+    integer :: i !! counter
+    logical :: root_found !! convergence in x
+    real(wp) :: x1,x2,x3,f1,f2,f3,s12,g
+
+    ! initialize:
+    iflag = 0
+    x1    = ax
+    x2    = bx
+    f1    = fax
+    f2    = fbx
+
+    ! main loop:
+    do i = 1,me%maxiter
+
+        ! bisection step:
+        x3 = (x1 + x2) / 2.0_wp
+
+        ! calculate f3:
+        f3 = me%f(x3)
+        if (abs(f3)<=me%ftol)  then  ! f3 is a root
+            xzero = x3
+            fzero = f3
+            exit
+        end if
+
+        ! determine a new inclusion interval:
+        if (f2*f3<0.0_wp) then
+            ! zero lies between x2 and x3
+            x1 = x2
+            x2 = x3
+            f1 = f2
+            f2 = f3
+        else
+            ! zero lies between x1 and x3
+            x2 = x3
+            f2 = f3
+        end if
+
+        ! secant step:
+        s12 = (f2 - f1) / (x2 - x1)
+
+        ! intersection of this secant with the x-axis:
+        x3 = x2 - f2 / s12
+
+        ! calculate f3:
+        f3 = me%f(x3)
+        if (abs(f3)<=me%ftol)  then  ! f3 is a root
+            xzero = x3
+            fzero = f3
+            exit
+        end if
+
+        ! determine a new inclusion interval:
+        if (f2*f3<0.0_wp) then
+            ! zero lies between x2 and x3
+            x1 = x2
+            x2 = x3
+            f1 = f2
+            f2 = f3
+        else
+            ! zero lies between x1 and x3
+            g = 1.0_wp-f3/f2
+            if (g<=0.0_wp) g = 0.5_wp
+            x2 = x3
+            f1 = g*f1
+            f2 = f3
+        end if
+
+        ! check for convergence:
+        root_found = me%converged(x1,x2)
+        if (root_found .or. i == me%maxiter) then
+            if (abs(f1)<abs(f2)) then
+                xzero = x1
+                fzero = f1
+            else
+                xzero = x2
+                fzero = f2
+            end if
+            if (.not. root_found) iflag = -2  ! max iterations reached
+            exit
+        end if
+
+    end do
+
+    end subroutine anderson_bjorck_king
 !*****************************************************************************************
 
 !*****************************************************************************************
