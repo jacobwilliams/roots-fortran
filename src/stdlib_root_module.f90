@@ -788,16 +788,13 @@
             exit
         end if
 
-        xnew = xm+(xm-xl)*(sign(1.0_wp,fl-fh)*fm/denom)
+        xnew = xm + (xm-xl)*(sign(1.0_wp,fl-fh)*fm/denom)
         if (me%converged(xzero,xnew)) exit  ! relative convergence in x
 
         xzero = xnew
-        fnew = me%f(xzero)
+        fnew  = me%f(xzero)
         fzero = fnew
-        if (abs(fnew) <= me%ftol) then
-            ! abs convergence in f
-            exit
-        end if
+        if (abs(fnew) <= me%ftol) exit    ! abs convergence in f
 
         ! to keep the root bracketed:
         if (sign(fm,fnew) /= fm) then
