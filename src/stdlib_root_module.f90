@@ -475,6 +475,7 @@
 
     real(wp),parameter :: eps = epsilon(1.0_wp)  !! d1mach(4) in original code
     real(wp) :: a,b,c,d,e,fa,fb,fc,tol1,xm,p,q,r,s
+    integer :: i !! iteration counter
 
     ! initialize:
     iflag = 0
@@ -488,7 +489,7 @@
     d     = b-a
     e     = d
 
-    do
+    do i=1,me%maxiter
 
         if (abs(fc)<abs(fb)) then
             a=b
@@ -554,6 +555,8 @@
             d=b-a
             e=d
         end if
+
+        if (i==me%maxiter) iflag = -2  ! max iterations reached
 
     end do
 
@@ -665,7 +668,7 @@
 
     integer :: i !! counter
     logical :: root_found !! convergence in x
-    real(wp) :: x1,x2,x3,f1,f2,f3,s12,g
+    real(wp) :: x1,x2,x3,f1,f2,f3,s12,g,f1tmp
 
     ! initialize:
     iflag = 0
@@ -683,6 +686,13 @@
         ! intersection of this secant with the x-axis:
         x3 = x2 - f2 / s12
 
+        ! modification: prevent evaluations outside the initial interval
+        ! [have seen this happen....need to check other methods also]
+        if (x3<ax .or. x3>bx) then
+            !write(*,*) 'bisection!'
+            x3 = (x1 + x2) / 2.0_wp ! fall back to bisection
+        end if
+
         ! calculate f3:
         f3 = me%f(x3)
         if (abs(f3)<=me%ftol)  then  ! f3 is a root
@@ -698,11 +708,13 @@
             x2 = x3
             f1 = f2
             f2 = f3
+            f1tmp = f1
         else
             ! zero lies between x1 and x3
             g = 1.0_wp-f3/f2
             if (g<=0.0_wp) g = 0.5_wp
             x2 = x3
+            f1tmp = f1
             f1 = g*f1
             f2 = f3
         end if
@@ -710,9 +722,9 @@
         ! check for convergence:
         root_found = me%converged(x1,x2)
         if (root_found .or. i == me%maxiter) then
-            if (abs(f1)<abs(f2)) then
+            if (abs(f1tmp)<abs(f2)) then
                 xzero = x1
-                fzero = f1
+                fzero = f1tmp ! need actual f(x1)
             else
                 xzero = x2
                 fzero = f2
@@ -870,7 +882,7 @@
         f2 = f3
 
         ! Check for break-off condition:
-        if (abs(f2)<me%ftol) exit
+        if (abs(f2)<=me%ftol) exit
         if (me%converged(x1,x2)) exit
 
         if (i == me%maxiter) iflag = -2   ! max iterations exceeded
@@ -973,9 +985,15 @@
 
 !*****************************************************************************************
 !>
-!  Muller's method to find a real root of f(x).
+!  Improved Muller method (for real roots only).
+!  Will fall back to bisection if any step fails.
+!
+!### Reference
+!  * Regular Muller here (Julia version): https://github.com/JuliaMath/Roots.jl/blob/97dbe2e178656e39b7f646cff278e4e985d60116/src/simple.jl
 
     subroutine muller (me,ax,bx,fax,fbx,xzero,fzero,iflag)
+
+    use ieee_arithmetic
 
     implicit none
 
@@ -986,100 +1004,105 @@
     real(wp),intent(in)  :: fbx     !! `f(ax)`
     real(wp),intent(out) :: xzero   !! abscissa approximating a zero of `f` in the interval `ax`,`bx`
     real(wp),intent(out) :: fzero   !! value of `f` at the root (`f(xzero)`)
-    integer,intent(out)  :: iflag   !! status flag (`0`=root found, `-2`=max iterations reached, `-3`=singularity in the algorithm)
+    integer,intent(out)  :: iflag   !! status flag (`0`=root found, `-2`=max iterations reached)
 
-    real(wp)  :: a,b,c,a2,d
-    real(wp)  :: fminus,fplus,fxmid,fxnew,fxold
-    real(wp)  :: x_ave,x_inc,xlast,xmid,xminus,xold,xplus
-    integer   :: i !! iteration counter
+    real(wp) :: a,b,c,cx,fa,fb,fc,fcx,x,q,q2,q1,aa,bb,cc,delta,dp,dm,denon,bprev
+    integer  :: i !! iteration counter
+    logical :: root_in_ab !! root is in [a,b]
+    logical :: root_in_bc !! root is in [b,c]
+    logical :: x_ok       !! the new estimate `x` is ok to use
 
     iflag = 0
-    xzero = ax
-    xold  = bx
-    fxnew = fax
-    fxold = fbx
-    fzero = fxnew
 
-    xmid  = (ax + bx) / 2.0_wp   ! pick a third point in the middle
-    fxmid = me%f(xmid)
-    if (abs(fxmid)<me%ftol) then
-        xzero = xmid
-        fzero = fxmid
+    ! pick a third point in the middle [this could also be an optional input]
+    cx  = (ax + bx) / 2.0_wp
+    fcx = me%f(cx)
+    if (abs(fcx)<=me%ftol) then
+        xzero = cx
+        fzero = fcx
         return
     end if
 
-    ! main loop:
+    ! [a,b,c]
+    a = ax; fa = fax
+    b = cx; fb = fcx
+    c = bx; fc = fbx
+
+    bprev = huge(1.0_wp)
+
     do i = 1, me%maxiter
 
-        if ( abs(fxnew) >= abs(fxmid) ) then
-            call swap ( xzero, xmid )
-            call swap ( fxnew, fxmid )
-        end if
+        ! root either in [a,b] .or. [b,c]
+        root_in_ab = fa*fb < 0.0_wp
+        root_in_bc = .not. root_in_ab
 
-        xlast = xzero
-
-        a = (xmid-xzero)*(fxold-fxnew)-(xold-xzero)*(fxmid-fxnew)
-        b = (xold-xzero)**2*(fxmid-fxnew)-(xmid-xzero)**2*(fxold-fxnew)
-        c = (xold-xzero)*(xmid-xzero)*(xold-xmid)*fxnew
-
-        if ( a == 0.0_wp ) then
-            iflag = -3
-            exit
-        end if
-
-        xold = xmid
-        xmid = xzero
-
-        !  Apply the quadratic formula to get roots xplus and xminus.
-        d = b**2 - 4.0_wp * a * c
-        if ( d < 0.0_wp ) then
-            d = 0.0_wp  ! to avoid complex roots
+        ! muller step:
+        q     = (c - b)/(b - a)
+        q2    = q**2
+        q1    = q + 1.0_wp
+        aa    = q*fc - q*q1*fb + q2*fa
+        bb    = (q1+q)*fc - q1**2*fb + q2*fa
+        cc    = q1*fc
+        delta = sqrt(max(0.0_wp, bb**2 - 4.0_wp * aa*cc)) ! to avoid complex roots
+        dp    = bb + delta
+        dm    = bb - delta
+        if (abs(dp) > abs(dm)) then
+            denon = dp
         else
-            d = sqrt(d)
+            denon = dm
         end if
-        a2 = 2.0_wp*a
-
-        xplus  = xzero + ( - b + d ) / a2
-        xminus = xzero + ( - b - d ) / a2
-
-        fplus  = me%f(xplus)
-        if ( abs(fplus) <= me%ftol ) then
-            ! Absolute convergence in f
-            xzero = xplus
-            fzero = fplus
-            exit
-        end if
-
-        fminus = me%f(xminus)
-        if ( abs(fminus) <= me%ftol ) then
-            ! Absolute convergence in f
-            xzero = xminus
-            fzero = fminus
-            exit
-        end if
-
-        !  Take whichever of the two quadratic roots is closest to a root of the function.
-        if ( abs(fminus) < abs(fplus) ) then
-            xzero = xminus
-            fzero = fminus
+        if ( denon == 0.0_wp ) then
+            x_ok = .false.
+            x = huge(1.0_wp) ! dummy value, not used
         else
-            xzero = xplus
-            fzero = fplus
+            x = c - 2.0_wp*(c - b)*cc/denon
+            x_ok = ieee_is_finite(x) .and. .not. ieee_is_nan(x)
         end if
 
-        fxold = fxmid
-        fxmid = fxnew
-        fxnew = fzero
+        ! make sure that x is ok and in the correct interval.
+        ! if not, fall back to bisection on that interval
+        if (x_ok .and. root_in_ab .and. x>=a .and. x<=b) then       !a---x---b
+            if (x==a .or. x==b) x = (a + b) / 2.0_wp ! ensure unique points
+            c  = b
+            fc = fb
+            b  = x
+        elseif (x_ok .and. root_in_bc .and. x>=b .and. x<=c) then   !b---x---c
+            if (x==b .or. x==c) x = (b + c) / 2.0_wp ! ensure unique points
+            a  = b
+            fa = fb
+            b  = x
+        else
+            ! something wrong, bisect
+            if (root_in_ab) then
+                x = (a + b) / 2.0_wp    !a--x--b
+                c  = b
+                fc = fb
+                b  = x
+            elseif (root_in_bc) then
+                x = (b + c) / 2.0_wp    !b--x--c
+                a  = b
+                fa = fb
+                b  = x
+            end if
+        end if
+        ! values are now [a,b,c], with b being the new estimate
 
-        x_inc = xzero - xmid
-        if ( abs ( x_inc ) <= me%atol ) exit ! Absolute convergence in X
+        ! function evaluation for next estimate:
+        fb = me%f(b)
+        if (abs(fb)<=me%ftol) exit
 
-        x_ave = ( abs ( xzero ) + abs ( xmid ) + abs ( xold ) ) / 3.0_wp
-        if ( abs ( x_inc ) <= me%rtol * x_ave ) exit ! Relative convergence in X
+        ! stopping criterion
+        if (me%converged(b,bprev) .or. me%converged(a,c) .or. i == me%maxiter) then
+            if ( i == me%maxiter ) iflag = -2 ! max iterations exceeded
+            exit
+        end if
 
-        if ( i == me%maxiter ) iflag = -2 ! max iterations exceeded
+        bprev = b
 
     end do
+
+    xzero = b
+    fzero = fb
 
     end subroutine muller
 !*****************************************************************************************
@@ -1336,6 +1359,11 @@
 
         xt = a + t*(b-a)
         ft = me%f(xt)
+        if (abs(ft) <= me%ftol) then
+            xm = xt ! root found
+            fm = ft
+            exit
+        end if
 
         if (ft*fa>0.0_wp) then
             c = a
@@ -1357,6 +1385,10 @@
             fm = fa
         end if
         if (abs(fm) <= me%ftol) exit
+        if (i == me%maxiter) then
+            iflag = -2 ! max iterations reached
+            exit
+        end if
 
         tol = 2.0_wp*me%rtol*abs(xm) + me%atol
         tl = tol/abs(b-c)
@@ -1374,8 +1406,6 @@
         end if
 
         t = min(1.0_wp-tl, max(tl, t))
-
-        if (i == me%maxiter) iflag = -2 ! max iterations reached
 
     end do
 
@@ -1809,7 +1839,9 @@
         end if
         if (fa/=fc .and. fb/=fc) then
             ! inverse quadratic interpolation
-            s = inverse_quadratic_interpolation(a,fa,b,fb,c,fc)
+            s = a*fb*fc/((fa-fb)*(fa-fc)) + &
+                b*fa*fc/((fb-fa)*(fb-fc)) + &
+                c*fa*fb/((fc-fa)*(fc-fb))
             if (a<s .and. s<b) then
                 fs = me%f(s)
                 if (abs(fs)<=me%ftol) then
@@ -1869,21 +1901,6 @@
         xzero = b
         fzero = fb
     end if
-
-    contains
-
-    pure function inverse_quadratic_interpolation(a,fa,b,fb,c,fc) result(s)
-
-    implicit none
-
-    real(wp),intent(in) :: a,fa,b,fb,c,fc
-    real(wp) :: s
-
-    s = a*fb*fc/((fa-fb)*(fa-fc)) + &
-        b*fa*fc/((fb-fa)*(fb-fc)) + &
-        c*fa*fb/((fc-fa)*(fc-fb))
-
-    end function inverse_quadratic_interpolation
 
     end subroutine zhang
 !*****************************************************************************************

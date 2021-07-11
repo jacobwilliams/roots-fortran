@@ -21,6 +21,8 @@ program root_tests
     integer :: imeth !! method counter
     integer :: ifunc !! number of function evaluations
     real(wp) :: root !! known root value
+    integer :: iunit,istat,iunit_failed
+    real(wp) :: ax,bx
 
     character(len=*),parameter :: fmt  = '(A20,1X,A3,1X,A4,1X,A25,   1X,A25,   1X,A25,  1X,A5,1X,A5)' !! format for header
     character(len=*),parameter :: dfmt = '(A20,1X,I3,1X,I4,1X,E25.10,1X,E25.10,1X,E25.6,1X,I5,1X,I5)' !! format for results
@@ -41,7 +43,224 @@ program root_tests
         'toms748             ', &
         'zhang               ' ] !! method names
 
-    do imeth = 1, number_of_methods
+    open(newunit=iunit,        file='root_report_best.txt',     status='REPLACE', iostat=istat)
+    open(newunit=iunit_failed, file='root_report_failures.txt', status='REPLACE', iostat=istat)
+
+    write(iunit, '(A5,1X,A5,1X,A5,1X,A)')  'nprob', 'n', 'evals', 'Best Methods'
+    write(iunit_failed, '(A5,1X,A5,1X,A)') 'nprob', 'n', 'Failed Methods'
+
+    ! run the tests:
+    nprob = 101; n = 1;   root = asin(2.0_wp/3.0_wp);    call test()
+    nprob = 102; n = 1;   root = 0.5671432904_wp;        call test()
+    nprob = 103; n = 1;   root = 0.8041330975_wp;        call test()
+    nprob = 104; n = 1;   root = 3.0_wp;                 call test()
+    nprob = 105; n = 1;   root = -0.6294464841_wp;       call test()
+    nprob = 106; n = 1;   root = 2.0945514815_wp;        call test()
+    nprob = 107; n = 1;   root = 1.0_wp;                 call test()
+    nprob = 108; n = 1;   root = 1.0_wp;                 call test()
+    nprob = 109; n = 1;   root = 1.0_wp;                 call test()
+    nprob = 110; n = 1;   root = 1.0_wp;                 call test()
+    nprob = 111; n = 1;   root = 1.0_wp;                 call test()
+    nprob = 112; n = 1;   root = 0.0_wp;                 call test()
+    nprob = 113; n = 1;   root = 0.0_wp;                 call test()
+    nprob = 114; n = 1;   root = 0.677712926329_wp;      call test()
+    nprob = 115; n = 1;   root = -0.640083696085_wp;     call test()
+    nprob = 116; n = 20;  root = 0.05_wp;                call test()
+    nprob = 117; n = 1;   root = 0.0_wp;                 call test()
+    nprob = 1;  n = 1;    root = 1.8954942670340_wp;     call test()
+    nprob = 2;  n = 1;    root = 3.0229153472731_wp;     call test()
+    nprob = 3;  n = 1;    root = 6.6837535608081_wp;     call test()
+    nprob = 4;  n = 1;    root = 11.238701655002_wp;     call test()
+    nprob = 5;  n = 1;    root = 19.676000080623_wp;     call test()
+    nprob = 6;  n = 1;    root = 29.828227326505_wp;     call test()
+    nprob = 7;  n = 1;    root = 41.906116195289_wp;     call test()
+    nprob = 8;  n = 1;    root = 55.953595800143_wp;     call test()
+    nprob = 9;  n = 1;    root = 71.985665586588_wp;     call test()
+    nprob = 10; n = 1;    root = 90.008868539167_wp;     call test()
+    nprob = 11; n = 1;    root = 110.02653274833_wp;     call test()
+    nprob = 12; n = 1;    root = 0.0_wp;                 call test()
+    nprob = 13; n = 1;    root = 0.0_wp;                 call test()
+    nprob = 14; n = 1;    root = 0.0_wp;                 call test()
+    nprob = 15; n = 4;    root = 0.66874030497642_wp;    call test()
+    nprob = 15; n = 6;    root = 0.76472449133173_wp;    call test()
+    nprob = 15; n = 8;    root = 0.81776543395794_wp;    call test()
+    nprob = 15; n = 10;   root = 0.85133992252078_wp;    call test()
+    nprob = 15; n = 12;   root = 0.87448527222117_wp;    call test()
+    nprob = 16; n = 4;    root = 1.0_wp;                 call test()
+    nprob = 16; n = 6;    root = 1.0_wp;                 call test()
+    nprob = 16; n = 8;    root = 1.0_wp;                 call test()
+    nprob = 16; n = 10;   root = 1.0_wp;                 call test()
+    nprob = 16; n = 12;   root = 1.0_wp;                 call test()
+    nprob = 17; n = 8;    root = 1.0_wp;                 call test()
+    nprob = 17; n = 10;   root = 1.0_wp;                 call test()
+    nprob = 17; n = 12;   root = 1.0_wp;                 call test()
+    nprob = 17; n = 14;   root = 1.0_wp;                 call test()
+    nprob = 18; n = 1;    root = 0.52359877559830_wp;    call test()
+    nprob = 19; n = 1;    root = 0.42247770964124_wp;    call test()
+    nprob = 19; n = 2;    root = 0.30669941048320_wp;    call test()
+    nprob = 19; n = 3;    root = 0.22370545765466_wp;    call test()
+    nprob = 19; n = 4;    root = 0.17171914751951_wp;    call test()
+    nprob = 19; n = 5;    root = 0.13825715505682_wp;    call test()
+    nprob = 19; n = 20;   root = 3.4657359020854e-02_wp; call test()
+    nprob = 19; n = 40;   root = 1.7328679513999e-02_wp; call test()
+    nprob = 19; n = 60;   root = 1.1552453009332e-02_wp; call test()
+    nprob = 19; n = 80;   root = 8.6643397569993e-03_wp; call test()
+    nprob = 19; n = 100;  root = 6.9314718055995e-03_wp; call test()
+    nprob = 20; n = 5;    root = 3.8402551840622e-02_wp; call test()
+    nprob = 20; n = 10;   root = 9.9000099980005e-03_wp; call test()
+    nprob = 20; n = 20;   root = 2.4937500390620e-03_wp; call test()
+    nprob = 21; n = 2;    root = 0.5_wp;                 call test()
+    nprob = 21; n = 5;    root = 0.34595481584824_wp;    call test()
+    nprob = 21; n = 10;   root = 0.24512233375331_wp;    call test()
+    nprob = 21; n = 15;   root = 0.19554762353657_wp;    call test()
+    nprob = 21; n = 20;   root = 0.16492095727644_wp;    call test()
+    nprob = 22; n = 1;    root = 0.27550804099948_wp;    call test()
+    nprob = 22; n = 2;    root = 0.13775402049974_wp;    call test()
+    nprob = 22; n = 4;    root = 1.0305283778156e-02_wp; call test()
+    nprob = 22; n = 5;    root = 3.6171081789041e-03_wp; call test()
+    nprob = 22; n = 8;    root = 4.1087291849640e-04_wp; call test()
+    nprob = 22; n = 15;   root = 2.5989575892908e-05_wp; call test()
+    nprob = 22; n = 20;   root = 7.6685951221853e-06_wp; call test()
+    nprob = 23; n = 1;    root = 0.40105813754155_wp;    call test()
+    nprob = 23; n = 5;    root = 0.51615351875793_wp;    call test()
+    nprob = 23; n = 10;   root = 0.53952222690842_wp;    call test()
+    nprob = 23; n = 15;   root = 0.54818229434066_wp;    call test()
+    nprob = 23; n = 20;   root = 0.55270466667849_wp;    call test()
+    nprob = 24; n = 2;    root = 0.5_wp;                 call test()
+    nprob = 24; n = 5;    root = 0.2_wp;                 call test()
+    nprob = 24; n = 15;   root = 6.6666666666667e-02_wp; call test()
+    nprob = 24; n = 20;   root = 5.0e-02_wp;             call test()
+    nprob = 25; n = 2;    root = 2.0_wp;                 call test()
+    nprob = 25; n = 3;    root = 3.0_wp;                 call test()
+    nprob = 25; n = 4;    root = 4.0_wp;                 call test()
+    nprob = 25; n = 5;    root = 5.0_wp;                 call test()
+    nprob = 25; n = 6;    root = 6.0_wp;                 call test()
+    nprob = 25; n = 7;    root = 7.0_wp;                 call test()
+    nprob = 25; n = 9;    root = 9.0_wp;                 call test()
+    nprob = 25; n = 11;   root = 11.0_wp;                call test()
+    nprob = 25; n = 13;   root = 13.0_wp;                call test()
+    nprob = 25; n = 15;   root = 15.0_wp;                call test()
+    nprob = 25; n = 17;   root = 17.0_wp;                call test()
+    nprob = 25; n = 19;   root = 19.0_wp;                call test()
+    nprob = 25; n = 21;   root = 21.0_wp;                call test()
+    nprob = 25; n = 23;   root = 23.0_wp;                call test()
+    nprob = 25; n = 25;   root = 25.0_wp;                call test()
+    nprob = 25; n = 27;   root = 27.0_wp;                call test()
+    nprob = 25; n = 29;   root = 29.0_wp;                call test()
+    nprob = 25; n = 31;   root = 31.0_wp;                call test()
+    nprob = 25; n = 33;   root = 33.0_wp;                call test()
+    !nprob = 26; n = 1;    root = 0.0_wp;                 call test()  ! this is just almost impossible so commented out for now
+    nprob = 27; n = 1;    root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 2;    root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 3;    root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 4;    root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 5;    root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 6;    root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 7;    root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 8;    root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 9;    root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 10;   root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 11;   root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 12;   root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 13;   root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 14;   root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 15;   root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 16;   root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 17;   root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 18;   root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 19;   root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 20;   root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 21;   root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 22;   root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 23;   root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 24;   root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 25;   root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 26;   root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 27;   root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 28;   root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 29;   root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 30;   root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 31;   root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 32;   root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 33;   root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 34;   root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 35;   root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 36;   root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 37;   root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 38;   root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 39;   root = 0.62380651896161_wp;    call test()
+    nprob = 27; n = 40;   root = 0.62380651896161_wp;    call test()
+    nprob = 28; n = 20;   root = 5.9051305594220e-05_wp; call test()
+    nprob = 28; n = 21;   root = 5.6367155339937e-05_wp; call test()
+    nprob = 28; n = 22;   root = 5.3916409455592e-05_wp; call test()
+    nprob = 28; n = 23;   root = 5.1669892394942e-05_wp; call test()
+    nprob = 28; n = 24;   root = 4.9603096699145e-05_wp; call test()
+    nprob = 28; n = 25;   root = 4.7695285287639e-05_wp; call test()
+    nprob = 28; n = 26;   root = 4.5928793239949e-05_wp; call test()
+    nprob = 28; n = 27;   root = 4.4288479195665e-05_wp; call test()
+    nprob = 28; n = 28;   root = 4.2761290257883e-05_wp; call test()
+    nprob = 28; n = 29;   root = 4.1335913915954e-05_wp; call test()
+    nprob = 28; n = 30;   root = 4.0002497338020e-05_wp; call test()
+    nprob = 28; n = 31;   root = 3.8752419296207e-05_wp; call test()
+    nprob = 28; n = 32;   root = 3.7578103559958e-05_wp; call test()
+    nprob = 28; n = 33;   root = 3.6472865219959e-05_wp; call test()
+    nprob = 28; n = 34;   root = 3.5430783356532e-05_wp; call test()
+    nprob = 28; n = 35;   root = 3.4446594929961e-05_wp; call test()
+    nprob = 28; n = 36;   root = 3.3515605877800e-05_wp; call test()
+    nprob = 28; n = 37;   root = 3.2633616249437e-05_wp; call test()
+    nprob = 28; n = 38;   root = 3.1796856858426e-05_wp; call test()
+    nprob = 28; n = 39;   root = 3.1001935436965e-05_wp; call test()
+    nprob = 28; n = 40;   root = 3.0245790670210e-05_wp; call test()
+    nprob = 28; n = 100;  root = 1.2277994232462e-05_wp; call test()
+    nprob = 28; n = 200;  root = 6.1695393904409e-06_wp; call test()
+    nprob = 28; n = 300;  root = 4.1198585298293e-06_wp; call test()
+    nprob = 28; n = 400;  root = 3.0924623877272e-06_wp; call test()
+    nprob = 28; n = 500;  root = 2.4752044261050e-06_wp; call test()
+    nprob = 28; n = 600;  root = 2.0633567678513e-06_wp; call test()
+    nprob = 28; n = 700;  root = 1.7690120078154e-06_wp; call test()
+    nprob = 28; n = 800;  root = 1.5481615698859e-06_wp; call test()
+    nprob = 28; n = 900;  root = 1.3763345366022e-06_wp; call test()
+    nprob = 28; n = 1000; root = 1.2388385788997e-06_wp; call test()
+    nprob = 29; n = 1;    root = 0.8654740331e+00_wp;    call test()
+
+    !nprob = 202; n = 1;    root = 2.0945515_wp; call test()
+    nprob = 203; n = 1;    root = 1.0_wp;       call test()
+    nprob = 204; n = 1;    root = 1.0_wp;       call test()
+    nprob = 205; n = 1;    root = 3.0_wp;       call test()
+    nprob = 206; n = 1;    root = 3.0_wp;       call test()
+    nprob = 207; n = 1;    root = 2.0_wp;       call test()
+    nprob = 208; n = 1;    root = 2.0_wp;       call test()
+    nprob = 209; n = 1;    root = 0.0_wp;       call test()
+    nprob = 210; n = 1;    root = 0.0_wp;       call test()
+    nprob = 211; n = 1;    root = 0.0_wp;       call test()
+    nprob = 212; n = 1;    root = 0.0_wp;       call test()
+    nprob = 213; n = 1;    root = 0.0_wp;       call test()
+    nprob = 214; n = 1;    root = 0.0_wp;       call test()
+    nprob = 215; n = 1;    root = 1.037536_wp;  call test()
+    nprob = 216; n = 1;    root = 1.037536_wp;  call test()
+    nprob = 217; n = 1;    root = 0.7032_wp;    call test()
+    nprob = 218; n = 1;    root = 0.7032_wp;    call test()
+
+    close(iunit)
+    close(iunit_failed)
+
+    contains
+!*****************************************************************************************
+
+    subroutine test()
+
+        implicit none
+
+        real(wp) :: xzero,fzero,error
+        integer :: iflag
+        character(len=1000) :: line
+        integer,dimension(number_of_methods) :: fevals !! func evals for each case
+        integer :: best_feval
+        character(len=:),allocatable :: best,failures
+        logical :: root_found
+
+        real(wp),parameter :: tol_for_check = 1.0e-9_wp
+        !real(wp),parameter :: tol_for_check = 1.0e-6_wp
 
         write(output_unit,fmt) &
             repeat('-',20),repeat('-',3),repeat('-',4),repeat('-',25),&
@@ -54,214 +273,59 @@ program root_tests
             repeat('-',20),repeat('-',3),repeat('-',4),repeat('-',25),&
             repeat('-',25),repeat('-',25),repeat('-',5),repeat('-',5)
 
-        ! run the tests:
-        nprob = 101; n = 1;   root = asin(2.0_wp/3.0_wp);    call test()
-        nprob = 102; n = 1;   root = 0.5671432904_wp;        call test()
-        nprob = 103; n = 1;   root = 0.8041330975_wp;        call test()
-        nprob = 104; n = 1;   root = 3.0_wp;                 call test()
-        nprob = 105; n = 1;   root = -0.6294464841_wp;       call test()
-        nprob = 106; n = 1;   root = 2.0945514815_wp;        call test()
-        nprob = 107; n = 1;   root = 1.0_wp;                 call test()
-        nprob = 108; n = 1;   root = 1.0_wp;                 call test()
-        nprob = 109; n = 1;   root = 1.0_wp;                 call test()
-        nprob = 110; n = 1;   root = 1.0_wp;                 call test()
-        nprob = 111; n = 1;   root = 1.0_wp;                 call test()
-        nprob = 112; n = 1;   root = 0.0_wp;                 call test()
-        nprob = 113; n = 1;   root = 0.0_wp;                 call test()
-        nprob = 114; n = 1;   root = 0.677712926329_wp;      call test()
-        nprob = 115; n = 1;   root = -0.640083696085_wp;     call test()
-        nprob = 116; n = 20;  root = 0.05_wp;                call test()
-        nprob = 117; n = 1;   root = 0.0_wp;                 call test()
-        nprob = 1;  n = 1;    root = 1.8954942670340_wp;     call test()
-        nprob = 2;  n = 1;    root = 3.0229153472731_wp;     call test()
-        nprob = 3;  n = 1;    root = 6.6837535608081_wp;     call test()
-        nprob = 4;  n = 1;    root = 11.238701655002_wp;     call test()
-        nprob = 5;  n = 1;    root = 19.676000080623_wp;     call test()
-        nprob = 6;  n = 1;    root = 29.828227326505_wp;     call test()
-        nprob = 7;  n = 1;    root = 41.906116195289_wp;     call test()
-        nprob = 8;  n = 1;    root = 55.953595800143_wp;     call test()
-        nprob = 9;  n = 1;    root = 71.985665586588_wp;     call test()
-        nprob = 10; n = 1;    root = 90.008868539167_wp;     call test()
-        nprob = 11; n = 1;    root = 110.02653274833_wp;     call test()
-        nprob = 12; n = 1;    root = 0.0_wp;                 call test()
-        nprob = 13; n = 1;    root = 0.0_wp;                 call test()
-        nprob = 14; n = 1;    root = 0.0_wp;                 call test()
-        nprob = 15; n = 4;    root = 0.66874030497642_wp;    call test()
-        nprob = 15; n = 6;    root = 0.76472449133173_wp;    call test()
-        nprob = 15; n = 8;    root = 0.81776543395794_wp;    call test()
-        nprob = 15; n = 10;   root = 0.85133992252078_wp;    call test()
-        nprob = 15; n = 12;   root = 0.87448527222117_wp;    call test()
-        nprob = 16; n = 4;    root = 1.0_wp;                 call test()
-        nprob = 16; n = 6;    root = 1.0_wp;                 call test()
-        nprob = 16; n = 8;    root = 1.0_wp;                 call test()
-        nprob = 16; n = 10;   root = 1.0_wp;                 call test()
-        nprob = 16; n = 12;   root = 1.0_wp;                 call test()
-        nprob = 17; n = 8;    root = 1.0_wp;                 call test()
-        nprob = 17; n = 10;   root = 1.0_wp;                 call test()
-        nprob = 17; n = 12;   root = 1.0_wp;                 call test()
-        nprob = 17; n = 14;   root = 1.0_wp;                 call test()
-        nprob = 18; n = 1;    root = 0.52359877559830_wp;    call test()
-        nprob = 19; n = 1;    root = 0.42247770964124_wp;    call test()
-        nprob = 19; n = 2;    root = 0.30669941048320_wp;    call test()
-        nprob = 19; n = 3;    root = 0.22370545765466_wp;    call test()
-        nprob = 19; n = 4;    root = 0.17171914751951_wp;    call test()
-        nprob = 19; n = 5;    root = 0.13825715505682_wp;    call test()
-        nprob = 19; n = 20;   root = 3.4657359020854e-02_wp; call test()
-        nprob = 19; n = 40;   root = 1.7328679513999e-02_wp; call test()
-        nprob = 19; n = 60;   root = 1.1552453009332e-02_wp; call test()
-        nprob = 19; n = 80;   root = 8.6643397569993e-03_wp; call test()
-        nprob = 19; n = 100;  root = 6.9314718055995e-03_wp; call test()
-        nprob = 20; n = 5;    root = 3.8402551840622e-02_wp; call test()
-        nprob = 20; n = 10;   root = 9.9000099980005e-03_wp; call test()
-        nprob = 20; n = 20;   root = 2.4937500390620e-03_wp; call test()
-        nprob = 21; n = 2;    root = 0.5_wp;                 call test()
-        nprob = 21; n = 5;    root = 0.34595481584824_wp;    call test()
-        nprob = 21; n = 10;   root = 0.24512233375331_wp;    call test()
-        nprob = 21; n = 15;   root = 0.19554762353657_wp;    call test()
-        nprob = 21; n = 20;   root = 0.16492095727644_wp;    call test()
-        nprob = 22; n = 1;    root = 0.27550804099948_wp;    call test()
-        nprob = 22; n = 2;    root = 0.13775402049974_wp;    call test()
-        nprob = 22; n = 4;    root = 1.0305283778156e-02_wp; call test()
-        nprob = 22; n = 5;    root = 3.6171081789041e-03_wp; call test()
-        nprob = 22; n = 8;    root = 4.1087291849640e-04_wp; call test()
-        nprob = 22; n = 15;   root = 2.5989575892908e-05_wp; call test()
-        nprob = 22; n = 20;   root = 7.6685951221853e-06_wp; call test()
-        nprob = 23; n = 1;    root = 0.40105813754155_wp;    call test()
-        nprob = 23; n = 5;    root = 0.51615351875793_wp;    call test()
-        nprob = 23; n = 10;   root = 0.53952222690842_wp;    call test()
-        nprob = 23; n = 15;   root = 0.54818229434066_wp;    call test()
-        nprob = 23; n = 20;   root = 0.55270466667849_wp;    call test()
-        nprob = 24; n = 2;    root = 0.5_wp;                 call test()
-        nprob = 24; n = 5;    root = 0.2_wp;                 call test()
-        nprob = 24; n = 15;   root = 6.6666666666667e-02_wp; call test()
-        nprob = 24; n = 20;   root = 5.0e-02_wp;             call test()
-        nprob = 25; n = 2;    root = 2.0_wp;                 call test()
-        nprob = 25; n = 3;    root = 3.0_wp;                 call test()
-        nprob = 25; n = 4;    root = 4.0_wp;                 call test()
-        nprob = 25; n = 5;    root = 5.0_wp;                 call test()
-        nprob = 25; n = 6;    root = 6.0_wp;                 call test()
-        nprob = 25; n = 7;    root = 7.0_wp;                 call test()
-        nprob = 25; n = 9;    root = 9.0_wp;                 call test()
-        nprob = 25; n = 11;   root = 11.0_wp;                call test()
-        nprob = 25; n = 13;   root = 13.0_wp;                call test()
-        nprob = 25; n = 15;   root = 15.0_wp;                call test()
-        nprob = 25; n = 17;   root = 17.0_wp;                call test()
-        nprob = 25; n = 19;   root = 19.0_wp;                call test()
-        nprob = 25; n = 21;   root = 21.0_wp;                call test()
-        nprob = 25; n = 23;   root = 23.0_wp;                call test()
-        nprob = 25; n = 25;   root = 25.0_wp;                call test()
-        nprob = 25; n = 27;   root = 27.0_wp;                call test()
-        nprob = 25; n = 29;   root = 29.0_wp;                call test()
-        nprob = 25; n = 31;   root = 31.0_wp;                call test()
-        nprob = 25; n = 33;   root = 33.0_wp;                call test()
+        do imeth = 1, number_of_methods
 
-        !... this function is very flat ??
-        ! .. different methods are converging but getting completely different values ...
-     !   nprob = 26; n = 1;    root = 2.2317679157465e-02_wp; call test()
+            ifunc = 0 ! reset func evals counter
+            call get_bounds(ax, bx)
+            call root_scalar(methods(imeth),func,ax,bx,xzero,fzero,iflag,&
+                                !atol = 1.0e-5_wp, rtol = 1.0e-5_wp, maxiter = 1000)
+                                atol = 1.0e-16_wp, rtol = 1.0e-13_wp, ftol = 1.0e-15_wp, maxiter = 1000)
+                               ! atol = 1.0e-10_wp, rtol = 1.0e-14_wp, ftol = 1.0e-15_wp, maxiter = 1000)
 
-        nprob = 26; n = 1;    root = -0.3906250000e-02_wp; call test()
+            error = xzero-root
+            write(line, dfmt) trim(methods(imeth)),nprob,n,error,xzero,fzero,ifunc,iflag
 
+            root_found = abs(fzero) <= tol_for_check !.and. abs(error) <= tol_for_check
 
-        nprob = 27; n = 1;    root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 2;    root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 3;    root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 4;    root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 5;    root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 6;    root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 7;    root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 8;    root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 9;    root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 10;   root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 11;   root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 12;   root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 13;   root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 14;   root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 15;   root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 16;   root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 17;   root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 18;   root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 19;   root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 20;   root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 21;   root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 22;   root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 23;   root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 24;   root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 25;   root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 26;   root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 27;   root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 28;   root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 29;   root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 30;   root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 31;   root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 32;   root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 33;   root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 34;   root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 35;   root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 36;   root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 37;   root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 38;   root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 39;   root = 0.62380651896161_wp;    call test()
-        nprob = 27; n = 40;   root = 0.62380651896161_wp;    call test()
-        nprob = 28; n = 20;   root = 5.9051305594220e-05_wp; call test()
-        nprob = 28; n = 21;   root = 5.6367155339937e-05_wp; call test()
-        nprob = 28; n = 22;   root = 5.3916409455592e-05_wp; call test()
-        nprob = 28; n = 23;   root = 5.1669892394942e-05_wp; call test()
-        nprob = 28; n = 24;   root = 4.9603096699145e-05_wp; call test()
-        nprob = 28; n = 25;   root = 4.7695285287639e-05_wp; call test()
-        nprob = 28; n = 26;   root = 4.5928793239949e-05_wp; call test()
-        nprob = 28; n = 27;   root = 4.4288479195665e-05_wp; call test()
-        nprob = 28; n = 28;   root = 4.2761290257883e-05_wp; call test()
-        nprob = 28; n = 29;   root = 4.1335913915954e-05_wp; call test()
-        nprob = 28; n = 30;   root = 4.0002497338020e-05_wp; call test()
-        nprob = 28; n = 31;   root = 3.8752419296207e-05_wp; call test()
-        nprob = 28; n = 32;   root = 3.7578103559958e-05_wp; call test()
-        nprob = 28; n = 33;   root = 3.6472865219959e-05_wp; call test()
-        nprob = 28; n = 34;   root = 3.5430783356532e-05_wp; call test()
-        nprob = 28; n = 35;   root = 3.4446594929961e-05_wp; call test()
-        nprob = 28; n = 36;   root = 3.3515605877800e-05_wp; call test()
-        nprob = 28; n = 37;   root = 3.2633616249437e-05_wp; call test()
-        nprob = 28; n = 38;   root = 3.1796856858426e-05_wp; call test()
-        nprob = 28; n = 39;   root = 3.1001935436965e-05_wp; call test()
-        nprob = 28; n = 40;   root = 3.0245790670210e-05_wp; call test()
-        nprob = 28; n = 100;  root = 1.2277994232462e-05_wp; call test()
-        nprob = 28; n = 200;  root = 6.1695393904409e-06_wp; call test()
-        nprob = 28; n = 300;  root = 4.1198585298293e-06_wp; call test()
-        nprob = 28; n = 400;  root = 3.0924623877272e-06_wp; call test()
-        nprob = 28; n = 500;  root = 2.4752044261050e-06_wp; call test()
-        nprob = 28; n = 600;  root = 2.0633567678513e-06_wp; call test()
-        nprob = 28; n = 700;  root = 1.7690120078154e-06_wp; call test()
-        nprob = 28; n = 800;  root = 1.5481615698859e-06_wp; call test()
-        nprob = 28; n = 900;  root = 1.3763345366022e-06_wp; call test()
-        nprob = 28; n = 1000; root = 1.2388385788997e-06_wp; call test()
-        nprob = 29; n = 1;    root = 0.8654740331e+00_wp; call test()
+            if (root_found) then
+                write(output_unit, '(A)') trim(line)
+            else
+                write(output_unit, '(A)') colorize(trim(line), color_fg='red') ! failed case
+            end if
 
-    end do
+            ! save results for this case:
+            if (iflag==0 .and. root_found) then
+                fevals(imeth) = ifunc
+            else
+                fevals(imeth) = huge(1)
+            end if
 
-    contains
-!*****************************************************************************************
+        end do
 
-    subroutine test()
+        ! get the best and the failures for the output files:
+        best_feval = minval(fevals)
+        if (best_feval==huge(1)) best_feval = -1 ! if non of them converged
+        best = ''
+        failures = ''
+        do imeth = 1, number_of_methods
+            if (fevals(imeth) == best_feval) then
+                if (best=='') then
+                    best = trim(methods(imeth))
+                else
+                    best = best//', '//trim(methods(imeth))
+                end if
+            elseif (fevals(imeth) == huge(1)) then
+                if (failures=='') then
+                    failures = trim(methods(imeth))
+                else
+                    failures = failures//', '//trim(methods(imeth))
+                end if
+            end if
+        end do
 
-        implicit none
-
-        real(wp) :: ax,bx,xzero,fzero,error
-        integer :: iflag
-        character(len=1000) :: line
-
-        ifunc = 0 ! reset func evals counter
-        call get_bounds(ax, bx)
-        call root_scalar(methods(imeth),func,ax,bx,xzero,fzero,iflag,&
-                            !atol = 1.0e-5_wp, rtol = 1.0e-5_wp, maxiter = 1000)
-                            atol = 1.0e-16_wp, rtol = 1.0e-12_wp, maxiter = 1000)
-
-        error = xzero-root
-        write(line, dfmt) trim(methods(imeth)),nprob,n,error,xzero,fzero,ifunc,iflag
-
-        if (abs(fzero) <= 1.0e-9_wp .and. abs(error) <= 1.0e-9_wp) then
-            write(output_unit, '(A)') trim(line)
-        else
-            write(output_unit, '(A)') colorize(trim(line), color_fg='red') ! failed case
-        end if
+        ! output the report:
+        if (best /= '')     write(iunit, '(I5,1X,I5,1X,I5,1X,A)')  nprob, n, best_feval, 'Best: '//trim(best)
+        if (failures /= '') write(iunit_failed, '(I5,1X,I5,1X,A)') nprob, n, 'Failures: '//trim(failures)
 
     end subroutine test
 
@@ -395,6 +459,58 @@ program root_tests
             a = -10.0_wp
             b = 5.0_wp
 
+        ! case (202)
+        !     a  = 2.0_wp
+        !     b  = 3.0_wp
+        case (203)
+            a = 0.5_wp
+            b = 1.51_wp
+        case (204)
+            a =  1.0e-12_wp
+            b =  1.0e12_wp
+        case (205)
+            a = 0.0_wp
+            b = 5.0_wp
+        case (206)
+            a = -1.0e10_wp
+            b =  1.0e10_wp
+        case (207)
+            a = 0.0_wp
+            b = 5.0_wp
+        case (208)
+            a = -1.0e10_wp
+            b =  1.0e10_wp
+        case (209)
+            a = -1.0_wp
+            b =  4.0_wp
+        case (210)
+            a = -10.0_wp
+            b =  100.0_wp
+        case (211)
+            a = -1.0_wp
+            b =  4.0_wp
+        case (212)
+            a = -10.0_wp
+            b =  100.0_wp
+        case (213)
+            a = -1.0_wp
+            b =  4.0_wp
+        case (214)
+            a = -10.0_wp
+            b =  100.0_wp
+        case (215)
+            a = 2.0e-4_wp
+            b = 2.0_wp
+        case (216)
+            a = 2.0e-4_wp
+            b = 81.0_wp
+        case (217)
+            a = 2.0e-4_wp
+            b = 1.0_wp
+        case (218)
+            a = 2.0e-4_wp
+            b = 81.0_wp
+
         case default
             error stop 'invalid case'
         end select
@@ -409,7 +525,11 @@ program root_tests
         real(wp) :: f
 
         integer :: i !! counter
-        real(wp) :: dn, di
+        real(wp) :: dn, di, xi, t1, emx, ex
+
+        ! if (x<ax .or. x>bx) then
+        !     error stop  'out of range in function'
+        ! end if
 
         dn = real(n, wp)
 
@@ -516,6 +636,38 @@ program root_tests
            f = (real(n,wp)*x-1.0_wp)/((real(n,wp)-1.0_wp)*x)
         case (117)
            f = sin(x*10.0_wp) + sin(x*2.0_wp) + atan(x/3.0_wp)*x**2 + exp(x) - 1.0_wp
+
+        ! 2xx functions are from:
+        !   T. R. Chandrupatla, "A new hybrid quadratic/bisection algorithm for finding the zero of
+        !   a nonlinear function without using derivatives", Advances in Engineering Software
+        !   Volume 28, Issue 3, April 1997, Pages 145-149
+
+        ! case (201)
+        !    f = x**3 - 2.0_wp*x - 5.0_wp  ! same as #106 above
+        case (203,204)
+           f = 1.0_wp - 1.0_wp/(x**2)
+        case (205,206)
+           f = (x-3.0_wp)**3
+        case (207,208)
+           f = 6.0_wp*(x-2.0_wp)**5
+        case (209,210)
+           f = x**9
+        case (211,212)
+           f = x**19
+        case (213,214)
+           if (abs(x) < 3.8e-4_wp) then  ! same as #26 above except for this
+             f = 0.0_wp
+           else
+             f = x*exp(-x**(-2))
+           endif
+        case (215,216)
+           xi = 0.61489_wp
+           t1 = 1.0_wp-xi
+           emx = exp(-x)
+           f = -(3062.0_wp*t1*emx)/(xi + t1*emx) - 1013.0_wp + 1628.0_wp/x
+        case (217,218)
+           ex = exp(x)
+           f = ex - 2.0_wp - 0.01_wp/(x*x) + 2.0e-6_wp/(x*x*x)
 
         case default
             error stop 'invalid case'
