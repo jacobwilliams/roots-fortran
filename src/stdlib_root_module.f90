@@ -24,7 +24,10 @@
     private
     procedure,public :: initialize => initialize_root_solver !! initialize the class [must be called first]
     procedure,public :: solve !! main routine for finding the root
-    procedure(root_f),deferred :: find_root !! root solver function
+    procedure(root_f),deferred :: find_root !! root solver function. Meant to be
+                                            !! called from [[solve]], which handles some common
+                                            !! startup tasks. All these routines assume that
+                                            !! \( f(a_x) \) and \( f(b_x) \) have opposite signs.
     procedure :: get_fa_fb
     procedure :: converged
     end type root_solver
@@ -225,88 +228,27 @@
 
     select case (lowercase(method))
 
-    case('brent')
-
-        allocate(brent_solver :: s)
-        call s%initialize(func_wrapper,ftol,rtol,atol,maxiter)
-        call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
-
-    case('bisection')
-
-        allocate(bisection_solver :: s)
-        call s%initialize(func_wrapper,ftol,rtol,atol,maxiter)
-        call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
-
-    case('anderson_bjorck', 'anderson-bjorck')
-
-        allocate(anderson_bjorck_solver :: s)
-        call s%initialize(func_wrapper,ftol,rtol,atol,maxiter)
-        call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
-
-    case('ridders')
-
-        allocate(ridders_solver :: s)
-        call s%initialize(func_wrapper,ftol,rtol,atol,maxiter)
-        call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
-
-    case('pegasus')
-
-        allocate(pegasus_solver :: s)
-        call s%initialize(func_wrapper,ftol,rtol,atol,maxiter)
-        call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
-
-    case('bdqrf')
-
-        allocate(bdqrf_solver :: s)
-        call s%initialize(func_wrapper,ftol,rtol,atol,maxiter)
-        call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
-
-    case('muller')
-
-        allocate(muller_solver :: s)
-        call s%initialize(func_wrapper,ftol,rtol,atol,maxiter)
-        call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
-
-    case('brenth')
-
-        allocate(brenth_solver :: s)
-        call s%initialize(func_wrapper,ftol,rtol,atol,maxiter)
-        call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
-
-    case('brentq')
-
-        allocate(brentq_solver :: s)
-        call s%initialize(func_wrapper,ftol,rtol,atol,maxiter)
-        call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
-
-    case('chandrupatla')
-
-        allocate(chandrupatla_solver :: s)
-        call s%initialize(func_wrapper,ftol,rtol,atol,maxiter)
-        call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
-
-    case('toms748')
-
-        allocate(toms748_solver :: s)
-        call s%initialize(func_wrapper,ftol,rtol,atol,maxiter)
-        call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
-
-    case('zhang')
-
-        allocate(zhang_solver :: s)
-        call s%initialize(func_wrapper,ftol,rtol,atol,maxiter)
-        call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
-
-    case('anderson_bjorck_king')
-
-        allocate(anderson_bjorck_king_solver :: s)
-        call s%initialize(func_wrapper,ftol,rtol,atol,maxiter)
-        call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
+    case('brent');                allocate(brent_solver                :: s)
+    case('bisection');            allocate(bisection_solver            :: s)
+    case('anderson_bjorck');      allocate(anderson_bjorck_solver      :: s)
+    case('ridders');              allocate(ridders_solver              :: s)
+    case('pegasus');              allocate(pegasus_solver              :: s)
+    case('bdqrf');                allocate(bdqrf_solver                :: s)
+    case('muller');               allocate(muller_solver               :: s)
+    case('brenth');               allocate(brenth_solver               :: s)
+    case('brentq');               allocate(brentq_solver               :: s)
+    case('chandrupatla');         allocate(chandrupatla_solver         :: s)
+    case('toms748');              allocate(toms748_solver              :: s)
+    case('zhang');                allocate(zhang_solver                :: s)
+    case('anderson_bjorck_king'); allocate(anderson_bjorck_king_solver :: s)
 
     case default
-        ! invalid method
-        iflag = -999
+        iflag = -999    ! invalid method
+        return
     end select
+
+    call s%initialize(func_wrapper,ftol,rtol,atol,maxiter)
+    call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
 
     contains
 
@@ -362,7 +304,8 @@
     real(wp),intent(in),optional     :: fax     !! if `f(ax)` is already known, it can be input here
     real(wp),intent(in),optional     :: fbx     !! if `f(ax)` is already known, it can be input here
 
-    real(wp) :: fa, fb
+    real(wp) :: fa !! `f(ax)` passed to the lower level routine
+    real(wp) :: fb !! `f(bx)` passed to the lower level routine
 
     if (ax==bx) then
         ! ax must be /= bx
@@ -447,8 +390,6 @@
 !  \( [a_x,b_x] \) to within a tolerance \( 4 \epsilon |x| + tol \),
 !  where \( \epsilon \) is the relative machine precision defined as
 !  the smallest representable number such that \( 1.0 + \epsilon > 1.0 \).
-!
-!  It is assumed that \( f(a_x) \) and \( f(b_x) \) have opposite signs.
 !
 !### References
 !  * R. P. Brent, "[An algorithm with guaranteed convergence for
@@ -570,8 +511,6 @@
 !>
 !  Compute the zero of the function f(x) in the interval ax,bx using the bisection method.
 !
-!  It is assumed that \( f(a_x) \) and \( f(b_x) \) have opposite signs.
-!
 !### See also
 !  * G.E. Mullges & F. Uhlig, "Numerical Algorithms with Fortran",
 !    Springer, 1996. Section 2.8.1, p 32-34.
@@ -646,8 +585,6 @@
 !*****************************************************************************************
 !>
 !  Compute the zero of the function f(x) in the interval ax,bx using the Anderson-Bjorck method.
-!
-!  It is assumed that \( f(a_x) \) and \( f(b_x) \) have opposite signs.
 !
 !### See also
 !  * G.E. Mullges & F. Uhlig, "Numerical Algorithms with Fortran",
@@ -844,7 +781,7 @@
     integer,intent(out)  :: iflag   !! status flag (`0`=root found, `-2`=max iterations reached)
 
     integer :: i !! counter
-    real(wp) :: x1,x2,x3,f1,f2,f3,s12
+    real(wp) :: x1,x2,x3,f1,f2,f3,s12,f1tmp
 
     ! initialize:
     iflag = 0
@@ -871,23 +808,27 @@
         if (f2*f3<=0.0_wp) then
             x1 = x2
             f1 = f2
+            f1tmp = f1
         else
+            f1tmp = f1
             f1 = f1 * f2 / (f2 + f3)
         end if
 
         x2 = x3
         f2 = f3
 
-        ! Check for break-off condition:
-        if (abs(f2)<=me%ftol) exit
-        if (me%converged(x1,x2)) exit
+        if (abs(f1)<abs(f2)) then
+            xzero = x1
+            fzero = f1tmp ! actual func value
+        else
+            xzero = x2
+            fzero = f2
+        end if
 
-        if (i == me%maxiter) iflag = -2   ! max iterations exceeded
+        if (i == me%maxiter) iflag = -2 ! max iterations exceeded
+        if (me%converged(x1,x2)) exit   ! check for convergence
 
     end do
-
-    fzero = f2
-    xzero = x2
 
     end subroutine pegasus
 !*****************************************************************************************
@@ -1381,7 +1322,7 @@
             xm = a
             fm = fa
         end if
-        if (abs(fm) <= me%ftol) exit
+
         if (i == me%maxiter) then
             iflag = -2 ! max iterations reached
             exit
@@ -1819,11 +1760,6 @@
     b  = bx
     fa = fax
     fb = fbx
-
-    if (b<a) then ! swap and a and b
-        call swap(a,b)
-        call swap(fa,fb)
-    end if
 
     do i = 1, me%maxiter
 
