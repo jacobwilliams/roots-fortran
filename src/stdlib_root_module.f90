@@ -901,6 +901,8 @@
 !  Will fall back to bisection if any step fails.
 !
 !### Reference
+!  * D. E. Muller, "A Method for Solving Algebraic Equations Using an Automatic Computer",
+!    Mathematical Tables and Other Aids to Computation, 10 (1956), 208-215.
 !  * Regular Muller here (Julia version): https://github.com/JuliaMath/Roots.jl/blob/97dbe2e178656e39b7f646cff278e4e985d60116/src/simple.jl
 
     subroutine muller (me,ax,bx,fax,fbx,xzero,fzero,iflag)
@@ -1798,7 +1800,8 @@
 !  an extra initial bisection step.
 !
 !### See also
-!  * https://link.springer.com/content/pdf/bbm%3A978-3-642-05175-3%2F1.pdf
+!  * Kroger & Torsten, "On-Line Trajectory Generation in Robotic Systems", 2010.
+!    https://link.springer.com/content/pdf/bbm%3A978-3-642-05175-3%2F1.pdf
 
     subroutine anderson_bjorck_king(me,ax,bx,fax,fbx,xzero,fzero,iflag)
 
