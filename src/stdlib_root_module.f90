@@ -544,7 +544,7 @@
 
         ! bisection of the inclusion interval:
         !  x1------x3------x2
-        x3 = (x1 + x2) / 2.0_wp
+        x3 = bisect(x1,x2)
 
         ! calculate the new function value:
         f3 = me%f(x3)
@@ -571,13 +571,7 @@
         ! check for convergence:
         root_found = me%converged(x1,x2)
         if (root_found .or. i==me%maxiter) then
-            if (abs(f1)<abs(f2)) then
-                xzero = x1
-                fzero = f1
-            else
-                xzero = x2
-                fzero = f2
-            end if
+            call choose_best(x1,x2,f1,f2,xzero,fzero)
             if (.not. root_found) iflag = -2  ! max iterations reached
             exit
         end if
@@ -610,7 +604,7 @@
 
     integer :: i !! counter
     logical :: root_found !! convergence in x
-    real(wp) :: x1,x2,x3,f1,f2,f3,s12,g,f1tmp
+    real(wp) :: x1,x2,x3,f1,f2,f3,g,f1tmp
 
     ! initialize:
     iflag = 0
@@ -623,17 +617,7 @@
     do i = 1,me%maxiter
 
         ! secant step:
-        s12 = (f2 - f1) / (x2 - x1)
-
-        ! intersection of this secant with the x-axis:
-        x3 = x2 - f2 / s12
-
-        ! modification: prevent evaluations outside the initial interval
-        ! [have seen this happen....need to check other methods also]
-        if (x3<ax .or. x3>bx) then
-            !write(*,*) 'bisection!'
-            x3 = (x1 + x2) / 2.0_wp ! fall back to bisection
-        end if
+        x3 = secant(x1,x2,f1,f2,ax,bx)
 
         ! calculate f3:
         f3 = me%f(x3)
@@ -664,13 +648,7 @@
         ! check for convergence:
         root_found = me%converged(x1,x2)
         if (root_found .or. i == me%maxiter) then
-            if (abs(f1tmp)<abs(f2)) then
-                xzero = x1
-                fzero = f1tmp ! need actual f(x1)
-            else
-                xzero = x2
-                fzero = f2
-            end if
+            call choose_best(x1,x2,f1tmp,f2,xzero,fzero)
             if (.not. root_found) iflag = -2  ! max iterations reached
             exit
         end if
@@ -752,12 +730,8 @@
             fl = fnew
         end if
 
-        if (me%converged(xl,xh)) then
-            ! relative convergence in x
-            exit
-        else if (i == me%maxiter) then
-            iflag = -2    ! max iterations exceeded
-        end if
+        if (me%converged(xl,xh)) exit    ! relative convergence in x
+        if (i == me%maxiter) iflag = -2  ! max iterations exceeded
 
     end do
 
@@ -786,7 +760,7 @@
     integer,intent(out)  :: iflag   !! status flag (`0`=root found, `-2`=max iterations reached)
 
     integer :: i !! counter
-    real(wp) :: x1,x2,x3,f1,f2,f3,s12,f1tmp
+    real(wp) :: x1,x2,x3,f1,f2,f3,f1tmp
 
     ! initialize:
     iflag = 0
@@ -798,9 +772,10 @@
     ! main loop:
     do i = 1, me%maxiter
 
-        s12 = (f2 - f1) / (x2 - x1) ! secant step
-        x3  = x2 - f2 / s12         ! intersection of this secant with the x-axis
-        f3  = me%f(x3)              ! calculate f3
+        ! secant step
+        x3 = secant(x1,x2,f1,f2,ax,bx)
+
+        f3  = me%f(x3)  ! calculate f3
 
         if (abs(f3)<=me%ftol)  then ! f3 is a root
             fzero = f3
@@ -822,13 +797,7 @@
         x2 = x3
         f2 = f3
 
-        if (abs(f1tmp)<abs(f2)) then
-            xzero = x1
-            fzero = f1tmp ! actual func value
-        else
-            xzero = x2
-            fzero = f2
-        end if
+        call choose_best(x1,x2,f1tmp,f2,xzero,fzero)
 
         if (me%converged(x1,x2)) exit   ! check for convergence
         if (i == me%maxiter) iflag = -2 ! max iterations exceeded
@@ -958,7 +927,7 @@
     iflag = 0
 
     ! pick a third point in the middle [this could also be an optional input]
-    cx  = (ax + bx) / 2.0_wp
+    cx  = bisect(ax,bx)
     fcx = me%f(cx)
     if (abs(fcx)<=me%ftol) then
         xzero = cx
@@ -996,21 +965,20 @@
         end if
         if ( denon == 0.0_wp ) then
             x_ok = .false.
-            x = huge(1.0_wp) ! dummy value, not used
         else
             x = c - 2.0_wp*(c - b)*cc/denon
             x_ok = ieee_is_finite(x) .and. .not. ieee_is_nan(x)
         end if
 
-        ! make sure that x is ok and in the correct interval.
+        ! make sure that x is ok, in the correct interval, and distinct.
         ! if not, fall back to bisection on that interval
         if (root_in_ab) then
-            if (.not. x_ok .or. x<=a .or. x>=b) x = (a + b) / 2.0_wp ! bisect
+            if (.not. x_ok .or. x<=a .or. x>=b) x = bisect(a,b)
             c  = b
             fc = fb
             b  = x
         elseif (root_in_bc) then
-            if (.not. x_ok .or. x<=b .or. x>=c) x = (b + c) / 2.0_wp ! bisect
+            if (.not. x_ok .or. x<=b .or. x>=c) x = bisect(b,c)
             a  = b
             fa = fb
             b  = x
@@ -1782,9 +1750,9 @@
         else
             ! secant
             if (fa*fc<0.0_wp) then ! root in [a,c]
-                s = c - fc / ((fc - fa) / (c - a))
+                s = secant(a,c,fa,fc,ax,bx)
             else ! root in [c,b]
-                s = b - fb / ((fb - fc) / (b - c))
+                s = secant(c,b,fc,fb,ax,bx)
             end if
             fs = me%f(s)
             if (abs(fs)<=me%ftol) then
@@ -1819,13 +1787,7 @@
     end do
 
     ! pick the one closest to the root:
-    if (abs(fa)<abs(fb)) then
-        xzero = a
-        fzero = fa
-    else
-        xzero = b
-        fzero = fb
-    end if
+    call choose_best(a,b,fa,fb,xzero,fzero)
 
     end subroutine zhang
 !*****************************************************************************************
@@ -1853,7 +1815,7 @@
 
     integer :: i !! counter
     logical :: root_found !! convergence in x
-    real(wp) :: x1,x2,x3,f1,f2,f3,s12,g
+    real(wp) :: x1,x2,x3,f1,f2,f3,g
 
     ! initialize:
     iflag = 0
@@ -1866,7 +1828,7 @@
     do i = 1,me%maxiter
 
         ! bisection step:
-        x3 = (x1 + x2) / 2.0_wp
+        x3 = bisect(x1,x2)
 
         ! calculate f3:
         f3 = me%f(x3)
@@ -1890,10 +1852,7 @@
         end if
 
         ! secant step:
-        s12 = (f2 - f1) / (x2 - x1)
-
-        ! intersection of this secant with the x-axis:
-        x3 = x2 - f2 / s12
+        x3 = secant(x1,x2,f1,f2,ax,bx)
 
         ! calculate f3:
         f3 = me%f(x3)
@@ -1922,13 +1881,7 @@
         ! check for convergence:
         root_found = me%converged(x1,x2)
         if (root_found .or. i == me%maxiter) then
-            if (abs(f1)<abs(f2)) then
-                xzero = x1
-                fzero = f1
-            else
-                xzero = x2
-                fzero = f2
-            end if
+            call choose_best(x1,x2,f1,f2,xzero,fzero)
             if (.not. root_found) iflag = -2  ! max iterations reached
             exit
         end if
@@ -1971,6 +1924,70 @@
     end if
 
     end function converged
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Given two points with two function evaluations, choose the best one
+!  (the one closest to the root).
+
+    pure subroutine choose_best(x1,x2,f1,f2,xbest,fbest)
+
+    implicit none
+
+    real(wp),intent(in) :: x1,x2
+    real(wp),intent(in) :: f1,f2
+    real(wp),intent(out) :: xbest
+    real(wp),intent(out) :: fbest
+
+    if (abs(f1)<abs(f2)) then
+        xbest = x1
+        fbest = f1
+    else
+        xbest = x2
+        fbest = f2
+    end if
+
+    end subroutine choose_best
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Bisection step.
+
+    pure function bisect(x1,x2) result(x3)
+
+    implicit none
+
+    real(wp),intent(in) :: x1,x2
+    real(wp) :: x3 !! point half way between x1 and x2
+
+    x3 = (x1 + x2) / 2.0_wp ! fall back to bisection
+
+    end function bisect
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Secent step.
+!  With a protection to fall back to bisection if the
+!  computed point is outside the original interval ([ax,bx]).
+
+    pure function secant(x1,x2,f1,f2,ax,bx) result(x3)
+
+    implicit none
+
+    real(wp),intent(in) :: x1,x2,f1,f2
+    real(wp),intent(in) :: ax !! original interval lower bound
+    real(wp),intent(in) :: bx !! original interval upper bound
+    real(wp) :: x3 !! intersection of secant step with x-axis
+
+    ! secant step:
+    x3 = x2 - f2 / ( (f2 - f1) / (x2 - x1) )
+
+    if (x3<ax .or. x3>bx) x3 = bisect(x1,x2)
+
+    end function secant
 !*****************************************************************************************
 
 !*****************************************************************************************
