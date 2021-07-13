@@ -443,7 +443,7 @@
 
         tol1 = 2.0_wp*eps*abs(b)+0.5_wp*me%rtol
         xm = 0.5_wp*(c-b)
-        if ((abs(xm)<=tol1) .or. (fb==0.0_wp)) exit
+        if (abs(xm)<=tol1) exit
 
         ! see if a bisection is forced
         if ((abs(e)>=tol1) .and. (abs(fa)>abs(fb))) then
@@ -544,7 +544,7 @@
 
         ! bisection of the inclusion interval:
         !  x1------x3------x2
-        x3 = x2 + (x1 - x2) / 2.0_wp
+        x3 = (x1 + x2) / 2.0_wp
 
         ! calculate the new function value:
         f3 = me%f(x3)
@@ -571,8 +571,13 @@
         ! check for convergence:
         root_found = me%converged(x1,x2)
         if (root_found .or. i==me%maxiter) then
-            xzero = x2
-            fzero = f2
+            if (abs(f1)<abs(f2)) then
+                xzero = x1
+                fzero = f1
+            else
+                xzero = x2
+                fzero = f2
+            end if
             if (.not. root_found) iflag = -2  ! max iterations reached
             exit
         end if
@@ -817,7 +822,7 @@
         x2 = x3
         f2 = f3
 
-        if (abs(f1)<abs(f2)) then
+        if (abs(f1tmp)<abs(f2)) then
             xzero = x1
             fzero = f1tmp ! actual func value
         else
@@ -825,8 +830,8 @@
             fzero = f2
         end if
 
-        if (i == me%maxiter) iflag = -2 ! max iterations exceeded
         if (me%converged(x1,x2)) exit   ! check for convergence
+        if (i == me%maxiter) iflag = -2 ! max iterations exceeded
 
     end do
 
@@ -999,29 +1004,16 @@
 
         ! make sure that x is ok and in the correct interval.
         ! if not, fall back to bisection on that interval
-        if (x_ok .and. root_in_ab .and. x>=a .and. x<=b) then       !a---x---b
-            if (x==a .or. x==b) x = (a + b) / 2.0_wp ! ensure unique points
+        if (root_in_ab) then
+            if (.not. x_ok .or. x<=a .or. x>=b) x = (a + b) / 2.0_wp ! bisect
             c  = b
             fc = fb
             b  = x
-        elseif (x_ok .and. root_in_bc .and. x>=b .and. x<=c) then   !b---x---c
-            if (x==b .or. x==c) x = (b + c) / 2.0_wp ! ensure unique points
+        elseif (root_in_bc) then
+            if (.not. x_ok .or. x<=b .or. x>=c) x = (b + c) / 2.0_wp ! bisect
             a  = b
             fa = fb
             b  = x
-        else
-            ! something wrong, bisect
-            if (root_in_ab) then
-                x = (a + b) / 2.0_wp    !a--x--b
-                c  = b
-                fc = fb
-                b  = x
-            elseif (root_in_bc) then
-                x = (b + c) / 2.0_wp    !b--x--c
-                a  = b
-                fa = fb
-                b  = x
-            end if
         end if
         ! values are now [a,b,c], with b being the new estimate
 
