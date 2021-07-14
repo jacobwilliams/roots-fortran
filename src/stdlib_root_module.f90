@@ -1973,8 +1973,9 @@
 !*****************************************************************************************
 !>
 !  Secent step.
-!  With a protection to fall back to bisection if the
-!  computed point is outside the original interval ([ax,bx]).
+!  With a protection to fall back to bisection if:
+!  * the computed point is outside the original interval ([ax,bx]).
+!  * f2 == f1
 
     pure function secant(x1,x2,f1,f2,ax,bx) result(x3)
 
@@ -1985,10 +1986,13 @@
     real(wp),intent(in) :: bx !! original interval upper bound
     real(wp) :: x3 !! intersection of secant step with x-axis
 
-    ! secant step:
-    x3 = x2 - f2 / ( (f2 - f1) / (x2 - x1) )
-
-    if (x3<ax .or. x3>bx) x3 = bisect(x1,x2)
+    if (f2==f1) then
+        x3 = bisect(x1,x2)
+    else
+        ! secant step:
+        x3 = x2 - f2 / ( (f2 - f1) / (x2 - x1) )
+        if (x3<ax .or. x3>bx) x3 = bisect(x1,x2)
+    end if
 
     end function secant
 !*****************************************************************************************

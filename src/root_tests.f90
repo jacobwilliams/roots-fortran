@@ -241,6 +241,13 @@ program root_tests
     nprob = 217; n = 1;    root = 0.7032048404_wp; call test()
     nprob = 218; n = 1;    root = 0.7032048404_wp; call test()
 
+    nprob = 300; n = 1;    root = 1.365230013414100_wp;   call test()
+    nprob = 301; n = 1;    root = -1.404491648215340_wp;  call test()
+    nprob = 303; n = 1;    root = 2.0_wp;                 call test()
+    nprob = 304; n = 1;    root = -0.603231971557215_wp;  call test()
+    nprob = 305; n = 1;    root = 3.0_wp;                 call test()
+    nprob = 306; n = 1;    root = 1.857183860207840_wp;   call test()
+
     close(iunit)
     close(iunit_failed)
 
@@ -511,6 +518,25 @@ program root_tests
             a = 2.0e-4_wp
             b = 81.0_wp
 
+        case(300)
+            a = 0.0_wp
+            b = 1.5_wp
+        case(301)
+            a = -2.0_wp
+            b = -1.0_wp
+        case(303)
+            a = 1.0_wp
+            b = 2.1_wp
+        case(304)
+            a = -0.9_wp
+            b = -0.1_wp
+        case(305)
+            a = 1.0_wp
+            b = 3.1_wp
+        case(306)
+            a = 1.0_wp
+            b = 2.1_wp
+
         case default
             error stop 'invalid case'
         end select
@@ -668,6 +694,23 @@ program root_tests
         case (217,218)
            ex = exp(x)
            f = ex - 2.0_wp - 0.01_wp/(x*x) + 2.0e-6_wp/(x*x*x)
+
+        ! from A modified three-point Secant method with improved
+        !      rate and characteristics of convergence
+        !      July 2019
+        case(300)
+            f = x**3 + 4.0_wp*x**2 - 10.0_wp
+        case(301)
+            f = sin(x)**2 - x**2 + 1.0_wp
+        case(303)
+            f = (x - 1.0_wp)**6 - 1.0_wp
+        case(304)
+            f = sin(x)*exp(x) + log(x**2+1.0_wp)
+        case(305)
+            f = exp(x**2+7.0_wp*x-30.0_wp) - 1.0_wp
+        case(306)
+            f = x - 3.0_wp * log(x)
+
 
         case default
             error stop 'invalid case'
