@@ -616,8 +616,12 @@
     ! main loop:
     do i = 1,me%maxiter
 
-        ! secant step:
-        x3 = secant(x1,x2,f1,f2,ax,bx)
+        if (i==1 .or. i==me%maxiter/2) then
+            ! this is just a sort of hack to prevent a few cases from failing -JW
+            x3 = bisect(x1,x2)
+        else
+            x3 = secant(x1,x2,f1,f2,ax,bx)
+        end if
 
         ! calculate f3:
         f3 = me%f(x3)
@@ -688,10 +692,11 @@
     fh    = fbx
     xl    = ax
     xh    = bx
+    xzero = huge(1.0_wp)
 
     do i = 1, me%maxiter
 
-        xm = (xl+xh)/2.0_wp
+        xm = bisect(xl,xh)
         fm = me%f(xm)
         if (abs(fm) <= me%ftol) then
             ! abs convergence in f
@@ -704,12 +709,15 @@
         if (denom == 0.0_wp) then
             xzero = xm
             fzero = fm
-            iflag = -3        ! can't proceed: denominator is zero
+            iflag = -3        ! can't proceed: denominator is zero [TODO: add a bisection if this happens]
             exit
         end if
 
         xnew = xm + (xm-xl)*(sign(1.0_wp,fl-fh)*fm/denom)
-        if (me%converged(xzero,xnew)) exit  ! relative convergence in x
+        if (me%converged(xzero,xnew)) then  ! relative convergence in x
+            ! additional check to prevent false convergence
+            if (me%converged(xl,xm) .or. me%converged(xm,xh)) exit
+        end if
 
         xzero = xnew
         fnew  = me%f(xzero)

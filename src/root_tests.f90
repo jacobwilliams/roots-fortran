@@ -23,6 +23,7 @@ program root_tests
     real(wp) :: root !! known root value
     integer :: iunit,istat,iunit_failed
     real(wp) :: ax,bx
+    integer :: i !! counter
 
     character(len=*),parameter :: fmt  = '(A20,1X,A3,1X,A4,1X,A25,   1X,A25,   1X,A25,  1X,A5,1X,A5)' !! format for header
     character(len=*),parameter :: dfmt = '(A20,1X,I3,1X,I4,1X,E25.10,1X,E25.10,1X,E25.6,1X,I5,1X,I5)' !! format for results
@@ -41,7 +42,12 @@ program root_tests
         'muller              ', &
         'chandrupatla        ', &
         'toms748             ', &
-        'zhang               ' ] !! method names
+        'zhang               '] !! method names
+
+    integer,dimension(number_of_methods) :: number_of_wins, ivec, number_of_failures, ivec2
+
+    number_of_wins = 0
+    number_of_failures = 0
 
     open(newunit=iunit,        file='root_report_best.txt',     status='REPLACE', iostat=istat)
     open(newunit=iunit_failed, file='root_report_failures.txt', status='REPLACE', iostat=istat)
@@ -223,33 +229,49 @@ program root_tests
     nprob = 28; n = 1000; root = 1.2388385788997e-06_wp; call test()
     nprob = 29; n = 1;    root = 0.8654740331e+00_wp;    call test()
 
-    !nprob = 202; n = 1;    root = 2.0945515_wp; call test()
-    nprob = 203; n = 1;    root = 1.0_wp;       call test()
-    nprob = 204; n = 1;    root = 1.0_wp;       call test()
-    nprob = 205; n = 1;    root = 3.0_wp;       call test()
-    nprob = 206; n = 1;    root = 3.0_wp;       call test()
-    nprob = 207; n = 1;    root = 2.0_wp;       call test()
-    nprob = 208; n = 1;    root = 2.0_wp;       call test()
-    nprob = 209; n = 1;    root = 0.0_wp;       call test()
-    nprob = 210; n = 1;    root = 0.0_wp;       call test()
-    nprob = 211; n = 1;    root = 0.0_wp;       call test()
-    nprob = 212; n = 1;    root = 0.0_wp;       call test()
-    nprob = 213; n = 1;    root = 0.0_wp;       call test()
-    nprob = 214; n = 1;    root = 0.0_wp;       call test()
-    nprob = 215; n = 1;    root = 1.037536033_wp;  call test()
-    nprob = 216; n = 1;    root = 1.037536033_wp;  call test()
-    nprob = 217; n = 1;    root = 0.7032048404_wp; call test()
-    nprob = 218; n = 1;    root = 0.7032048404_wp; call test()
+    !nprob = 202; n = 1;  root = 2.0945515_wp; call test()
+    nprob = 203; n = 1;   root = 1.0_wp;                 call test()
+    nprob = 204; n = 1;   root = 1.0_wp;                 call test()
+    nprob = 205; n = 1;   root = 3.0_wp;                 call test()
+    nprob = 206; n = 1;   root = 3.0_wp;                 call test()
+    nprob = 207; n = 1;   root = 2.0_wp;                 call test()
+    nprob = 208; n = 1;   root = 2.0_wp;                 call test()
+    nprob = 209; n = 1;   root = 0.0_wp;                 call test()
+    nprob = 210; n = 1;   root = 0.0_wp;                 call test()
+    nprob = 211; n = 1;   root = 0.0_wp;                 call test()
+    nprob = 212; n = 1;   root = 0.0_wp;                 call test()
+    nprob = 213; n = 1;   root = 0.0_wp;                 call test()
+    nprob = 214; n = 1;   root = 0.0_wp;                 call test()
+    nprob = 215; n = 1;   root = 1.037536033_wp;         call test()
+    nprob = 216; n = 1;   root = 1.037536033_wp;         call test()
+    nprob = 217; n = 1;   root = 0.7032048404_wp;        call test()
+    nprob = 218; n = 1;   root = 0.7032048404_wp;        call test()
 
-    nprob = 300; n = 1;    root = 1.365230013414100_wp;   call test()
-    nprob = 301; n = 1;    root = -1.404491648215340_wp;  call test()
-    nprob = 303; n = 1;    root = 2.0_wp;                 call test()
-    nprob = 304; n = 1;    root = -0.603231971557215_wp;  call test()
-    nprob = 305; n = 1;    root = 3.0_wp;                 call test()
-    nprob = 306; n = 1;    root = 1.857183860207840_wp;   call test()
+    nprob = 300; n = 1;   root = 1.365230013414100_wp;   call test()
+    nprob = 301; n = 1;   root = -1.404491648215340_wp;  call test()
+    nprob = 303; n = 1;   root = 2.0_wp;                 call test()
+    nprob = 304; n = 1;   root = -0.603231971557215_wp;  call test()
+    nprob = 305; n = 1;   root = 3.0_wp;                 call test()
+    nprob = 306; n = 1;   root = 1.857183860207840_wp;   call test()
 
     close(iunit)
     close(iunit_failed)
+
+    ! another summary:
+    ivec  = [(i, i = 1, number_of_methods)]
+    ivec2 = ivec
+
+    call insertion_sort(number_of_wins, ivec, number_of_failures)
+   ! call insertion_sort(number_of_failures, ivec2)
+
+    write(*,*) ''
+    write(*,'(A25,1X,A5,1X,A5)') repeat('-',25), repeat('-',5), repeat('-',5)
+    write(*,'(A25,1X,A5,1X,A5)') 'Method', 'Win', 'Fail'
+    write(*,'(A25,1X,A5,1X,A5)') repeat('-',25), repeat('-',5), repeat('-',5)
+    do imeth = 1, number_of_methods
+        write(*,'(A25,1X,I5,1X,I5)') trim(methods(ivec(imeth))), number_of_wins(imeth), number_of_failures(imeth)
+    end do
+    write(*,*) ''
 
     contains
 !*****************************************************************************************
@@ -266,8 +288,7 @@ program root_tests
         character(len=:),allocatable :: best,failures
         logical :: root_found
 
-        real(wp),parameter :: tol_for_check = 1.0e-9_wp
-        !real(wp),parameter :: tol_for_check = 1.0e-6_wp
+        real(wp),parameter :: tol_for_check = 1.0e-7_wp
 
         write(output_unit,fmt) &
             repeat('-',20),repeat('-',3),repeat('-',4),repeat('-',25),&
@@ -285,9 +306,7 @@ program root_tests
             ifunc = 0 ! reset func evals counter
             call get_bounds(ax, bx)
             call root_scalar(methods(imeth),func,ax,bx,xzero,fzero,iflag,&
-                                !atol = 1.0e-5_wp, rtol = 1.0e-5_wp, maxiter = 1000)
-                                atol = 1.0e-16_wp, rtol = 1.0e-13_wp, ftol = 1.0e-15_wp, maxiter = 1000)
-                               ! atol = 1.0e-10_wp, rtol = 1.0e-14_wp, ftol = 1.0e-15_wp, maxiter = 1000)
+                             atol = 1.0e-15_wp, rtol = 1.0e-13_wp, ftol = 1.0e-15_wp, maxiter = 1000)
 
             error = xzero-root
             write(line, dfmt) trim(methods(imeth)),nprob,n,error,xzero,fzero,ifunc,iflag
@@ -321,12 +340,14 @@ program root_tests
                 else
                     best = best//', '//trim(methods(imeth))
                 end if
+                number_of_wins(imeth) = number_of_wins(imeth) + 1
             elseif (fevals(imeth) == huge(1)) then
                 if (failures=='') then
                     failures = trim(methods(imeth))
                 else
                     failures = failures//', '//trim(methods(imeth))
                 end if
+                number_of_failures(imeth) = number_of_failures(imeth) + 1
             end if
         end do
 
@@ -711,12 +732,52 @@ program root_tests
         case(306)
             f = x - 3.0_wp * log(x)
 
-
         case default
             error stop 'invalid case'
         end select
 
     end function func
+
+    pure subroutine insertion_sort(vec, vec2, vec3)
+
+    implicit none
+
+    integer,dimension(:),intent(inout) :: vec  !! sort ascending
+    integer,dimension(:),intent(inout) :: vec2 !! carry this one along
+    integer,dimension(:),intent(inout) :: vec3 !! carry this one along
+
+    integer :: i,j,n
+
+    n = size(vec)
+
+    do i = 1+1, n
+        do j = i, 1+1, -1
+            if ( vec(j) < vec(j-1) ) then
+                call swap(vec(j), vec(j-1))
+                call swap(vec2(j),vec2(j-1))
+                call swap(vec3(j),vec3(j-1))
+            else
+                exit
+            end if
+        end do
+    end do
+
+    end subroutine insertion_sort
+
+    pure elemental subroutine swap(a,b)
+
+    implicit none
+
+    integer,intent(inout) :: a
+    integer,intent(inout) :: b
+
+    integer :: tmp
+
+    tmp = a
+    a   = b
+    b   = tmp
+
+    end subroutine swap
 
 !*****************************************************************************************
     end program root_tests
