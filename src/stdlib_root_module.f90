@@ -48,6 +48,14 @@
     procedure,public :: find_root => bisection
     end type bisection_solver
 
+    type,extends(root_solver),public :: regula_falsi_solver
+    !! Classic bisection root solver
+    private
+    contains
+    private
+    procedure,public :: find_root => regula_falsi
+    end type regula_falsi_solver
+
     type,extends(root_solver),public :: anderson_bjorck_solver
     !! anderson bjorck root solver
     private
@@ -230,6 +238,7 @@
 
     case('brent');                allocate(brent_solver                :: s)
     case('bisection');            allocate(bisection_solver            :: s)
+    case('regula_falsi');         allocate(regula_falsi_solver         :: s)
     case('anderson_bjorck');      allocate(anderson_bjorck_solver      :: s)
     case('ridders');              allocate(ridders_solver              :: s)
     case('pegasus');              allocate(pegasus_solver              :: s)
@@ -579,6 +588,76 @@
     end do
 
     end subroutine bisection
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Compute the zero of the function f(x) in the interval ax,bx using the regula falsi method.
+
+    subroutine regula_falsi(me,ax,bx,fax,fbx,xzero,fzero,iflag)
+
+    implicit none
+
+    class(regula_falsi_solver),intent(inout) :: me
+    real(wp),intent(in)    :: ax      !! left endpoint of initial interval
+    real(wp),intent(in)    :: bx      !! right endpoint of initial interval
+    real(wp),intent(in)    :: fax     !! `f(ax)`
+    real(wp),intent(in)    :: fbx     !! `f(ax)`
+    real(wp),intent(out)   :: xzero   !! abscissa approximating a zero of `f` in the interval `ax`,`bx`
+    real(wp),intent(out)   :: fzero   !! value of `f` at the root (`f(xzero)`)
+    integer,intent(out)    :: iflag   !! status flag (`0`=root found, `-2`=max iterations reached)
+
+    real(wp) :: x1,x2,x3,f1,f2,f3,delta
+    integer :: i !! iteration counter
+    logical :: root_found !! convergence in x
+
+    ! initialize:
+    iflag = 0
+    x1    = ax
+    x2    = bx
+    f1    = fax
+    f2    = fbx
+
+    ! main loop
+    do i=1,me%maxiter
+
+        x3 = regula_falsi_step(x1,x2,f1,f2,ax,bx)
+
+       ! write(*,*) x1, x2, x3
+
+        ! calculate the new function value:
+        f3 = me%f(x3)
+        ! check for root:
+        if (abs(f3)<=me%ftol) then
+            xzero = x3
+            fzero = f3
+            return
+        end if
+
+        ! determine new inclusion interval:
+        if (f2*f3<0.0_wp) then
+            ! root lies between x2 and x3
+            x1 = x3
+            x2 = x2
+            f1 = f3
+            f2 = f2
+        else
+            ! root lies between x1 and x3
+            x2 = x3
+            f2 = f3
+        end if
+
+        ! check for convergence:
+        root_found = me%converged(x1,x2)
+        if (root_found .or. i==me%maxiter) then
+            call choose_best(x1,x2,f1,f2,xzero,fzero)
+            if (.not. root_found) iflag = -2  ! max iterations reached
+            exit
+        end if
+
+    end do
+
+    end subroutine regula_falsi
 !*****************************************************************************************
 
 !*****************************************************************************************
@@ -1973,9 +2052,42 @@
     real(wp),intent(in) :: x1,x2
     real(wp) :: x3 !! point half way between x1 and x2
 
-    x3 = (x1 + x2) / 2.0_wp ! fall back to bisection
+    x3 = (x1 + x2) / 2.0_wp
 
     end function bisect
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Regula Falsi step.
+!  With a protection to fall back to bisection if:
+!  * the computed point is outside the original interval ([ax,bx]).
+!  * f2 == f1
+
+     function regula_falsi_step(x1,x2,f1,f2,ax,bx) result(x3)
+
+    implicit none
+
+    real(wp),intent(in) :: x1,x2,f1,f2
+    real(wp),intent(in) :: ax !! original interval lower bound
+    real(wp),intent(in) :: bx !! original interval upper bound
+    real(wp) :: x3 !! intersection of line connecting x1,x2 with x-axis
+
+    real(wp) :: delta
+
+    delta = f2-f1
+
+    if (delta /= 0.0_wp) then
+        ! intersection with x-axis of line connecting the two points:
+        x3 = x1 - (f1/delta) * (x2-x1)
+        if (x3>ax .and. x3<bx) return ! must be a new point in the range
+    end if
+
+    ! fall back to bisection for any problem
+    x3 = bisect(x1,x2)
+    write(*,*) 'bisect!'
+
+    end function regula_falsi_step
 !*****************************************************************************************
 
 !*****************************************************************************************

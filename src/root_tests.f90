@@ -28,12 +28,13 @@ program root_tests
     character(len=*),parameter :: fmt  = '(A20,1X,A3,1X,A4,1X,A25,   1X,A25,   1X,A25,  1X,A5,1X,A5)' !! format for header
     character(len=*),parameter :: dfmt = '(A20,1X,I3,1X,I4,1X,E25.10,1X,E25.10,1X,E25.6,1X,I5,1X,I5)' !! format for results
 
-    integer,parameter :: number_of_methods = 13 !! number of methods to test
+    integer,parameter :: number_of_methods = 14 !! number of methods to test
     character(len=100),dimension(number_of_methods),parameter :: methods = [ &
         'brent               ', &
         'brentq              ', &
         'brenth              ', &
         'bisection           ', &
+        'regula_falsi        ', &
         'anderson_bjorck     ', &
         'anderson_bjorck_king', &
         'ridders             ', &
