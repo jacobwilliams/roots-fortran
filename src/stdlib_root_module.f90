@@ -49,7 +49,7 @@
     end type bisection_solver
 
     type,extends(root_solver),public :: regula_falsi_solver
-    !! Classic bisection root solver
+    !! Classic Regula Falsi root solver
     private
     contains
     private
