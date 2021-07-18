@@ -225,7 +225,7 @@ program root_tests
     case (2)
         a = 1.0_wp + 1.0e-9_wp
         b = (2.0_wp)*(2.0_wp) - 1.0e-9_wp
-        root = 3.0229153472730570E+00 _wp
+        root = 3.0229153472730570E+00_wp
         if (present(x)) then
             f = 0.0_wp
             do i = 1, 20
