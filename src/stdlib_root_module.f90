@@ -2085,7 +2085,6 @@
 
     ! fall back to bisection for any problem
     x3 = bisect(x1,x2)
-    write(*,*) 'bisect!'
 
     end function regula_falsi_step
 !*****************************************************************************************
