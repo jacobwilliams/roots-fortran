@@ -269,30 +269,6 @@
             f = fun(x)
         end function func_wrapper
 
-        pure function lowercase(str) result(s_lower)
-
-        !! lowercase a string.
-
-        implicit none
-
-        character(len=*),intent(in) :: str      !! input string
-        character(len=(len(str)))   :: s_lower  !! lowercase version of the string
-
-        integer :: i  !! counter
-        integer :: j  !! index of uppercase character
-
-        character(len=*),parameter :: upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' !! uppercase characters
-        character(len=*),parameter :: lower = 'abcdefghijklmnopqrstuvwxyz' !! lowercase characters
-
-        s_lower = str
-
-        do i = 1, len_trim(str)
-            j = index(upper,s_lower(i:i))
-            if (j>0) s_lower(i:i) = lower(j:j)
-        end do
-
-        end function lowercase
-
     end subroutine root_scalar
 !*****************************************************************************************
 
@@ -2134,6 +2110,33 @@
     b   = tmp
 
     end subroutine swap
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  lowercase a string.
+
+    pure function lowercase(str) result(s_lower)
+
+    implicit none
+
+    character(len=*),intent(in) :: str      !! input string
+    character(len=(len(str)))   :: s_lower  !! lowercase version of the string
+
+    integer :: i  !! counter
+    integer :: j  !! index of uppercase character
+
+    character(len=*),parameter :: upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' !! uppercase characters
+    character(len=*),parameter :: lower = 'abcdefghijklmnopqrstuvwxyz' !! lowercase characters
+
+    s_lower = str
+
+    do i = 1, len_trim(str)
+        j = index(upper,s_lower(i:i))
+        if (j>0) s_lower(i:i) = lower(j:j)
+    end do
+
+    end function lowercase
 !*****************************************************************************************
 
 !*****************************************************************************************
