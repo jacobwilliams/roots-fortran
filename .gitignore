@@ -22,3 +22,8 @@ files/*.json
 
 # mac
 .DS_Store
+
+# mist:
+*.txt
+*.py
+*.pdf

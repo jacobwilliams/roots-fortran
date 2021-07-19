@@ -97,6 +97,8 @@ program root_tests
     end do
     write(*,*) ''
 
+    call generate_plots()
+
     contains
 !*****************************************************************************************
 
@@ -194,7 +196,7 @@ program root_tests
 
     end subroutine test
 
-    subroutine problems(x, ax, bx, fx, xroot, cases, num_of_problems)
+    subroutine problems(x, ax, bx, fx, xroot, cases, num_of_problems, latex)
 
     !! returns all the information about the test case.
 
@@ -206,6 +208,7 @@ program root_tests
     real(wp),intent(out),optional :: xroot   !! value of indep variable at the root
     integer,dimension(:),allocatable,intent(out),optional :: cases !! list of `n` cases to test
     integer,intent(out),optional :: num_of_problems  !! total number of problems
+    character(len=:),allocatable,intent(out),optional :: latex !! LaTeX string of `f(x)`
 
     real(wp),parameter :: pi = acos(-1.0_wp)
 
@@ -215,6 +218,7 @@ program root_tests
 
     dn = real(n, wp)
     ns = [1] ! default case
+    if (present(latex)) latex = ''
 
     select case (nprob)
     case (1)
@@ -222,10 +226,51 @@ program root_tests
         b = pi
         root = 1.8954942670339809E+00_wp
         if (present(x)) f = sin(x) - x/2.0_wp
-    case (2)
-        a = 1.0_wp + 1.0e-9_wp
-        b = (2.0_wp)*(2.0_wp) - 1.0e-9_wp
-        root = 3.0229153472730570E+00_wp
+        if (present(latex)) latex = '\sin x - x/2'
+    case (2:11)
+
+        select case (nprob)
+        case(2)
+            a = 1.0_wp + 1.0e-9_wp
+            b = (2.0_wp)*(2.0_wp) - 1.0e-9_wp
+            root = 3.0229153472730570E+00_wp
+        case (3)
+            a = (2.0_wp)*(2.0_wp) + 1.0e-9_wp
+            b = (3.0_wp)*(3.0_wp) - 1.0e-9_wp
+            root = 6.6837535608080781E+00_wp
+        case (4)
+            a = (3.0_wp)*(3.0_wp) + 1.0e-9_wp
+            b = (4.0_wp)*(4.0_wp) - 1.0e-9_wp
+            root = 1.1238701655002212E+01_wp
+        case (5)
+            a = (4.0_wp)*(4.0_wp) + 1.0e-9_wp
+            b = (5.0_wp)*(5.0_wp) - 1.0e-9_wp
+            root = 1.9676000080623409E+01_wp
+        case (6)
+            a = (5.0_wp)*(5.0_wp) + 1.0e-9_wp
+            b = (6.0_wp)*(6.0_wp) - 1.0e-9_wp
+            root = 2.9828227326504754E+01_wp
+        case (7)
+            a = (6.0_wp)*(6.0_wp) + 1.0e-9_wp
+            b = (7.0_wp)*(7.0_wp) - 1.0e-9_wp
+            root = 4.1906116195289413E+01_wp
+        case (8)
+            a = (7.0_wp)*(7.0_wp) + 1.0e-9_wp
+            b = (8.0_wp)*(8.0_wp) - 1.0e-9_wp
+            root = 5.5953595800143094E+01_wp
+        case (9)
+            a = (8.0_wp)*(8.0_wp) + 1.0e-9_wp
+            b = (9.0_wp)*(9.0_wp) - 1.0e-9_wp
+            root = 7.1985665586587795E+01_wp
+        case (10)
+            a = (9.0_wp)*(9.0_wp) + 1.0e-9_wp
+            b = (10.0_wp)*(10.0_wp) - 1.0e-9_wp
+            root = 9.0008868539166666E+01_wp
+        case (11)
+            a = (10.0_wp)*(10.0_wp) + 1.0e-9_wp
+            b = (11.0_wp)*(11.0_wp) - 1.0e-9_wp
+            root = 1.1002653274833019E+02_wp
+        end select
         if (present(x)) then
             f = 0.0_wp
             do i = 1, 20
@@ -234,129 +279,25 @@ program root_tests
             end do
             f = -2.0_wp*f
         end if
-    case (3)
-        a = (2.0_wp)*(2.0_wp) + 1.0e-9_wp
-        b = (3.0_wp)*(3.0_wp) - 1.0e-9_wp
-        root = 6.6837535608080781E+00_wp
-        if (present(x)) then
-            f = 0.0_wp
-            do i = 1, 20
-                di = real(i,wp)
-                f = f + ((2.0_wp*di - 5.0_wp)**2)/(x - di*di)**3
-            end do
-            f = -2.0_wp*f
-        end if
-    case (4)
-        a = (3.0_wp)*(3.0_wp) + 1.0e-9_wp
-        b = (4.0_wp)*(4.0_wp) - 1.0e-9_wp
-        root = 1.1238701655002212E+01_wp
-        if (present(x)) then
-            f = 0.0_wp
-            do i = 1, 20
-                di = real(i,wp)
-                f = f + ((2.0_wp*di - 5.0_wp)**2)/(x - di*di)**3
-            end do
-            f = -2.0_wp*f
-        end if
-    case (5)
-        a = (4.0_wp)*(4.0_wp) + 1.0e-9_wp
-        b = (5.0_wp)*(5.0_wp) - 1.0e-9_wp
-        root = 1.9676000080623409E+01_wp
-        if (present(x)) then
-            f = 0.0_wp
-            do i = 1, 20
-                di = real(i,wp)
-                f = f + ((2.0_wp*di - 5.0_wp)**2)/(x - di*di)**3
-            end do
-            f = -2.0_wp*f
-        end if
-    case (6)
-        a = (5.0_wp)*(5.0_wp) + 1.0e-9_wp
-        b = (6.0_wp)*(6.0_wp) - 1.0e-9_wp
-        root = 2.9828227326504754E+01_wp
-        if (present(x)) then
-            f = 0.0_wp
-            do i = 1, 20
-                di = real(i,wp)
-                f = f + ((2.0_wp*di - 5.0_wp)**2)/(x - di*di)**3
-            end do
-            f = -2.0_wp*f
-        end if
-    case (7)
-        a = (6.0_wp)*(6.0_wp) + 1.0e-9_wp
-        b = (7.0_wp)*(7.0_wp) - 1.0e-9_wp
-        root = 4.1906116195289413E+01_wp
-        if (present(x)) then
-            f = 0.0_wp
-            do i = 1, 20
-                di = real(i,wp)
-                f = f + ((2.0_wp*di - 5.0_wp)**2)/(x - di*di)**3
-            end do
-            f = -2.0_wp*f
-        end if
-    case (8)
-        a = (7.0_wp)*(7.0_wp) + 1.0e-9_wp
-        b = (8.0_wp)*(8.0_wp) - 1.0e-9_wp
-        root = 5.5953595800143094E+01_wp
-        if (present(x)) then
-            f = 0.0_wp
-            do i = 1, 20
-                di = real(i,wp)
-                f = f + ((2.0_wp*di - 5.0_wp)**2)/(x - di*di)**3
-            end do
-            f = -2.0_wp*f
-        end if
-    case (9)
-        a = (8.0_wp)*(8.0_wp) + 1.0e-9_wp
-        b = (9.0_wp)*(9.0_wp) - 1.0e-9_wp
-        root = 7.1985665586587795E+01_wp
-        if (present(x)) then
-            f = 0.0_wp
-            do i = 1, 20
-                di = real(i,wp)
-                f = f + ((2.0_wp*di - 5.0_wp)**2)/(x - di*di)**3
-            end do
-            f = -2.0_wp*f
-        end if
-    case (10)
-        a = (9.0_wp)*(9.0_wp) + 1.0e-9_wp
-        b = (10.0_wp)*(10.0_wp) - 1.0e-9_wp
-        root = 9.0008868539166666E+01_wp
-        if (present(x)) then
-            f = 0.0_wp
-            do i = 1, 20
-                di = real(i,wp)
-                f = f + ((2.0_wp*di - 5.0_wp)**2)/(x - di*di)**3
-            end do
-            f = -2.0_wp*f
-        end if
-    case (11)
-        a = (10.0_wp)*(10.0_wp) + 1.0e-9_wp
-        b = (11.0_wp)*(11.0_wp) - 1.0e-9_wp
-        root = 1.1002653274833019E+02_wp
-        if (present(x)) then
-            f = 0.0_wp
-            do i = 1, 20
-                di = real(i,wp)
-                f = f + ((2.0_wp*di - 5.0_wp)**2)/(x - di*di)**3
-            end do
-            f = -2.0_wp*f
-        end if
+        if (present(latex)) latex = '-2 \sum_{i=1}^{20} ((2i - 5)^2)/(x - i^2)^3'
     case (12)
         a = -9.0_wp
         b = 31.0_wp
         root = 0.0_wp
         if (present(x)) f = -40.0_wp*x*exp(-1.0_wp*x)
+        if (present(latex)) latex = '-40 x \mathrm{e}^{-x}'
     case (13)
         a = -9.0_wp
         b = 31.0_wp
         root = 0.0_wp
         if (present(x)) f = -100.0_wp*x*exp(-2.0_wp*x)
+        if (present(latex)) latex = '-100 x \mathrm{e}^{-2 x}'
     case (14)
         a = -9.0_wp
         b = 31.0_wp
         root = 0.0_wp
         if (present(x)) f = -200.0_wp*x*exp(-3.0_wp*x)
+        if (present(latex)) latex = '-200 x \mathrm{e}^{-3 x}'
     case (15)
         a = 0.0_wp
         b = 5.0_wp
@@ -373,32 +314,28 @@ program root_tests
             end select
         end if
         if (present(x)) f = x**n - 0.2_wp
-    case (16)
-        a = 0.0_wp
-        b = 5.0_wp
-        ns = [4, 6, 8, 10, 12]
-        if (present(xroot)) then
-            select case (n)
-            case(4);    root = 1.0_wp
-            case(6);    root = 1.0_wp
-            case(8);    root = 1.0_wp
-            case(10);   root = 1.0_wp
-            case(12);   root = 1.0_wp
-            case default; write(*,*) 'invalid n: ', n ; error stop
-            end select
-        end if
-        if (present(x)) f = x**n - 1.0_wp
-    case (17)
-        a = -0.95_wp
-        b = 4.05_wp
+        if (present(latex)) latex = 'x^n - 0.2'
+    case (16:17)
+        select case (nprob)
+        case(16)
+            a = 0.0_wp
+            b = 5.0_wp
+            ns = [4, 6, 8, 10, 12]
+        case (17)
+            a = -0.95_wp
+            b = 4.05_wp
+            root = 1.0_wp
+            ns = [8, 10, 12, 14]
+        end select
         root = 1.0_wp
-        ns = [8, 10, 12, 14]
         if (present(x)) f = x**n - 1.0_wp
+        if (present(latex)) latex = 'x^n - 1'
     case (18)
         a = 0.0_wp
         b = 1.5_wp
         root = 5.2359877559829887E-01_wp
         if (present(x)) f = sin(x) - 0.5_wp
+        if (present(latex)) latex = '\sin x - 0.5'
     case (19)
         a = 0.0_wp
         b = 1.0_wp
@@ -419,6 +356,7 @@ program root_tests
             end select
         end if
         if (present(x)) f = 2.0_wp*x*exp(-dn) - 2.0_wp*exp(-dn*x) + 1.0_wp
+        if (present(latex)) latex = '2 x \mathrm{e}^{-n} - 2 \mathrm{e}^{-n x} + 1'
     case (20)
         a = 0.0_wp
         b = 1.0_wp
@@ -432,6 +370,7 @@ program root_tests
             end select
         end if
         if (present(x)) f = (1.0_wp + (1.0_wp - dn)**2)*x - (1.0_wp - dn*x)**2
+        if (present(latex)) latex = '(1 + (1 - n)^2)x - (1 - n x)^2'
     case (21)
         a = 0.0_wp
         b = 1.0_wp
@@ -447,6 +386,7 @@ program root_tests
             end select
         end if
         if (present(x)) f = x**2 - (1.0_wp - x)**n
+        if (present(latex)) latex = 'x^2 - (1-x)^n'
     case (22)
         a = 0.0_wp
         b = 1.0_wp
@@ -464,6 +404,7 @@ program root_tests
             end select
         end if
         if (present(x)) f = (1.0_wp + (1.0_wp - dn)**4)*x - (1.0_wp - dn*x)**4
+        if (present(latex)) latex = '(1 + (1 - n)^4) x - (1 - n x)^4'
     case (23)
         a = 0.0_wp
         b = 1.0_wp
@@ -479,6 +420,7 @@ program root_tests
             end select
         end if
         if (present(x)) f = (x - 1.0_wp)*exp(-dn*x) + x**n
+        if (present(latex)) latex = '(x - 1) \mathrm{e}^{-n x} + x^n'
     case (24)
         a = 1.0e-2_wp
         b = 1.0_wp
@@ -493,16 +435,18 @@ program root_tests
             end select
         end if
         if (present(x)) f = (dn*x - 1.0_wp)/((dn - 1.0_wp)*x)
+        if (present(latex)) latex = '\frac{n x - 1}{(n - 1)x}'
     case (25)
         a = 1.0_wp
         b = 100.0_wp
         ns = [2,3,4,5,6,7,9,11,13,15,17,19,21,23,25,27,29,31,33]
         root = real(n,wp)
         if (present(x)) f = x**(1.0_wp/dn) - dn**(1.0_wp/dn)
+        if (present(latex)) latex = 'x^{1/n} - n^{1/n}'
     case (26)
         a = -1.0_wp
         b = 4.0_wp
-        root = 0.0_wp    ! this is just almost impossible so get
+        root = 0.0_wp    ! this is just almost impossible to get
         if (present(x)) then
             if (x == 0.0_wp) then
                 f = 0.0_wp
@@ -510,6 +454,7 @@ program root_tests
                 f = x/exp(1.0_wp/(x*x))
             end if
         end if
+        if (present(latex)) latex = 'TODO'
     case (27)
         a = -10000.0_wp
         b = pi/2.0_wp
@@ -522,6 +467,7 @@ program root_tests
                 f = (-1.0_wp*dn)/20.0_wp
             end if
         end if
+        if (present(latex)) latex = 'TODO'
     case (28)
         a = -10000.0_wp
         b = 1.0e-4_wp
@@ -571,12 +517,14 @@ program root_tests
                 f = -0.859_wp
             end if
         end if
+        if (present(latex)) latex = 'TODO'
     case (29)
         ! Zhang test case
         a = 0.0_wp
         b = 4.0_wp
         root = 8.6547403310161445E-01_wp
         if (present(x)) f = cos(x) - x**3
+        if (present(latex)) latex = '\cos x - x^3'
 
     ! 30-36 : Gottlieb's paper [table 1 & 2]
     case (30)
@@ -584,81 +532,95 @@ program root_tests
         b = 1.0_wp
         root = asin(2.0_wp/3.0_wp)
         if (present(x)) f = 3.0_wp * sin(x) - 2.0_wp
+        if (present(latex)) latex = '3 \sin x - 2'
     case (31)
         a = -1.0_wp
         b = 1.0_wp
         root = 5.6714329040978387E-01_wp
         if (present(x)) f = x*exp(x) - 1.0_wp
+        if (present(latex)) latex = 'x \mathrm{e}^x - 1'
     case (32)
         a = 0.1_wp
         b = 0.9_wp
         root = 8.0413309750366432E-01_wp
         if (present(x)) f = 11.0_wp * x**11 - 1.0_wp
+        if (present(latex)) latex = '11 x^{11} - 1'
     case (33)
         a = 2.8_wp
         b = 3.1_wp
         root = 3.0_wp
         if (present(x)) f = exp(x**2 + 7.0_wp*x - 30.0_wp) - 1.0_wp
+        if (present(latex)) latex = '\mathrm{e}^{x^2 + 7x - 30} - 1'
     case (34)
         a = -1.3_wp
         b = -0.5_wp
         root = -6.2944648407333333E-01_wp
         if (present(x)) f = 1.0_wp/x - sin(x) + 1.0_wp
+        if (present(latex)) latex = '1/x - \sin x + 1'
     case (35)
         a = 2.0_wp
         b = 3.0_wp
         root = 2.0945514815423266E+00_wp
         if (present(x)) f = x**3 - 2.0_wp*x - 5.0_wp
+        if (present(latex)) latex = 'x^3 - 2 x - 5'
     case (36)
         a = 0.5_wp
         b = 2.0_wp
         root = 1.0_wp
         if (present(x)) f = 1.0_wp/x - 1.0_wp
-
+        if (present(latex)) latex = '1/x - 1'
     case (37)
         a = -10.0_wp
         b = 10.0_wp
         root = 1.0_wp
         if (present(x)) f = x**3 - 5.0_wp*x**2 + 12.0_wp*x - 8.0_wp
+        if (present(latex)) latex = 'x^3 - 5 x^2 + 12 x - 8'
     case (38)
         a = 0.0_wp
         b = 10.0_wp
         root = 1.0_wp
         if (present(x)) f = x**5 - 61.0_wp*x**4 + 1368.0_wp*x**3 - &
                             13548.0_wp*x**2 + 54256.0_wp*x - 42016.0_wp ! x in [0, 10]
+        if (present(latex)) latex = 'x^5 - 61 x^4 + 1368 x^3 - 13548 x^2 + 54256 x - 42016'
     case (39)
         a = 0.0_wp
         b = 10.0_wp
         root = 1.0_wp
         if (present(x)) f = x**5-61.0_wp*x**4+6801.0_wp/5.0_wp*x**3-66531.0_wp/&
                             5.0_wp*x**2+5205601.0_wp/100.0_wp*x-4005001.0_wp/100.0_wp
+        if (present(latex)) latex = 'x^5 - 61 x^4 + 6801 x^3 / 5 - 66531 x^2 / 5 + 5205601 x / 100 - 4005001/100'
     case (40)
         a = 0.0_wp
         b = 10.0_wp
         root = 1.0_wp
         if (present(x)) f = (x-1.0_wp)**5
+        if (present(latex)) latex = '(x-1)^5'
     case (41)
         !From: http://www.mth.pdx.edu/~daescu/mth451_551/Muller_bisection.pdf
         a = -2.0_wp
         b = 3.0_wp
         root = 0.0_wp
         if (present(x)) f = atan(x)
+        if (present(latex)) latex = '\tan^{-1} x'
     case (42)
         !From: http://www.mth.pdx.edu/~daescu/mth451_551/Muller_bisection.pdf
         a = 0.0_wp     ! x1 is the location of the root for this case
         b = 3.0_wp
         root = 0.0_wp
         if (present(x)) f = exp(x) - 2.0_wp*x - 1.0_wp
+        if (present(latex)) latex = '\mathrm{e}^{x} - 2 x - 1'
     case (43)
         a = 0.0_wp
         b = 0.7_wp
         root = 6.7771292632868404E-01_wp
         if (present(x)) f = 3.0_wp * x*sin(x*20.0_wp)*cos(x) + x - 2.0_wp
+        if (present(latex)) latex = '3 x \sin(20 x) \cos x + x - 2'
     case (44)
         a = -0.7_wp
         b = 0.4_wp
         root = -6.4008369608468403E-01_wp
         if (present(x)) f = 3.0_wp * x**2*sin(x*20.0_wp) + cos(x*2.0_wp)
+
     case (45)
         !case 11 from "Algorithm 748: Enclosing Zeros of Continuous Functions" (n=20)
         a = 0.01_wp
@@ -673,86 +635,92 @@ program root_tests
         if (present(x)) f = sin(x*10.0_wp) + sin(x*2.0_wp) + &
                             atan(x/3.0_wp)*x**2 + exp(x) - 1.0_wp
 
-    ! 2xx functions are from:
+    ! functions are from:
     !   T. R. Chandrupatla, "A new hybrid quadratic/bisection algorithm for finding the zero of
     !   a nonlinear function without using derivatives", Advances in Engineering Software
     !   Volume 28, Issue 3, April 1997, Pages 145-149
 
-    case (47)
-        a = 0.5_wp
-        b = 1.51_wp
+    case (47:48)
+        select case (nprob)
+        case (47)
+            a = 0.5_wp
+            b = 1.51_wp
+        case (48)
+            a =  1.0e-12_wp
+            b =  1.0e12_wp
+        end select
         root = 1.0_wp
         if (present(x)) f = 1.0_wp - 1.0_wp/(x**2)
-    case (48)
-        a =  1.0e-12_wp
-        b =  1.0e12_wp
-        root = 1.0_wp
-        if (present(x)) f = 1.0_wp - 1.0_wp/(x**2)
-    case (49)
-        a = 0.0_wp
-        b = 5.0_wp
+    case (49:50)
+        select case (nprob)
+        case (49)
+            a = 0.0_wp
+            b = 5.0_wp
+        case (50)
+            a = -1.0e10_wp
+            b =  1.0e10_wp
+        end select
         root = 3.0_wp
         if (present(x)) f = (x-3.0_wp)**3
-    case (50)
-        a = -1.0e10_wp
-        b =  1.0e10_wp
-        root = 3.0_wp
-        if (present(x)) f = (x-3.0_wp)**3
-    case (51)
-        a = 0.0_wp
-        b = 5.0_wp
+    case (51:52)
+        select case (nprob)
+        case (51)
+            a = 0.0_wp
+            b = 5.0_wp
+        case (52)
+            a = -1.0e10_wp
+            b =  1.0e10_wp
+        end select
         root = 2.0_wp
         if (present(x)) f = 6.0_wp*(x-2.0_wp)**5
-    case (52)
-        a = -1.0e10_wp
-        b =  1.0e10_wp
-        root = 2.0_wp
-        if (present(x)) f = 6.0_wp*(x-2.0_wp)**5
-    case (53)
-        a = -1.0_wp
-        b =  4.0_wp
+    case (53:54)
+        select case (nprob)
+        case (53)
+            a = -1.0_wp
+            b =  4.0_wp
+        case (54)
+            a = -10.0_wp
+            b =  100.0_wp
+        end select
         root = 0.0_wp
         if (present(x)) f = x**9
-    case (54)
-        a = -10.0_wp
-        b =  100.0_wp
-        root = 0.0_wp
-        if (present(x)) f = x**9
-    case (55)
-        a = -1.0_wp
-        b =  4.0_wp
-        root = 0.0_wp
-        if (present(x)) f = x**19
-    case (56)
-        a = -10.0_wp
-        b =  100.0_wp
+    case (55:56)
+        select case (nprob)
+        case (55)
+            a = -1.0_wp
+            b =  4.0_wp
+        case (56)
+            a = -10.0_wp
+            b =  100.0_wp
+        end select
         root = 0.0_wp
         if (present(x)) f = x**19
-    case (57)
-        a = -1.0_wp
-        b =  4.0_wp
+    case (57:58)
+        select case (nprob)
+        case (57)
+            a = -1.0_wp
+            b =  4.0_wp
+        case (58)
+            a = -10.0_wp
+            b =  100.0_wp
+        end select
         root = 0.0_wp
         if (present(x)) then
-            if (abs(x) < 3.8e-4_wp) then  ! same as #26 above except for this
+            if (abs(x) < 3.8e-4_wp) then  ! same as one above except for this
                 f = 0.0_wp
             else
                 f = x*exp(-x**(-2))
             endif
         end if
-    case (58)
-        a = -10.0_wp
-        b =  100.0_wp
-        root = 0.0_wp
-        if (present(x)) then
-            if (abs(x) < 3.8e-4_wp) then  ! same as #26 above except for this
-                f = 0.0_wp
-            else
-                f = x*exp(-x**(-2))
-            endif
-        end if
-    case (59)
-        a = 2.0e-4_wp
-        b = 2.0_wp
+    case (59:60)
+        select case (nprob)
+        case (59)
+            a = 2.0e-4_wp
+            b = 2.0_wp
+        case (60)
+            a = 2.0e-4_wp
+            b = 81.0_wp
+        end select
         root = 1.0375360332870403E+00_wp
         if (present(x)) then
             xi = 0.61489_wp
@@ -760,27 +728,15 @@ program root_tests
             emx = exp(-x)
             f = -(3062.0_wp*t1*emx)/(xi + t1*emx) - 1013.0_wp + 1628.0_wp/x
         end if
-    case (60)
-        a = 2.0e-4_wp
-        b = 81.0_wp
-        root = 1.0375360332870403E+00_wp
-        if (present(x)) then
-            xi = 0.61489_wp
-            t1 = 1.0_wp-xi
-            emx = exp(-x)
-            f = -(3062.0_wp*t1*emx)/(xi + t1*emx) - 1013.0_wp + 1628.0_wp/x
-        end if
-    case (61)
-        a = 2.0e-4_wp
-        b = 1.0_wp
-        root = 7.0320484036313581E-01_wp
-        if (present(x)) then
-            ex = exp(x)
-            f = ex - 2.0_wp - 0.01_wp/(x*x) + 2.0e-6_wp/(x*x*x)
-        end if
-    case (62)
-        a = 2.0e-4_wp
-        b = 81.0_wp
+    case (61:62)
+        select case (nprob)
+        case (61)
+            a = 2.0e-4_wp
+            b = 1.0_wp
+        case (62)
+            a = 2.0e-4_wp
+            b = 81.0_wp
+        end select
         root = 7.0320484036313581E-01_wp
         if (present(x)) then
             ex = exp(x)
@@ -833,14 +789,15 @@ program root_tests
         b = 10.0001_wp
         root = 1.0018618683298285E+00_wp
         if (present(x)) f = x**2 - 1.0038273894_wp + sin(x/10000.0_wp)
-    case(71)
-        a = -2.0001_wp
-        b = 1.0001_wp
-        root = 0.0_wp
-        if (present(x)) f = x
-    case(72)
-        a = -0.0001_wp  ! root very close to a
-        b = 1.0001_wp
+    case(71:72)
+        select case (nprob)
+        case (71)
+            a = -2.0001_wp
+            b = 1.0001_wp
+        case(72)
+            a = -0.0001_wp  ! root very close to a
+            b = 1.0001_wp
+        end select
         root = 0.0_wp
         if (present(x)) f = x
 
@@ -858,64 +815,141 @@ program root_tests
         root =  5.0275246628429326E+00_wp
         if (present(x)) f = ((x - 3.0_wp)*x - 9.0_wp)*x - 6.0_wp
 
-    case(75)
-        a = -5.0_wp
-        b = -3.0_wp
-        root = -3.5437609487522587E+00_wp
+    case(75:78)
+        select case (nprob)
+        case (75)
+            a = -5.0_wp
+            b = -3.0_wp
+            root = -3.5437609487522587E+00_wp
+        case (76)
+            a = -3.0_wp
+            b = -2.0_wp
+            root = -2.2701871608581255E+00_wp
+        case (77)
+            a = -2.0_wp
+            b = 0.0_wp
+            root = -2.0646554491023637E-01_wp
+        case (78)
+            a = 0.0_wp
+            b = 9.0_wp
+            root = 6.0204136545206206E+00_wp
+        end select
         if (present(x)) f = ((x*x - 27.0_wp)*x - 54.0_wp)*x - 10.0_wp
 
-    case(76)
-        a = 0.0_wp
-        b = 2.0_wp
-        root =  1.1893836076828531E+00_wp
+    case(79:82)
+        select case (nprob)
+        case (79)
+            a = 0.0_wp
+            b = 2.0_wp
+            root =  1.1893836076828531E+00_wp
+        case (80)
+            a = 2.0_wp
+            b = 4.0_wp
+            root = 3.4254515851826428E+00_wp
+        case (81)
+            a = 4.0_wp
+            b = 8.0_wp
+            root = 6.5745484148173572E+00_wp
+        case (82)
+            a = 8.0_wp
+            b = 9.0_wp
+            root = 8.8106163923171469E+00_wp
+        end select
         if (present(x)) f = (((x-20.0_wp)*x + 133.0_wp)*x - 330.0_wp)*x + 236.0_wp
 
-    case(77)
+    case(83)
         a = 0.0_wp
         b = 3.0_wp
         root =  1.2554228710768465E+00_wp
         if (present(x)) f = (x - 1.0_wp)*x**6 - 1.0_wp
 
-    case(78)
-        a = -5.0_wp
-        b = 0.0_wp
-        root = -1.3926261305968417E+00_wp
+    case(84:85)
+        select case (nprob)
+        case(84)
+            a = -5.0_wp
+            b = 0.0_wp
+            root = -1.3926261305968417E+00_wp
+        case(85)
+            a = 0.0_wp
+            b = 5.0_wp
+            root = 3.0001928237608510E+00_wp
+        end select
         if (present(x)) f = (((x*x - 6.0_wp)*x - 8.0_wp)*x - 3.0_wp)*x**4 - 1.0_wp
 
-    case(79)
-        a = 0.0_wp
-        b = 2.0_wp
-        root =  1.0883595391412838E+00_wp
+    case(86:88)
+        select case (nprob)
+        case(86)
+            a = 0.0_wp
+            b = 2.0_wp
+            root =  1.0883595391412838E+00_wp
+        case(87)
+            a = 2.0_wp
+            b = 6.0_wp
+            root = 4.6333772273659109E+00_wp
+        case(88)
+            a = 6.0_wp
+            b = 8.0_wp
+            root = 7.2609923862369942E+00_wp
+        end select
         if (present(x)) f = ((x - 13.0_wp)*x + 47.0_wp)*x - 36.0_wp - sqrt(x)
 
-    case(80)
-        a = 0.0_wp
-        b = 2.0_wp
-        root =  1.1118325591589630E+00_wp
+    case(89:90)
+        select case (nprob)
+        case (89)
+            a = 0.0_wp
+            b = 2.0_wp
+            root =  1.1118325591589630E+00_wp
+        case (90)
+            a = 2.0_wp
+            b = 5.0_wp
+            root = 4.5771520639572972E+00_wp
+        end select
         if (present(x)) f = exp(1.0_wp-x)*(x-1.0_wp)*10.0_wp - 1.0_wp
 
-    case(81)
+    case(91)
         a = 2.0_wp
         b = 3.0_wp
         root =  2.8424389537844471E+00_wp
         if (present(x)) f = exp(x) + x - 20.0_wp
 
-    case(82)
+    case(92)
         a = 0.0_wp
         b = 2.0_wp
         root =  1.3065586410393502E+00_wp   ! the root in the paper is wrong for this one !
         if (present(x)) f = exp(x) + x - 5.0_wp
 
-    case(83)
-        a = 0.0_wp
-        b = 6.0_wp
-        root =  3.1094324994726575E+00_wp
+    case(93:94)
+        select case (nprob)
+        case (93)
+            a = 0.0_wp
+            b = 6.0_wp
+            root =  3.1094324994726575E+00_wp
+        case (94)
+            a = 6.0_wp
+            b = 8.0_wp
+            root = 7.0453708632631685E+00_wp
+        end select
         if (present(x)) f = (x - 10.0_wp)*x + 23.0_wp - x**0.4_wp
 
-    case(84)
-        a = 0.0_wp
-        b = 1.0_wp
-        root =  3.6682419352992085E-01_wp
+    case(95:98)
+        select case (nprob)
+        case (95)
+            a = 0.0_wp
+            b = 1.0_wp
+            root =  3.6682419352992085E-01_wp
+        case (96)
+            a = 1.0_wp
+            b = 5.0_wp
+            root = 3.5735001943758262E+00_wp
+        case (97)
+            a = 5.0_wp
+            b = 7.0_wp
+            root = 5.7880397474352980E+00_wp
+        case (98)
+            a = 7.0_wp
+            b = 10.0_wp
+            root = 9.2131701574933741E+00_wp
+        end select
         if (present(x)) f = (0.04_wp*x - 0.4_wp)*x + 0.5_wp - sin(x)
 
     case default
@@ -923,7 +957,7 @@ program root_tests
         error stop 'invalid case'
     end select
 
-    if (present(num_of_problems)) num_of_problems = 84
+    if (present(num_of_problems)) num_of_problems = 98
 
     ! outputs:
     if (present(ax))    ax = a
@@ -986,6 +1020,77 @@ program root_tests
     b   = tmp
 
     end subroutine swap
+
+    subroutine generate_plots()
+
+    use pyplot_module
+
+    implicit none
+
+    integer,parameter :: n_points = 1000
+    character(len=*),parameter :: ext = '.pdf' !! plot file type
+
+    type(pyplot) :: plt   !! pytplot handler
+    integer :: num_of_problems
+    integer :: istat,i,ic
+    character(len=10) :: s1,s2
+    real(wp) :: x,ax,bx,xroot,froot,delta
+    integer,dimension(:),allocatable :: cases_to_run
+    real(wp),dimension(n_points) :: xvec
+    real(wp),dimension(n_points) :: yvec
+    character(len=:),allocatable :: filename, title, latex
+
+    write(*,*) 'generate_plots...'
+
+   ! call problems(x, ax, bx, fx, xroot, cases, num_of_problems)
+
+    n = 1  ! initialize
+    nprob = 1
+
+    call problems(num_of_problems=num_of_problems)
+
+    do nprob = 1, num_of_problems
+
+        write(*,*) 'case', nprob, '/', num_of_problems
+
+        call problems(cases=cases_to_run,latex=latex)
+        write(s1,'(I10)') nprob; s1 = trim(adjustl(s1)) ! int to str
+
+        do ic = 1, size(cases_to_run)
+
+            n = cases_to_run(ic)
+
+            write(s2,'(I10)') n; s2 = trim(adjustl(s2)) ! int to str
+
+            call problems(ax=ax, bx=bx, xroot=xroot)
+            call problems(x=xroot, fx=froot)
+            delta = (bx-ax)/(n_points-1)
+
+            do i = 1, n_points
+                xvec(i) = ax + delta * (i-1)
+                call problems(x=xvec(i), fx=yvec(i))
+            end do
+
+            if (size(cases_to_run)==1) then
+                title = 'Case '//trim(s1)//' : $f(x) = '//latex//'$'
+                filename = 'plottest_'//'CASE='//trim(s1)//ext
+            else
+                title = 'Case '//trim(s1)//' (n='//trim(s2)//')'//' : $f(x) = '//latex//'$'
+                filename = 'plottest_'//'CASE='//trim(s1)//'_N='//trim(s2)//ext
+            end if
+
+            call plt%initialize(grid=.true.,xlabel='x',ylabel='f(x)',figsize=[10,5],&
+                                title=title,legend=.true.,&
+                                tight_layout=.true.)
+            call plt%add_plot(xvec,yvec,label='f(x)',linestyle='-',markersize=5,linewidth=2,istat=istat)
+            call plt%add_plot([xroot],[froot],label='root',linestyle='.',markersize=10,linewidth=2,istat=istat)
+            call plt%savefig(filename,istat=istat)
+
+        end do
+
+    end do
+
+    end subroutine generate_plots
 
 !*****************************************************************************************
     end program root_tests

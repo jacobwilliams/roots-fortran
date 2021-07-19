@@ -1056,7 +1056,7 @@
             x_ok = .false.
         else
             x = c - 2.0_wp*(c - b)*cc/denon
-            x_ok = ieee_is_finite(x) .and. .not. ieee_is_nan(x)
+            x_ok = ieee_is_finite(x) .and. .not. ieee_is_nan(x)   ! this may not be necessary
         end if
 
         ! make sure that x is ok, in the correct interval, and distinct.
