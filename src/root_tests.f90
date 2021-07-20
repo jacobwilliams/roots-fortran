@@ -613,14 +613,14 @@ program root_tests
         a = 0.0_wp
         b = 0.7_wp
         root = 6.7771292632868404E-01_wp
-        if (present(x)) f = 3.0_wp * x*sin(x*20.0_wp)*cos(x) + x - 2.0_wp
+        if (present(x)) f = 3.0_wp * x * sin(x*20.0_wp)*cos(x) + x - 2.0_wp
         if (present(latex)) latex = '3 x \sin(20 x) \cos x + x - 2'
     case (44)
         a = -0.7_wp
         b = 0.4_wp
         root = -6.4008369608468403E-01_wp
-        if (present(x)) f = 3.0_wp * x**2*sin(x*20.0_wp) + cos(x*2.0_wp)
-
+        if (present(x)) f = 3.0_wp * x**2 * sin(x*20.0_wp) + cos(x*2.0_wp)
+        if (present(latex)) latex = '3 x^2 \sin (20x) + \cos(2x)'
     case (45)
         !case 11 from "Algorithm 748: Enclosing Zeros of Continuous Functions" (n=20)
         a = 0.01_wp
@@ -628,12 +628,14 @@ program root_tests
         root = 0.05_wp
         ns = [20]
         if (present(x)) f = (real(n,wp)*x-1.0_wp)/((real(n,wp)-1.0_wp)*x)
+        if (present(latex)) latex = '\frac{n x - 1}{(n - 1.0) x}'
     case (46)
         a = -10.0_wp
         b = 5.0_wp
         root = 0.0_wp
         if (present(x)) f = sin(x*10.0_wp) + sin(x*2.0_wp) + &
                             atan(x/3.0_wp)*x**2 + exp(x) - 1.0_wp
+        if (present(latex)) latex = '\sin(10 x) + \sin(2 x) + \atan(x/3) x^2 + \mathrm{e}^x - 1'
 
     ! functions are from:
     !   T. R. Chandrupatla, "A new hybrid quadratic/bisection algorithm for finding the zero of
@@ -651,6 +653,7 @@ program root_tests
         end select
         root = 1.0_wp
         if (present(x)) f = 1.0_wp - 1.0_wp/(x**2)
+        if (present(latex)) latex = '1 - 1/x^2'
     case (49:50)
         select case (nprob)
         case (49)
@@ -662,6 +665,7 @@ program root_tests
         end select
         root = 3.0_wp
         if (present(x)) f = (x-3.0_wp)**3
+        if (present(latex)) latex = '(x - 3)^3'
     case (51:52)
         select case (nprob)
         case (51)
@@ -673,6 +677,7 @@ program root_tests
         end select
         root = 2.0_wp
         if (present(x)) f = 6.0_wp*(x-2.0_wp)**5
+        if (present(latex)) latex = '6 (x-2)^5'
     case (53:54)
         select case (nprob)
         case (53)
@@ -684,6 +689,7 @@ program root_tests
         end select
         root = 0.0_wp
         if (present(x)) f = x**9
+        if (present(latex)) latex = 'x^9'
     case (55:56)
         select case (nprob)
         case (55)
@@ -695,6 +701,7 @@ program root_tests
         end select
         root = 0.0_wp
         if (present(x)) f = x**19
+        if (present(latex)) latex = 'x^19'
     case (57:58)
         select case (nprob)
         case (57)
@@ -712,6 +719,7 @@ program root_tests
                 f = x*exp(-x**(-2))
             endif
         end if
+        if (present(latex)) latex = 'TODO'
     case (59:60)
         select case (nprob)
         case (59)
@@ -728,6 +736,7 @@ program root_tests
             emx = exp(-x)
             f = -(3062.0_wp*t1*emx)/(xi + t1*emx) - 1013.0_wp + 1628.0_wp/x
         end if
+        if (present(latex)) latex = '-\frac{3062 * t1 * \mathrm{e}^{-x}}{0.61489 + 0.38511 * \mathrm{e}^{-x}} - 1013.0 + 1628.0/x'
     case (61:62)
         select case (nprob)
         case (61)
@@ -742,6 +751,7 @@ program root_tests
             ex = exp(x)
             f = ex - 2.0_wp - 0.01_wp/(x*x) + 2.0e-6_wp/(x*x*x)
         end if
+        if (present(latex)) latex = '\mathrm{e}^x - 2 - 0.01/x^2 + 0.000002/x^3'
 
     ! from A modified three-point Secant method with improved
     !      rate and characteristics of convergence
@@ -752,31 +762,37 @@ program root_tests
         b = 1.5_wp
         root = 1.3652300134140968E+00_wp
         if (present(x)) f = x**3 + 4.0_wp*x**2 - 10.0_wp
+        if (present(latex)) latex = 'x^3 + 4 * x^2 - 10'
     case(64)
         a = -2.0_wp
         b = -1.0_wp
         root = -1.4044916482153412E+00_wp
         if (present(x)) f = sin(x)**2 - x**2 + 1.0_wp
+        if (present(latex)) latex = '\sin^2 x - x^2 + 1'
     case(65)
         a = 1.0_wp
         b = 2.1_wp
         root = 2.0_wp
         if (present(x)) f = (x - 1.0_wp)**6 - 1.0_wp
+        if (present(latex)) latex = '(x - 1)^6 - 1'
     case(66)
         a = -0.9_wp
         b = -0.1_wp
         root = -6.0323197155721517E-01_wp
         if (present(x)) f = sin(x)*exp(x) + log(x**2+1.0_wp)
+        if (present(latex)) latex = '\sin(x) * \mathrm{e}^x + \log(x^2 + 1)'
     case(67)
         a = 1.0_wp
         b = 3.1_wp
         root = 3.0_wp
         if (present(x)) f = exp(x**2+7.0_wp*x-30.0_wp) - 1.0_wp
+        if (present(latex)) latex = '\mathrm{e}^{x^2 + 7 * x - 30} - 1'
     case(68)
         a = 1.0_wp
         b = 2.1_wp
         root = 1.8571838602078353E+00_wp
         if (present(x)) f = x - 3.0_wp * log(x)
+        if (present(latex)) latex = 'x - 3 \log x'
 
     ! some simple functions
     case(69)
@@ -784,11 +800,13 @@ program root_tests
         b = 10.0001_wp
         root = 1.0_wp
         if (present(x)) f = x**2 - 1.0_wp
+        if (present(latex)) latex = 'x^2 - 1'
     case(70)
         a = 0.0001_wp
         b = 10.0001_wp
         root = 1.0018618683298285E+00_wp
         if (present(x)) f = x**2 - 1.0038273894_wp + sin(x/10000.0_wp)
+        if (present(latex)) latex = 'x^2 - 1.0038273894 + \sin (x/10000)'
     case(71:72)
         select case (nprob)
         case (71)
@@ -800,6 +818,7 @@ program root_tests
         end select
         root = 0.0_wp
         if (present(x)) f = x
+        if (present(latex)) latex = 'x'
 
     ! D. Popovski, "A note on King's method F for finding a bracketed root", 1982.
     ! https://www.semanticscholar.org/paper/A-note-on-King's-method-F-for-finding-a-bracketed-Popovski/513ffdb3befbf48c38bb70dbec60934472cc9903
@@ -808,13 +827,14 @@ program root_tests
         b = 5.0_wp
         root =  1.4655712318767680E+00_wp
         if (present(x)) f = (x - 1.0_wp)*x*x - 1.0_wp
+        if (present(latex)) latex = '(x - 1) x^2 - 1'
 
     case(74)
         a = 0.0_wp
         b = 8.0_wp
         root =  5.0275246628429326E+00_wp
         if (present(x)) f = ((x - 3.0_wp)*x - 9.0_wp)*x - 6.0_wp
-
+        if (present(latex)) latex = '((x - 3) x - 9) x - 6'
     case(75:78)
         select case (nprob)
         case (75)
@@ -835,7 +855,7 @@ program root_tests
             root = 6.0204136545206206E+00_wp
         end select
         if (present(x)) f = ((x*x - 27.0_wp)*x - 54.0_wp)*x - 10.0_wp
-
+        if (present(latex)) latex = '((x^2 - 27) x - 54 ) x - 10'
     case(79:82)
         select case (nprob)
         case (79)
@@ -856,13 +876,13 @@ program root_tests
             root = 8.8106163923171469E+00_wp
         end select
         if (present(x)) f = (((x-20.0_wp)*x + 133.0_wp)*x - 330.0_wp)*x + 236.0_wp
-
+        if (present(latex)) latex = '(((x-20) x + 133) x - 330) x + 236'
     case(83)
         a = 0.0_wp
         b = 3.0_wp
         root =  1.2554228710768465E+00_wp
         if (present(x)) f = (x - 1.0_wp)*x**6 - 1.0_wp
-
+        if (present(latex)) latex = '(x - 1) x^6 - 1'
     case(84:85)
         select case (nprob)
         case(84)
@@ -875,6 +895,7 @@ program root_tests
             root = 3.0001928237608510E+00_wp
         end select
         if (present(x)) f = (((x*x - 6.0_wp)*x - 8.0_wp)*x - 3.0_wp)*x**4 - 1.0_wp
+        if (present(latex)) latex = '(((x^2 - 6) x - 8) x - 3) x^4 - 1'
 
     case(86:88)
         select case (nprob)
@@ -892,7 +913,7 @@ program root_tests
             root = 7.2609923862369942E+00_wp
         end select
         if (present(x)) f = ((x - 13.0_wp)*x + 47.0_wp)*x - 36.0_wp - sqrt(x)
-
+        if (present(latex)) latex = '((x - 13) x + 47 ) x - 36 - \sqrt{x}'
     case(89:90)
         select case (nprob)
         case (89)
@@ -905,18 +926,21 @@ program root_tests
             root = 4.5771520639572972E+00_wp
         end select
         if (present(x)) f = exp(1.0_wp-x)*(x-1.0_wp)*10.0_wp - 1.0_wp
+        if (present(latex)) latex = '10 \mathrm{e}^{1-x} (x-1) - 1'
 
     case(91)
         a = 2.0_wp
         b = 3.0_wp
         root =  2.8424389537844471E+00_wp
         if (present(x)) f = exp(x) + x - 20.0_wp
+        if (present(latex)) latex = '\mathrm{e}^x + x - 20'
 
     case(92)
         a = 0.0_wp
         b = 2.0_wp
         root =  1.3065586410393502E+00_wp   ! the root in the paper is wrong for this one !
         if (present(x)) f = exp(x) + x - 5.0_wp
+        if (present(latex)) latex = '\mathrm{e}^x + x - 5'
 
     case(93:94)
         select case (nprob)
@@ -930,6 +954,7 @@ program root_tests
             root = 7.0453708632631685E+00_wp
         end select
         if (present(x)) f = (x - 10.0_wp)*x + 23.0_wp - x**0.4_wp
+        if (present(latex)) latex = '(x - 10) x + 23 - x^{0.4}'
 
     case(95:98)
         select case (nprob)
@@ -951,7 +976,7 @@ program root_tests
             root = 9.2131701574933741E+00_wp
         end select
         if (present(x)) f = (0.04_wp*x - 0.4_wp)*x + 0.5_wp - sin(x)
-
+        if (present(latex)) latex = '(0.04 x - 0.4) x + 0.5 - \sin x'
     case default
         write(*,*) 'invalid case: ', nprob
         error stop 'invalid case'
@@ -1023,6 +1048,8 @@ program root_tests
 
     subroutine generate_plots()
 
+    !! generate a plot of each function.
+
     use pyplot_module
 
     implicit none
@@ -1081,7 +1108,8 @@ program root_tests
 
             call plt%initialize(grid=.true.,xlabel='x',ylabel='f(x)',figsize=[10,5],&
                                 title=title,legend=.true.,&
-                                tight_layout=.true.)
+                                tight_layout=.true.,&
+                                real_fmt = '(E30.16E3)')
             call plt%add_plot(xvec,yvec,label='f(x)',linestyle='-',markersize=5,linewidth=2,istat=istat)
             call plt%add_plot([xroot],[froot],label='root',linestyle='.',markersize=10,linewidth=2,istat=istat)
             call plt%savefig(filename,istat=istat)
