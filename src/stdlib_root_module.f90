@@ -1881,7 +1881,7 @@
 
     integer :: i !! counter
     logical :: root_found !! convergence in x
-    real(wp) :: x1,x2,x3,f1,f2,f3,g
+    real(wp) :: x1,x2,x3,f1,f2,f3,g,f1tmp
 
     ! initialize:
     iflag = 0
@@ -1935,11 +1935,13 @@
             x2 = x3
             f1 = f2
             f2 = f3
+            f1tmp = f1
         else
             ! zero lies between x1 and x3
             g = 1.0_wp-f3/f2
             if (g<=0.0_wp) g = 0.5_wp
             x2 = x3
+            f1tmp = f1
             f1 = g*f1
             f2 = f3
         end if
@@ -1947,7 +1949,7 @@
         ! check for convergence:
         root_found = me%converged(x1,x2)
         if (root_found .or. i == me%maxiter) then
-            call choose_best(x1,x2,f1,f2,xzero,fzero)
+            call choose_best(x1,x2,f1tmp,f2,xzero,fzero)
             if (.not. root_found) iflag = -2  ! max iterations reached
             exit
         end if
