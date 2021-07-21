@@ -348,10 +348,10 @@ program root_tests
         root = 1.0_wp
         if (present(x)) f = x**n - 1.0_wp
         if (present(latex)) latex = 'x^n - 1'
-    case (18)
+    case (18)  ! note: 18-24 are also in Dowell & Jarratt
         a = 0.0_wp
         b = 1.5_wp
-        root = 5.2359877559829887E-01_wp
+        root = pi / 6.0_wp
         if (present(x)) f = sin(x) - 0.5_wp
         if (present(latex)) latex = '\sin x - 0.5'
     case (19)
@@ -440,7 +440,7 @@ program root_tests
         if (present(x)) f = (x - 1.0_wp)*exp(-dn*x) + x**n
         if (present(latex)) latex = '(x - 1) \mathrm{e}^{-n x} + x^n'
     case (24)
-        a = 1.0e-2_wp
+        a = 0.01_wp
         b = 1.0_wp
         ns = [2,5,15,20]
         if (present(xroot)) then
