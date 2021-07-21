@@ -12,7 +12,8 @@ program root_tests
 
     use stdlib_root_module
     use iso_fortran_env, only: wp => real64, output_unit
-    use face, only: colorize
+    use face,            only: colorize
+    use pyplot_module,   only: pyplot
 
     implicit none
 
@@ -27,17 +28,19 @@ program root_tests
     integer :: ic !! case counter
     integer :: num_of_problems
     integer,dimension(:),allocatable :: cases_to_run
+    type(pyplot) :: stats_plot   !! pyplot handler
 
     character(len=*),parameter :: fmt  = '(A20,1X,A3,1X,A4,1X,A25,   1X,A25,   1X,A25,  1X,A5,1X,A5)' !! format for header
     character(len=*),parameter :: dfmt = '(1P,A20,1X,I3,1X,I4,1X,E25.10,1X,E25.16,1X,E25.6,1X,I5,1X,I5)' !! format for results
 
-    integer,parameter :: number_of_methods = 14 !! number of methods to test
+    integer,parameter :: number_of_methods = 15 !! number of methods to test
     character(len=100),dimension(number_of_methods),parameter :: methods = [ &
         'brent               ', &
         'brentq              ', &
         'brenth              ', &
         'bisection           ', &
         'regula_falsi        ', &
+        'illinois            ', &
         'anderson_bjorck     ', &
         'anderson_bjorck_king', &
         'ridders             ', &
@@ -61,6 +64,11 @@ program root_tests
     write(iunit, '(A5,1X,A5,1X,A5,1X,A)')  'nprob', 'n', 'evals', 'Best Methods'
     write(iunit_failed, '(A5,1X,A5,1X,A)') 'nprob', 'n', 'Failed Methods'
 
+    ! plot:
+    call stats_plot%initialize(grid=.true.,xlabel='Methods',ylabel='Function Evaluations',figsize=[10,5],&
+                                title='Performance of each method',&
+                                tight_layout=.true.)
+
     ! number of problems to test:
     nprob = 1 ! initialize
     n = 1
@@ -81,23 +89,27 @@ program root_tests
     close(iunit)
     close(iunit_failed)
 
+    call stats_plot%savefig('stats_plot.pdf',istat=istat,pyfile='stats_plot.py')
+
     ! another summary:
     ivec  = [(i, i = 1, number_of_methods)]
     ivec2 = ivec
 
+    ! sort them based on which had the most wins:
     call insertion_sort(number_of_wins, ivec, number_of_failures)
-   ! call insertion_sort(number_of_failures, ivec2)
 
     write(*,*) ''
     write(*,'(A25,1X,A5,1X,A5)') repeat('-',25), repeat('-',5), repeat('-',5)
     write(*,'(A25,1X,A5,1X,A5)') 'Method', 'Win', 'Fail'
     write(*,'(A25,1X,A5,1X,A5)') repeat('-',25), repeat('-',5), repeat('-',5)
     do imeth = 1, number_of_methods
-        write(*,'(A25,1X,I5,1X,I5)') trim(methods(ivec(imeth))), number_of_wins(imeth), number_of_failures(imeth)
+        write(*,'(A25,1X,I5,1X,I5)') trim(methods(ivec(imeth))), &
+                                     number_of_wins(imeth), &
+                                     number_of_failures(imeth)
     end do
     write(*,*) ''
 
-    call generate_plots()
+    !call generate_plots()
 
     contains
 !*****************************************************************************************
@@ -115,6 +127,7 @@ program root_tests
         logical :: root_found
         real(wp) :: tstart, tfinish  !! for `cpu_time`
         integer :: irepeat !! test repeat counter
+        integer :: i
 
         integer,parameter :: n_repeat = 1  !! number of times to repeat each test for timing purposes
         real(wp),parameter :: tol_for_check = 1.0e-7_wp  !! for pass/fail check
@@ -138,6 +151,7 @@ program root_tests
             do irepeat = 1, n_repeat
                 ifunc = 0 ! reset func evals counter
                 call root_scalar(methods(imeth),func,ax,bx,xzero,fzero,iflag,&
+                                !atol = 1.0e-5_wp, rtol = 1.0e-5_wp, ftol = 1.0e-5_wp, maxiter = 1000)
                                 atol = 1.0e-15_wp, rtol = 1.0e-13_wp, ftol = 1.0e-15_wp, maxiter = 1000)
                                 !atol = 1.0e-25_wp, rtol = 1.0e-23_wp, ftol = 1.0e-25_wp, maxiter = 100000)
             end do
@@ -167,9 +181,13 @@ program root_tests
 
         end do
 
+        ! update plot:
+        call stats_plot%add_plot([(real(i,wp), i=1,number_of_methods)],real(fevals,wp),&
+                                    label='',linestyle='-',linewidth=2,istat=istat)
+
         ! get the best and the failures for the output files:
         best_feval = minval(fevals)
-        if (best_feval==huge(1)) best_feval = -1 ! if non of them converged
+        if (best_feval==huge(1)) best_feval = -1 ! if none of them converged
         best = ''
         failures = ''
         do imeth = 1, number_of_methods
@@ -977,12 +995,72 @@ program root_tests
         end select
         if (present(x)) f = (0.04_wp*x - 0.4_wp)*x + 0.5_wp - sin(x)
         if (present(latex)) latex = '(0.04 x - 0.4) x + 0.5 - \sin x'
+
+    ! cases from Stage paper
+    ! see also #26
+    case(99)
+        a = -10.0_wp
+        b = 10.0_wp
+        root = -7.3908513321516067E-01_wp
+        if (present(x)) f = cos(x) + x
+        if (present(latex)) latex = '\cos x + x'
+    case(100)
+        a = -10.0_wp
+        b = 10.0_wp
+        root = 4.0_wp / 3.0_wp
+        if (present(x)) f = 1.0_wp - 0.75_wp * x
+        if (present(latex)) latex = '1 - 0.75 x'
+
+    case(101)
+        a = -10.0_wp
+        b = 10.0_wp
+        root = 2.0_wp / 3.0_wp - 0.01_wp
+        if (present(x)) then
+            if (x <= 2.0_wp / 3.0_wp) then
+                f = (abs(x - 2.0_wp / 3.0_wp))**0.5_wp - 0.1_wp
+            else
+                f = -(abs(x - 2.0_wp / 3.0_wp))**0.5_wp - 0.1_wp
+            end if
+        end if
+        if (present(latex)) latex = 'TODO'
+    ! case(102)
+    !     a = -10.0_wp
+    !     b = 10.0_wp
+    !     root = 2.0_wp / 3.0_wp
+    !     if (present(x)) then
+    !         if (x <= 2.0_wp / 3.0_wp) then
+    !             f = (abs(x - 2.0_wp / 3.0_wp))**0.5_wp
+    !         else
+    !             f = -(abs(x - 2.0_wp / 3.0_wp))**0.5_wp
+    !         end if
+    !     end if
+    !     if (present(latex)) latex = 'TODO'
+    ! case(103)
+    !     a = -10.0_wp
+    !     b = 10.0_wp
+    !     root = 2.0_wp / 3.0_wp
+    !     if (present(x)) then
+    !         if (x <= 2.0_wp / 3.0_wp) then
+    !             f = (abs(x - 2.0_wp / 3.0_wp))**0.2_wp
+    !         else
+    !             f = -(abs(x - 2.0_wp / 3.0_wp))**0.2_wp
+    !         end if
+    !     end if
+    !     if (present(latex)) latex = 'TODO'
+    case(102)
+        a = -10.0_wp
+        b = 10.0_wp
+        root = 7.0_wp / 9.0_wp
+        if (present(x)) f = (x - 7.0_wp/9.0_wp)**3 + 0.001_wp * (x - 7.0_wp/9.0_wp)
+        if (present(latex)) latex = '(x - 7/9)^3 + 0.001 (x - 7/9)'
+
+
     case default
         write(*,*) 'invalid case: ', nprob
         error stop 'invalid case'
     end select
 
-    if (present(num_of_problems)) num_of_problems = 98
+    if (present(num_of_problems)) num_of_problems = 102
 
     ! outputs:
     if (present(ax))    ax = a
@@ -1050,8 +1128,6 @@ program root_tests
 
     !! generate a plot of each function.
 
-    use pyplot_module
-
     implicit none
 
     integer,parameter :: n_points = 1000
@@ -1068,8 +1144,6 @@ program root_tests
     character(len=:),allocatable :: filename, title, latex
 
     write(*,*) 'generate_plots...'
-
-   ! call problems(x, ax, bx, fx, xroot, cases, num_of_problems)
 
     n = 1  ! initialize
     nprob = 1

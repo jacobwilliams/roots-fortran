@@ -56,6 +56,14 @@
     procedure,public :: find_root => regula_falsi
     end type regula_falsi_solver
 
+    type,extends(root_solver),public :: illinois_solver
+    !! Illinois (modified Regula Falsi) root solver
+    private
+    contains
+    private
+    procedure,public :: find_root => illinois
+    end type illinois_solver
+
     type,extends(root_solver),public :: anderson_bjorck_solver
     !! anderson bjorck root solver
     private
@@ -239,6 +247,7 @@
     case('brent');                allocate(brent_solver                :: s)
     case('bisection');            allocate(bisection_solver            :: s)
     case('regula_falsi');         allocate(regula_falsi_solver         :: s)
+    case('illinois');             allocate(illinois_solver             :: s)
     case('anderson_bjorck');      allocate(anderson_bjorck_solver      :: s)
     case('ridders');              allocate(ridders_solver              :: s)
     case('pegasus');              allocate(pegasus_solver              :: s)
@@ -599,8 +608,6 @@
 
         x3 = regula_falsi_step(x1,x2,f1,f2,ax,bx)
 
-       ! write(*,*) x1, x2, x3
-
         ! calculate the new function value:
         f3 = me%f(x3)
         ! check for root:
@@ -617,6 +624,10 @@
             x2 = x2
             f1 = f3
             f2 = f2
+            ! x1 = x2         !..more failures this way. why?
+            ! x2 = x3
+            ! f1 = f2
+            ! f2 = f3
         else
             ! root lies between x1 and x3
             x2 = x3
@@ -634,6 +645,81 @@
     end do
 
     end subroutine regula_falsi
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Illinois method.
+!
+!### Reference
+!  * M. Dowell, P. Jarratt, "A modified regula falsi method for computing the root
+!    of an equation', BIT 11 (1971), 168-174.
+
+    subroutine illinois(me,ax,bx,fax,fbx,xzero,fzero,iflag)
+
+    implicit none
+
+    class(illinois_solver),intent(inout) :: me
+    real(wp),intent(in)    :: ax      !! left endpoint of initial interval
+    real(wp),intent(in)    :: bx      !! right endpoint of initial interval
+    real(wp),intent(in)    :: fax     !! `f(ax)`
+    real(wp),intent(in)    :: fbx     !! `f(ax)`
+    real(wp),intent(out)   :: xzero   !! abscissa approximating a zero of `f` in the interval `ax`,`bx`
+    real(wp),intent(out)   :: fzero   !! value of `f` at the root (`f(xzero)`)
+    integer,intent(out)    :: iflag   !! status flag (`0`=root found, `-2`=max iterations reached)
+
+    real(wp) :: x1,x2,x3,f1,f2,f3,delta,f1tmp
+    integer :: i !! iteration counter
+    logical :: root_found !! convergence in x
+
+    ! initialize:
+    iflag = 0
+    x1    = ax
+    x2    = bx
+    f1    = fax
+    f2    = fbx
+
+    ! main loop
+    do i=1,me%maxiter
+
+        x3 = regula_falsi_step(x1,x2,f1,f2,ax,bx)
+
+        ! calculate the new function value:
+        f3 = me%f(x3)
+        ! check for root:
+        if (abs(f3)<=me%ftol) then
+            xzero = x3
+            fzero = f3
+            return
+        end if
+
+        ! determine new inclusion interval:
+        if (f2*f3<0.0_wp) then
+            ! root lies between x2 and x3
+            x1 = x2
+            x2 = x3
+            f1 = f2
+            f1tmp = f1
+            f2 = f3
+        else
+            ! root lies between x1 and x3
+            x2 = x3
+            f2 = f3
+            f1tmp = f1 ! actual function eval
+            f1 = 0.5_wp * f1
+        end if
+
+        ! check for convergence:
+        root_found = me%converged(x1,x2)
+        if (root_found .or. i==me%maxiter) then
+            call choose_best(x1,x2,f1tmp,f2,xzero,fzero)
+            if (.not. root_found) iflag = -2  ! max iterations reached
+            exit
+        end if
+
+    end do
+
+    end subroutine illinois
 !*****************************************************************************************
 
 !*****************************************************************************************
