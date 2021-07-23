@@ -809,7 +809,7 @@
 !
 !### See also
 !  * Ridders, C., "A new algorithm for computing a single root of a real continuous function",
-!    IEEE Trans. on Circuits and Systems, Vol 26, Issue 11.
+!    IEEE Trans. on Circuits and Systems, Vol 26, Issue 11, Nov 1979.
 
     subroutine ridders(me,ax,bx,fax,fbx,xzero,fzero,iflag)
 
@@ -1052,7 +1052,8 @@
 !### Reference
 !  * D. E. Muller, "A Method for Solving Algebraic Equations Using an Automatic Computer",
 !    Mathematical Tables and Other Aids to Computation, 10 (1956), 208-215.
-!  * Regular Muller here (Julia version): https://github.com/JuliaMath/Roots.jl/blob/97dbe2e178656e39b7f646cff278e4e985d60116/src/simple.jl
+!  * Regular Muller here (Julia version):
+!    https://github.com/JuliaMath/Roots.jl/blob/97dbe2e178656e39b7f646cff278e4e985d60116/src/simple.jl
 
     subroutine muller (me,ax,bx,fax,fbx,xzero,fzero,iflag)
 
@@ -1848,6 +1849,7 @@
 !    International Journal of Experimental Algorithms (IJEA), Volume (2) : Issue (1) : 2011.
 !    https://www.cscjournals.org/download/issuearchive/IJEA/Volume2/IJEA_V2_I1.pdf
 !  * S. A. Stage, "Comments on An Improvement to the Brent's Method",
+!    International Journal of Experimental Algorithms (IJEA), Volume (4) : Issue (1) : 2013.
 !    https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.740.923&rep=rep1&type=pdf
 
     subroutine zhang(me,ax,bx,fax,fbx,xzero,fzero,iflag)
