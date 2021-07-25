@@ -1468,16 +1468,15 @@
         tol = 2.0_wp*me%rtol*abs(xm) + me%atol
         tl = tol/abs(b-c)
         if (tl > 0.5_wp) exit
+        t = 0.5_wp ! use bisection unless we can use inverse quadratic below
 
-        xi  = (a-b)/(c-b)
-        phi = (fa-fb)/(fc-fb)
-
-        if (1.0_wp - sqrt(1.0_wp - xi) < phi .and. phi < sqrt(xi)) then
-            ! inverse quadratic interpolation
-            t = (fa/(fb-fa)) * (fc/(fb-fc)) + ((c-a)/(b-a)) * (fa/(fc-fa)) * (fb/(fc-fb))
-        else
-            ! bisection
-            t = 0.5_wp
+        if (fa/=fb .and. fb/=fc) then
+            xi  = (a-b)/(c-b)
+            phi = (fa-fb)/(fc-fb)
+            if (1.0_wp - sqrt(1.0_wp - xi) < phi .and. phi < sqrt(xi)) then
+                ! inverse quadratic interpolation
+                t = (fa/(fb-fa)) * (fc/(fb-fc)) + ((c-a)/(b-a)) * (fa/(fc-fa)) * (fb/(fc-fb))
+            end if
         end if
 
         t = min(1.0_wp-tl, max(tl, t))
