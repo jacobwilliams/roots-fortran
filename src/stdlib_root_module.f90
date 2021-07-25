@@ -1057,8 +1057,6 @@
 
     subroutine muller (me,ax,bx,fax,fbx,xzero,fzero,iflag)
 
-    use ieee_arithmetic
-
     implicit none
 
     class(muller_solver),intent(inout) :: me
@@ -1070,11 +1068,9 @@
     real(wp),intent(out) :: fzero   !! value of `f` at the root (`f(xzero)`)
     integer,intent(out)  :: iflag   !! status flag (`0`=root found, `-2`=max iterations reached)
 
-    real(wp) :: a,b,c,cx,fa,fb,fc,fcx,x,q,q2,q1,aa,bb,cc,delta,dp,dm,denon,bprev
-    integer  :: i !! iteration counter
-    logical :: root_in_ab !! root is in [a,b]
-    logical :: root_in_bc !! root is in [b,c]
-    logical :: x_ok       !! the new estimate `x` is ok to use
+    real(wp) :: a,b,c,cx,fa,fb,fc,fcx,x,q,q2,q1,aa,bb,cc,delta,dp,dm,denon,bprev,fbprev
+    integer  :: i    !! iteration counter
+    logical  :: x_ok !! the new estimate `x` is ok to use
 
     iflag = 0
 
@@ -1093,12 +1089,9 @@
     c = bx; fc = fbx
 
     bprev = huge(1.0_wp)
+    fbprev = huge(1.0_wp)
 
     do i = 1, me%maxiter
-
-        ! root either in [a,b] .or. [b,c]
-        root_in_ab = fa*fb < 0.0_wp
-        root_in_bc = .not. root_in_ab
 
         ! muller step:
         q     = (c - b)/(b - a)
@@ -1115,21 +1108,17 @@
         else
             denon = dm
         end if
-        if ( denon == 0.0_wp ) then
-            x_ok = .false.
-        else
-            x = c - 2.0_wp*(c - b)*cc/denon
-            x_ok = ieee_is_finite(x) .and. .not. ieee_is_nan(x)   ! this may not be necessary
-        end if
+        x_ok = denon /= 0.0_wp
+        if (x_ok) x = c - 2.0_wp*(c - b)*cc/denon
 
         ! make sure that x is ok, in the correct interval, and distinct.
         ! if not, fall back to bisection on that interval
-        if (root_in_ab) then
+        if (fa*fb < 0.0_wp) then  ! root in (a,b)
             if (.not. x_ok .or. x<=a .or. x>=b) x = bisect(a,b)
             c  = b
             fc = fb
             b  = x
-        elseif (root_in_bc) then
+        else  ! root in (b,c)
             if (.not. x_ok .or. x<=b .or. x>=c) x = bisect(b,c)
             a  = b
             fa = fb
@@ -1148,11 +1137,11 @@
         end if
 
         bprev = b
+        fbprev = fb
 
     end do
 
-    xzero = b
-    fzero = fb
+    call choose_best(b,bprev,fb,fbprev,xzero,fzero)
 
     end subroutine muller
 !*****************************************************************************************
