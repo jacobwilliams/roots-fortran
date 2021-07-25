@@ -152,6 +152,14 @@
     procedure,public :: find_root => anderson_bjorck_king
     end type anderson_bjorck_king_solver
 
+    type,extends(root_solver),public :: blendtf_solver
+    !! blendtf root solver
+    private
+    contains
+    private
+    procedure,public :: find_root => blendtf
+    end type blendtf_solver
+
     abstract interface
         function func(me,x) result(f)
             !! Interface to the function to be minimized
@@ -222,7 +230,8 @@
 !>
 !  Non-object-oriented wrapper.
 
-    subroutine root_scalar(method,fun,ax,bx,xzero,fzero,iflag,ftol,rtol,atol,maxiter,fax,fbx)
+    subroutine root_scalar(method,fun,ax,bx,xzero,fzero,iflag,&
+                           ftol,rtol,atol,maxiter,fax,fbx,bisect_on_failure)
 
     implicit none
 
@@ -239,6 +248,10 @@
     integer,intent(in),optional   :: maxiter  !! maximum number of iterations
     real(wp),intent(in),optional  :: fax      !! if `f(ax)` is already known, it can be input here
     real(wp),intent(in),optional  :: fbx      !! if `f(ax)` is already known, it can be input here
+    logical,intent(in),optional   :: bisect_on_failure  !! if true, then if the specified method fails,
+                                                        !! it will be retried using the bisection method.
+                                                        !! (default is False). Note that this can use up
+                                                        !! to `maxiter` additional function evaluations.
 
     class(root_solver),allocatable :: s
 
@@ -259,6 +272,7 @@
     case('toms748');              allocate(toms748_solver              :: s)
     case('zhang');                allocate(zhang_solver                :: s)
     case('anderson_bjorck_king'); allocate(anderson_bjorck_king_solver :: s)
+    case('blendtf');              allocate(blendtf_solver              :: s)
 
     case default
         iflag = -999    ! invalid method
@@ -266,7 +280,7 @@
     end select
 
     call s%initialize(func_wrapper,ftol,rtol,atol,maxiter)
-    call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx)
+    call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx,bisect_on_failure)
 
     contains
 
@@ -285,7 +299,7 @@
 !>
 !  Main wrapper routine for all the methods.
 
-    subroutine solve(me,ax,bx,xzero,fzero,iflag,fax,fbx)
+    subroutine solve(me,ax,bx,xzero,fzero,iflag,fax,fbx,bisect_on_failure)
 
     implicit none
 
@@ -297,6 +311,10 @@
     integer,intent(out)              :: iflag   !! status flag (`-1`=error, `0`=root found, `-4`=ax must be /= bx)
     real(wp),intent(in),optional     :: fax     !! if `f(ax)` is already known, it can be input here
     real(wp),intent(in),optional     :: fbx     !! if `f(ax)` is already known, it can be input here
+    logical,intent(in),optional      :: bisect_on_failure !! if true, then if the specified method fails,
+                                                          !! it will be retried using the bisection method.
+                                                          !! (default is False). Note that this can use up
+                                                        !! to `maxiter` additional function evaluations.
 
     real(wp) :: fa !! `f(ax)` passed to the lower level routine
     real(wp) :: fb !! `f(bx)` passed to the lower level routine
@@ -340,9 +358,31 @@
                 call me%find_root(bx,ax,fb,fa,xzero,fzero,iflag)
             end if
 
+            ! if it failed, then we have the option to then try bisection
+            if (iflag /= 0) then
+                if (present(bisect_on_failure)) then
+                    if (bisect_on_failure) then
+                        ! use the wrapper routine for that with the input class
+                        call root_scalar('bisection',func_wrapper,ax,bx,xzero,fzero,iflag,&
+                                         me%ftol,me%rtol,me%atol,me%maxiter,fa,fb,&
+                                         bisect_on_failure = .false.)
+                    end if
+                end if
+            end if
+
         end if
 
     end if
+
+    contains
+
+    function func_wrapper(x) result(f)
+        !! wrapper function to use bisection
+        implicit none
+        real(wp),intent(in) :: x
+        real(wp) :: f
+        f = me%f(x)
+    end function func_wrapper
 
     end subroutine solve
 !*****************************************************************************************
@@ -624,10 +664,6 @@
             x2 = x2
             f1 = f3
             f2 = f2
-            ! x1 = x2         !..more failures this way. why?
-            ! x2 = x3
-            ! f1 = f2
-            ! f2 = f3
         else
             ! root lies between x1 and x3
             x2 = x3
@@ -757,14 +793,7 @@
     ! main loop:
     do i = 1,me%maxiter
 
-        if (i==1 .or. i==me%maxiter/2) then
-            ! this is just a sort of hack to prevent a few cases from failing -JW
-            x3 = bisect(x1,x2)
-        else
-            x3 = secant(x1,x2,f1,f2,ax,bx)
-        end if
-
-        ! calculate f3:
+        x3 = secant(x1,x2,f1,f2,ax,bx)
         f3 = me%f(x3)
         if (abs(f3)<=me%ftol)  then  ! f3 is a root
             xzero = x3
@@ -782,7 +811,7 @@
             f1tmp = f1
         else
             ! zero lies between x1 and x3
-            g = 1.0_wp-f3/f2
+            g = 1.0_wp - f3/f2
             if (g<=0.0_wp) g = 0.5_wp
             x2 = x3
             f1tmp = f1
@@ -909,7 +938,7 @@
     integer,intent(out)  :: iflag   !! status flag (`0`=root found, `-2`=max iterations reached)
 
     integer :: i !! counter
-    real(wp) :: x1,x2,x3,f1,f2,f3,f1tmp
+    real(wp) :: x1,x2,x3,f1,f2,f3,f1tmp,denom
 
     ! initialize:
     iflag = 0
@@ -934,13 +963,20 @@
         end if
 
         ! determine a new inclusion interval:
-        if (f2*f3<=0.0_wp) then
+        if (f2*f3<=0.0_wp) then  ! root on (x2,x3)
             x1 = x2
             f1 = f2
             f1tmp = f1
-        else
+        else  ! root on (x1,x3)
             f1tmp = f1
-            f1 = f1 * f2 / (f2 + f3)
+            denom = f2 + f3
+            if (denom /= 0.0_wp) then
+                ! proceed as normal
+                f1 = f1 * f2 / denom
+            else
+                ! can't proceed, keep as is.
+                ! [need a find a test case where this happens -TODO]
+            end if
         end if
 
         x2 = x3
@@ -2038,6 +2074,126 @@
 
 !*****************************************************************************************
 !>
+!  BlendTF blended method of trisection and false position methods.
+!
+!### Reference
+!  * E Badr, S Almotairi, A El Ghamry,
+!    "A Comparative Study among New Hybrid Root Finding
+!    Algorithms and Traditional Methods", Mathematics 2021, 9, 1306.
+
+    subroutine blendtf(me,ax,bx,fax,fbx,xzero,fzero,iflag)
+
+    implicit none
+
+    class(blendtf_solver),intent(inout) :: me
+    real(wp),intent(in)  :: ax      !! left endpoint of initial interval
+    real(wp),intent(in)  :: bx      !! right endpoint of initial interval
+    real(wp),intent(in)  :: fax     !! `f(ax)`
+    real(wp),intent(in)  :: fbx     !! `f(ax)`
+    real(wp),intent(out) :: xzero   !! abscissa approximating a zero of `f` in the interval `ax`,`bx`
+    real(wp),intent(out) :: fzero   !! value of `f` at the root (`f(xzero)`)
+    integer,intent(out)  :: iflag   !! status flag (`0`=root found, `-2`=max iterations reached)
+
+    real(wp) :: a1,a2,b1,b2,fa,fb,a,b,xt1,xt2,xf,x,fx,fxt2,&
+                fxf,xprev,fxt1,fxprev,fa1,fa2,fb1,fb2
+    integer :: i !! iteration counter
+
+    iflag = 0
+    a = ax; b = bx
+    fa = fax; fb = fbx
+    a1 = a; a2 = a
+    b1 = b; b2 = b
+    fa1 = fa; fa2 = fa
+    fb1 = fb; fb2 = fb
+    xprev = huge(1.0_wp)
+    fxprev = huge(1.0_wp)
+
+    do i = 1, me%maxiter
+
+        if (fa == fb) then
+            ! should fallback to bisection if this happens -TODO
+            iflag = -3
+            return
+        end if
+
+        xt1  = (b + 2.0_wp * a) / 3.0_wp
+        xt2  = (2.0_wp * b + a) / 3.0_wp
+        xf   = a - (fa*(b-a))/(fb-fa)
+        x    = xt1
+        fxt1 = me%f(xt1); if (solution(xt1,fxt1)) return
+        fxt2 = me%f(xt2); if (solution(xt2,fxt2)) return
+        fxf  = me%f(xf);  if (solution(xf,fxf))   return
+        fx   = fxt1
+
+        if (abs(fxf) < abs(fxt1)) then
+            x = xf
+            fx = fxf
+        elseif (abs(fxt2) < abs(fxt1)) then
+            x = xt2
+            fx = fxt2
+        end if
+
+        ! apply the convergence tols to [a,b]
+        if (me%converged(a, b) .or. i == me%maxiter) then
+            call choose_best(x,xprev,fx,fxprev,xzero,fzero)
+            if (i == me%maxiter) iflag = -2 ! max iterations reached
+            exit
+        end if
+        xprev = x
+        fxprev = fx
+
+        if ((fa * fxt1) < 0.0_wp) then
+            b1 = xt1; fb1 = fxt1
+        else if ((fxt1 * fxt2) < 0.0_wp) then
+            a1 = xt1; fa1 = fxt1
+            b1 = xt2; fb1 = fxt2
+        else
+            a1 = xt2; fa1 = fxt2
+        end if
+
+        if (fa*fxf < 0.0_wp) then
+            b2 = xf; fb2 = fxf
+        else
+            a2 = xf; fa2 = fxf
+        end if
+
+        if (a1>a2) then
+            a = a1
+            fa = fa1
+        else
+            a = a2
+            fa = fa2
+        end if
+        if (b1<b2) then
+            b = b1
+            fb = fb1
+        else
+            b = b2
+            fb = fb2
+        end if
+
+    end do
+
+    contains
+
+        logical function solution(x,f)
+        implicit none
+        real(wp),intent(in) :: x
+        real(wp),intent(in) :: f
+        if (abs(f)<=me%ftol) then
+            xzero = x
+            fzero = f
+            solution = .true.
+        else
+            solution = .false.
+        end if
+        end function solution
+
+    end subroutine blendtf
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Determines convergence in x based on if the reltol or abstol is satisfied.
 
     function converged(me,a,b)
@@ -2119,7 +2275,7 @@
 !  * the computed point is outside the original interval ([ax,bx]).
 !  * f2 == f1
 
-     function regula_falsi_step(x1,x2,f1,f2,ax,bx) result(x3)
+    function regula_falsi_step(x1,x2,f1,f2,ax,bx) result(x3)
 
     implicit none
 

@@ -30,10 +30,10 @@ program root_tests
     integer,dimension(:),allocatable :: cases_to_run
     type(pyplot) :: stats_plot   !! pyplot handler
 
-    character(len=*),parameter :: fmt  = '(A20,1X,A3,1X,A4,1X,A25,   1X,A25,   1X,A25,  1X,A5,1X,A5)' !! format for header
-    character(len=*),parameter :: dfmt = '(1P,A20,1X,I3,1X,I4,1X,E25.10,1X,E25.16,1X,E25.6,1X,I5,1X,I5)' !! format for results
+    character(len=*),parameter :: fmt  = '(   A20,1X,A3,1X,A4,1X,A16,  1X,A25,   1X,A16,  1X,A5,1X,A5,1X,A8  )' !! format for header
+    character(len=*),parameter :: dfmt = '(1P,A20,1X,I3,1X,I4,1X,E16.6,1X,E25.16,1X,E16.6,1X,I5,1X,I5,1X,E8.2)' !! format for results
 
-    integer,parameter :: number_of_methods = 15 !! number of methods to test
+    integer,parameter :: number_of_methods = 16 !! number of methods to test
     character(len=100),dimension(number_of_methods),parameter :: methods = [ &
         'brent               ', &
         'brentq              ', &
@@ -49,7 +49,8 @@ program root_tests
         'muller              ', &
         'chandrupatla        ', &
         'toms748             ', &
-        'zhang               '] !! method names
+        'zhang               ', &
+        'blendtf             '] !! method names
 
     integer,dimension(number_of_methods) :: number_of_wins, ivec, number_of_failures, ivec2
 
@@ -76,6 +77,7 @@ program root_tests
 
     ! run the tests:
     do nprob = 1, num_of_problems
+
         ! write(*,*) 'nprob: ', nprob
         ! write(*,*) 'cases_to_run: ', cases_to_run
         call problems(cases = cases_to_run)
@@ -127,33 +129,35 @@ program root_tests
         logical :: root_found
         real(wp) :: tstart, tfinish  !! for `cpu_time`
         integer :: irepeat !! test repeat counter
-        integer :: i
+        integer :: i, maxiter
 
         integer,parameter :: n_repeat = 1  !! number of times to repeat each test for timing purposes
         real(wp),parameter :: tol_for_check = 1.0e-7_wp  !! for pass/fail check
 
         write(output_unit,fmt) &
-            repeat('-',20),repeat('-',3),repeat('-',4),repeat('-',25),&
-            repeat('-',25),repeat('-',25),repeat('-',5),repeat('-',5)
+            repeat('-',20),repeat('-',3),repeat('-',4),repeat('-',16),&
+            repeat('-',25),repeat('-',16),repeat('-',5),repeat('-',5),repeat('-',8)
 
         write(output_unit,fmt) &
-            'method','function','n','error','x','f','evals','iflag'
+            'method','function','n','error','x','f','evals','iflag','runs/sec'
 
         write(output_unit,fmt) &
-            repeat('-',20),repeat('-',3),repeat('-',4),repeat('-',25),&
-            repeat('-',25),repeat('-',25),repeat('-',5),repeat('-',5)
+            repeat('-',20),repeat('-',3),repeat('-',4),repeat('-',16),&
+            repeat('-',25),repeat('-',16),repeat('-',5),repeat('-',5),repeat('-',8)
 
         do imeth = 1, number_of_methods
+
+            maxiter = 1000
 
             call problems(ax=ax, bx=bx, xroot=root)
 
             call cpu_time(tstart)
             do irepeat = 1, n_repeat
                 ifunc = 0 ! reset func evals counter
-                call root_scalar(methods(imeth),func,ax,bx,xzero,fzero,iflag,&
-                                !atol = 1.0e-5_wp, rtol = 1.0e-5_wp, ftol = 1.0e-5_wp, maxiter = 1000)
-                                atol = 1.0e-15_wp, rtol = 1.0e-13_wp, ftol = 1.0e-15_wp, maxiter = 1000)
-                                !atol = 1.0e-25_wp, rtol = 1.0e-23_wp, ftol = 1.0e-25_wp, maxiter = 100000)
+                call root_scalar(methods(imeth),func,ax,bx,xzero,fzero,iflag,bisect_on_failure=.true., &
+                                !atol = 1.0e-5_wp, rtol = 1.0e-5_wp, ftol = 1.0e-5_wp, maxiter = maxiter)
+                                atol = 1.0e-15_wp, rtol = 1.0e-13_wp, ftol = 1.0e-15_wp, maxiter = maxiter)
+                                !atol = 1.0e-25_wp, rtol = 1.0e-23_wp, ftol = 1.0e-25_wp, maxiter = maxiter)
             end do
             call cpu_time(tfinish)
 
@@ -162,7 +166,7 @@ program root_tests
             !...
 
             error = xzero-root
-            write(line, dfmt) trim(methods(imeth)),nprob,n,error,xzero,fzero,ifunc,iflag
+            write(line, dfmt) trim(methods(imeth)),nprob,n,error,xzero,fzero,ifunc,iflag,n_repeat / (tfinish-tstart)
 
             root_found = abs(fzero) <= tol_for_check !.and. abs(error) <= tol_for_check
 
@@ -1054,13 +1058,60 @@ program root_tests
         if (present(x)) f = (x - 7.0_wp/9.0_wp)**3 + 0.001_wp * (x - 7.0_wp/9.0_wp)
         if (present(latex)) latex = '(x - 7/9)^3 + 0.001 (x - 7/9)'
 
+    ! P1 in BlendTF paper
+    case(103)
+        a = 1.0_wp
+        b = 2.0_wp
+        root = 1.7320508075688773E+00_wp
+        if (present(x)) f = x**2 - 3.0_wp
+        if (present(latex)) latex = 'x^2 - 3'
+    case(104)
+        a = 2.0_wp
+        b = 7.0_wp
+        root = 2.2360679774997897E+00_wp
+        if (present(x)) f = x**2 - 5.0_wp
+        if (present(latex)) latex = 'x^2 - 5'
+    case(105)
+        a = 3.0_wp
+        b = 7.0_wp
+        root = 3.1622776601683793E+00_wp
+        if (present(x)) f = x**2 - 10.0_wp
+        if (present(latex)) latex = 'x^2 - 10'
+    case(106)
+        a = 1.0_wp
+        b = 4.0_wp
+        root = 2.0_wp
+        if (present(x)) f = x**2 - x - 2.0_wp
+        if (present(latex)) latex = 'x^2 - x - 2'
+    case(107)
+        a = 1.0_wp
+        b = 3.0_wp
+        root = 1.8284271247461901E+00_wp
+        if (present(x)) f = x**2 + 2.0_wp * x - 7.0_wp
+        if (present(latex)) latex = 'x^2 + 2 x - 7'
+    case(108)
+        a = 0.0_wp
+        b = 2.0_wp
+        root = 1.2599210498948732E+00_wp
+        if (present(x)) f = x**3 - 2.0_wp
+        if (present(latex)) latex = 'x^3 - 2'
+    case(109)
+        a = 0.0_wp
+        b = 2.0_wp
+        root = 1.5243452049841444E+00_wp
+        if (present(x)) f = x * exp(x) - 7.0_wp
+        if (present(latex)) latex = 'x \mathrm{e}^x - 7'
+
+    ! ... add rest from BlendTF paper
+
+
 
     case default
         write(*,*) 'invalid case: ', nprob
         error stop 'invalid case'
     end select
 
-    if (present(num_of_problems)) num_of_problems = 102
+    if (present(num_of_problems)) num_of_problems = 109
 
     ! outputs:
     if (present(ax))    ax = a
