@@ -77,7 +77,6 @@ program root_tests
 
     ! run the tests:
     do nprob = 1, num_of_problems
-
         ! write(*,*) 'nprob: ', nprob
         ! write(*,*) 'cases_to_run: ', cases_to_run
         call problems(cases = cases_to_run)
@@ -111,7 +110,7 @@ program root_tests
     end do
     write(*,*) ''
 
-    !call generate_plots()
+    call generate_plots()
 
     contains
 !*****************************************************************************************
@@ -124,14 +123,16 @@ program root_tests
         integer :: iflag
         character(len=1000) :: line
         integer,dimension(number_of_methods) :: fevals !! func evals for each case
+        real(wp),dimension(number_of_methods) :: cases_per_sec !! speed of each case
         integer :: best_feval
+        real(wp) :: best_cases_per_second
         character(len=:),allocatable :: best,failures
         logical :: root_found
         real(wp) :: tstart, tfinish  !! for `cpu_time`
         integer :: irepeat !! test repeat counter
         integer :: i, maxiter
 
-        integer,parameter :: n_repeat = 1  !! number of times to repeat each test for timing purposes
+        integer,parameter :: n_repeat = 10  !! number of times to repeat each test for timing purposes
         real(wp),parameter :: tol_for_check = 1.0e-7_wp  !! for pass/fail check
 
         write(output_unit,fmt) &
@@ -161,10 +162,6 @@ program root_tests
             end do
             call cpu_time(tfinish)
 
-            !...
-            !write(*,'(1P,A,1X,E12.2,1X,A)') 'Time: ', n_repeat / (tfinish-tstart), 'cases/sec'
-            !...
-
             error = xzero-root
             write(line, dfmt) trim(methods(imeth)),nprob,n,error,xzero,fzero,ifunc,iflag,n_repeat / (tfinish-tstart)
 
@@ -179,8 +176,10 @@ program root_tests
             ! save results for this case:
             if (iflag==0 .and. root_found) then
                 fevals(imeth) = ifunc
+                cases_per_sec(imeth) = n_repeat / (tfinish-tstart)
             else
                 fevals(imeth) = huge(1)
+                cases_per_sec(imeth) = huge(1.0_wp)
             end if
 
         end do
@@ -190,6 +189,8 @@ program root_tests
                                     label='',linestyle='-',linewidth=2,istat=istat)
 
         ! get the best and the failures for the output files:
+
+        ! best in terms of lowest function evals:
         best_feval = minval(fevals)
         if (best_feval==huge(1)) best_feval = -1 ! if none of them converged
         best = ''
@@ -212,9 +213,32 @@ program root_tests
             end if
         end do
 
-        ! output the report:
-        if (best /= '')     write(iunit, '(I5,1X,I5,1X,I5,1X,A)')  nprob, n, best_feval, 'Best: '//trim(best)
-        if (failures /= '') write(iunit_failed, '(I5,1X,I5,1X,A)') nprob, n, 'Failures: '//trim(failures)
+    !     ! best in terms of fastest cpu time:
+    !     best_cases_per_second = maxval(cases_per_sec)
+    !     if (best_cases_per_second==huge(1.0_wp)) best_cases_per_second = -1 ! if none of them converged
+    !     best = ''
+    !     failures = ''
+    !     do imeth = 1, number_of_methods
+    !         if (cases_per_sec(imeth) == best_cases_per_second) then
+    !             if (best=='') then
+    !                 best = trim(methods(imeth))
+    !             else
+    !                 best = best//', '//trim(methods(imeth))
+    !             end if
+    !             number_of_wins(imeth) = number_of_wins(imeth) + 1
+    !         elseif (cases_per_sec(imeth) == huge(1.0_wp)) then
+    !             if (failures=='') then
+    !                 failures = trim(methods(imeth))
+    !             else
+    !                 failures = failures//', '//trim(methods(imeth))
+    !             end if
+    !             number_of_failures(imeth) = number_of_failures(imeth) + 1
+    !         end if
+    !     end do
+
+    ! output the report:
+    if (best /= '')     write(iunit, '(I5,1X,I5,1X,I5,1X,A)')  nprob, n, best_feval, 'Best: '//trim(best)
+    if (failures /= '') write(iunit_failed, '(I5,1X,I5,1X,A)') nprob, n, 'Failures: '//trim(failures)
 
     end subroutine test
 
@@ -476,7 +500,8 @@ program root_tests
                 f = x/exp(1.0_wp/(x*x))
             end if
         end if
-        if (present(latex)) latex = 'TODO'
+        if (present(latex)) latex = '\left\{ \begin{array}{cl} 0 & \mathrm{if~x=0} \\'//&
+                                    ' x \mathrm{e}^{-1/x^2} & \mathrm{otherwise} \end{array} \right.'
     case (27)
         a = -10000.0_wp
         b = pi/2.0_wp
@@ -802,7 +827,7 @@ program root_tests
         b = -0.1_wp
         root = -6.0323197155721517E-01_wp
         if (present(x)) f = sin(x)*exp(x) + log(x**2+1.0_wp)
-        if (present(latex)) latex = '\sin(x) * \mathrm{e}^x + \log(x^2 + 1)'
+        if (present(latex)) latex = '\sin(x) \mathrm{e}^x + \log(x^2 + 1)'
     case(67)
         a = 1.0_wp
         b = 3.1_wp
@@ -1234,7 +1259,8 @@ program root_tests
             call plt%initialize(grid=.true.,xlabel='x',ylabel='f(x)',figsize=[10,5],&
                                 title=title,legend=.true.,&
                                 tight_layout=.true.,&
-                                real_fmt = '(E30.16E3)')
+                                real_fmt = '(E30.16E3)',&
+                                usetex=.true.,raw_strings=.true.)
             call plt%add_plot(xvec,yvec,label='f(x)',linestyle='-',markersize=5,linewidth=2,istat=istat)
             call plt%add_plot([xroot],[froot],label='root',linestyle='.',markersize=10,linewidth=2,istat=istat)
             call plt%savefig(filename,istat=istat)
