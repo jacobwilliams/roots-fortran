@@ -11,11 +11,13 @@
 program root_tests
 
     use stdlib_root_module
-    use iso_fortran_env, only: wp => real64, output_unit
+    use iso_fortran_env
     use face,            only: colorize
     use pyplot_module,   only: pyplot
 
     implicit none
+
+    integer,parameter :: wp = real64
 
     integer :: nprob
     integer :: n
@@ -31,14 +33,14 @@ program root_tests
     type(pyplot) :: stats_plot   !! pyplot handler
 
     character(len=*),parameter :: fmt  = '(   A20,1X,A3,1X,A4,1X,A16,  1X,A25,   1X,A16,  1X,A5,1X,A5,1X,A8  )' !! format for header
-    character(len=*),parameter :: dfmt = '(1P,A20,1X,I3,1X,I4,1X,E16.6,1X,E25.16,1X,E16.6,1X,I5,1X,I5,1X,E8.2)' !! format for results
+    character(len=*),parameter :: dfmt = '(1P,A20,1X,I3,1X,I4,1X,E16.6,1X,E25.16,1X,E16.6,1X,I5,1X,I5,1X,E8.1)' !! format for results
 
     integer,parameter :: number_of_methods = 16 !! number of methods to test
     character(len=100),dimension(number_of_methods),parameter :: methods = [ &
+        'bisection           ', &
         'brent               ', &
         'brentq              ', &
         'brenth              ', &
-        'bisection           ', &
         'regula_falsi        ', &
         'illinois            ', &
         'anderson_bjorck     ', &
@@ -130,10 +132,29 @@ program root_tests
         logical :: root_found
         real(wp) :: tstart, tfinish  !! for `cpu_time`
         integer :: irepeat !! test repeat counter
-        integer :: i, maxiter
+        integer :: i
+        real(wp) :: atol, rtol, ftol
 
-        integer,parameter :: n_repeat = 10  !! number of times to repeat each test for timing purposes
+        integer,parameter :: n_repeat = 1  !! number of times to repeat each test for timing purposes
         real(wp),parameter :: tol_for_check = 1.0e-7_wp  !! for pass/fail check
+        integer,parameter :: maxiter = 1000 !! maximum number of iterations
+
+        select case (wp)
+        case(real32)
+            atol = 1.0e-5_wp
+            rtol = 1.0e-5_wp
+            ftol = 1.0e-5_wp
+        case(real64)
+            atol = 1.0e-15_wp
+            rtol = 1.0e-13_wp
+            ftol = 1.0e-15_wp
+        case(real128)
+            atol = 1.0e-25_wp
+            rtol = 1.0e-23_wp
+            ftol = 1.0e-25_wp
+        case default
+            error stop 'unknown real kind'
+        end select
 
         write(output_unit,fmt) &
             repeat('-',20),repeat('-',3),repeat('-',4),repeat('-',16),&
@@ -148,17 +169,13 @@ program root_tests
 
         do imeth = 1, number_of_methods
 
-            maxiter = 1000
-
             call problems(ax=ax, bx=bx, xroot=root)
 
             call cpu_time(tstart)
             do irepeat = 1, n_repeat
                 ifunc = 0 ! reset func evals counter
                 call root_scalar(methods(imeth),func,ax,bx,xzero,fzero,iflag,bisect_on_failure=.true., &
-                                !atol = 1.0e-5_wp, rtol = 1.0e-5_wp, ftol = 1.0e-5_wp, maxiter = maxiter)
-                                atol = 1.0e-15_wp, rtol = 1.0e-13_wp, ftol = 1.0e-15_wp, maxiter = maxiter)
-                                !atol = 1.0e-25_wp, rtol = 1.0e-23_wp, ftol = 1.0e-25_wp, maxiter = maxiter)
+                                 atol = atol, rtol = rtol, ftol = ftol, maxiter = maxiter)
             end do
             call cpu_time(tfinish)
 
@@ -1133,17 +1150,61 @@ program root_tests
         root = 1.5243452049841444E+00_wp
         if (present(x)) f = x * exp(x) - 7.0_wp
         if (present(latex)) latex = 'x \mathrm{e}^x - 7'
-
-    ! ... add rest from BlendTF paper
-
-
+    case(110)
+        a = 0.0_wp
+        b = 1.0_wp
+        root = 7.3908513321516064E-01_wp
+        if (present(x)) f = x  - cos(x)
+        if (present(latex)) latex = 'x  - \cos(x)'
+    case(111)
+        a = 0.0_wp
+        b = 2.0_wp
+        root = 1.1141571408719301E+00_wp
+        if (present(x)) f = x*sin(x) - 1.0_wp
+        if (present(latex)) latex = 'x \sin(x) - 1'
+    case(112)
+        a = -2.0_wp
+        b = 4.0_wp
+        root = 2.0739328090912149E+00_wp
+        if (present(x)) f = x*cos(x) + 1.0_wp
+        if (present(latex)) latex = 'x \cos(x) + 1'
+    case(113)
+        a = 0.0_wp
+        b = 1.3_wp
+        root = 1.0_wp
+        if (present(x)) f = x**10 - 1.0_wp
+        if (present(latex)) latex = 'x^{10} - 1'
+    case(114)
+        a = 1.0_wp
+        b = 2.0_wp
+        root = 1.6490132683031901E+00_wp
+        if (present(x)) f = x**2 + exp(x/2.0_wp) - 5.0_wp
+        if (present(latex)) latex = 'x^2 + \mathrm{e}^{x/2} - 5'
+    case(115)
+        a = 3.0_wp
+        b = 4.0_wp
+        root = 3.2215883990939420E+00_wp
+        if (present(x)) f = sin(x) * sinh(x) + 1.0_wp
+        if (present(latex)) latex = '\sin(x) \sinh(x) + 1'
+    case(116)
+        a = 2.0_wp
+        b = 3.0_wp
+        root = 2.1253911988111299E+00_wp
+        if (present(x)) f = exp(x) - 3.0_wp * x - 2.0_wp
+        if (present(latex)) latex = '\mathrm{e}^x - 3 x - 2'
+    case(117)
+        a = 0.5_wp
+        b = 1.0_wp
+        root = 8.7672621539506245E-01_wp
+        if (present(x)) f = sin(x) - x**2
+        if (present(latex)) latex = '\sin(x) - x^2'
 
     case default
         write(*,*) 'invalid case: ', nprob
         error stop 'invalid case'
     end select
 
-    if (present(num_of_problems)) num_of_problems = 109
+    if (present(num_of_problems)) num_of_problems = 117
 
     ! outputs:
     if (present(ax))    ax = a
@@ -1230,7 +1291,6 @@ program root_tests
 
     n = 1  ! initialize
     nprob = 1
-
     call problems(num_of_problems=num_of_problems)
 
     do nprob = 1, num_of_problems
