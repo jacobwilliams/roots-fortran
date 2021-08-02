@@ -500,7 +500,7 @@ program root_tests
                 f = x/exp(1.0_wp/(x*x))
             end if
         end if
-        if (present(latex)) latex = '\left\{ \begin{array}{cl} 0 & \mathrm{if~x=0} \\'//&
+        if (present(latex)) latex = '\left\{ \begin{array}{cl} 0 & \mathrm{if~}x=0 \\'//&
                                     ' x \mathrm{e}^{-1/x^2} & \mathrm{otherwise} \end{array} \right.'
     case (27)
         a = -10000.0_wp
@@ -514,7 +514,8 @@ program root_tests
                 f = (-1.0_wp*dn)/20.0_wp
             end if
         end if
-        if (present(latex)) latex = 'TODO'
+        if (present(latex)) latex = '\left\{ \begin{array}{cl} (x/1.5 + \sin(x) - 1) n/20 & \mathrm{if~}x \ge 0 \\'//&
+                                    ' -n/20 & \mathrm{otherwise} \end{array} \right.'
     case (28)
         a = -10000.0_wp
         b = 1.0e-4_wp
@@ -564,7 +565,11 @@ program root_tests
                 f = -0.859_wp
             end if
         end if
-        if (present(latex)) latex = 'TODO'
+        if (present(latex)) latex = '\left\{ \begin{array}{cl} '//&
+                                    ' \mathrm{e} - 1.859 & \mathrm{if~} x \ge 0.002/(n + 1) \\'//&
+                                    ' \mathrm{e}^{500 (n + 1) x} - 1.859 & x \ge 0\\'//&
+                                    ' -0.859 & \mathrm{otherwise}'//&
+                                    ' \end{array} \right.'
     case (29)
         ! Zhang test case
         a = 0.0_wp
@@ -675,7 +680,7 @@ program root_tests
         root = 0.05_wp
         ns = [20]
         if (present(x)) f = (real(n,wp)*x-1.0_wp)/((real(n,wp)-1.0_wp)*x)
-        if (present(latex)) latex = '\frac{n x - 1}{(n - 1.0) x}'
+        if (present(latex)) latex = '\frac{n x - 1}{(n - 1) x}'
     case (46)
         a = -10.0_wp
         b = 5.0_wp
@@ -748,7 +753,7 @@ program root_tests
         end select
         root = 0.0_wp
         if (present(x)) f = x**19
-        if (present(latex)) latex = 'x^19'
+        if (present(latex)) latex = 'x^{19}'
     case (57:58)
         select case (nprob)
         case (57)
@@ -766,7 +771,8 @@ program root_tests
                 f = x*exp(-x**(-2))
             endif
         end if
-        if (present(latex)) latex = 'TODO'
+        if (present(latex)) latex = '\left\{ \begin{array}{cl} 0 & \mathrm{if~} | x | < 0.00038 \\'//&
+                                    ' x \mathrm{e}^{-1/x^2} & \mathrm{otherwise} \end{array} \right.'
     case (59:60)
         select case (nprob)
         case (59)
@@ -783,7 +789,7 @@ program root_tests
             emx = exp(-x)
             f = -(3062.0_wp*t1*emx)/(xi + t1*emx) - 1013.0_wp + 1628.0_wp/x
         end if
-        if (present(latex)) latex = '-\frac{3062 * t1 * \mathrm{e}^{-x}}{0.61489 + 0.38511 * \mathrm{e}^{-x}} - 1013.0 + 1628.0/x'
+        if (present(latex)) latex = '-\frac{3062 * 0.38511 * \mathrm{e}^{-x}}{0.61489 + 0.38511 * \mathrm{e}^{-x}} - 1013 + 1628/x'
     case (61:62)
         select case (nprob)
         case (61)
@@ -833,7 +839,7 @@ program root_tests
         b = 3.1_wp
         root = 3.0_wp
         if (present(x)) f = exp(x**2+7.0_wp*x-30.0_wp) - 1.0_wp
-        if (present(latex)) latex = '\mathrm{e}^{x^2 + 7 * x - 30} - 1'
+        if (present(latex)) latex = '\mathrm{e}^{x^2 + 7 x - 30} - 1'
     case(68)
         a = 1.0_wp
         b = 2.1_wp
@@ -1046,12 +1052,13 @@ program root_tests
         root = 2.0_wp / 3.0_wp - 0.01_wp
         if (present(x)) then
             if (x <= 2.0_wp / 3.0_wp) then
-                f = (abs(x - 2.0_wp / 3.0_wp))**0.5_wp - 0.1_wp
+                f =  (abs(x - 2.0_wp / 3.0_wp))**0.5_wp - 0.1_wp
             else
                 f = -(abs(x - 2.0_wp / 3.0_wp))**0.5_wp - 0.1_wp
             end if
         end if
-        if (present(latex)) latex = 'TODO'
+        if (present(latex)) latex = '\left\{ \begin{array}{cl} |x - 2/3|^{0.5} - 0.1 & \mathrm{if~} x \le 2/3 \\'//&
+                                    ' -|x - 2/3|^{0.5} - 0.1& \mathrm{otherwise} \end{array} \right.'
     ! case(102)
     !     a = -10.0_wp
     !     b = 10.0_wp

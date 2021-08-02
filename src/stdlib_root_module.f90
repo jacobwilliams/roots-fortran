@@ -6,7 +6,7 @@
 
     module stdlib_root_module
 
-    use iso_fortran_env, only: wp => real64, ip => int32
+    use iso_fortran_env, only: wp => real64
     use iso_fortran_env, only: error_unit
 
     implicit none
@@ -182,16 +182,16 @@
         end function func2
         subroutine root_f(me,ax,bx,fax,fbx,xzero,fzero,iflag)
             !! Root solver function interface
-            import :: root_solver, wp, ip
+            import :: root_solver, wp
             implicit none
             class(root_solver),intent(inout) :: me
-            real(wp),intent(in)       :: ax
-            real(wp),intent(in)       :: bx
-            real(wp),intent(in)       :: fax
-            real(wp),intent(in)       :: fbx
-            real(wp),intent(out)      :: xzero
-            real(wp),intent(out)      :: fzero
-            integer(ip),intent(out)   :: iflag
+            real(wp),intent(in)   :: ax
+            real(wp),intent(in)   :: bx
+            real(wp),intent(in)   :: fax
+            real(wp),intent(in)   :: fbx
+            real(wp),intent(out)  :: xzero
+            real(wp),intent(out)  :: fzero
+            integer,intent(out)   :: iflag
         end subroutine root_f
     end interface
 
@@ -632,7 +632,7 @@
     real(wp),intent(out)   :: fzero   !! value of `f` at the root (`f(xzero)`)
     integer,intent(out)    :: iflag   !! status flag (`0`=root found, `-2`=max iterations reached)
 
-    real(wp) :: x1,x2,x3,f1,f2,f3,delta
+    real(wp) :: x1,x2,x3,f1,f2,f3
     integer :: i !! iteration counter
     logical :: root_found !! convergence in x
 
@@ -1012,9 +1012,9 @@
     real(wp),intent(in)  :: fbx     !! `f(ax)`
     real(wp),intent(out) :: xzero   !! abscissa approximating a zero of `f` in the interval `ax`,`bx`
     real(wp),intent(out) :: fzero   !! value of `f` at the root (`f(xzero)`)
-    integer,intent(out)  :: iflag   !! status flag (`0`=root found, `-2`=max iterations reached, `-3`=limit of precision reached)
+    integer,intent(out)  :: iflag   !! status flag (`0`=root found, `-2`=max iterations reached)
 
-    real(wp) :: xdn,ydn,xup,yup,xlast,d,xm,ym,a,b,y2
+    real(wp) :: xdn,ydn,xup,yup,d,xm,ym,a,b,y2
     integer :: i !! counter
 
     ! initialize:
@@ -1022,7 +1022,6 @@
     xzero = ax
     fzero = fax
     y2    = fbx
-    xlast = huge(1.0_wp)
 
     if (fzero<0.0_wp) then
         xdn = ax
@@ -1039,8 +1038,7 @@
     ! main loop:
     do i = 1, me%maxiter
 
-        d = (xup - xdn) / 2.0_wp
-        xm = (xup + xdn) / 2.0_wp
+        xm = bisect(xup,xdn)
         ym = me%f(xm)
         if (abs(ym)<=me%ftol) then
             xzero = xm
@@ -1048,12 +1046,11 @@
             exit ! Convergence
         end if
 
+        d = (xup - xdn) / 2.0_wp
         a = (yup + ydn - 2.0_wp*ym)/(2.0_wp*d**2)
         b = (yup - ydn)/(2.0_wp*d)
-        xzero = xm - 2.0_wp*ym / (b * (1.0_wp + sqrt(1.0_wp - 4.0_wp*a*ym/b**2)))
-        if (me%converged(xzero,xlast)) exit
 
-        xlast = xzero
+        xzero = xm - 2.0_wp*ym / (b * (1.0_wp + sqrt(1.0_wp - 4.0_wp*a*ym/b**2)))
         fzero = me%f(xzero)
         if (abs(fzero)<=me%ftol) exit ! Convergence
 
@@ -1073,7 +1070,11 @@
             end if
         end if
 
-        if (i==me%maxiter) iflag = -2 ! maximum number of iterations
+        if (me%converged(xdn,xup) .or. i==me%maxiter) then
+            call choose_best(xdn,xup,ydn,yup,xzero,fzero)
+            if (i==me%maxiter) iflag = -2 ! maximum number of iterations
+            exit
+        end if
 
     end do
 
@@ -1900,7 +1901,7 @@
 
     do i = 1, me%maxiter
 
-        c = (a + b) / 2.0_wp
+        c = bisect(a,b)
         fc = me%f(c)
         if (abs(fc)<=me%ftol) then
             xzero = c
