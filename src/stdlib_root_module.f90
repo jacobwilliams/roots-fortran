@@ -954,11 +954,9 @@
         x3 = secant(x1,x2,f1,f2,ax,bx)
 
         f3  = me%f(x3)  ! calculate f3
-
         if (abs(f3)<=me%ftol)  then ! f3 is a root
             fzero = f3
             xzero = x3
-            iflag = 0
             return
         end if
 
