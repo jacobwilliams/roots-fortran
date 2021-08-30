@@ -55,7 +55,7 @@
         <ul class="dropdown-menu">
           
               
-            <li><a href="../lists/files.html">Source Files</a></li>
+            <li><a href="../sourcefile/root_module.f90.html">Source File</a></li>
         
         
         
@@ -78,7 +78,7 @@
             </li>
 
 
-<li class="visible-xs hidden-sm visible-lg"><a href="../lists/files.html">Source Files</a></li>
+<li class="visible-xs hidden-sm visible-lg"><a href="../sourcefile/root_module.f90.html">Source File</a></li>
 
 
 
@@ -125,21 +125,21 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 0.5% of total for procedures.">14 statements</a>
+    title=" 1.0% of total for procedures.">14 statements</a>
      </li> 
      
      
      
-    <li><i class="fa fa-code"></i><a href="../src/stdlib_root_module_real32.F90"> Source File</a></li>
+    <li><i class="fa fa-code"></i><a href="../src/root_module.F90"> Source File</a></li>
      
      
   </ul>
   <ol class="breadcrumb in-well text-right">
   
     
-     <li><a href='../sourcefile/stdlib_root_module_real32.f90.html'>stdlib_root_module_real32.F90</a></li>
+     <li><a href='../sourcefile/root_module.f90.html'>root_module.F90</a></li>
     
-     <li><a href='../module/stdlib_root_module_real32.html'>stdlib_root_module_real32</a></li>
+     <li><a href='../module/root_module.html'>root_module</a></li>
     
   
      <li class="active">initialize_root_solver</li>
@@ -183,7 +183,13 @@
 
 
 
-<em>None</em>
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+  <div class="list-group">
+    <a class="list-group-item" href="../proc/initialize_root_solver.html#src">initialize_root_solver</a>
+  </div>
+</div>
+
 
 
 </div>
@@ -202,7 +208,7 @@ private subroutine initialize_root_solver(me, f, ftol, rtol, atol, maxiter)
 
 
     
-    <p>Initialize the <a href="../type/root_solver_real32.html">root_solver_real32</a> class.</p>
+    <p>Initialize the <a href="../type/root_solver.html">root_solver</a> class.</p>
 <p>Note that all optional inputs are not used for all methods.</p>
     
 
@@ -224,7 +230,7 @@ private subroutine initialize_root_solver(me, f, ftol, rtol, atol, maxiter)
   
 <tr>
   
-  <td><span class="anchor" id="variable-me~6"></span>class(<a href='../type/root_solver_real32.html'>root_solver_real32</a>),</td>
+  <td><span class="anchor" id="variable-me~4"></span>class(<a href='../type/root_solver.html'>root_solver</a>),</td>
   <td>intent(out)</td>
   <td></td>
   
@@ -239,7 +245,7 @@ private subroutine initialize_root_solver(me, f, ftol, rtol, atol, maxiter)
   
 <tr>
   
-  <td><span class="anchor" id="variable-f~7"></span>procedure(<a href='../interface/func.html'>func</a>)</td>
+  <td><span class="anchor" id="variable-f~4"></span>procedure(<a href='../interface/func.html'>func</a>)</td>
   <td></td>
   <td></td>
   
@@ -254,7 +260,7 @@ private subroutine initialize_root_solver(me, f, ftol, rtol, atol, maxiter)
   
 <tr>
   
-  <td><span class="anchor" id="variable-ftol~3"></span>real(kind=wp),</td>
+  <td><span class="anchor" id="variable-ftol~2"></span>real(kind=wp),</td>
   <td>intent(in),</td>
   <td>optional</td>
   
@@ -269,7 +275,7 @@ private subroutine initialize_root_solver(me, f, ftol, rtol, atol, maxiter)
   
 <tr>
   
-  <td><span class="anchor" id="variable-rtol~3"></span>real(kind=wp),</td>
+  <td><span class="anchor" id="variable-rtol~2"></span>real(kind=wp),</td>
   <td>intent(in),</td>
   <td>optional</td>
   
@@ -284,7 +290,7 @@ private subroutine initialize_root_solver(me, f, ftol, rtol, atol, maxiter)
   
 <tr>
   
-  <td><span class="anchor" id="variable-atol~3"></span>real(kind=wp),</td>
+  <td><span class="anchor" id="variable-atol~2"></span>real(kind=wp),</td>
   <td>intent(in),</td>
   <td>optional</td>
   
@@ -299,7 +305,7 @@ private subroutine initialize_root_solver(me, f, ftol, rtol, atol, maxiter)
   
 <tr>
   
-  <td><span class="anchor" id="variable-maxiter~3"></span>integer,</td>
+  <td><span class="anchor" id="variable-maxiter~2"></span>integer,</td>
   <td>intent(in),</td>
   <td>optional</td>
   
@@ -343,7 +349,13 @@ private subroutine initialize_root_solver(me, f, ftol, rtol, atol, maxiter)
 
 
 
-<em>None</em>
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+  <div class="list-group">
+    <a class="list-group-item" href="../proc/initialize_root_solver.html#src">initialize_root_solver</a>
+  </div>
+</div>
+
 
 
     </section>
@@ -366,6 +378,31 @@ private subroutine initialize_root_solver(me, f, ftol, rtol, atol, maxiter)
 
     
     
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="highlight"><pre><span></span>    <span class="k">subroutine </span><span class="n">initialize_root_solver</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">ftol</span><span class="p">,</span><span class="n">rtol</span><span class="p">,</span><span class="n">atol</span><span class="p">,</span><span class="n">maxiter</span><span class="p">)</span>
+
+    <span class="k">implicit none</span>
+
+<span class="k">    class</span><span class="p">(</span><span class="n">root_solver</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="kd">::</span> <span class="n">me</span>
+    <span class="k">procedure</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>               <span class="kd">::</span> <span class="n">f</span>        <span class="c">!! user function `f(x)` to find the root of</span>
+    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span>  <span class="kd">::</span> <span class="n">ftol</span>     <span class="c">!! absolute tolerance for `f=0`</span>
+    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span>  <span class="kd">::</span> <span class="n">rtol</span>     <span class="c">!! relative tol for x</span>
+    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span>  <span class="kd">::</span> <span class="n">atol</span>     <span class="c">!! absolute tol for x</span>
+    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span>   <span class="kd">::</span> <span class="n">maxiter</span>  <span class="c">!! maximum number of iterations</span>
+
+    <span class="n">me</span><span class="p">%</span><span class="n">f</span> <span class="o">=&gt;</span> <span class="n">f</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">ftol</span><span class="p">))</span>    <span class="n">me</span><span class="p">%</span><span class="n">ftol</span>    <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">ftol</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">rtol</span><span class="p">))</span>    <span class="n">me</span><span class="p">%</span><span class="n">rtol</span>    <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">rtol</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">atol</span><span class="p">))</span>    <span class="n">me</span><span class="p">%</span><span class="n">atol</span>    <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">atol</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">maxiter</span><span class="p">))</span> <span class="n">me</span><span class="p">%</span><span class="n">maxiter</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">maxiter</span><span class="p">)</span>
+
+    <span class="k">end subroutine </span><span class="n">initialize_root_solver</span>
+</pre></div>
+
+    </section>
+    <br>
     
     
     </div>

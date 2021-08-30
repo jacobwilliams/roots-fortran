@@ -55,7 +55,7 @@
         <ul class="dropdown-menu">
           
               
-            <li><a href="../lists/files.html">Source Files</a></li>
+            <li><a href="../sourcefile/root_module.f90.html">Source File</a></li>
         
         
         
@@ -78,7 +78,7 @@
             </li>
 
 
-<li class="visible-xs hidden-sm visible-lg"><a href="../lists/files.html">Source Files</a></li>
+<li class="visible-xs hidden-sm visible-lg"><a href="../sourcefile/root_module.f90.html">Source File</a></li>
 
 
 
@@ -125,21 +125,21 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 0.3% of total for procedures.">9 statements</a>
+    title=" 0.6% of total for procedures.">9 statements</a>
      </li> 
      
      
      
-    <li><i class="fa fa-code"></i><a href="../src/stdlib_root_module_real32.F90"> Source File</a></li>
+    <li><i class="fa fa-code"></i><a href="../src/root_module.F90"> Source File</a></li>
      
      
   </ul>
   <ol class="breadcrumb in-well text-right">
   
     
-     <li><a href='../sourcefile/stdlib_root_module_real32.f90.html'>stdlib_root_module_real32.F90</a></li>
+     <li><a href='../sourcefile/root_module.f90.html'>root_module.F90</a></li>
     
-     <li><a href='../module/stdlib_root_module_real32.html'>stdlib_root_module_real32</a></li>
+     <li><a href='../module/root_module.html'>root_module</a></li>
     
   
      <li class="active">swap</li>
@@ -183,7 +183,13 @@
 
 
 
-<em>None</em>
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+  <div class="list-group">
+    <a class="list-group-item" href="../proc/swap.html#src">swap</a>
+  </div>
+</div>
+
 
 
 </div>
@@ -282,7 +288,13 @@ private pure elemental subroutine swap(a, b)
 
 
 
-<em>None</em>
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+  <div class="list-group">
+    <a class="list-group-item" href="../proc/swap.html#src">swap</a>
+  </div>
+</div>
+
 
 
     </section>
@@ -305,6 +317,27 @@ private pure elemental subroutine swap(a, b)
 
     
     
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="highlight"><pre><span></span>    <span class="k">pure elemental subroutine </span><span class="n">swap</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
+
+    <span class="k">implicit none</span>
+
+<span class="k">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">a</span>
+    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">b</span>
+
+    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">tmp</span>
+
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">a</span>
+    <span class="n">a</span>   <span class="o">=</span> <span class="n">b</span>
+    <span class="n">b</span>   <span class="o">=</span> <span class="n">tmp</span>
+
+    <span class="k">end subroutine </span><span class="n">swap</span>
+</pre></div>
+
+    </section>
+    <br>
     
     
     </div>

@@ -55,7 +55,7 @@
         <ul class="dropdown-menu">
           
               
-            <li><a href="../lists/files.html">Source Files</a></li>
+            <li><a href="../sourcefile/root_module.f90.html">Source File</a></li>
         
         
         
@@ -78,7 +78,7 @@
             </li>
 
 
-<li class="visible-xs hidden-sm visible-lg"><a href="../lists/files.html">Source Files</a></li>
+<li class="visible-xs hidden-sm visible-lg"><a href="../sourcefile/root_module.f90.html">Source File</a></li>
 
 
 
@@ -125,21 +125,21 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 0.5% of total for procedures.">14 statements</a>
+    title=" 1.0% of total for procedures.">14 statements</a>
      </li> 
      
      
      
-    <li><i class="fa fa-code"></i><a href="../src/stdlib_root_module_real32.F90"> Source File</a></li>
+    <li><i class="fa fa-code"></i><a href="../src/root_module.F90"> Source File</a></li>
      
      
   </ul>
   <ol class="breadcrumb in-well text-right">
   
     
-     <li><a href='../sourcefile/stdlib_root_module_real32.f90.html'>stdlib_root_module_real32.F90</a></li>
+     <li><a href='../sourcefile/root_module.f90.html'>root_module.F90</a></li>
     
-     <li><a href='../module/stdlib_root_module_real32.html'>stdlib_root_module_real32</a></li>
+     <li><a href='../module/root_module.html'>root_module</a></li>
     
   
      <li class="active">regula_falsi_step</li>
@@ -183,7 +183,13 @@
 
 
 
-<em>None</em>
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+  <div class="list-group">
+    <a class="list-group-item" href="../proc/regula_falsi_step.html#src">regula_falsi_step</a>
+  </div>
+</div>
+
 
 
 </div>
@@ -286,7 +292,7 @@ private function regula_falsi_step(x1, x2, f1, f2, ax, bx) result(x3)
   
 <tr>
   
-  <td><span class="anchor" id="variable-ax~3"></span>real(kind=wp),</td>
+  <td><span class="anchor" id="variable-ax~2"></span>real(kind=wp),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -301,7 +307,7 @@ private function regula_falsi_step(x1, x2, f1, f2, ax, bx) result(x3)
   
 <tr>
   
-  <td><span class="anchor" id="variable-bx~3"></span>real(kind=wp),</td>
+  <td><span class="anchor" id="variable-bx~2"></span>real(kind=wp),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -354,7 +360,13 @@ private function regula_falsi_step(x1, x2, f1, f2, ax, bx) result(x3)
 
 
 
-<em>None</em>
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+  <div class="list-group">
+    <a class="list-group-item" href="../proc/regula_falsi_step.html#src">regula_falsi_step</a>
+  </div>
+</div>
+
 
 
     </section>
@@ -377,6 +389,36 @@ private function regula_falsi_step(x1, x2, f1, f2, ax, bx) result(x3)
 
     
     
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="highlight"><pre><span></span>    <span class="k">function </span><span class="n">regula_falsi_step</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="n">f1</span><span class="p">,</span><span class="n">f2</span><span class="p">,</span><span class="n">ax</span><span class="p">,</span><span class="n">bx</span><span class="p">)</span> <span class="k">result</span><span class="p">(</span><span class="n">x3</span><span class="p">)</span>
+
+    <span class="k">implicit none</span>
+
+<span class="k">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="n">f1</span><span class="p">,</span><span class="n">f2</span>
+    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">ax</span> <span class="c">!! original interval lower bound</span>
+    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">bx</span> <span class="c">!! original interval upper bound</span>
+    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">x3</span> <span class="c">!! intersection of line connecting x1,x2 with x-axis</span>
+
+    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">delta</span>
+
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">f2</span><span class="o">-</span><span class="n">f1</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">delta</span> <span class="o">/=</span> <span class="mf">0.0_wp</span><span class="p">)</span> <span class="k">then</span>
+        <span class="c">! intersection with x-axis of line connecting the two points:</span>
+        <span class="n">x3</span> <span class="o">=</span> <span class="n">x1</span> <span class="o">-</span> <span class="p">(</span><span class="n">f1</span><span class="o">/</span><span class="n">delta</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x2</span><span class="o">-</span><span class="n">x1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">x3</span><span class="o">&gt;</span><span class="n">ax</span> <span class="p">.</span><span class="nb">and</span><span class="p">.</span> <span class="n">x3</span><span class="o">&lt;</span><span class="n">bx</span><span class="p">)</span> <span class="k">return</span> <span class="c">! must be a new point in the range</span>
+    <span class="k">end if</span>
+
+    <span class="c">! fall back to bisection for any problem</span>
+    <span class="n">x3</span> <span class="o">=</span> <span class="n">bisect</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">)</span>
+
+    <span class="k">end function </span><span class="n">regula_falsi_step</span>
+</pre></div>
+
+    </section>
+    <br>
     
     
     </div>
