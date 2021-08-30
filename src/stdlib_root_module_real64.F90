@@ -1,13 +1,17 @@
 !*****************************************************************************************
 !>
-!  64 bit root solver [[stdlib_root_module]].
+!  64 bit root solver for [[stdlib_root_module]].
 
     module stdlib_root_module_real64
 
-    use iso_fortran_env, only: wp => real64
-
-#define INCLUDE_STDLIB_ROOT_CORE
-#include "stdlib_root_core.F90"
+#define REAL_KIND real64
+#ifdef __GFORTRAN__
+#define RKIND(__PROCEDURE__) __PROCEDURE__/**/_real64
+#else
+#define RKIND(__PROCEDURE__) __PROCEDURE__##_real64
+#endif
+#include "stdlib_root_core.inc"
+#undef REAL_KIND
 
     end module stdlib_root_module_real64
 !*****************************************************************************************
