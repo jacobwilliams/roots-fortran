@@ -112,7 +112,7 @@ program root_tests
     end do
     write(*,*) ''
 
-    call generate_plots()
+   ! call generate_plots()  ! comment out for now...
 
     contains
 !*****************************************************************************************
