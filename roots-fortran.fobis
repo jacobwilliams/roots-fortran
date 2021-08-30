@@ -7,7 +7,7 @@ modes = static-gnu static-gnu-debug
         tests-intel tests-intel-debug
 
 [common-variables]
-$MOD_FILE    = stdlib_root_module.F90
+$MOD_FILE    = root_module.F90
 $FORD_FILE   = roots-fortran.md
 $STATIC_LIB  = libroots.a
 $SHARED_LIB  = libroots.so

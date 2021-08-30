@@ -10,14 +10,12 @@
 
 program root_tests
 
-    use stdlib_root_module
     use iso_fortran_env
+    use root_module, wp => root_module_rk
     use face,            only: colorize
     use pyplot_module,   only: pyplot
 
     implicit none
-
-    integer,parameter :: wp = real64
 
     integer :: nprob
     integer :: n
