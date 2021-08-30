@@ -14,11 +14,21 @@ A library for finding the roots of continuous scalar functions of a single real 
 
 **FPM**
 
-...
+A `fmp.toml` file is provided for compiling roots-fortran with the [Fortran Package Manager](https://github.com/fortran-lang/fpm). For example, to build:
+
+```
+  fpm build --profile release
+```
+
+And to run the unit tests:
+
+```
+  fpm test
+```
 
 **FoBiS**
 
-A [FoBiS](https://github.com/szaghi/FoBiS) configuration file (`roots-fortran.fobis`) is also provided that can also build the library and examples. Use the `mode` flag to indicate what to build. For example:
+A [FoBiS](https://github.com/szaghi/FoBiS) configuration file (`roots-fortran.fobis`) is also provided that can also build the library and tests. Use the `mode` flag to indicate what to build. For example:
 
   * To build all the examples using gfortran: `FoBiS.py build -f roots-fortran.fobis -mode tests-gnu`
   * To build all the examples using ifort: `FoBiS.py build -f roots-fortran.fobis -mode tests-intel`

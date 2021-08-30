@@ -1,0 +1,28 @@
+name = "roots-fortran"
+author = "Jacob Williams"
+copyright  = "Copyright (c) 2021, Jacob Williams"
+license = "BSD-3"
+description = "A library for finding the roots of continuous scalar functions of a single real variable"
+homepage = "https://github.com/jacobwilliams/roots-fortran"
+keywords = ["root"]
+
+[build]
+auto-executables = false
+auto-examples = false
+auto-tests = false
+
+[library]
+source-dir = "src"
+
+[install]
+library = true
+
+[[test]]
+name = "root_tests_oo"
+source-dir = "tests"
+main = "root_tests_oo.f90"
+
+[[test]]
+name = "root_tests"
+source-dir = "tests"
+main = "root_tests.f90"
