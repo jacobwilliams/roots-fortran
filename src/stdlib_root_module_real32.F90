@@ -4,10 +4,14 @@
 
     module stdlib_root_module_real32
 
-    use iso_fortran_env, only: wp => real32
-
-#define INCLUDE_STDLIB_ROOT_CORE
-#include "stdlib_root_core.F90"
+#define REAL_KIND real32
+#ifdef __GFORTRAN__
+#define RKIND(__PROCEDURE__) __PROCEDURE__/**/_real32
+#else
+#define RKIND(__PROCEDURE__) __PROCEDURE__##_real32
+#endif
+#include "stdlib_root_core.inc"
+#undef REAL_KIND
 
     end module stdlib_root_module_real32
 !*****************************************************************************************

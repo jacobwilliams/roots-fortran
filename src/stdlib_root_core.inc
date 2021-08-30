@@ -1,20 +1,10 @@
-#ifndef INCLUDE_STDLIB_ROOT_CORE
-!*****************************************************************************************
-!>
-!  If not using this as an include file for other modules,
-!  then we just have a `real64` version here.
-
-    module stdlib_root_module
-
-    use iso_fortran_env, only: wp => real64
-#endif
-    use iso_fortran_env, only: error_unit
+    use iso_fortran_env, only: error_unit, wp => REAL_KIND
 
     implicit none
 
     private
 
-    type,abstract,public :: root_solver
+    type,abstract,public :: RKIND(root_solver)
     !! abstract class for the root solver methods
     private
     procedure(func),pointer :: f => null()  !! user function to find the root of
@@ -32,144 +22,144 @@
                                             !! \( f(a_x) \) and \( f(b_x) \) have opposite signs.
     procedure :: get_fa_fb
     procedure :: converged
-    end type root_solver
+    end type RKIND(root_solver)
 
-    type,extends(root_solver),public :: brent_solver
+    type,extends(RKIND(root_solver)),public :: RKIND(brent_solver)
     !! Classic brent (zeroin) root solver
     private
     contains
     private
     procedure,public :: find_root => brent
-    end type brent_solver
+    end type RKIND(brent_solver)
 
-    type,extends(root_solver),public :: bisection_solver
+    type,extends(RKIND(root_solver)),public :: RKIND(bisection_solver)
     !! Classic bisection root solver
     private
     contains
     private
     procedure,public :: find_root => bisection
-    end type bisection_solver
+    end type RKIND(bisection_solver)
 
-    type,extends(root_solver),public :: regula_falsi_solver
+    type,extends(RKIND(root_solver)),public :: RKIND(regula_falsi_solver)
     !! Classic Regula Falsi root solver
     private
     contains
     private
     procedure,public :: find_root => regula_falsi
-    end type regula_falsi_solver
+    end type RKIND(regula_falsi_solver)
 
-    type,extends(root_solver),public :: illinois_solver
+    type,extends(RKIND(root_solver)),public :: RKIND(illinois_solver)
     !! Illinois (modified Regula Falsi) root solver
     private
     contains
     private
     procedure,public :: find_root => illinois
-    end type illinois_solver
+    end type RKIND(illinois_solver)
 
-    type,extends(root_solver),public :: anderson_bjorck_solver
+    type,extends(RKIND(root_solver)),public :: RKIND(anderson_bjorck_solver)
     !! anderson bjorck root solver
     private
     contains
     private
     procedure,public :: find_root => anderson_bjorck
-    end type anderson_bjorck_solver
+    end type RKIND(anderson_bjorck_solver)
 
-    type,extends(root_solver),public :: ridders_solver
+    type,extends(RKIND(root_solver)),public :: RKIND(ridders_solver)
     !! ridders root solver
     private
     contains
     private
     procedure,public :: find_root => ridders
-    end type ridders_solver
+    end type RKIND(ridders_solver)
 
-    type,extends(root_solver),public :: pegasus_solver
+    type,extends(RKIND(root_solver)),public :: RKIND(pegasus_solver)
     !! pegasus root solver
     private
     contains
     private
     procedure,public :: find_root => pegasus
-    end type pegasus_solver
+    end type RKIND(pegasus_solver)
 
-    type,extends(root_solver),public :: bdqrf_solver
+    type,extends(RKIND(root_solver)),public :: RKIND(bdqrf_solver)
     !! bdqrf root solver
     private
     contains
     private
     procedure,public :: find_root => bdqrf
-    end type bdqrf_solver
+    end type RKIND(bdqrf_solver)
 
-    type,extends(root_solver),public :: muller_solver
+    type,extends(RKIND(root_solver)),public :: RKIND(muller_solver)
     !! muller root solver
     private
     contains
     private
     procedure,public :: find_root => muller
-    end type muller_solver
+    end type RKIND(muller_solver)
 
-    type,extends(root_solver),public :: brenth_solver
+    type,extends(RKIND(root_solver)),public :: RKIND(brenth_solver)
     !! brenth root solver
     private
     contains
     private
     procedure,public :: find_root => brenth
-    end type brenth_solver
+    end type RKIND(brenth_solver)
 
-    type,extends(root_solver),public :: brentq_solver
+    type,extends(RKIND(root_solver)),public :: RKIND(brentq_solver)
     !! brentq root solver
     private
     contains
     private
     procedure,public :: find_root => brentq
-    end type brentq_solver
+    end type RKIND(brentq_solver)
 
-    type,extends(root_solver),public :: chandrupatla_solver
+    type,extends(RKIND(root_solver)),public :: RKIND(chandrupatla_solver)
     !! chandrupatla root solver
     private
     contains
     private
     procedure,public :: find_root => chandrupatla
-    end type chandrupatla_solver
+    end type RKIND(chandrupatla_solver)
 
-    type,extends(root_solver),public :: toms748_solver
+    type,extends(RKIND(root_solver)),public :: RKIND(toms748_solver)
     !! TOMS748 root solver
     private
     contains
     private
     procedure,public :: find_root => toms748
-    end type toms748_solver
+    end type RKIND(toms748_solver)
 
-    type,extends(root_solver),public :: zhang_solver
+    type,extends(RKIND(root_solver)),public :: RKIND(zhang_solver)
     !! zhang root solver
     private
     contains
     private
     procedure,public :: find_root => zhang
-    end type zhang_solver
+    end type RKIND(zhang_solver)
 
-    type,extends(root_solver),public :: anderson_bjorck_king_solver
+    type,extends(RKIND(root_solver)),public :: RKIND(anderson_bjorck_king_solver)
     !! anderson-bjorck-king root solver
     private
     contains
     private
     procedure,public :: find_root => anderson_bjorck_king
-    end type anderson_bjorck_king_solver
+    end type RKIND(anderson_bjorck_king_solver)
 
-    type,extends(root_solver),public :: blendtf_solver
+    type,extends(RKIND(root_solver)),public :: RKIND(blendtf_solver)
     !! blendtf root solver
     private
     contains
     private
     procedure,public :: find_root => blendtf
-    end type blendtf_solver
+    end type RKIND(blendtf_solver)
 
     abstract interface
         function func(me,x) result(f)
             !! Interface to the function to be minimized
             !! (Object-oriented version).
             !! It should evaluate f(x) for any x in the interval (ax,bx)
-            import :: root_solver, wp
+            import :: RKIND(root_solver), wp
             implicit none
-            class(root_solver),intent(inout) :: me
+            class(RKIND(root_solver)),intent(inout) :: me
             real(wp),intent(in) :: x
             real(wp) :: f
         end function func
@@ -184,9 +174,9 @@
         end function func2
         subroutine root_f(me,ax,bx,fax,fbx,xzero,fzero,iflag)
             !! Root solver function interface
-            import :: root_solver, wp
+            import :: RKIND(root_solver), wp
             implicit none
-            class(root_solver),intent(inout) :: me
+            class(RKIND(root_solver)),intent(inout) :: me
             real(wp),intent(in)   :: ax
             real(wp),intent(in)   :: bx
             real(wp),intent(in)   :: fax
@@ -197,14 +187,14 @@
         end subroutine root_f
     end interface
 
-    public :: root_scalar
+    public :: RKIND(root_scalar)
 
     contains
 !*****************************************************************************************
 
 !*****************************************************************************************
 !>
-!  Initialize the [[root_solver]] class.
+!  Initialize the [[RKIND(root_solver)]] class.
 !
 !  Note that all optional inputs are not used for all methods.
 
@@ -212,7 +202,7 @@
 
     implicit none
 
-    class(root_solver),intent(out) :: me
+    class(RKIND(root_solver)),intent(out) :: me
     procedure(func)               :: f        !! user function `f(x)` to find the root of
     real(wp),intent(in),optional  :: ftol     !! absolute tolerance for `f=0`
     real(wp),intent(in),optional  :: rtol     !! relative tol for x
@@ -232,8 +222,8 @@
 !>
 !  Non-object-oriented wrapper.
 
-    subroutine root_scalar(method,fun,ax,bx,xzero,fzero,iflag,&
-                           ftol,rtol,atol,maxiter,fax,fbx,bisect_on_failure)
+    subroutine RKIND(root_scalar)(method,fun,ax,bx,xzero,fzero,iflag,&
+                                     ftol,rtol,atol,maxiter,fax,fbx,bisect_on_failure)
 
     implicit none
 
@@ -255,26 +245,26 @@
                                                         !! (default is False). Note that this can use up
                                                         !! to `maxiter` additional function evaluations.
 
-    class(root_solver),allocatable :: s
+    class(RKIND(root_solver)),allocatable :: s
 
     select case (lowercase(method))
 
-    case('brent');                allocate(brent_solver                :: s)
-    case('bisection');            allocate(bisection_solver            :: s)
-    case('regula_falsi');         allocate(regula_falsi_solver         :: s)
-    case('illinois');             allocate(illinois_solver             :: s)
-    case('anderson_bjorck');      allocate(anderson_bjorck_solver      :: s)
-    case('ridders');              allocate(ridders_solver              :: s)
-    case('pegasus');              allocate(pegasus_solver              :: s)
-    case('bdqrf');                allocate(bdqrf_solver                :: s)
-    case('muller');               allocate(muller_solver               :: s)
-    case('brenth');               allocate(brenth_solver               :: s)
-    case('brentq');               allocate(brentq_solver               :: s)
-    case('chandrupatla');         allocate(chandrupatla_solver         :: s)
-    case('toms748');              allocate(toms748_solver              :: s)
-    case('zhang');                allocate(zhang_solver                :: s)
-    case('anderson_bjorck_king'); allocate(anderson_bjorck_king_solver :: s)
-    case('blendtf');              allocate(blendtf_solver              :: s)
+    case('brent');                allocate(RKIND(brent_solver)                :: s)
+    case('bisection');            allocate(RKIND(bisection_solver)            :: s)
+    case('regula_falsi');         allocate(RKIND(regula_falsi_solver)         :: s)
+    case('illinois');             allocate(RKIND(illinois_solver)             :: s)
+    case('anderson_bjorck');      allocate(RKIND(anderson_bjorck_solver)      :: s)
+    case('ridders');              allocate(RKIND(ridders_solver)              :: s)
+    case('pegasus');              allocate(RKIND(pegasus_solver)              :: s)
+    case('bdqrf');                allocate(RKIND(bdqrf_solver)                :: s)
+    case('muller');               allocate(RKIND(muller_solver)               :: s)
+    case('brenth');               allocate(RKIND(brenth_solver)               :: s)
+    case('brentq');               allocate(RKIND(brentq_solver)               :: s)
+    case('chandrupatla');         allocate(RKIND(chandrupatla_solver)         :: s)
+    case('toms748');              allocate(RKIND(toms748_solver)              :: s)
+    case('zhang');                allocate(RKIND(zhang_solver)                :: s)
+    case('anderson_bjorck_king'); allocate(RKIND(anderson_bjorck_king_solver) :: s)
+    case('blendtf');              allocate(RKIND(blendtf_solver)              :: s)
 
     case default
         iflag = -999    ! invalid method
@@ -288,13 +278,13 @@
 
         function func_wrapper(me,x) result(f)
             implicit none
-            class(root_solver),intent(inout) :: me
+            class(RKIND(root_solver)),intent(inout) :: me
             real(wp),intent(in) :: x
             real(wp) :: f
             f = fun(x)
         end function func_wrapper
 
-    end subroutine root_scalar
+    end subroutine RKIND(root_scalar)
 !*****************************************************************************************
 
 !*****************************************************************************************
@@ -305,7 +295,7 @@
 
     implicit none
 
-    class(root_solver),intent(inout) :: me
+    class(RKIND(root_solver)),intent(inout) :: me
     real(wp),intent(in)              :: ax      !! left endpoint of initial interval
     real(wp),intent(in)              :: bx      !! right endpoint of initial interval
     real(wp),intent(out)             :: xzero   !! abscissa approximating a zero of `f` in the interval `ax`,`bx`
@@ -365,9 +355,9 @@
                 if (present(bisect_on_failure)) then
                     if (bisect_on_failure) then
                         ! use the wrapper routine for that with the input class
-                        call root_scalar('bisection',func_wrapper,ax,bx,xzero,fzero,iflag,&
-                                         me%ftol,me%rtol,me%atol,me%maxiter,fa,fb,&
-                                         bisect_on_failure = .false.)
+                        call RKIND(root_scalar)('bisection',func_wrapper,ax,bx,xzero,fzero,iflag,&
+                                                   me%ftol,me%rtol,me%atol,me%maxiter,fa,fb,&
+                                                   bisect_on_failure = .false.)
                     end if
                 end if
             end if
@@ -397,7 +387,7 @@
 
     implicit none
 
-    class(root_solver),intent(inout) :: me
+    class(RKIND(root_solver)),intent(inout) :: me
     real(wp),intent(in)              :: ax      !! left endpoint of initial interval
     real(wp),intent(in)              :: bx      !! right endpoint of initial interval
     real(wp),intent(in),optional     :: fax     !! if `f(ax)` is already known, it can be input here
@@ -441,7 +431,7 @@
 
     implicit none
 
-    class(brent_solver),intent(inout) :: me
+    class(RKIND(brent_solver)),intent(inout) :: me
     real(wp),intent(in)    :: ax    !! left endpoint of initial interval
     real(wp),intent(in)    :: bx    !! right endpoint of initial interval
     real(wp),intent(in)    :: fax   !! `f(ax)`
@@ -555,7 +545,7 @@
 
     implicit none
 
-    class(bisection_solver),intent(inout) :: me
+    class(RKIND(bisection_solver)),intent(inout) :: me
     real(wp),intent(in)    :: ax      !! left endpoint of initial interval
     real(wp),intent(in)    :: bx      !! right endpoint of initial interval
     real(wp),intent(in)    :: fax     !! `f(ax)`
@@ -625,7 +615,7 @@
 
     implicit none
 
-    class(regula_falsi_solver),intent(inout) :: me
+    class(RKIND(regula_falsi_solver)),intent(inout) :: me
     real(wp),intent(in)    :: ax      !! left endpoint of initial interval
     real(wp),intent(in)    :: bx      !! right endpoint of initial interval
     real(wp),intent(in)    :: fax     !! `f(ax)`
@@ -697,7 +687,7 @@
 
     implicit none
 
-    class(illinois_solver),intent(inout) :: me
+    class(RKIND(illinois_solver)),intent(inout) :: me
     real(wp),intent(in)    :: ax      !! left endpoint of initial interval
     real(wp),intent(in)    :: bx      !! right endpoint of initial interval
     real(wp),intent(in)    :: fax     !! `f(ax)`
@@ -772,7 +762,7 @@
 
     implicit none
 
-    class(anderson_bjorck_solver),intent(inout) :: me
+    class(RKIND(anderson_bjorck_solver)),intent(inout) :: me
     real(wp),intent(in)    :: ax      !! left endpoint of initial interval
     real(wp),intent(in)    :: bx      !! right endpoint of initial interval
     real(wp),intent(in)    :: fax     !! `f(ax)`
@@ -846,7 +836,7 @@
 
     implicit none
 
-    class(ridders_solver),intent(inout) :: me
+    class(RKIND(ridders_solver)),intent(inout) :: me
     real(wp),intent(in)  :: ax      !! left endpoint of initial interval
     real(wp),intent(in)  :: bx      !! right endpoint of initial interval
     real(wp),intent(in)  :: fax     !! `f(ax)`
@@ -930,7 +920,7 @@
 
     implicit none
 
-    class(pegasus_solver),intent(inout) :: me
+    class(RKIND(pegasus_solver)),intent(inout) :: me
     real(wp),intent(in)  :: ax      !! left endpoint of initial interval
     real(wp),intent(in)  :: bx      !! right endpoint of initial interval
     real(wp),intent(in)  :: fax     !! `f(ax)`
@@ -1005,7 +995,7 @@
 
     implicit none
 
-    class(bdqrf_solver),intent(inout) :: me
+    class(RKIND(bdqrf_solver)),intent(inout) :: me
     real(wp),intent(in)  :: ax      !! left endpoint of initial interval
     real(wp),intent(in)  :: bx      !! right endpoint of initial interval
     real(wp),intent(in)  :: fax     !! `f(ax)`
@@ -1096,7 +1086,7 @@
 
     implicit none
 
-    class(muller_solver),intent(inout) :: me
+    class(RKIND(muller_solver)),intent(inout) :: me
     real(wp),intent(in)  :: ax      !! left endpoint of initial interval
     real(wp),intent(in)  :: bx      !! right endpoint of initial interval
     real(wp),intent(in)  :: fax     !! `f(ax)`
@@ -1198,7 +1188,7 @@
 
     implicit none
 
-    class(brenth_solver),intent(inout) :: me
+    class(RKIND(brenth_solver)),intent(inout) :: me
     real(wp),intent(in)  :: ax      !! left endpoint of initial interval
     real(wp),intent(in)  :: bx      !! right endpoint of initial interval
     real(wp),intent(in)  :: fax     !! `f(ax)`
@@ -1301,7 +1291,7 @@
 
     implicit none
 
-    class(brentq_solver),intent(inout) :: me
+    class(RKIND(brentq_solver)),intent(inout) :: me
     real(wp),intent(in)  :: ax      !! left endpoint of initial interval
     real(wp),intent(in)  :: bx      !! right endpoint of initial interval
     real(wp),intent(in)  :: fax     !! `f(ax)`
@@ -1408,7 +1398,7 @@
 
     implicit none
 
-    class(chandrupatla_solver),intent(inout) :: me
+    class(RKIND(chandrupatla_solver)),intent(inout) :: me
     real(wp),intent(in)  :: ax      !! left endpoint of initial interval
     real(wp),intent(in)  :: bx      !! right endpoint of initial interval
     real(wp),intent(in)  :: fax     !! `f(ax)`
@@ -1516,7 +1506,7 @@
 
     implicit none
 
-    class(toms748_solver),intent(inout) :: me
+    class(RKIND(toms748_solver)),intent(inout) :: me
     real(wp),intent(in)  :: ax      !! left endpoint of initial interval
     real(wp),intent(in)  :: bx      !! right endpoint of initial interval
     real(wp),intent(in)  :: fax     !! `f(ax)`
@@ -1881,7 +1871,7 @@
 
     implicit none
 
-    class(zhang_solver),intent(inout) :: me
+    class(RKIND(zhang_solver)),intent(inout) :: me
     real(wp),intent(in)  :: ax      !! left endpoint of initial interval
     real(wp),intent(in)  :: bx      !! right endpoint of initial interval
     real(wp),intent(in)  :: fax     !! `f(ax)`
@@ -1983,7 +1973,7 @@
 
     implicit none
 
-    class(anderson_bjorck_king_solver),intent(inout) :: me
+    class(RKIND(anderson_bjorck_king_solver)),intent(inout) :: me
     real(wp),intent(in)    :: ax      !! left endpoint of initial interval
     real(wp),intent(in)    :: bx      !! right endpoint of initial interval
     real(wp),intent(in)    :: fax     !! `f(ax)`
@@ -2085,7 +2075,7 @@
 
     implicit none
 
-    class(blendtf_solver),intent(inout) :: me
+    class(RKIND(blendtf_solver)),intent(inout) :: me
     real(wp),intent(in)  :: ax      !! left endpoint of initial interval
     real(wp),intent(in)  :: bx      !! right endpoint of initial interval
     real(wp),intent(in)  :: fax     !! `f(ax)`
@@ -2200,7 +2190,7 @@
 
     implicit none
 
-    class(root_solver),intent(inout) :: me
+    class(RKIND(root_solver)),intent(inout) :: me
     real(wp),intent(in) :: a !! old value
     real(wp),intent(in) :: b !! new value
     logical :: converged
@@ -2373,9 +2363,3 @@
 
     end function lowercase
 !*****************************************************************************************
-
-#ifndef INCLUDE_STDLIB_ROOT_CORE
-!*****************************************************************************************
-    end module stdlib_root_module
-!*****************************************************************************************
-#endif
