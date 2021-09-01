@@ -10,7 +10,7 @@
     <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="../favicon.png">
 
-    <title>root_scalar &ndash; roots-fortran</title>
+    <title>root_scalar_by_name &ndash; roots-fortran</title>
 
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/pygments.css" rel="stylesheet">
@@ -106,7 +106,7 @@
     
   
   <div class="row">
-    <h1>root_scalar
+    <h1>root_scalar_by_name
       <small>Subroutine</small>
     
     </h1>
@@ -125,7 +125,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 4.7% of total for procedures.">65 statements</a>
+    title=" 1.7% of total for procedures.">25 statements</a>
      </li> 
      
      
@@ -142,7 +142,7 @@
      <li><a href='../module/root_module.html'>root_module</a></li>
     
   
-     <li class="active">root_scalar</li>
+     <li class="active">root_scalar_by_name</li>
   </ol>
 </div>
 </div>
@@ -186,7 +186,7 @@
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
   <div class="list-group">
-    <a class="list-group-item" href="../proc/root_scalar.html#src">root_scalar</a>
+    <a class="list-group-item" href="../proc/root_scalar_by_name.html#src">root_scalar_by_name</a>
   </div>
 </div>
 
@@ -198,7 +198,7 @@
     
     <div class="col-md-9" id='text'>
     <h2>
-public subroutine root_scalar(method, fun, ax, bx, xzero, fzero, iflag, ftol, rtol, atol, maxiter, fax, fbx, bisect_on_failure)
+private subroutine root_scalar_by_name(method, fun, ax, bx, xzero, fzero, iflag, ftol, rtol, atol, maxiter, fax, fbx, bisect_on_failure)
     
     
    
@@ -414,7 +414,7 @@ public subroutine root_scalar(method, fun, ax, bx, xzero, fzero, iflag, ftol, rt
   <td>optional</td>
   
   <td></td><td>::</td>
-  <td><strong>fbx</strong></td><td><p>if <code>f(ax)</code> is already known, it can be input here</p></td>
+  <td><strong>fbx</strong></td><td><p>if <code>f(bx)</code> is already known, it can be input here</p></td>
   
 </tr>
 
@@ -474,7 +474,7 @@ public subroutine root_scalar(method, fun, ax, bx, xzero, fzero, iflag, ftol, rt
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
   <div class="list-group">
-    <a class="list-group-item" href="../proc/root_scalar.html#src">root_scalar</a>
+    <a class="list-group-item" href="../proc/root_scalar_by_name.html#src">root_scalar_by_name</a>
   </div>
 </div>
 
@@ -503,8 +503,9 @@ public subroutine root_scalar(method, fun, ax, bx, xzero, fzero, iflag, ftol, rt
     
     <section>
     <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span>    <span class="k">subroutine </span><span class="n">root_scalar</span><span class="p">(</span><span class="n">method</span><span class="p">,</span><span class="n">fun</span><span class="p">,</span><span class="n">ax</span><span class="p">,</span><span class="n">bx</span><span class="p">,</span><span class="n">xzero</span><span class="p">,</span><span class="n">fzero</span><span class="p">,</span><span class="n">iflag</span><span class="p">,&amp;</span>
-                                     <span class="n">ftol</span><span class="p">,</span><span class="n">rtol</span><span class="p">,</span><span class="n">atol</span><span class="p">,</span><span class="n">maxiter</span><span class="p">,</span><span class="n">fax</span><span class="p">,</span><span class="n">fbx</span><span class="p">,</span><span class="n">bisect_on_failure</span><span class="p">)</span>
+    <div class="highlight"><pre><span></span>    <span class="k">subroutine </span><span class="n">root_scalar_by_name</span><span class="p">(</span><span class="n">method</span><span class="p">,</span><span class="n">fun</span><span class="p">,</span><span class="n">ax</span><span class="p">,</span><span class="n">bx</span><span class="p">,</span><span class="n">xzero</span><span class="p">,</span><span class="n">fzero</span><span class="p">,</span><span class="n">iflag</span><span class="p">,&amp;</span>
+                                   <span class="n">ftol</span><span class="p">,</span><span class="n">rtol</span><span class="p">,</span><span class="n">atol</span><span class="p">,</span><span class="n">maxiter</span><span class="p">,</span><span class="n">fax</span><span class="p">,</span><span class="n">fbx</span><span class="p">,&amp;</span>
+                                   <span class="n">bisect_on_failure</span><span class="p">)</span>
 
     <span class="k">implicit none</span>
 
@@ -520,52 +521,26 @@ public subroutine root_scalar(method, fun, ax, bx, xzero, fzero, iflag, ftol, rt
     <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span>  <span class="kd">::</span> <span class="n">atol</span>     <span class="c">!! absolute tol for x</span>
     <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span>   <span class="kd">::</span> <span class="n">maxiter</span>  <span class="c">!! maximum number of iterations</span>
     <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span>  <span class="kd">::</span> <span class="n">fax</span>      <span class="c">!! if `f(ax)` is already known, it can be input here</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span>  <span class="kd">::</span> <span class="n">fbx</span>      <span class="c">!! if `f(ax)` is already known, it can be input here</span>
+    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span>  <span class="kd">::</span> <span class="n">fbx</span>      <span class="c">!! if `f(bx)` is already known, it can be input here</span>
     <span class="kt">logical</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span>   <span class="kd">::</span> <span class="n">bisect_on_failure</span>  <span class="c">!! if true, then if the specified method fails,</span>
                                                         <span class="c">!! it will be retried using the bisection method.</span>
                                                         <span class="c">!! (default is False). Note that this can use up</span>
                                                         <span class="c">!! to `maxiter` additional function evaluations.</span>
 
-    <span class="k">class</span><span class="p">(</span><span class="n">root_solver</span><span class="p">),</span><span class="k">allocatable</span> <span class="kd">::</span> <span class="n">s</span>
+    <span class="k">type</span><span class="p">(</span><span class="n">root_method</span><span class="p">)</span> <span class="kd">::</span> <span class="n">r</span>
 
-    <span class="k">select case</span> <span class="p">(</span><span class="n">lowercase</span><span class="p">(</span><span class="n">method</span><span class="p">))</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">root_name_to_method</span><span class="p">(</span><span class="n">method</span><span class="p">)</span>
 
-    <span class="k">case</span><span class="p">(</span><span class="s1">&#39;brent&#39;</span><span class="p">);</span>                <span class="k">allocate</span><span class="p">(</span><span class="n">brent_solver</span>                <span class="kd">::</span> <span class="n">s</span><span class="p">)</span>
-    <span class="k">case</span><span class="p">(</span><span class="s1">&#39;bisection&#39;</span><span class="p">);</span>            <span class="k">allocate</span><span class="p">(</span><span class="n">bisection_solver</span>            <span class="kd">::</span> <span class="n">s</span><span class="p">)</span>
-    <span class="k">case</span><span class="p">(</span><span class="s1">&#39;regula_falsi&#39;</span><span class="p">);</span>         <span class="k">allocate</span><span class="p">(</span><span class="n">regula_falsi_solver</span>         <span class="kd">::</span> <span class="n">s</span><span class="p">)</span>
-    <span class="k">case</span><span class="p">(</span><span class="s1">&#39;illinois&#39;</span><span class="p">);</span>             <span class="k">allocate</span><span class="p">(</span><span class="n">illinois_solver</span>             <span class="kd">::</span> <span class="n">s</span><span class="p">)</span>
-    <span class="k">case</span><span class="p">(</span><span class="s1">&#39;anderson_bjorck&#39;</span><span class="p">);</span>      <span class="k">allocate</span><span class="p">(</span><span class="n">anderson_bjorck_solver</span>      <span class="kd">::</span> <span class="n">s</span><span class="p">)</span>
-    <span class="k">case</span><span class="p">(</span><span class="s1">&#39;ridders&#39;</span><span class="p">);</span>              <span class="k">allocate</span><span class="p">(</span><span class="n">ridders_solver</span>              <span class="kd">::</span> <span class="n">s</span><span class="p">)</span>
-    <span class="k">case</span><span class="p">(</span><span class="s1">&#39;pegasus&#39;</span><span class="p">);</span>              <span class="k">allocate</span><span class="p">(</span><span class="n">pegasus_solver</span>              <span class="kd">::</span> <span class="n">s</span><span class="p">)</span>
-    <span class="k">case</span><span class="p">(</span><span class="s1">&#39;bdqrf&#39;</span><span class="p">);</span>                <span class="k">allocate</span><span class="p">(</span><span class="n">bdqrf_solver</span>                <span class="kd">::</span> <span class="n">s</span><span class="p">)</span>
-    <span class="k">case</span><span class="p">(</span><span class="s1">&#39;muller&#39;</span><span class="p">);</span>               <span class="k">allocate</span><span class="p">(</span><span class="n">muller_solver</span>               <span class="kd">::</span> <span class="n">s</span><span class="p">)</span>
-    <span class="k">case</span><span class="p">(</span><span class="s1">&#39;brenth&#39;</span><span class="p">);</span>               <span class="k">allocate</span><span class="p">(</span><span class="n">brenth_solver</span>               <span class="kd">::</span> <span class="n">s</span><span class="p">)</span>
-    <span class="k">case</span><span class="p">(</span><span class="s1">&#39;brentq&#39;</span><span class="p">);</span>               <span class="k">allocate</span><span class="p">(</span><span class="n">brentq_solver</span>               <span class="kd">::</span> <span class="n">s</span><span class="p">)</span>
-    <span class="k">case</span><span class="p">(</span><span class="s1">&#39;chandrupatla&#39;</span><span class="p">);</span>         <span class="k">allocate</span><span class="p">(</span><span class="n">chandrupatla_solver</span>         <span class="kd">::</span> <span class="n">s</span><span class="p">)</span>
-    <span class="k">case</span><span class="p">(</span><span class="s1">&#39;toms748&#39;</span><span class="p">);</span>              <span class="k">allocate</span><span class="p">(</span><span class="n">toms748_solver</span>              <span class="kd">::</span> <span class="n">s</span><span class="p">)</span>
-    <span class="k">case</span><span class="p">(</span><span class="s1">&#39;zhang&#39;</span><span class="p">);</span>                <span class="k">allocate</span><span class="p">(</span><span class="n">zhang_solver</span>                <span class="kd">::</span> <span class="n">s</span><span class="p">)</span>
-    <span class="k">case</span><span class="p">(</span><span class="s1">&#39;anderson_bjorck_king&#39;</span><span class="p">);</span> <span class="k">allocate</span><span class="p">(</span><span class="n">anderson_bjorck_king_solver</span> <span class="kd">::</span> <span class="n">s</span><span class="p">)</span>
-    <span class="k">case</span><span class="p">(</span><span class="s1">&#39;blendtf&#39;</span><span class="p">);</span>              <span class="k">allocate</span><span class="p">(</span><span class="n">blendtf_solver</span>              <span class="kd">::</span> <span class="n">s</span><span class="p">)</span>
-
-    <span class="k">case </span><span class="n">default</span>
-        <span class="n">iflag</span> <span class="o">=</span> <span class="o">-</span><span class="mi">999</span>    <span class="c">! invalid method</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">r</span><span class="p">%</span><span class="n">id</span> <span class="o">/=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
+<span class="k">        call </span><span class="n">root_scalar</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="n">fun</span><span class="p">,</span><span class="n">ax</span><span class="p">,</span><span class="n">bx</span><span class="p">,</span><span class="n">xzero</span><span class="p">,</span><span class="n">fzero</span><span class="p">,</span><span class="n">iflag</span><span class="p">,&amp;</span>
+                         <span class="n">ftol</span><span class="p">,</span><span class="n">rtol</span><span class="p">,</span><span class="n">atol</span><span class="p">,</span><span class="n">maxiter</span><span class="p">,</span><span class="n">fax</span><span class="p">,</span><span class="n">fbx</span><span class="p">,&amp;</span>
+                         <span class="n">bisect_on_failure</span><span class="p">)</span>
+    <span class="k">else</span>
+<span class="k">        </span><span class="n">iflag</span> <span class="o">=</span> <span class="o">-</span><span class="mi">999</span>    <span class="c">! invalid method</span>
         <span class="k">return</span>
-<span class="k">    end select</span>
+<span class="k">    end if</span>
 
-<span class="k">    call </span><span class="n">s</span><span class="p">%</span><span class="n">initialize</span><span class="p">(</span><span class="n">func_wrapper</span><span class="p">,</span><span class="n">ftol</span><span class="p">,</span><span class="n">rtol</span><span class="p">,</span><span class="n">atol</span><span class="p">,</span><span class="n">maxiter</span><span class="p">)</span>
-    <span class="k">call </span><span class="n">s</span><span class="p">%</span><span class="n">solve</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span><span class="n">bx</span><span class="p">,</span><span class="n">xzero</span><span class="p">,</span><span class="n">fzero</span><span class="p">,</span><span class="n">iflag</span><span class="p">,</span><span class="n">fax</span><span class="p">,</span><span class="n">fbx</span><span class="p">,</span><span class="n">bisect_on_failure</span><span class="p">)</span>
-
-    <span class="k">contains</span>
-
-<span class="k">        function </span><span class="n">func_wrapper</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">x</span><span class="p">)</span> <span class="k">result</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-            <span class="k">implicit none</span>
-<span class="k">            class</span><span class="p">(</span><span class="n">root_solver</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">me</span>
-            <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">x</span>
-            <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">f</span>
-            <span class="n">f</span> <span class="o">=</span> <span class="n">fun</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="k">end function </span><span class="n">func_wrapper</span>
-
-    <span class="k">end subroutine </span><span class="n">root_scalar</span>
+<span class="k">    end subroutine </span><span class="n">root_scalar_by_name</span>
 </pre></div>
 
     </section>

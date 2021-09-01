@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -11,7 +10,7 @@
     <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="../favicon.png">
 
-    <title>func2 &ndash; roots-fortran</title>
+    <title>root_name_to_method &ndash; roots-fortran</title>
 
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/pygments.css" rel="stylesheet">
@@ -107,11 +106,10 @@
     
   
   <div class="row">
-    <h1>func2
-   <small>Abstract Interface</small>
+    <h1>root_name_to_method
+      <small>Function</small>
     
     </h1>
-    
     
 <div class="row">
   <div class="col-lg-12">
@@ -127,7 +125,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title="33.3% of total for abstract interfaces.">27 statements</a>
+    title=" 1.0% of total for procedures.">15 statements</a>
      </li> 
      
      
@@ -144,7 +142,7 @@
      <li><a href='../module/root_module.html'>root_module</a></li>
     
   
-     <li class="active">func2</li>
+     <li class="active">root_name_to_method</li>
   </ol>
 </div>
 </div>
@@ -155,7 +153,6 @@
   })
 </script>
 
-    
   </div>
   
   <div class="row">
@@ -186,7 +183,13 @@
 
 
 
-<em>None</em>
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+  <div class="list-group">
+    <a class="list-group-item" href="../proc/root_name_to_method.html#src">root_name_to_method</a>
+  </div>
+</div>
+
 
 
 </div>
@@ -194,20 +197,19 @@
     </div>
     
     <div class="col-md-9" id='text'>
-    
-    
-      <h2>abstract interface <br>
-      
-private function func2(x) result(f)
+    <h2>
+private pure function root_name_to_method(name) result(r)
     
     
    
-</h2>    
-    
-
+</h2>
     
   
 
+
+    
+    <p>Convert a root method name to the corresponding <a href="../type/root_method.html">root_method</a> enum type.</p>
+    
 
     <h3>Arguments</h3>
     
@@ -227,12 +229,12 @@ private function func2(x) result(f)
   
 <tr>
   
-  <td><span class="anchor" id="variable-x~2"></span>real(kind=wp),</td>
+  <td><span class="anchor" id="variable-name~2"></span>character(len=*),</td>
   <td>intent(in)</td>
   <td></td>
   
   <td></td><td>::</td>
-  <td><strong>x</strong></td><td><p>independant variable</p></td>
+  <td><strong>name</strong></td><td><p>method name</p></td>
   
 </tr>
 
@@ -246,20 +248,105 @@ private function func2(x) result(f)
     
     
     
-      <h3>Return Value <span class="anchor" id="variable-f~3"></span><small>real(kind=wp)
+   <h3>Return Value <small><span class="anchor" id="variable-r"></span>type(<a href='../type/root_method.html'>root_method</a>)
   </small></h3>
-    <p>f(x)</p>
+    <p>the <a href="../type/root_method.html">root_method</a> enum type for that method</p>
     
     
-    <h3>Description</h3>
-    <p>Interface to the function to be minimized
- (Functional version).
- It should evaluate f(x) for any x in the interval (ax,bx)</p>
     
+     
     <br>
 
- </div>
+    <section class="visible-xs visible-sm hidden-md">
+      
+<h3>Contents</h3>
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+  <div class="list-group">
+    <a class="list-group-item" href="../proc/root_name_to_method.html#src">root_name_to_method</a>
+  </div>
 </div>
+
+
+
+    </section>
+    <br class="visible-xs visible-sm hidden-md">
+
+    
+
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+
+    
+    
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="highlight"><pre><span></span>    <span class="k">pure function </span><span class="n">root_name_to_method</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="k">result</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+
+    <span class="k">implicit none</span>
+
+<span class="k">    </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">name</span> <span class="c">!! method name</span>
+    <span class="k">type</span><span class="p">(</span><span class="n">root_method</span><span class="p">)</span> <span class="kd">::</span> <span class="n">r</span> <span class="c">!! the [[root_method]] enum type for that method</span>
+
+    <span class="kt">integer</span> <span class="kd">::</span> <span class="n">i</span> <span class="c">!! counter</span>
+    <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">name</span><span class="p">))</span> <span class="kd">::</span> <span class="n">name_lowercase</span> <span class="c">!! lowercase version of `name`</span>
+
+    <span class="c">! convert to lowercase:</span>
+    <span class="n">name_lowercase</span> <span class="o">=</span> <span class="n">lowercase</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="c">! find the name in the list:</span>
+    <span class="k">do </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="p">(</span><span class="n">set_of_root_methods</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">name_lowercase</span> <span class="o">==</span> <span class="n">set_of_root_methods</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">name</span><span class="p">)</span> <span class="k">then</span>
+<span class="k">            </span><span class="n">r</span> <span class="o">=</span> <span class="n">set_of_root_methods</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="k">return</span>
+<span class="k">        end if</span>
+<span class="k">    end do</span>
+
+    <span class="c">! if the name was not found</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">root_method_null</span>
+
+    <span class="k">end function </span><span class="n">root_name_to_method</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    
+    </div>
+  </div>
 
 
     <hr>    

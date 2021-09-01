@@ -244,7 +244,7 @@ private subroutine get_fa_fb(me, ax, bx, fax, fbx, fa, fb)
   
 <tr>
   
-  <td><span class="anchor" id="variable-ax~6"></span>real(kind=wp),</td>
+  <td><span class="anchor" id="variable-ax~7"></span>real(kind=wp),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -259,7 +259,7 @@ private subroutine get_fa_fb(me, ax, bx, fax, fbx, fa, fb)
   
 <tr>
   
-  <td><span class="anchor" id="variable-bx~6"></span>real(kind=wp),</td>
+  <td><span class="anchor" id="variable-bx~7"></span>real(kind=wp),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -274,7 +274,7 @@ private subroutine get_fa_fb(me, ax, bx, fax, fbx, fa, fb)
   
 <tr>
   
-  <td><span class="anchor" id="variable-fax~4"></span>real(kind=wp),</td>
+  <td><span class="anchor" id="variable-fax~5"></span>real(kind=wp),</td>
   <td>intent(in),</td>
   <td>optional</td>
   
@@ -289,12 +289,12 @@ private subroutine get_fa_fb(me, ax, bx, fax, fbx, fa, fb)
   
 <tr>
   
-  <td><span class="anchor" id="variable-fbx~4"></span>real(kind=wp),</td>
+  <td><span class="anchor" id="variable-fbx~5"></span>real(kind=wp),</td>
   <td>intent(in),</td>
   <td>optional</td>
   
   <td></td><td>::</td>
-  <td><strong>fbx</strong></td><td><p>if <code>f(ax)</code> is already known, it can be input here</p></td>
+  <td><strong>fbx</strong></td><td><p>if <code>f(bx)</code> is already known, it can be input here</p></td>
   
 </tr>
 
@@ -403,7 +403,7 @@ private subroutine get_fa_fb(me, ax, bx, fax, fbx, fa, fb)
     <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>              <span class="kd">::</span> <span class="n">ax</span>      <span class="c">!! left endpoint of initial interval</span>
     <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>              <span class="kd">::</span> <span class="n">bx</span>      <span class="c">!! right endpoint of initial interval</span>
     <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span>     <span class="kd">::</span> <span class="n">fax</span>     <span class="c">!! if `f(ax)` is already known, it can be input here</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span>     <span class="kd">::</span> <span class="n">fbx</span>     <span class="c">!! if `f(ax)` is already known, it can be input here</span>
+    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span>     <span class="kd">::</span> <span class="n">fbx</span>     <span class="c">!! if `f(bx)` is already known, it can be input here</span>
     <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>             <span class="kd">::</span> <span class="n">fa</span>      <span class="c">!! `f(ax)` to use</span>
     <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>             <span class="kd">::</span> <span class="n">fb</span>      <span class="c">!! `f(ax)` to use</span>
 

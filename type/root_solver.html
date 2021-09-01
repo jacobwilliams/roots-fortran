@@ -125,7 +125,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title="<p>13.5% of total for derived types.</p>Including implementation: 121 statements,  4.9% of total for derived types.">15 statements</a>
+    title="<p>12.9% of total for derived types.</p>Including implementation: 121 statements,  4.9% of total for derived types.">15 statements</a>
      </li> 
      
      
@@ -738,7 +738,7 @@ private subroutine <a href='../proc/solve.html'>solve</a>(me, ax, bx, xzero, fze
   <td>optional</td>
   
   <td></td><td>::</td>
-  <td><strong>fbx</strong></td><td><p>if <code>f(ax)</code> is already known, it can be input here</p></td>
+  <td><strong>fbx</strong></td><td><p>if <code>f(bx)</code> is already known, it can be input here</p></td>
   
 </tr>
 
@@ -849,7 +849,7 @@ subroutine root_f(me, ax, bx, fax, fbx, xzero, fzero, iflag)
   <td></td>
   
   <td></td><td>::</td>
-  <td><strong>ax</strong></td><td></td>
+  <td><strong>ax</strong></td><td><p>left endpoint of initial interval</p></td>
   
 </tr>
 
@@ -864,7 +864,7 @@ subroutine root_f(me, ax, bx, fax, fbx, xzero, fzero, iflag)
   <td></td>
   
   <td></td><td>::</td>
-  <td><strong>bx</strong></td><td></td>
+  <td><strong>bx</strong></td><td><p>right endpoint of initial interval</p></td>
   
 </tr>
 
@@ -879,7 +879,7 @@ subroutine root_f(me, ax, bx, fax, fbx, xzero, fzero, iflag)
   <td></td>
   
   <td></td><td>::</td>
-  <td><strong>fax</strong></td><td></td>
+  <td><strong>fax</strong></td><td><p><code>f(ax)</code></p></td>
   
 </tr>
 
@@ -894,7 +894,7 @@ subroutine root_f(me, ax, bx, fax, fbx, xzero, fzero, iflag)
   <td></td>
   
   <td></td><td>::</td>
-  <td><strong>fbx</strong></td><td></td>
+  <td><strong>fbx</strong></td><td><p><code>f(bx)</code></p></td>
   
 </tr>
 
@@ -909,7 +909,7 @@ subroutine root_f(me, ax, bx, fax, fbx, xzero, fzero, iflag)
   <td></td>
   
   <td></td><td>::</td>
-  <td><strong>xzero</strong></td><td></td>
+  <td><strong>xzero</strong></td><td><p>abscissa approximating a zero of <code>f</code> in the interval <code>ax</code>,<code>bx</code></p></td>
   
 </tr>
 
@@ -924,7 +924,7 @@ subroutine root_f(me, ax, bx, fax, fbx, xzero, fzero, iflag)
   <td></td>
   
   <td></td><td>::</td>
-  <td><strong>fzero</strong></td><td></td>
+  <td><strong>fzero</strong></td><td><p>value of <code>f</code> at the root (<code>f(xzero)</code>)</p></td>
   
 </tr>
 
@@ -939,7 +939,7 @@ subroutine root_f(me, ax, bx, fax, fbx, xzero, fzero, iflag)
   <td></td>
   
   <td></td><td>::</td>
-  <td><strong>iflag</strong></td><td></td>
+  <td><strong>iflag</strong></td><td><p>status flag</p></td>
   
 </tr>
 
@@ -1071,7 +1071,7 @@ private subroutine <a href='../proc/get_fa_fb.html'>get_fa_fb</a>(me, ax, bx, fa
   <td>optional</td>
   
   <td></td><td>::</td>
-  <td><strong>fbx</strong></td><td><p>if <code>f(ax)</code> is already known, it can be input here</p></td>
+  <td><strong>fbx</strong></td><td><p>if <code>f(bx)</code> is already known, it can be input here</p></td>
   
 </tr>
 
@@ -1238,23 +1238,23 @@ private function <a href='../proc/converged.html'>converged</a>(me, a, b)
     <section>
     <h3><span class="anchor" id="src"></span>Source Code</h3>
     <div class="highlight"><pre><span></span>    <span class="k">type</span><span class="p">,</span><span class="k">abstract</span><span class="p">,</span><span class="k">public</span> <span class="kd">::</span> <span class="n">root_solver</span>
-    <span class="c">!! abstract class for the root solver methods</span>
-    <span class="k">private</span>
-<span class="k">    procedure</span><span class="p">(</span><span class="n">func</span><span class="p">),</span><span class="k">pointer</span> <span class="kd">::</span> <span class="n">f</span> <span class="o">=&gt;</span> <span class="nb">null</span><span class="p">()</span>  <span class="c">!! user function to find the root of</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">ftol</span> <span class="o">=</span> <span class="mf">0.0_wp</span>       <span class="c">!! absolute tolerance for `f=0`</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">rtol</span> <span class="o">=</span> <span class="mf">1.0e-6_wp</span>    <span class="c">!! relative tol for x</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">atol</span> <span class="o">=</span> <span class="mf">1.0e-12_wp</span>   <span class="c">!! absolute tol for x [not used by all methods]</span>
-    <span class="kt">integer</span>  <span class="kd">::</span> <span class="n">maxiter</span> <span class="o">=</span> <span class="mi">2000</span>      <span class="c">!! maximum number of iterations [not used by all methods]</span>
+        <span class="c">!! abstract class for the root solver methods</span>
+        <span class="k">private</span>
+<span class="k">        procedure</span><span class="p">(</span><span class="n">func</span><span class="p">),</span><span class="k">pointer</span> <span class="kd">::</span> <span class="n">f</span> <span class="o">=&gt;</span> <span class="nb">null</span><span class="p">()</span>  <span class="c">!! user function to find the root of</span>
+        <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">ftol</span> <span class="o">=</span> <span class="mf">0.0_wp</span>       <span class="c">!! absolute tolerance for `f=0`</span>
+        <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">rtol</span> <span class="o">=</span> <span class="mf">1.0e-6_wp</span>    <span class="c">!! relative tol for x</span>
+        <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">atol</span> <span class="o">=</span> <span class="mf">1.0e-12_wp</span>   <span class="c">!! absolute tol for x [not used by all methods]</span>
+        <span class="kt">integer</span>  <span class="kd">::</span> <span class="n">maxiter</span> <span class="o">=</span> <span class="mi">2000</span>      <span class="c">!! maximum number of iterations [not used by all methods]</span>
     <span class="k">contains</span>
-<span class="k">    private</span>
-<span class="k">    procedure</span><span class="p">,</span><span class="k">public</span> <span class="kd">::</span> <span class="n">initialize</span> <span class="o">=&gt;</span> <span class="n">initialize_root_solver</span> <span class="c">!! initialize the class [must be called first]</span>
-    <span class="k">procedure</span><span class="p">,</span><span class="k">public</span> <span class="kd">::</span> <span class="n">solve</span> <span class="c">!! main routine for finding the root</span>
-    <span class="k">procedure</span><span class="p">(</span><span class="n">root_f</span><span class="p">),</span><span class="k">deferred</span> <span class="kd">::</span> <span class="n">find_root</span> <span class="c">!! root solver function. Meant to be</span>
-                                            <span class="c">!! called from [[solve]], which handles some common</span>
-                                            <span class="c">!! startup tasks. All these routines assume that</span>
-                                            <span class="c">!! \( f(a_x) \) and \( f(b_x) \) have opposite signs.</span>
-    <span class="k">procedure</span> <span class="kd">::</span> <span class="n">get_fa_fb</span>
-    <span class="k">procedure</span> <span class="kd">::</span> <span class="n">converged</span>
+<span class="k">        private</span>
+<span class="k">        procedure</span><span class="p">,</span><span class="k">public</span> <span class="kd">::</span> <span class="n">initialize</span> <span class="o">=&gt;</span> <span class="n">initialize_root_solver</span> <span class="c">!! initialize the class [must be called first]</span>
+        <span class="k">procedure</span><span class="p">,</span><span class="k">public</span> <span class="kd">::</span> <span class="n">solve</span> <span class="c">!! main routine for finding the root</span>
+        <span class="k">procedure</span><span class="p">(</span><span class="n">root_f</span><span class="p">),</span><span class="k">deferred</span> <span class="kd">::</span> <span class="n">find_root</span> <span class="c">!! root solver function. Meant to be</span>
+                                                <span class="c">!! called from [[solve]], which handles some common</span>
+                                                <span class="c">!! startup tasks. All these routines assume that</span>
+                                                <span class="c">!! \( f(a_x) \) and \( f(b_x) \) have opposite signs.</span>
+        <span class="k">procedure</span> <span class="kd">::</span> <span class="n">get_fa_fb</span>
+        <span class="k">procedure</span> <span class="kd">::</span> <span class="n">converged</span>
     <span class="k">end type </span><span class="n">root_solver</span>
 </pre></div>
 

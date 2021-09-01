@@ -125,7 +125,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 3.9% of total for procedures.">54 statements</a>
+    title=" 3.8% of total for procedures.">54 statements</a>
      </li> 
      
      
@@ -244,7 +244,7 @@ private subroutine solve(me, ax, bx, xzero, fzero, iflag, fax, fbx, bisect_on_fa
   
 <tr>
   
-  <td><span class="anchor" id="variable-ax~5"></span>real(kind=wp),</td>
+  <td><span class="anchor" id="variable-ax~6"></span>real(kind=wp),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -259,7 +259,7 @@ private subroutine solve(me, ax, bx, xzero, fzero, iflag, fax, fbx, bisect_on_fa
   
 <tr>
   
-  <td><span class="anchor" id="variable-bx~5"></span>real(kind=wp),</td>
+  <td><span class="anchor" id="variable-bx~6"></span>real(kind=wp),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -274,7 +274,7 @@ private subroutine solve(me, ax, bx, xzero, fzero, iflag, fax, fbx, bisect_on_fa
   
 <tr>
   
-  <td><span class="anchor" id="variable-xzero~3"></span>real(kind=wp),</td>
+  <td><span class="anchor" id="variable-xzero~4"></span>real(kind=wp),</td>
   <td>intent(out)</td>
   <td></td>
   
@@ -289,7 +289,7 @@ private subroutine solve(me, ax, bx, xzero, fzero, iflag, fax, fbx, bisect_on_fa
   
 <tr>
   
-  <td><span class="anchor" id="variable-fzero~3"></span>real(kind=wp),</td>
+  <td><span class="anchor" id="variable-fzero~4"></span>real(kind=wp),</td>
   <td>intent(out)</td>
   <td></td>
   
@@ -304,7 +304,7 @@ private subroutine solve(me, ax, bx, xzero, fzero, iflag, fax, fbx, bisect_on_fa
   
 <tr>
   
-  <td><span class="anchor" id="variable-iflag~3"></span>integer,</td>
+  <td><span class="anchor" id="variable-iflag~4"></span>integer,</td>
   <td>intent(out)</td>
   <td></td>
   
@@ -319,7 +319,7 @@ private subroutine solve(me, ax, bx, xzero, fzero, iflag, fax, fbx, bisect_on_fa
   
 <tr>
   
-  <td><span class="anchor" id="variable-fax~3"></span>real(kind=wp),</td>
+  <td><span class="anchor" id="variable-fax~4"></span>real(kind=wp),</td>
   <td>intent(in),</td>
   <td>optional</td>
   
@@ -334,12 +334,12 @@ private subroutine solve(me, ax, bx, xzero, fzero, iflag, fax, fbx, bisect_on_fa
   
 <tr>
   
-  <td><span class="anchor" id="variable-fbx~3"></span>real(kind=wp),</td>
+  <td><span class="anchor" id="variable-fbx~4"></span>real(kind=wp),</td>
   <td>intent(in),</td>
   <td>optional</td>
   
   <td></td><td>::</td>
-  <td><strong>fbx</strong></td><td><p>if <code>f(ax)</code> is already known, it can be input here</p></td>
+  <td><strong>fbx</strong></td><td><p>if <code>f(bx)</code> is already known, it can be input here</p></td>
   
 </tr>
 
@@ -349,7 +349,7 @@ private subroutine solve(me, ax, bx, xzero, fzero, iflag, fax, fbx, bisect_on_fa
   
 <tr>
   
-  <td><span class="anchor" id="variable-bisect_on_failure~2"></span>logical,</td>
+  <td><span class="anchor" id="variable-bisect_on_failure~3"></span>logical,</td>
   <td>intent(in),</td>
   <td>optional</td>
   
@@ -439,7 +439,7 @@ private subroutine solve(me, ax, bx, xzero, fzero, iflag, fax, fbx, bisect_on_fa
     <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>             <span class="kd">::</span> <span class="n">fzero</span>   <span class="c">!! value of `f` at the root (`f(xzero)`)</span>
     <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>              <span class="kd">::</span> <span class="n">iflag</span>   <span class="c">!! status flag (`-1`=error, `0`=root found, `-4`=ax must be /= bx)</span>
     <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span>     <span class="kd">::</span> <span class="n">fax</span>     <span class="c">!! if `f(ax)` is already known, it can be input here</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span>     <span class="kd">::</span> <span class="n">fbx</span>     <span class="c">!! if `f(ax)` is already known, it can be input here</span>
+    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span>     <span class="kd">::</span> <span class="n">fbx</span>     <span class="c">!! if `f(bx)` is already known, it can be input here</span>
     <span class="kt">logical</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span>      <span class="kd">::</span> <span class="n">bisect_on_failure</span> <span class="c">!! if true, then if the specified method fails,</span>
                                                           <span class="c">!! it will be retried using the bisection method.</span>
                                                           <span class="c">!! (default is False). Note that this can use up</span>
@@ -492,9 +492,10 @@ private subroutine solve(me, ax, bx, xzero, fzero, iflag, fax, fbx, bisect_on_fa
 <span class="k">                if</span> <span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">bisect_on_failure</span><span class="p">))</span> <span class="k">then</span>
 <span class="k">                    if</span> <span class="p">(</span><span class="n">bisect_on_failure</span><span class="p">)</span> <span class="k">then</span>
                         <span class="c">! use the wrapper routine for that with the input class</span>
-                        <span class="k">call </span><span class="n">root_scalar</span><span class="p">(</span><span class="s1">&#39;bisection&#39;</span><span class="p">,</span><span class="n">func_wrapper</span><span class="p">,</span><span class="n">ax</span><span class="p">,</span><span class="n">bx</span><span class="p">,</span><span class="n">xzero</span><span class="p">,</span><span class="n">fzero</span><span class="p">,</span><span class="n">iflag</span><span class="p">,&amp;</span>
-                                                   <span class="n">me</span><span class="p">%</span><span class="n">ftol</span><span class="p">,</span><span class="n">me</span><span class="p">%</span><span class="n">rtol</span><span class="p">,</span><span class="n">me</span><span class="p">%</span><span class="n">atol</span><span class="p">,</span><span class="n">me</span><span class="p">%</span><span class="n">maxiter</span><span class="p">,</span><span class="n">fa</span><span class="p">,</span><span class="n">fb</span><span class="p">,&amp;</span>
-                                                   <span class="n">bisect_on_failure</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.)</span>
+                        <span class="k">call </span><span class="n">root_scalar</span><span class="p">(</span><span class="n">root_method_bisection</span><span class="p">,&amp;</span>
+                                         <span class="n">func_wrapper</span><span class="p">,</span><span class="n">ax</span><span class="p">,</span><span class="n">bx</span><span class="p">,</span><span class="n">xzero</span><span class="p">,</span><span class="n">fzero</span><span class="p">,</span><span class="n">iflag</span><span class="p">,&amp;</span>
+                                         <span class="n">me</span><span class="p">%</span><span class="n">ftol</span><span class="p">,</span><span class="n">me</span><span class="p">%</span><span class="n">rtol</span><span class="p">,</span><span class="n">me</span><span class="p">%</span><span class="n">atol</span><span class="p">,</span><span class="n">me</span><span class="p">%</span><span class="n">maxiter</span><span class="p">,</span><span class="n">fa</span><span class="p">,</span><span class="n">fb</span><span class="p">,&amp;</span>
+                                         <span class="n">bisect_on_failure</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.)</span>
                     <span class="k">end if</span>
 <span class="k">                end if</span>
 <span class="k">            end if</span>

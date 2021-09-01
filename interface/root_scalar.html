@@ -10,7 +10,7 @@
     <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="../favicon.png">
 
-    <title>regula_falsi_solver &ndash; roots-fortran </title>
+    <title>root_scalar &ndash; roots-fortran</title>
 
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/pygments.css" rel="stylesheet">
@@ -106,8 +106,8 @@
     
   
   <div class="row">
-    <h1>regula_falsi_solver
-    <small>Derived Type</small>
+    <h1>root_scalar
+   <small>Interface</small>
     
     </h1>
     
@@ -125,7 +125,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title="<p> 5.2% of total for derived types.</p>Including implementation: 117 statements,  4.7% of total for derived types.">6 statements</a>
+    title="<p> 0.2% of total for procedures.</p>Including implementation: 93 statements,  6.5% of total for procedures.">3 statements</a>
      </li> 
      
      
@@ -142,7 +142,7 @@
      <li><a href='../module/root_module.html'>root_module</a></li>
     
   
-     <li class="active">regula_falsi_solver</li>
+     <li class="active">root_scalar</li>
   </ol>
 </div>
 </div>
@@ -157,7 +157,7 @@
   
   <div class="row">
     <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
-    
+      
 <div id="sidebar">
   
 <h3>Contents</h3>
@@ -181,30 +181,20 @@
 
 
 
+
 <div class="panel panel-primary">
-  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#boundprocs-0">Type-Bound Procedures</a></h3></div>
-  <div id="boundprocs-0" class="panel-collapse collapse">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#modprocs-0">Module Procedures</a></h3></div>
+  <div id="modprocs-0" class="panel-collapse collapse">
     <div class="list-group">
       
-      <a class="list-group-item" href="../type/regula_falsi_solver.html#boundprocedure-initialize">initialize</a>
+      <a class="list-group-item" href="../interface/root_scalar.html#moduleprocedure-root_scalar_by_name">root_scalar_by_name</a>
       
-      <a class="list-group-item" href="../type/regula_falsi_solver.html#boundprocedure-solve">solve</a>
-      
-      <a class="list-group-item" href="../type/regula_falsi_solver.html#boundprocedure-find_root~4">find_root</a>
+      <a class="list-group-item" href="../interface/root_scalar.html#moduleprocedure-root_scalar_by_type">root_scalar_by_type</a>
       
     </div>
   </div>
 </div>
 
-
-
-
-<div class="panel panel-primary">
-  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
-  <div class="list-group">
-    <a class="list-group-item" href="../type/regula_falsi_solver.html#src">regula_falsi_solver</a>
-  </div>
-</div>
 
 
 
@@ -213,15 +203,14 @@
     </div>
     
     <div class="col-md-9" id='text'>
-      <h2>type, public, extends(<a href='../type/root_solver.html'>root_solver</a>) :: regula_falsi_solver</h2>
-    <p>Classic Regula Falsi root solver</p>
+      <h2>public interface root_scalar</h2>
+   
+     
+     
     
-    
-    
-    <br>
 
-    <section class="visible-xs visible-sm hidden-md">
-      
+     <section class="visible-xs visible-sm hidden-md">
+       
 <h3>Contents</h3>
  
 
@@ -243,16 +232,15 @@
 
 
 
+
 <div class="panel panel-primary">
-  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#boundprocs-1">Type-Bound Procedures</a></h3></div>
-  <div id="boundprocs-1" class="panel-collapse collapse">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#modprocs-1">Module Procedures</a></h3></div>
+  <div id="modprocs-1" class="panel-collapse collapse">
     <div class="list-group">
       
-      <a class="list-group-item" href="../type/regula_falsi_solver.html#boundprocedure-initialize">initialize</a>
+      <a class="list-group-item" href="../interface/root_scalar.html#moduleprocedure-root_scalar_by_name">root_scalar_by_name</a>
       
-      <a class="list-group-item" href="../type/regula_falsi_solver.html#boundprocedure-solve">solve</a>
-      
-      <a class="list-group-item" href="../type/regula_falsi_solver.html#boundprocedure-find_root~4">find_root</a>
+      <a class="list-group-item" href="../interface/root_scalar.html#moduleprocedure-root_scalar_by_type">root_scalar_by_type</a>
       
     </div>
   </div>
@@ -261,54 +249,26 @@
 
 
 
-<div class="panel panel-primary">
-  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
-  <div class="list-group">
-    <a class="list-group-item" href="../type/regula_falsi_solver.html#src">regula_falsi_solver</a>
-  </div>
-</div>
-
-
-
-    </section>
-    <br class="visible-xs visible-sm hidden-md">
-
-    
-    
-    
-    
-    
-    
+     </section>
+     <br class="visible-xs visible-sm hidden-md">
      
-    <section>
-    <h2>Type-Bound Procedures</h2>
-    
-     
-<div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-initialize"></span><h3>procedure, public :: <strong>initialize</strong>  => <a href='../proc/initialize_root_solver.html'>initialize_root_solver</a> 
-    
-  </h3></div>
   
-  <div class="panel-body">
-    
 
-
-    <p>initialize the class [must be called first]</p>
-  </div>
   
-  <ul class="list-group">
+
+  
+   <h2>Module Procedures</h2>
+   
     
-      <li class="list-group-item">
-      
-        
-          
-    
-    <h3>
-private subroutine <a href='../proc/initialize_root_solver.html'>initialize_root_solver</a>(me, f, ftol, rtol, atol, maxiter)
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-root_scalar_by_name"></span><h3>
+private subroutine <a href='../proc/root_scalar_by_name.html'>root_scalar_by_name</a>(method, fun, ax, bx, xzero, fzero, iflag, ftol, rtol, atol, maxiter, fax, fbx, bisect_on_failure)
     
     
    
-</h3>
+</h3></div>
+  <div class="panel-body">
+       
     
 
 
@@ -317,7 +277,7 @@ private subroutine <a href='../proc/initialize_root_solver.html'>initialize_root
 
 
 
-<p>Initialize the <a href="../type/root_solver.html">root_solver</a> class.</p><a href="../proc/initialize_root_solver.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+<p>Non-object-oriented wrapper.</p>
     
     <h4>Arguments</h4>
     
@@ -338,12 +298,12 @@ private subroutine <a href='../proc/initialize_root_solver.html'>initialize_root
   
 <tr>
   
-  <td><span class="anchor" ></span>class(<a href='../type/root_solver.html'>root_solver</a>),</td>
-  <td>intent(out)</td>
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
   <td></td>
   
   <td></td><td>::</td>
-  <td><strong>me</strong></td><td></td>
+  <td><strong>method</strong></td><td><p>the method to use</p></td>
   
 </tr>
 
@@ -353,12 +313,87 @@ private subroutine <a href='../proc/initialize_root_solver.html'>initialize_root
   
 <tr>
   
-  <td><span class="anchor" ></span>procedure(<a href='../interface/func.html'>func</a>)</td>
+  <td><span class="anchor" ></span>procedure(<a href='../interface/func2.html'>func2</a>)</td>
   <td></td>
   <td></td>
   
   <td></td><td>::</td>
-  <td><strong>f</strong></td><td><p>user function <code>f(x)</code> to find the root of</p></td>
+  <td><strong>fun</strong></td><td><p>user function to find the root of</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=wp),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>ax</strong></td><td><p>left endpoint of initial interval</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=wp),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>bx</strong></td><td><p>right endpoint of initial interval</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=wp),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>xzero</strong></td><td><p>abscissa approximating a zero of <code>f</code> in the interval <code>ax</code>,<code>bx</code></p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=wp),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>fzero</strong></td><td><p>value of <code>f</code> at the root (<code>f(xzero)</code>)</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer,</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>iflag</strong></td><td><p>status flag (<code>-1</code>=error, <code>0</code>=root found, <code>-999</code>=invalid method)</p></td>
   
 </tr>
 
@@ -422,6 +457,54 @@ private subroutine <a href='../proc/initialize_root_solver.html'>initialize_root
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=wp),</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>fax</strong></td><td><p>if <code>f(ax)</code> is already known, it can be input here</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=wp),</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>fbx</strong></td><td><p>if <code>f(bx)</code> is already known, it can be input here</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>bisect_on_failure</strong></td><td><p>if true, then if the specified method fails,
+ it will be retried using the bisection method.
+ (default is False). Note that this can use up
+ to <code>maxiter</code> additional function evaluations.</p></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -429,40 +512,20 @@ private subroutine <a href='../proc/initialize_root_solver.html'>initialize_root
     
     
 
-        
-      
-      </li>
-    
-  </ul>
-</div>
-
-    
-     
-<div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-solve"></span><h3>procedure, public :: <strong>solve</strong>  
-    
-  </h3></div>
-  
-  <div class="panel-body">
-    
-
-
-    <p>main routine for finding the root</p>
   </div>
-  
-  <ul class="list-group">
+  </div>
+
+   
     
-      <li class="list-group-item">
-      
-        
-          
-    
-    <h3>
-private subroutine <a href='../proc/solve.html'>solve</a>(me, ax, bx, xzero, fzero, iflag, fax, fbx, bisect_on_failure)
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-root_scalar_by_type"></span><h3>
+private subroutine <a href='../proc/root_scalar_by_type.html'>root_scalar_by_type</a>(method, fun, ax, bx, xzero, fzero, iflag, ftol, rtol, atol, maxiter, fax, fbx, bisect_on_failure)
     
     
    
-</h3>
+</h3></div>
+  <div class="panel-body">
+       
     
 
 
@@ -471,7 +534,7 @@ private subroutine <a href='../proc/solve.html'>solve</a>(me, ax, bx, xzero, fze
 
 
 
-<p>Main wrapper routine for all the methods.</p>
+<p>Non-object-oriented wrapper.</p>
     
     <h4>Arguments</h4>
     
@@ -492,12 +555,27 @@ private subroutine <a href='../proc/solve.html'>solve</a>(me, ax, bx, xzero, fze
   
 <tr>
   
-  <td><span class="anchor" ></span>class(<a href='../type/root_solver.html'>root_solver</a>),</td>
-  <td>intent(inout)</td>
+  <td><span class="anchor" ></span>type(<a href='../type/root_method.html'>root_method</a>),</td>
+  <td>intent(in)</td>
   <td></td>
   
   <td></td><td>::</td>
-  <td><strong>me</strong></td><td></td>
+  <td><strong>method</strong></td><td><p>the method to use</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>procedure(<a href='../interface/func2.html'>func2</a>)</td>
+  <td></td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>fun</strong></td><td><p>user function to find the root of</p></td>
   
 </tr>
 
@@ -572,7 +650,67 @@ private subroutine <a href='../proc/solve.html'>solve</a>(me, ax, bx, xzero, fze
   <td></td>
   
   <td></td><td>::</td>
-  <td><strong>iflag</strong></td><td><p>status flag (<code>-1</code>=error, <code>0</code>=root found, <code>-4</code>=ax must be /= bx)</p></td>
+  <td><strong>iflag</strong></td><td><p>status flag (<code>-1</code>=error, <code>0</code>=root found, <code>-999</code>=invalid method)</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=wp),</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>ftol</strong></td><td><p>absolute tolerance for <code>f=0</code></p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=wp),</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>rtol</strong></td><td><p>relative tol for x</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=wp),</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>atol</strong></td><td><p>absolute tol for x</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer,</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>maxiter</strong></td><td><p>maximum number of iterations</p></td>
   
 </tr>
 
@@ -631,211 +769,14 @@ private subroutine <a href='../proc/solve.html'>solve</a>(me, ax, bx, xzero, fze
     
     
 
-        
-      
-      </li>
-    
-  </ul>
-</div>
-
-    
-     
-<div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-find_root~4"></span><h3>procedure, public :: <strong>find_root</strong>  => <a href='../proc/regula_falsi.html'>regula_falsi</a> 
-    
-  </h3></div>
-  
-  <ul class="list-group">
-    
-      <li class="list-group-item">
-      
-        
-          
-    
-    <h3>
-private subroutine <a href='../proc/regula_falsi.html'>regula_falsi</a>(me, ax, bx, fax, fbx, xzero, fzero, iflag)
-    
-    
-   
-</h3>
-    
-
-
-
-
-
-
-
-<p>Compute the zero of the function f(x) in the interval ax,bx using the regula falsi method.</p>
-    
-    <h4>Arguments</h4>
-    
-      
-      
-<table class="table table-striped varlist">
-<thead><tr><th>Type</th>
-<th>Intent</th><th>Optional</th>
-<th>Attributes</th><th></th><th>Name</th><th></th></thead>
-
-
-
-<tbody>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" ></span>class(<a href='../type/regula_falsi_solver.html'>regula_falsi_solver</a>),</td>
-  <td>intent(inout)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
-  <td><strong>me</strong></td><td></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
-  <td><strong>ax</strong></td><td><p>left endpoint of initial interval</p></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
-  <td><strong>bx</strong></td><td><p>right endpoint of initial interval</p></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
-  <td><strong>fax</strong></td><td><p><code>f(ax)</code></p></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
-  <td><strong>fbx</strong></td><td><p><code>f(ax)</code></p></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-  <td>intent(out)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
-  <td><strong>xzero</strong></td><td><p>abscissa approximating a zero of <code>f</code> in the interval <code>ax</code>,<code>bx</code></p></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-  <td>intent(out)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
-  <td><strong>fzero</strong></td><td><p>value of <code>f</code> at the root (<code>f(xzero)</code>)</p></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" ></span>integer,</td>
-  <td>intent(out)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
-  <td><strong>iflag</strong></td><td><p>status flag (<code>0</code>=root found, <code>-2</code>=max iterations reached)</p></td>
-  
-</tr>
-
-</tbody>
-</table>
-
-      
-    
-    
-
-        
-      
-      </li>
-    
-  </ul>
-</div>
-
-    
-    </section>
-    
-    
-    
-    <section>
-    <h3><span class="anchor" id="src"></span>Source Code</h3>
-    <div class="highlight"><pre><span></span>    <span class="k">type</span><span class="p">,</span><span class="k">extends</span><span class="p">(</span><span class="n">root_solver</span><span class="p">),</span><span class="k">public</span> <span class="kd">::</span> <span class="n">regula_falsi_solver</span>
-    <span class="c">!! Classic Regula Falsi root solver</span>
-    <span class="k">private</span>
-<span class="k">    contains</span>
-<span class="k">    private</span>
-<span class="k">    procedure</span><span class="p">,</span><span class="k">public</span> <span class="kd">::</span> <span class="n">find_root</span> <span class="o">=&gt;</span> <span class="n">regula_falsi</span>
-    <span class="k">end type </span><span class="n">regula_falsi_solver</span>
-</pre></div>
-
-    </section>
-    
-    
-    </div>
   </div>
+  </div>
+
+   
+     
+
+ </div>
+</div>
 
 
     <hr>    
