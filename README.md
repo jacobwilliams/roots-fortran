@@ -1,4 +1,4 @@
-![roots-fortran](/media/logo.png)
+![roots-fortran](media/logo.png)
 ============
 
 **roots-fortran**: root solvers for modern Fortran
