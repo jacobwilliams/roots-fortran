@@ -8,7 +8,7 @@
 
 ## Description
 
-A library for finding the roots of continuous scalar functions of a single real variable.
+A modern Fortran library for finding the roots of continuous scalar functions of a single real variable.
 
 ## Compiling
 
