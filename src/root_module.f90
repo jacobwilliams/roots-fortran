@@ -4,6 +4,9 @@
 !
 !  * Bracked interval
 !  * Without derivatives
+!
+!### Author
+!  * Jacob Williams
 
     module root_module
 
@@ -14,26 +17,70 @@
     private
 
     integer,parameter,public :: root_module_rk = real64  !! real kind used by this module
-    integer,parameter :: wp = root_module_rk !! local copy with shorter name
+    integer,parameter :: wp = root_module_rk  !! local copy of `root_module_rk` with a shorter name
+    integer,parameter :: name_len = 32  !! max length of the method names
+
+    type,public :: root_method
+        !! a type to define enums for the different methods
+        private
+        integer :: id = 0 !! unique ID code for the method
+        character(len=name_len) :: name = '' !! name of the method
+    end type root_method
+
+    type(root_method),parameter,public :: root_method_null                 = root_method(0,  '')                     !! enum type for an invalid method
+    type(root_method),parameter,public :: root_method_brent                = root_method(1,  'brent')                !! enum type for `brent` method
+    type(root_method),parameter,public :: root_method_bisection            = root_method(2,  'bisection')            !! enum type for `bisection` method
+    type(root_method),parameter,public :: root_method_regula_falsi         = root_method(3,  'regula_falsi')         !! enum type for `regula_falsi` method
+    type(root_method),parameter,public :: root_method_illinois             = root_method(4,  'illinois')             !! enum type for `illinois` method
+    type(root_method),parameter,public :: root_method_anderson_bjorck      = root_method(5,  'anderson_bjorck')      !! enum type for `anderson_bjorck` method
+    type(root_method),parameter,public :: root_method_ridders              = root_method(6,  'ridders')              !! enum type for `ridders` method
+    type(root_method),parameter,public :: root_method_pegasus              = root_method(7,  'pegasus')              !! enum type for `pegasus` method
+    type(root_method),parameter,public :: root_method_bdqrf                = root_method(8,  'bdqrf')                !! enum type for `bdqrf` method
+    type(root_method),parameter,public :: root_method_muller               = root_method(9,  'muller')               !! enum type for `muller` method
+    type(root_method),parameter,public :: root_method_brenth               = root_method(10, 'brenth')               !! enum type for `brenth` method
+    type(root_method),parameter,public :: root_method_brentq               = root_method(11, 'brentq')               !! enum type for `brentq` method
+    type(root_method),parameter,public :: root_method_chandrupatla         = root_method(12, 'chandrupatla')         !! enum type for `chandrupatla` method
+    type(root_method),parameter,public :: root_method_toms748              = root_method(13, 'toms748')              !! enum type for `toms748` method
+    type(root_method),parameter,public :: root_method_zhang                = root_method(14, 'zhang')                !! enum type for `zhang` method
+    type(root_method),parameter,public :: root_method_anderson_bjorck_king = root_method(15, 'anderson_bjorck_king') !! enum type for `anderson_bjorck_king` method
+    type(root_method),parameter,public :: root_method_blendtf              = root_method(16, 'blendtf')              !! enum type for `blendtf` method
+
+    type(root_method),parameter,dimension(*),public :: set_of_root_methods = &
+        [ root_method_brent,                &
+          root_method_bisection,            &
+          root_method_regula_falsi,         &
+          root_method_illinois,             &
+          root_method_anderson_bjorck,      &
+          root_method_ridders,              &
+          root_method_pegasus,              &
+          root_method_bdqrf,                &
+          root_method_muller,               &
+          root_method_brenth,               &
+          root_method_brentq,               &
+          root_method_chandrupatla,         &
+          root_method_toms748,              &
+          root_method_zhang,                &
+          root_method_anderson_bjorck_king, &
+          root_method_blendtf ]  !! list of the available methods (see [[root_scalar]])
 
     type,abstract,public :: root_solver
-    !! abstract class for the root solver methods
-    private
-    procedure(func),pointer :: f => null()  !! user function to find the root of
-    real(wp) :: ftol = 0.0_wp       !! absolute tolerance for `f=0`
-    real(wp) :: rtol = 1.0e-6_wp    !! relative tol for x
-    real(wp) :: atol = 1.0e-12_wp   !! absolute tol for x [not used by all methods]
-    integer  :: maxiter = 2000      !! maximum number of iterations [not used by all methods]
+        !! abstract class for the root solver methods
+        private
+        procedure(func),pointer :: f => null()  !! user function to find the root of
+        real(wp) :: ftol = 0.0_wp       !! absolute tolerance for `f=0`
+        real(wp) :: rtol = 1.0e-6_wp    !! relative tol for x
+        real(wp) :: atol = 1.0e-12_wp   !! absolute tol for x [not used by all methods]
+        integer  :: maxiter = 2000      !! maximum number of iterations [not used by all methods]
     contains
-    private
-    procedure,public :: initialize => initialize_root_solver !! initialize the class [must be called first]
-    procedure,public :: solve !! main routine for finding the root
-    procedure(root_f),deferred :: find_root !! root solver function. Meant to be
-                                            !! called from [[solve]], which handles some common
-                                            !! startup tasks. All these routines assume that
-                                            !! \( f(a_x) \) and \( f(b_x) \) have opposite signs.
-    procedure :: get_fa_fb
-    procedure :: converged
+        private
+        procedure,public :: initialize => initialize_root_solver !! initialize the class [must be called first]
+        procedure,public :: solve !! main routine for finding the root
+        procedure(root_f),deferred :: find_root !! root solver function. Meant to be
+                                                !! called from [[solve]], which handles some common
+                                                !! startup tasks. All these routines assume that
+                                                !! \( f(a_x) \) and \( f(b_x) \) have opposite signs.
+        procedure :: get_fa_fb
+        procedure :: converged
     end type root_solver
 
     type,extends(root_solver),public :: brent_solver
@@ -172,8 +219,8 @@
             import :: root_solver, wp
             implicit none
             class(root_solver),intent(inout) :: me
-            real(wp),intent(in) :: x
-            real(wp) :: f
+            real(wp),intent(in) :: x !! independant variable
+            real(wp) :: f !! f(x)
         end function func
         function func2(x) result(f)
             !! Interface to the function to be minimized
@@ -181,24 +228,28 @@
             !! It should evaluate f(x) for any x in the interval (ax,bx)
             import :: wp
             implicit none
-            real(wp),intent(in) :: x
-            real(wp) :: f
+            real(wp),intent(in) :: x !! independant variable
+            real(wp) :: f !! f(x)
         end function func2
         subroutine root_f(me,ax,bx,fax,fbx,xzero,fzero,iflag)
             !! Root solver function interface
             import :: root_solver, wp
             implicit none
             class(root_solver),intent(inout) :: me
-            real(wp),intent(in)   :: ax
-            real(wp),intent(in)   :: bx
-            real(wp),intent(in)   :: fax
-            real(wp),intent(in)   :: fbx
-            real(wp),intent(out)  :: xzero
-            real(wp),intent(out)  :: fzero
-            integer,intent(out)   :: iflag
+            real(wp),intent(in) :: ax !! left endpoint of initial interval
+            real(wp),intent(in) :: bx !! right endpoint of initial interval
+            real(wp),intent(in) :: fax !! `f(ax)`
+            real(wp),intent(in) :: fbx !! `f(bx)`
+            real(wp),intent(out) :: xzero !! abscissa approximating a zero of `f` in the interval `ax`,`bx`
+            real(wp),intent(out) :: fzero !! value of `f` at the root (`f(xzero)`)
+            integer,intent(out) :: iflag !! status flag
         end subroutine root_f
     end interface
 
+    interface root_scalar
+        module procedure :: root_scalar_by_name, &
+                            root_scalar_by_type
+    end interface root_scalar
     public :: root_scalar
 
     contains
@@ -232,10 +283,42 @@
 
 !*****************************************************************************************
 !>
+!  Convert a root method name to the corresponding [[root_method]] enum type.
+
+    pure function root_name_to_method(name) result(r)
+
+    implicit none
+
+    character(len=*),intent(in) :: name !! method name
+    type(root_method) :: r !! the [[root_method]] enum type for that method
+
+    integer :: i !! counter
+    character(len=len(name)) :: name_lowercase !! lowercase version of `name`
+
+    ! convert to lowercase:
+    name_lowercase = lowercase(name)
+
+    ! find the name in the list:
+    do i = 1, size(set_of_root_methods)
+        if (name_lowercase == set_of_root_methods(i)%name) then
+            r = set_of_root_methods(i)
+            return
+        end if
+    end do
+
+    ! if the name was not found
+    r = root_method_null
+
+    end function root_name_to_method
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Non-object-oriented wrapper.
 
-    subroutine root_scalar(method,fun,ax,bx,xzero,fzero,iflag,&
-                                     ftol,rtol,atol,maxiter,fax,fbx,bisect_on_failure)
+    subroutine root_scalar_by_name(method,fun,ax,bx,xzero,fzero,iflag,&
+                                   ftol,rtol,atol,maxiter,fax,fbx,&
+                                   bisect_on_failure)
 
     implicit none
 
@@ -251,7 +334,51 @@
     real(wp),intent(in),optional  :: atol     !! absolute tol for x
     integer,intent(in),optional   :: maxiter  !! maximum number of iterations
     real(wp),intent(in),optional  :: fax      !! if `f(ax)` is already known, it can be input here
-    real(wp),intent(in),optional  :: fbx      !! if `f(ax)` is already known, it can be input here
+    real(wp),intent(in),optional  :: fbx      !! if `f(bx)` is already known, it can be input here
+    logical,intent(in),optional   :: bisect_on_failure  !! if true, then if the specified method fails,
+                                                        !! it will be retried using the bisection method.
+                                                        !! (default is False). Note that this can use up
+                                                        !! to `maxiter` additional function evaluations.
+
+    type(root_method) :: r
+
+    r = root_name_to_method(method)
+
+    if (r%id /= 0) then
+        call root_scalar(r,fun,ax,bx,xzero,fzero,iflag,&
+                         ftol,rtol,atol,maxiter,fax,fbx,&
+                         bisect_on_failure)
+    else
+        iflag = -999    ! invalid method
+        return
+    end if
+
+    end subroutine root_scalar_by_name
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Non-object-oriented wrapper.
+
+    subroutine root_scalar_by_type(method,fun,ax,bx,xzero,fzero,iflag,&
+                                   ftol,rtol,atol,maxiter,fax,fbx,&
+                                   bisect_on_failure)
+
+    implicit none
+
+    type(root_method),intent(in)  :: method   !! the method to use
+    procedure(func2)              :: fun      !! user function to find the root of
+    real(wp),intent(in)           :: ax       !! left endpoint of initial interval
+    real(wp),intent(in)           :: bx       !! right endpoint of initial interval
+    real(wp),intent(out)          :: xzero    !! abscissa approximating a zero of `f` in the interval `ax`,`bx`
+    real(wp),intent(out)          :: fzero    !! value of `f` at the root (`f(xzero)`)
+    integer,intent(out)           :: iflag    !! status flag (`-1`=error, `0`=root found, `-999`=invalid method)
+    real(wp),intent(in),optional  :: ftol     !! absolute tolerance for `f=0`
+    real(wp),intent(in),optional  :: rtol     !! relative tol for x
+    real(wp),intent(in),optional  :: atol     !! absolute tol for x
+    integer,intent(in),optional   :: maxiter  !! maximum number of iterations
+    real(wp),intent(in),optional  :: fax      !! if `f(ax)` is already known, it can be input here
+    real(wp),intent(in),optional  :: fbx      !! if `f(bx)` is already known, it can be input here
     logical,intent(in),optional   :: bisect_on_failure  !! if true, then if the specified method fails,
                                                         !! it will be retried using the bisection method.
                                                         !! (default is False). Note that this can use up
@@ -259,24 +386,24 @@
 
     class(root_solver),allocatable :: s
 
-    select case (lowercase(method))
+    select case (method%id)
 
-    case('brent');                allocate(brent_solver                :: s)
-    case('bisection');            allocate(bisection_solver            :: s)
-    case('regula_falsi');         allocate(regula_falsi_solver         :: s)
-    case('illinois');             allocate(illinois_solver             :: s)
-    case('anderson_bjorck');      allocate(anderson_bjorck_solver      :: s)
-    case('ridders');              allocate(ridders_solver              :: s)
-    case('pegasus');              allocate(pegasus_solver              :: s)
-    case('bdqrf');                allocate(bdqrf_solver                :: s)
-    case('muller');               allocate(muller_solver               :: s)
-    case('brenth');               allocate(brenth_solver               :: s)
-    case('brentq');               allocate(brentq_solver               :: s)
-    case('chandrupatla');         allocate(chandrupatla_solver         :: s)
-    case('toms748');              allocate(toms748_solver              :: s)
-    case('zhang');                allocate(zhang_solver                :: s)
-    case('anderson_bjorck_king'); allocate(anderson_bjorck_king_solver :: s)
-    case('blendtf');              allocate(blendtf_solver              :: s)
+    case(root_method_brent%id);                allocate(brent_solver                :: s)
+    case(root_method_bisection%id);            allocate(bisection_solver            :: s)
+    case(root_method_regula_falsi%id);         allocate(regula_falsi_solver         :: s)
+    case(root_method_illinois%id);             allocate(illinois_solver             :: s)
+    case(root_method_anderson_bjorck%id);      allocate(anderson_bjorck_solver      :: s)
+    case(root_method_ridders%id);              allocate(ridders_solver              :: s)
+    case(root_method_pegasus%id);              allocate(pegasus_solver              :: s)
+    case(root_method_bdqrf%id);                allocate(bdqrf_solver                :: s)
+    case(root_method_muller%id);               allocate(muller_solver               :: s)
+    case(root_method_brenth%id);               allocate(brenth_solver               :: s)
+    case(root_method_brentq%id);               allocate(brentq_solver               :: s)
+    case(root_method_chandrupatla%id);         allocate(chandrupatla_solver         :: s)
+    case(root_method_toms748%id);              allocate(toms748_solver              :: s)
+    case(root_method_zhang%id);                allocate(zhang_solver                :: s)
+    case(root_method_anderson_bjorck_king%id); allocate(anderson_bjorck_king_solver :: s)
+    case(root_method_blendtf%id);              allocate(blendtf_solver              :: s)
 
     case default
         iflag = -999    ! invalid method
@@ -296,7 +423,7 @@
             f = fun(x)
         end function func_wrapper
 
-    end subroutine root_scalar
+    end subroutine root_scalar_by_type
 !*****************************************************************************************
 
 !*****************************************************************************************
@@ -314,7 +441,7 @@
     real(wp),intent(out)             :: fzero   !! value of `f` at the root (`f(xzero)`)
     integer,intent(out)              :: iflag   !! status flag (`-1`=error, `0`=root found, `-4`=ax must be /= bx)
     real(wp),intent(in),optional     :: fax     !! if `f(ax)` is already known, it can be input here
-    real(wp),intent(in),optional     :: fbx     !! if `f(ax)` is already known, it can be input here
+    real(wp),intent(in),optional     :: fbx     !! if `f(bx)` is already known, it can be input here
     logical,intent(in),optional      :: bisect_on_failure !! if true, then if the specified method fails,
                                                           !! it will be retried using the bisection method.
                                                           !! (default is False). Note that this can use up
@@ -367,9 +494,10 @@
                 if (present(bisect_on_failure)) then
                     if (bisect_on_failure) then
                         ! use the wrapper routine for that with the input class
-                        call root_scalar('bisection',func_wrapper,ax,bx,xzero,fzero,iflag,&
-                                                   me%ftol,me%rtol,me%atol,me%maxiter,fa,fb,&
-                                                   bisect_on_failure = .false.)
+                        call root_scalar(root_method_bisection,&
+                                         func_wrapper,ax,bx,xzero,fzero,iflag,&
+                                         me%ftol,me%rtol,me%atol,me%maxiter,fa,fb,&
+                                         bisect_on_failure = .false.)
                     end if
                 end if
             end if
@@ -403,7 +531,7 @@
     real(wp),intent(in)              :: ax      !! left endpoint of initial interval
     real(wp),intent(in)              :: bx      !! right endpoint of initial interval
     real(wp),intent(in),optional     :: fax     !! if `f(ax)` is already known, it can be input here
-    real(wp),intent(in),optional     :: fbx     !! if `f(ax)` is already known, it can be input here
+    real(wp),intent(in),optional     :: fbx     !! if `f(bx)` is already known, it can be input here
     real(wp),intent(out)             :: fa      !! `f(ax)` to use
     real(wp),intent(out)             :: fb      !! `f(ax)` to use
 
