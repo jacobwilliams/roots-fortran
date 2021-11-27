@@ -2402,8 +2402,9 @@
 !>
 !  Regula Falsi step.
 !  With a protection to fall back to bisection if:
-!  * the computed point is outside the original interval ([ax,bx]).
-!  * f2 == f1
+!
+!   * the computed point is outside the original interval ([ax,bx]).
+!   * f2 == f1
 
     function regula_falsi_step(x1,x2,f1,f2,ax,bx) result(x3)
 
@@ -2434,8 +2435,9 @@
 !>
 !  Secent step.
 !  With a protection to fall back to bisection if:
-!  * the computed point is outside the original interval ([ax,bx]).
-!  * f2 == f1
+!
+!   * the computed point is outside the original interval ([ax,bx]).
+!   * f2 == f1
 
     pure function secant(x1,x2,f1,f2,ax,bx) result(x3)
 
