@@ -209,9 +209,11 @@ private pure function secant(x1, x2, f1, f2, ax, bx) result(x3)
 
     
     <p>Secent step.
-  With a protection to fall back to bisection if:
-  * the computed point is outside the original interval ([ax,bx]).
-  * f2 == f1</p>
+With a protection to fall back to bisection if:</p>
+<ul>
+<li>the computed point is outside the original interval ([ax,bx]).</li>
+<li>f2 == f1</li>
+</ul>
     
 
     <h3>Arguments</h3>

@@ -1232,9 +1232,9 @@ private subroutine <a href='../proc/root_scalar_by_name.html'>root_scalar_by_nam
   
   <td></td><td>::</td>
   <td><strong>bisect_on_failure</strong></td><td><p>if true, then if the specified method fails,
- it will be retried using the bisection method.
- (default is False). Note that this can use up
- to <code>maxiter</code> additional function evaluations.</p></td>
+it will be retried using the bisection method.
+(default is False). Note that this can use up
+to <code>maxiter</code> additional function evaluations.</p></td>
   
 </tr>
 
@@ -1486,9 +1486,9 @@ private subroutine <a href='../proc/root_scalar_by_type.html'>root_scalar_by_typ
   
   <td></td><td>::</td>
   <td><strong>bisect_on_failure</strong></td><td><p>if true, then if the specified method fails,
- it will be retried using the bisection method.
- (default is False). Note that this can use up
- to <code>maxiter</code> additional function evaluations.</p></td>
+it will be retried using the bisection method.
+(default is False). Note that this can use up
+to <code>maxiter</code> additional function evaluations.</p></td>
   
 </tr>
 
@@ -1535,8 +1535,8 @@ private function func(me, x) result(f)
 
 
 <p>Interface to the function to be minimized
- (Object-oriented version).
- It should evaluate f(x) for any x in the interval (ax,bx)</p>
+(Object-oriented version).
+It should evaluate f(x) for any x in the interval (ax,bx)</p>
     
     <h4>Arguments</h4>
     
@@ -1623,8 +1623,8 @@ private function func2(x) result(f)
 
 
 <p>Interface to the function to be minimized
- (Functional version).
- It should evaluate f(x) for any x in the interval (ax,bx)</p>
+(Functional version).
+It should evaluate f(x) for any x in the interval (ax,bx)</p>
     
     <h4>Arguments</h4>
     
@@ -1852,7 +1852,7 @@ private subroutine root_f(me, ax, bx, fax, fbx, xzero, fzero, iflag)
    
      
 <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-root_method"></span><h3>type, public :: <a href='../type/root_method.html'>root_method</a>
+  <div class="panel-heading codesum"><span class="anchor" id="type-root_method"></span><h3>type, private :: <a href='../type/root_method.html'>root_method</a>
     
   </h3></div>
   <div class="panel-body">
@@ -1913,7 +1913,7 @@ private subroutine root_f(me, ax, bx, fax, fbx, xzero, fzero, iflag)
      
      
 <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-root_solver"></span><h3>type, public, abstract :: <a href='../type/root_solver.html'>root_solver</a>
+  <div class="panel-heading codesum"><span class="anchor" id="type-root_solver"></span><h3>type, private, abstract :: <a href='../type/root_solver.html'>root_solver</a>
     
   </h3></div>
   <div class="panel-body">
@@ -2022,9 +2022,9 @@ private subroutine root_f(me, ax, bx, fax, fbx, xzero, fzero, iflag)
       
        <tr><td>procedure(root_f), private :: <strong><a href='../type/root_solver.html#boundprocedure-find_root'>find_root</a></strong>  </td>
        <td><p>root solver function. Meant to be
- called from <a href="../proc/solve.html">solve</a>, which handles some common
- startup tasks. All these routines assume that
- <script type="math/tex"> f(a_x) </script> and <script type="math/tex"> f(b_x) </script> have opposite signs.</p></td></tr>
+called from <a href="../proc/solve.html">solve</a>, which handles some common
+startup tasks. All these routines assume that
+<script type="math/tex"> f(a_x) </script> and <script type="math/tex"> f(b_x) </script> have opposite signs.</p></td></tr>
       
        <tr><td>procedure, private :: <strong><a href='../type/root_solver.html#boundprocedure-get_fa_fb'>get_fa_fb</a></strong>  </td>
        <td></td></tr>
@@ -2041,7 +2041,7 @@ private subroutine root_f(me, ax, bx, fax, fbx, xzero, fzero, iflag)
      
      
 <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-brent_solver"></span><h3>type, public, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/brent_solver.html'>brent_solver</a>
+  <div class="panel-heading codesum"><span class="anchor" id="type-brent_solver"></span><h3>type, private, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/brent_solver.html'>brent_solver</a>
     
   </h3></div>
   <div class="panel-body">
@@ -2075,7 +2075,7 @@ private subroutine root_f(me, ax, bx, fax, fbx, xzero, fzero, iflag)
      
      
 <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-bisection_solver"></span><h3>type, public, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/bisection_solver.html'>bisection_solver</a>
+  <div class="panel-heading codesum"><span class="anchor" id="type-bisection_solver"></span><h3>type, private, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/bisection_solver.html'>bisection_solver</a>
     
   </h3></div>
   <div class="panel-body">
@@ -2109,7 +2109,7 @@ private subroutine root_f(me, ax, bx, fax, fbx, xzero, fzero, iflag)
      
      
 <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-regula_falsi_solver"></span><h3>type, public, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/regula_falsi_solver.html'>regula_falsi_solver</a>
+  <div class="panel-heading codesum"><span class="anchor" id="type-regula_falsi_solver"></span><h3>type, private, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/regula_falsi_solver.html'>regula_falsi_solver</a>
     
   </h3></div>
   <div class="panel-body">
@@ -2143,7 +2143,7 @@ private subroutine root_f(me, ax, bx, fax, fbx, xzero, fzero, iflag)
      
      
 <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-illinois_solver"></span><h3>type, public, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/illinois_solver.html'>illinois_solver</a>
+  <div class="panel-heading codesum"><span class="anchor" id="type-illinois_solver"></span><h3>type, private, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/illinois_solver.html'>illinois_solver</a>
     
   </h3></div>
   <div class="panel-body">
@@ -2177,7 +2177,7 @@ private subroutine root_f(me, ax, bx, fax, fbx, xzero, fzero, iflag)
      
      
 <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-anderson_bjorck_solver"></span><h3>type, public, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/anderson_bjorck_solver.html'>anderson_bjorck_solver</a>
+  <div class="panel-heading codesum"><span class="anchor" id="type-anderson_bjorck_solver"></span><h3>type, private, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/anderson_bjorck_solver.html'>anderson_bjorck_solver</a>
     
   </h3></div>
   <div class="panel-body">
@@ -2211,7 +2211,7 @@ private subroutine root_f(me, ax, bx, fax, fbx, xzero, fzero, iflag)
      
      
 <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-ridders_solver"></span><h3>type, public, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/ridders_solver.html'>ridders_solver</a>
+  <div class="panel-heading codesum"><span class="anchor" id="type-ridders_solver"></span><h3>type, private, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/ridders_solver.html'>ridders_solver</a>
     
   </h3></div>
   <div class="panel-body">
@@ -2245,7 +2245,7 @@ private subroutine root_f(me, ax, bx, fax, fbx, xzero, fzero, iflag)
      
      
 <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-pegasus_solver"></span><h3>type, public, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/pegasus_solver.html'>pegasus_solver</a>
+  <div class="panel-heading codesum"><span class="anchor" id="type-pegasus_solver"></span><h3>type, private, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/pegasus_solver.html'>pegasus_solver</a>
     
   </h3></div>
   <div class="panel-body">
@@ -2279,7 +2279,7 @@ private subroutine root_f(me, ax, bx, fax, fbx, xzero, fzero, iflag)
      
      
 <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-bdqrf_solver"></span><h3>type, public, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/bdqrf_solver.html'>bdqrf_solver</a>
+  <div class="panel-heading codesum"><span class="anchor" id="type-bdqrf_solver"></span><h3>type, private, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/bdqrf_solver.html'>bdqrf_solver</a>
     
   </h3></div>
   <div class="panel-body">
@@ -2313,7 +2313,7 @@ private subroutine root_f(me, ax, bx, fax, fbx, xzero, fzero, iflag)
      
      
 <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-muller_solver"></span><h3>type, public, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/muller_solver.html'>muller_solver</a>
+  <div class="panel-heading codesum"><span class="anchor" id="type-muller_solver"></span><h3>type, private, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/muller_solver.html'>muller_solver</a>
     
   </h3></div>
   <div class="panel-body">
@@ -2347,7 +2347,7 @@ private subroutine root_f(me, ax, bx, fax, fbx, xzero, fzero, iflag)
      
      
 <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-brenth_solver"></span><h3>type, public, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/brenth_solver.html'>brenth_solver</a>
+  <div class="panel-heading codesum"><span class="anchor" id="type-brenth_solver"></span><h3>type, private, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/brenth_solver.html'>brenth_solver</a>
     
   </h3></div>
   <div class="panel-body">
@@ -2381,7 +2381,7 @@ private subroutine root_f(me, ax, bx, fax, fbx, xzero, fzero, iflag)
      
      
 <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-brentq_solver"></span><h3>type, public, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/brentq_solver.html'>brentq_solver</a>
+  <div class="panel-heading codesum"><span class="anchor" id="type-brentq_solver"></span><h3>type, private, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/brentq_solver.html'>brentq_solver</a>
     
   </h3></div>
   <div class="panel-body">
@@ -2415,7 +2415,7 @@ private subroutine root_f(me, ax, bx, fax, fbx, xzero, fzero, iflag)
      
      
 <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-chandrupatla_solver"></span><h3>type, public, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/chandrupatla_solver.html'>chandrupatla_solver</a>
+  <div class="panel-heading codesum"><span class="anchor" id="type-chandrupatla_solver"></span><h3>type, private, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/chandrupatla_solver.html'>chandrupatla_solver</a>
     
   </h3></div>
   <div class="panel-body">
@@ -2449,7 +2449,7 @@ private subroutine root_f(me, ax, bx, fax, fbx, xzero, fzero, iflag)
      
      
 <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-toms748_solver"></span><h3>type, public, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/toms748_solver.html'>toms748_solver</a>
+  <div class="panel-heading codesum"><span class="anchor" id="type-toms748_solver"></span><h3>type, private, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/toms748_solver.html'>toms748_solver</a>
     
   </h3></div>
   <div class="panel-body">
@@ -2483,7 +2483,7 @@ private subroutine root_f(me, ax, bx, fax, fbx, xzero, fzero, iflag)
      
      
 <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-zhang_solver"></span><h3>type, public, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/zhang_solver.html'>zhang_solver</a>
+  <div class="panel-heading codesum"><span class="anchor" id="type-zhang_solver"></span><h3>type, private, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/zhang_solver.html'>zhang_solver</a>
     
   </h3></div>
   <div class="panel-body">
@@ -2517,7 +2517,7 @@ private subroutine root_f(me, ax, bx, fax, fbx, xzero, fzero, iflag)
      
      
 <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-anderson_bjorck_king_solver"></span><h3>type, public, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/anderson_bjorck_king_solver.html'>anderson_bjorck_king_solver</a>
+  <div class="panel-heading codesum"><span class="anchor" id="type-anderson_bjorck_king_solver"></span><h3>type, private, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/anderson_bjorck_king_solver.html'>anderson_bjorck_king_solver</a>
     
   </h3></div>
   <div class="panel-body">
@@ -2551,7 +2551,7 @@ private subroutine root_f(me, ax, bx, fax, fbx, xzero, fzero, iflag)
      
      
 <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-blendtf_solver"></span><h3>type, public, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/blendtf_solver.html'>blendtf_solver</a>
+  <div class="panel-heading codesum"><span class="anchor" id="type-blendtf_solver"></span><h3>type, private, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/blendtf_solver.html'>blendtf_solver</a>
     
   </h3></div>
   <div class="panel-body">
@@ -2859,9 +2859,7 @@ private function <a href='../proc/regula_falsi_step.html'>regula_falsi_step</a>(
 
 
 <p>Regula Falsi step.
-  With a protection to fall back to bisection if:
-  * the computed point is outside the original interval ([ax,bx]).
-  * f2 == f1</p>
+With a protection to fall back to bisection if:</p><a href="../proc/regula_falsi_step.html" class="pull-right"><emph>Read more&hellip;</emph></a>
     
     <h4>Arguments</h4>
     
@@ -3005,9 +3003,7 @@ private pure function <a href='../proc/secant.html'>secant</a>(x1, x2, f1, f2, a
 
 
 <p>Secent step.
-  With a protection to fall back to bisection if:
-  * the computed point is outside the original interval ([ax,bx]).
-  * f2 == f1</p>
+With a protection to fall back to bisection if:</p><a href="../proc/secant.html" class="pull-right"><emph>Read more&hellip;</emph></a>
     
     <h4>Arguments</h4>
     
@@ -3191,7 +3187,7 @@ private pure function <a href='../proc/lowercase.html'>lowercase</a>(str) result
   
   
   
-     <h4>Return Value <small>character(len=(len(str)))
+     <h4>Return Value <small>character
   </small></h4>
   <p>lowercase version of the string</p>
     
@@ -3582,9 +3578,9 @@ private subroutine <a href='../proc/root_scalar_by_name.html'>root_scalar_by_nam
   
   <td></td><td>::</td>
   <td><strong>bisect_on_failure</strong></td><td><p>if true, then if the specified method fails,
- it will be retried using the bisection method.
- (default is False). Note that this can use up
- to <code>maxiter</code> additional function evaluations.</p></td>
+it will be retried using the bisection method.
+(default is False). Note that this can use up
+to <code>maxiter</code> additional function evaluations.</p></td>
   
 </tr>
 
@@ -3839,9 +3835,9 @@ private subroutine <a href='../proc/root_scalar_by_type.html'>root_scalar_by_typ
   
   <td></td><td>::</td>
   <td><strong>bisect_on_failure</strong></td><td><p>if true, then if the specified method fails,
- it will be retried using the bisection method.
- (default is False). Note that this can use up
- to <code>maxiter</code> additional function evaluations.</p></td>
+it will be retried using the bisection method.
+(default is False). Note that this can use up
+to <code>maxiter</code> additional function evaluations.</p></td>
   
 </tr>
 
@@ -4021,9 +4017,9 @@ private subroutine <a href='../proc/solve.html'>solve</a>(me, ax, bx, xzero, fze
   
   <td></td><td>::</td>
   <td><strong>bisect_on_failure</strong></td><td><p>if true, then if the specified method fails,
- it will be retried using the bisection method.
- (default is False). Note that this can use up
- to <code>maxiter</code> additional function evaluations.</p></td>
+it will be retried using the bisection method.
+(default is False). Note that this can use up
+to <code>maxiter</code> additional function evaluations.</p></td>
   
 </tr>
 
@@ -6837,7 +6833,7 @@ private pure subroutine <a href='../proc/choose_best.html'>choose_best</a>(x1, x
 
 
 <p>Given two points with two function evaluations, choose the best one
-  (the one closest to the root).</p>
+(the one closest to the root).</p>
     
     <h4>Arguments</h4>
     

@@ -237,7 +237,7 @@
     </div>
     
     <div class="col-md-9" id='text'>
-      <h2>type, public, abstract :: root_solver</h2>
+      <h2>type, private, abstract :: root_solver</h2>
     <p>abstract class for the root solver methods</p>
     
     
@@ -754,9 +754,9 @@ private subroutine <a href='../proc/solve.html'>solve</a>(me, ax, bx, xzero, fze
   
   <td></td><td>::</td>
   <td><strong>bisect_on_failure</strong></td><td><p>if true, then if the specified method fails,
- it will be retried using the bisection method.
- (default is False). Note that this can use up
- to <code>maxiter</code> additional function evaluations.</p></td>
+it will be retried using the bisection method.
+(default is False). Note that this can use up
+to <code>maxiter</code> additional function evaluations.</p></td>
   
 </tr>
 
@@ -786,9 +786,9 @@ private subroutine <a href='../proc/solve.html'>solve</a>(me, ax, bx, xzero, fze
 
 
     <p>root solver function. Meant to be
- called from <a href="../proc/solve.html">solve</a>, which handles some common
- startup tasks. All these routines assume that
- <script type="math/tex"> f(a_x) </script> and <script type="math/tex"> f(b_x) </script> have opposite signs.</p>
+called from <a href="../proc/solve.html">solve</a>, which handles some common
+startup tasks. All these routines assume that
+<script type="math/tex"> f(a_x) </script> and <script type="math/tex"> f(b_x) </script> have opposite signs.</p>
   </div>
   
   <ul class="list-group">

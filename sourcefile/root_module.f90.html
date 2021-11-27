@@ -2664,111 +2664,113 @@
 <a id="ln-2402" name="ln-2402"></a><span class="c">!&gt;</span>
 <a id="ln-2403" name="ln-2403"></a><span class="c">!  Regula Falsi step.</span>
 <a id="ln-2404" name="ln-2404"></a><span class="c">!  With a protection to fall back to bisection if:</span>
-<a id="ln-2405" name="ln-2405"></a><span class="c">!  * the computed point is outside the original interval ([ax,bx]).</span>
-<a id="ln-2406" name="ln-2406"></a><span class="c">!  * f2 == f1</span>
-<a id="ln-2407" name="ln-2407"></a>
-<a id="ln-2408" name="ln-2408"></a>    <span class="k">function </span><span class="n">regula_falsi_step</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="n">f1</span><span class="p">,</span><span class="n">f2</span><span class="p">,</span><span class="n">ax</span><span class="p">,</span><span class="n">bx</span><span class="p">)</span> <span class="k">result</span><span class="p">(</span><span class="n">x3</span><span class="p">)</span>
-<a id="ln-2409" name="ln-2409"></a>
-<a id="ln-2410" name="ln-2410"></a>    <span class="k">implicit none</span>
-<a id="ln-2411" name="ln-2411"></a>
-<a id="ln-2412" name="ln-2412"></a><span class="k">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="n">f1</span><span class="p">,</span><span class="n">f2</span>
-<a id="ln-2413" name="ln-2413"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">ax</span> <span class="c">!! original interval lower bound</span>
-<a id="ln-2414" name="ln-2414"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">bx</span> <span class="c">!! original interval upper bound</span>
-<a id="ln-2415" name="ln-2415"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">x3</span> <span class="c">!! intersection of line connecting x1,x2 with x-axis</span>
-<a id="ln-2416" name="ln-2416"></a>
-<a id="ln-2417" name="ln-2417"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">delta</span>
-<a id="ln-2418" name="ln-2418"></a>
-<a id="ln-2419" name="ln-2419"></a>    <span class="n">delta</span> <span class="o">=</span> <span class="n">f2</span><span class="o">-</span><span class="n">f1</span>
-<a id="ln-2420" name="ln-2420"></a>
-<a id="ln-2421" name="ln-2421"></a>    <span class="k">if</span> <span class="p">(</span><span class="n">delta</span> <span class="o">/=</span> <span class="mf">0.0_wp</span><span class="p">)</span> <span class="k">then</span>
-<a id="ln-2422" name="ln-2422"></a>        <span class="c">! intersection with x-axis of line connecting the two points:</span>
-<a id="ln-2423" name="ln-2423"></a>        <span class="n">x3</span> <span class="o">=</span> <span class="n">x1</span> <span class="o">-</span> <span class="p">(</span><span class="n">f1</span><span class="o">/</span><span class="n">delta</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x2</span><span class="o">-</span><span class="n">x1</span><span class="p">)</span>
-<a id="ln-2424" name="ln-2424"></a>        <span class="k">if</span> <span class="p">(</span><span class="n">x3</span><span class="o">&gt;</span><span class="n">ax</span> <span class="p">.</span><span class="nb">and</span><span class="p">.</span> <span class="n">x3</span><span class="o">&lt;</span><span class="n">bx</span><span class="p">)</span> <span class="k">return</span> <span class="c">! must be a new point in the range</span>
-<a id="ln-2425" name="ln-2425"></a>    <span class="k">end if</span>
-<a id="ln-2426" name="ln-2426"></a>
-<a id="ln-2427" name="ln-2427"></a>    <span class="c">! fall back to bisection for any problem</span>
-<a id="ln-2428" name="ln-2428"></a>    <span class="n">x3</span> <span class="o">=</span> <span class="n">bisect</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">)</span>
-<a id="ln-2429" name="ln-2429"></a>
-<a id="ln-2430" name="ln-2430"></a>    <span class="k">end function </span><span class="n">regula_falsi_step</span>
-<a id="ln-2431" name="ln-2431"></a><span class="c">!*****************************************************************************************</span>
-<a id="ln-2432" name="ln-2432"></a>
-<a id="ln-2433" name="ln-2433"></a><span class="c">!*****************************************************************************************</span>
-<a id="ln-2434" name="ln-2434"></a><span class="c">!&gt;</span>
-<a id="ln-2435" name="ln-2435"></a><span class="c">!  Secent step.</span>
-<a id="ln-2436" name="ln-2436"></a><span class="c">!  With a protection to fall back to bisection if:</span>
-<a id="ln-2437" name="ln-2437"></a><span class="c">!  * the computed point is outside the original interval ([ax,bx]).</span>
-<a id="ln-2438" name="ln-2438"></a><span class="c">!  * f2 == f1</span>
-<a id="ln-2439" name="ln-2439"></a>
-<a id="ln-2440" name="ln-2440"></a>    <span class="k">pure function </span><span class="n">secant</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="n">f1</span><span class="p">,</span><span class="n">f2</span><span class="p">,</span><span class="n">ax</span><span class="p">,</span><span class="n">bx</span><span class="p">)</span> <span class="k">result</span><span class="p">(</span><span class="n">x3</span><span class="p">)</span>
+<a id="ln-2405" name="ln-2405"></a><span class="c">!</span>
+<a id="ln-2406" name="ln-2406"></a><span class="c">!   * the computed point is outside the original interval ([ax,bx]).</span>
+<a id="ln-2407" name="ln-2407"></a><span class="c">!   * f2 == f1</span>
+<a id="ln-2408" name="ln-2408"></a>
+<a id="ln-2409" name="ln-2409"></a>    <span class="k">function </span><span class="n">regula_falsi_step</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="n">f1</span><span class="p">,</span><span class="n">f2</span><span class="p">,</span><span class="n">ax</span><span class="p">,</span><span class="n">bx</span><span class="p">)</span> <span class="k">result</span><span class="p">(</span><span class="n">x3</span><span class="p">)</span>
+<a id="ln-2410" name="ln-2410"></a>
+<a id="ln-2411" name="ln-2411"></a>    <span class="k">implicit none</span>
+<a id="ln-2412" name="ln-2412"></a>
+<a id="ln-2413" name="ln-2413"></a><span class="k">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="n">f1</span><span class="p">,</span><span class="n">f2</span>
+<a id="ln-2414" name="ln-2414"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">ax</span> <span class="c">!! original interval lower bound</span>
+<a id="ln-2415" name="ln-2415"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">bx</span> <span class="c">!! original interval upper bound</span>
+<a id="ln-2416" name="ln-2416"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">x3</span> <span class="c">!! intersection of line connecting x1,x2 with x-axis</span>
+<a id="ln-2417" name="ln-2417"></a>
+<a id="ln-2418" name="ln-2418"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">delta</span>
+<a id="ln-2419" name="ln-2419"></a>
+<a id="ln-2420" name="ln-2420"></a>    <span class="n">delta</span> <span class="o">=</span> <span class="n">f2</span><span class="o">-</span><span class="n">f1</span>
+<a id="ln-2421" name="ln-2421"></a>
+<a id="ln-2422" name="ln-2422"></a>    <span class="k">if</span> <span class="p">(</span><span class="n">delta</span> <span class="o">/=</span> <span class="mf">0.0_wp</span><span class="p">)</span> <span class="k">then</span>
+<a id="ln-2423" name="ln-2423"></a>        <span class="c">! intersection with x-axis of line connecting the two points:</span>
+<a id="ln-2424" name="ln-2424"></a>        <span class="n">x3</span> <span class="o">=</span> <span class="n">x1</span> <span class="o">-</span> <span class="p">(</span><span class="n">f1</span><span class="o">/</span><span class="n">delta</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x2</span><span class="o">-</span><span class="n">x1</span><span class="p">)</span>
+<a id="ln-2425" name="ln-2425"></a>        <span class="k">if</span> <span class="p">(</span><span class="n">x3</span><span class="o">&gt;</span><span class="n">ax</span> <span class="p">.</span><span class="nb">and</span><span class="p">.</span> <span class="n">x3</span><span class="o">&lt;</span><span class="n">bx</span><span class="p">)</span> <span class="k">return</span> <span class="c">! must be a new point in the range</span>
+<a id="ln-2426" name="ln-2426"></a>    <span class="k">end if</span>
+<a id="ln-2427" name="ln-2427"></a>
+<a id="ln-2428" name="ln-2428"></a>    <span class="c">! fall back to bisection for any problem</span>
+<a id="ln-2429" name="ln-2429"></a>    <span class="n">x3</span> <span class="o">=</span> <span class="n">bisect</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">)</span>
+<a id="ln-2430" name="ln-2430"></a>
+<a id="ln-2431" name="ln-2431"></a>    <span class="k">end function </span><span class="n">regula_falsi_step</span>
+<a id="ln-2432" name="ln-2432"></a><span class="c">!*****************************************************************************************</span>
+<a id="ln-2433" name="ln-2433"></a>
+<a id="ln-2434" name="ln-2434"></a><span class="c">!*****************************************************************************************</span>
+<a id="ln-2435" name="ln-2435"></a><span class="c">!&gt;</span>
+<a id="ln-2436" name="ln-2436"></a><span class="c">!  Secent step.</span>
+<a id="ln-2437" name="ln-2437"></a><span class="c">!  With a protection to fall back to bisection if:</span>
+<a id="ln-2438" name="ln-2438"></a><span class="c">!</span>
+<a id="ln-2439" name="ln-2439"></a><span class="c">!   * the computed point is outside the original interval ([ax,bx]).</span>
+<a id="ln-2440" name="ln-2440"></a><span class="c">!   * f2 == f1</span>
 <a id="ln-2441" name="ln-2441"></a>
-<a id="ln-2442" name="ln-2442"></a>    <span class="k">implicit none</span>
+<a id="ln-2442" name="ln-2442"></a>    <span class="k">pure function </span><span class="n">secant</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="n">f1</span><span class="p">,</span><span class="n">f2</span><span class="p">,</span><span class="n">ax</span><span class="p">,</span><span class="n">bx</span><span class="p">)</span> <span class="k">result</span><span class="p">(</span><span class="n">x3</span><span class="p">)</span>
 <a id="ln-2443" name="ln-2443"></a>
-<a id="ln-2444" name="ln-2444"></a><span class="k">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="n">f1</span><span class="p">,</span><span class="n">f2</span>
-<a id="ln-2445" name="ln-2445"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">ax</span> <span class="c">!! original interval lower bound</span>
-<a id="ln-2446" name="ln-2446"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">bx</span> <span class="c">!! original interval upper bound</span>
-<a id="ln-2447" name="ln-2447"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">x3</span> <span class="c">!! intersection of secant step with x-axis</span>
-<a id="ln-2448" name="ln-2448"></a>
-<a id="ln-2449" name="ln-2449"></a>    <span class="k">if</span> <span class="p">(</span><span class="n">f2</span><span class="o">==</span><span class="n">f1</span><span class="p">)</span> <span class="k">then</span>
-<a id="ln-2450" name="ln-2450"></a><span class="k">        </span><span class="n">x3</span> <span class="o">=</span> <span class="n">bisect</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">)</span>
-<a id="ln-2451" name="ln-2451"></a>    <span class="k">else</span>
-<a id="ln-2452" name="ln-2452"></a>        <span class="c">! secant step:</span>
-<a id="ln-2453" name="ln-2453"></a>        <span class="n">x3</span> <span class="o">=</span> <span class="n">x2</span> <span class="o">-</span> <span class="n">f2</span> <span class="o">/</span> <span class="p">(</span> <span class="p">(</span><span class="n">f2</span> <span class="o">-</span> <span class="n">f1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">x2</span> <span class="o">-</span> <span class="n">x1</span><span class="p">)</span> <span class="p">)</span>
-<a id="ln-2454" name="ln-2454"></a>        <span class="k">if</span> <span class="p">(</span><span class="n">x3</span><span class="o">&lt;</span><span class="n">ax</span> <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">x3</span><span class="o">&gt;</span><span class="n">bx</span><span class="p">)</span> <span class="n">x3</span> <span class="o">=</span> <span class="n">bisect</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">)</span>
-<a id="ln-2455" name="ln-2455"></a>    <span class="k">end if</span>
-<a id="ln-2456" name="ln-2456"></a>
-<a id="ln-2457" name="ln-2457"></a><span class="k">    end function </span><span class="n">secant</span>
-<a id="ln-2458" name="ln-2458"></a><span class="c">!*****************************************************************************************</span>
-<a id="ln-2459" name="ln-2459"></a>
+<a id="ln-2444" name="ln-2444"></a>    <span class="k">implicit none</span>
+<a id="ln-2445" name="ln-2445"></a>
+<a id="ln-2446" name="ln-2446"></a><span class="k">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="n">f1</span><span class="p">,</span><span class="n">f2</span>
+<a id="ln-2447" name="ln-2447"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">ax</span> <span class="c">!! original interval lower bound</span>
+<a id="ln-2448" name="ln-2448"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">bx</span> <span class="c">!! original interval upper bound</span>
+<a id="ln-2449" name="ln-2449"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">x3</span> <span class="c">!! intersection of secant step with x-axis</span>
+<a id="ln-2450" name="ln-2450"></a>
+<a id="ln-2451" name="ln-2451"></a>    <span class="k">if</span> <span class="p">(</span><span class="n">f2</span><span class="o">==</span><span class="n">f1</span><span class="p">)</span> <span class="k">then</span>
+<a id="ln-2452" name="ln-2452"></a><span class="k">        </span><span class="n">x3</span> <span class="o">=</span> <span class="n">bisect</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">)</span>
+<a id="ln-2453" name="ln-2453"></a>    <span class="k">else</span>
+<a id="ln-2454" name="ln-2454"></a>        <span class="c">! secant step:</span>
+<a id="ln-2455" name="ln-2455"></a>        <span class="n">x3</span> <span class="o">=</span> <span class="n">x2</span> <span class="o">-</span> <span class="n">f2</span> <span class="o">/</span> <span class="p">(</span> <span class="p">(</span><span class="n">f2</span> <span class="o">-</span> <span class="n">f1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">x2</span> <span class="o">-</span> <span class="n">x1</span><span class="p">)</span> <span class="p">)</span>
+<a id="ln-2456" name="ln-2456"></a>        <span class="k">if</span> <span class="p">(</span><span class="n">x3</span><span class="o">&lt;</span><span class="n">ax</span> <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">x3</span><span class="o">&gt;</span><span class="n">bx</span><span class="p">)</span> <span class="n">x3</span> <span class="o">=</span> <span class="n">bisect</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">)</span>
+<a id="ln-2457" name="ln-2457"></a>    <span class="k">end if</span>
+<a id="ln-2458" name="ln-2458"></a>
+<a id="ln-2459" name="ln-2459"></a><span class="k">    end function </span><span class="n">secant</span>
 <a id="ln-2460" name="ln-2460"></a><span class="c">!*****************************************************************************************</span>
-<a id="ln-2461" name="ln-2461"></a><span class="c">!&gt;</span>
-<a id="ln-2462" name="ln-2462"></a><span class="c">!  Swap two real(wp) values.</span>
-<a id="ln-2463" name="ln-2463"></a>
-<a id="ln-2464" name="ln-2464"></a>    <span class="k">pure elemental subroutine </span><span class="n">swap</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
+<a id="ln-2461" name="ln-2461"></a>
+<a id="ln-2462" name="ln-2462"></a><span class="c">!*****************************************************************************************</span>
+<a id="ln-2463" name="ln-2463"></a><span class="c">!&gt;</span>
+<a id="ln-2464" name="ln-2464"></a><span class="c">!  Swap two real(wp) values.</span>
 <a id="ln-2465" name="ln-2465"></a>
-<a id="ln-2466" name="ln-2466"></a>    <span class="k">implicit none</span>
+<a id="ln-2466" name="ln-2466"></a>    <span class="k">pure elemental subroutine </span><span class="n">swap</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
 <a id="ln-2467" name="ln-2467"></a>
-<a id="ln-2468" name="ln-2468"></a><span class="k">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">a</span>
-<a id="ln-2469" name="ln-2469"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">b</span>
-<a id="ln-2470" name="ln-2470"></a>
-<a id="ln-2471" name="ln-2471"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">tmp</span>
+<a id="ln-2468" name="ln-2468"></a>    <span class="k">implicit none</span>
+<a id="ln-2469" name="ln-2469"></a>
+<a id="ln-2470" name="ln-2470"></a><span class="k">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">a</span>
+<a id="ln-2471" name="ln-2471"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">b</span>
 <a id="ln-2472" name="ln-2472"></a>
-<a id="ln-2473" name="ln-2473"></a>    <span class="n">tmp</span> <span class="o">=</span> <span class="n">a</span>
-<a id="ln-2474" name="ln-2474"></a>    <span class="n">a</span>   <span class="o">=</span> <span class="n">b</span>
-<a id="ln-2475" name="ln-2475"></a>    <span class="n">b</span>   <span class="o">=</span> <span class="n">tmp</span>
-<a id="ln-2476" name="ln-2476"></a>
-<a id="ln-2477" name="ln-2477"></a>    <span class="k">end subroutine </span><span class="n">swap</span>
-<a id="ln-2478" name="ln-2478"></a><span class="c">!*****************************************************************************************</span>
-<a id="ln-2479" name="ln-2479"></a>
+<a id="ln-2473" name="ln-2473"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">tmp</span>
+<a id="ln-2474" name="ln-2474"></a>
+<a id="ln-2475" name="ln-2475"></a>    <span class="n">tmp</span> <span class="o">=</span> <span class="n">a</span>
+<a id="ln-2476" name="ln-2476"></a>    <span class="n">a</span>   <span class="o">=</span> <span class="n">b</span>
+<a id="ln-2477" name="ln-2477"></a>    <span class="n">b</span>   <span class="o">=</span> <span class="n">tmp</span>
+<a id="ln-2478" name="ln-2478"></a>
+<a id="ln-2479" name="ln-2479"></a>    <span class="k">end subroutine </span><span class="n">swap</span>
 <a id="ln-2480" name="ln-2480"></a><span class="c">!*****************************************************************************************</span>
-<a id="ln-2481" name="ln-2481"></a><span class="c">!&gt;</span>
-<a id="ln-2482" name="ln-2482"></a><span class="c">!  lowercase a string.</span>
-<a id="ln-2483" name="ln-2483"></a>
-<a id="ln-2484" name="ln-2484"></a>    <span class="k">pure function </span><span class="n">lowercase</span><span class="p">(</span><span class="n">str</span><span class="p">)</span> <span class="k">result</span><span class="p">(</span><span class="n">s_lower</span><span class="p">)</span>
+<a id="ln-2481" name="ln-2481"></a>
+<a id="ln-2482" name="ln-2482"></a><span class="c">!*****************************************************************************************</span>
+<a id="ln-2483" name="ln-2483"></a><span class="c">!&gt;</span>
+<a id="ln-2484" name="ln-2484"></a><span class="c">!  lowercase a string.</span>
 <a id="ln-2485" name="ln-2485"></a>
-<a id="ln-2486" name="ln-2486"></a>    <span class="k">implicit none</span>
+<a id="ln-2486" name="ln-2486"></a>    <span class="k">pure function </span><span class="n">lowercase</span><span class="p">(</span><span class="n">str</span><span class="p">)</span> <span class="k">result</span><span class="p">(</span><span class="n">s_lower</span><span class="p">)</span>
 <a id="ln-2487" name="ln-2487"></a>
-<a id="ln-2488" name="ln-2488"></a><span class="k">    </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">str</span>      <span class="c">!! input string</span>
-<a id="ln-2489" name="ln-2489"></a>    <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">str</span><span class="p">)))</span>   <span class="kd">::</span> <span class="n">s_lower</span>  <span class="c">!! lowercase version of the string</span>
-<a id="ln-2490" name="ln-2490"></a>
-<a id="ln-2491" name="ln-2491"></a>    <span class="kt">integer</span> <span class="kd">::</span> <span class="n">i</span>  <span class="c">!! counter</span>
-<a id="ln-2492" name="ln-2492"></a>    <span class="kt">integer</span> <span class="kd">::</span> <span class="n">j</span>  <span class="c">!! index of uppercase character</span>
-<a id="ln-2493" name="ln-2493"></a>
-<a id="ln-2494" name="ln-2494"></a>    <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">parameter</span> <span class="kd">::</span> <span class="n">upper</span> <span class="o">=</span> <span class="s1">&#39;ABCDEFGHIJKLMNOPQRSTUVWXYZ&#39;</span> <span class="c">!! uppercase characters</span>
-<a id="ln-2495" name="ln-2495"></a>    <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">parameter</span> <span class="kd">::</span> <span class="n">lower</span> <span class="o">=</span> <span class="s1">&#39;abcdefghijklmnopqrstuvwxyz&#39;</span> <span class="c">!! lowercase characters</span>
-<a id="ln-2496" name="ln-2496"></a>
-<a id="ln-2497" name="ln-2497"></a>    <span class="n">s_lower</span> <span class="o">=</span> <span class="n">str</span>
+<a id="ln-2488" name="ln-2488"></a>    <span class="k">implicit none</span>
+<a id="ln-2489" name="ln-2489"></a>
+<a id="ln-2490" name="ln-2490"></a><span class="k">    </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">str</span>      <span class="c">!! input string</span>
+<a id="ln-2491" name="ln-2491"></a>    <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">str</span><span class="p">)))</span>   <span class="kd">::</span> <span class="n">s_lower</span>  <span class="c">!! lowercase version of the string</span>
+<a id="ln-2492" name="ln-2492"></a>
+<a id="ln-2493" name="ln-2493"></a>    <span class="kt">integer</span> <span class="kd">::</span> <span class="n">i</span>  <span class="c">!! counter</span>
+<a id="ln-2494" name="ln-2494"></a>    <span class="kt">integer</span> <span class="kd">::</span> <span class="n">j</span>  <span class="c">!! index of uppercase character</span>
+<a id="ln-2495" name="ln-2495"></a>
+<a id="ln-2496" name="ln-2496"></a>    <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">parameter</span> <span class="kd">::</span> <span class="n">upper</span> <span class="o">=</span> <span class="s1">&#39;ABCDEFGHIJKLMNOPQRSTUVWXYZ&#39;</span> <span class="c">!! uppercase characters</span>
+<a id="ln-2497" name="ln-2497"></a>    <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">parameter</span> <span class="kd">::</span> <span class="n">lower</span> <span class="o">=</span> <span class="s1">&#39;abcdefghijklmnopqrstuvwxyz&#39;</span> <span class="c">!! lowercase characters</span>
 <a id="ln-2498" name="ln-2498"></a>
-<a id="ln-2499" name="ln-2499"></a>    <span class="k">do </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len_trim</span><span class="p">(</span><span class="n">str</span><span class="p">)</span>
-<a id="ln-2500" name="ln-2500"></a>        <span class="n">j</span> <span class="o">=</span> <span class="nb">index</span><span class="p">(</span><span class="n">upper</span><span class="p">,</span><span class="n">s_lower</span><span class="p">(</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="p">))</span>
-<a id="ln-2501" name="ln-2501"></a>        <span class="k">if</span> <span class="p">(</span><span class="n">j</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span> <span class="n">s_lower</span><span class="p">(</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="n">lower</span><span class="p">(</span><span class="n">j</span><span class="p">:</span><span class="n">j</span><span class="p">)</span>
-<a id="ln-2502" name="ln-2502"></a>    <span class="k">end do</span>
-<a id="ln-2503" name="ln-2503"></a>
-<a id="ln-2504" name="ln-2504"></a><span class="k">    end function </span><span class="n">lowercase</span>
-<a id="ln-2505" name="ln-2505"></a><span class="c">!*****************************************************************************************</span>
-<a id="ln-2506" name="ln-2506"></a>
+<a id="ln-2499" name="ln-2499"></a>    <span class="n">s_lower</span> <span class="o">=</span> <span class="n">str</span>
+<a id="ln-2500" name="ln-2500"></a>
+<a id="ln-2501" name="ln-2501"></a>    <span class="k">do </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len_trim</span><span class="p">(</span><span class="n">str</span><span class="p">)</span>
+<a id="ln-2502" name="ln-2502"></a>        <span class="n">j</span> <span class="o">=</span> <span class="nb">index</span><span class="p">(</span><span class="n">upper</span><span class="p">,</span><span class="n">s_lower</span><span class="p">(</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="p">))</span>
+<a id="ln-2503" name="ln-2503"></a>        <span class="k">if</span> <span class="p">(</span><span class="n">j</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span> <span class="n">s_lower</span><span class="p">(</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="n">lower</span><span class="p">(</span><span class="n">j</span><span class="p">:</span><span class="n">j</span><span class="p">)</span>
+<a id="ln-2504" name="ln-2504"></a>    <span class="k">end do</span>
+<a id="ln-2505" name="ln-2505"></a>
+<a id="ln-2506" name="ln-2506"></a><span class="k">    end function </span><span class="n">lowercase</span>
 <a id="ln-2507" name="ln-2507"></a><span class="c">!*****************************************************************************************</span>
-<a id="ln-2508" name="ln-2508"></a>    <span class="k">end module </span><span class="n">root_module</span>
+<a id="ln-2508" name="ln-2508"></a>
 <a id="ln-2509" name="ln-2509"></a><span class="c">!*****************************************************************************************</span>
+<a id="ln-2510" name="ln-2510"></a>    <span class="k">end module </span><span class="n">root_module</span>
+<a id="ln-2511" name="ln-2511"></a><span class="c">!*****************************************************************************************</span>
 </pre></div>
 
     </section>
