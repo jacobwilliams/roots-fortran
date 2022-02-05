@@ -36,9 +36,7 @@ or, to use a specific version:
 roots-fortran = { git="https://github.com/jacobwilliams/roots-fortran.git", tag = "1.0.0"  }
 ```
 
-
-To generate the documentation using [ford](https://github.com/Fortran-FOSS-Programmers/ford), run: ```FoBis.py rule --execute makedoc -f roots-fortran.fobis```
-
+To generate the documentation using [ford](https://github.com/Fortran-FOSS-Programmers/ford), run: ```ford roots-fortran.fobis```
 
 ## Usage
 
