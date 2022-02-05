@@ -9,7 +9,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         gcc_v: [9] # Version of GFortran we want to use.
-        python-version: [3.7]
+        python-version: [3.9]
     env:
       FC: gfortran-${{ matrix.gcc_v }}
       GCC_V: ${{ matrix.gcc_v }}
