@@ -155,3 +155,16 @@ The roots-fortran source code and related files and documentation are distribute
 * Julia: [Roots.jl](https://github.com/JuliaMath/Roots.jl)
 * Python: [scipy.optimize.root_scalar](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.root_scalar.html)
 * C: [GSL](https://www.gnu.org/software/gsl/doc/html/roots.html)
+
+## References
+  * D. E. Muller, "[A Method for Solving Algebraic Equations Using an Automatic Computer](https://www.ams.org/journals/mcom/1956-10-056/S0025-5718-1956-0083822-0/S0025-5718-1956-0083822-0.pdf)", Mathematical Tables and Other Aids to Computation, 10 (1956), 208-215.
+  * M. Dowell, P. Jarratt, "[A modified regula falsi method for computing the root of an equation](https://personal.math.ubc.ca/~loew/mech2/Dowell+Jarratt.pdf)", BIT 11 (1971), 168-174.
+  * R. P. Brent, "[An algorithm with guaranteed convergence for finding a zero of a function](http://maths-people.anu.edu.au/~brent/pd/rpb005.pdf)", The Computer Journal, Vol 14, No. 4., 1971.
+  * R. P. Brent, "[Algorithms for minimization without derivatives](http://maths-people.anu.edu.au/~brent/pub/pub011.html)", Prentice-Hall, Inc., 1973.
+  * Ridders, C., "[A new algorithm for computing a single root of a real continuous function](https://cs.fit.edu/~dmitra/SciComp/Resources/RidderMethod.pdf)", IEEE Trans. on Circuits and Systems, Vol 26, Issue 11, Nov 1979.
+  * G. E. Alefeld, F. A. Potra and Yixun Shi, "[Algorithm 748: Enclosing Zeros of Continuous Functions](https://dl.acm.org/doi/abs/10.1145/210089.210111)", ACM Transactions on Mathematica1 Software, Vol. 21. No. 3. September 1995. Pages 327-344.
+  * G.E. Mullges & F. Uhlig, "Numerical Algorithms with Fortran", Springer, 1996. Section 2.8.1, p 32-34.
+  * T.R. Chandrupatla, "[A new hybrid quadratic/bisection algorithm for finding the zero of a nonlinear function without derivatives](https://dl.acm.org/doi/10.1016/S0965-9978%2896%2900051-8)", Advances in Engineering Software, Vol 28, 1997, pp. 145-149.
+  * R. G. Gottlieb, B. F. Thompson, "[Bisected Direct Quadratic Regula Falsi](https://www.researchgate.net/publication/228712261_Bisected_Direct_Quadratic_Regula_Falsi)", Applied Mathematical Sciences, Vol. 4, 2010, no. 15, 709-718.
+  * A. Zhang, "[An Improvement to the Brent's Method](https://www.cscjournals.org/download/issuearchive/IJEA/Volume2/IJEA_V2_I1.pdf)", International Journal of Experimental Algorithms (IJEA), Volume (2) : Issue (1) : 2011.
+  * E Badr, S Almotairi, A El Ghamry, "[A Comparative Study among New Hybrid Root Finding Algorithms and Traditional Methods](https://www.mdpi.com/2227-7390/9/11/1306)", Mathematics 2021, 9, 1306.
