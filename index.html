@@ -4,9 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-   
    <meta name="description" content="Root solvers for modern Fortran">
-    
     <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="./favicon.png">
 
@@ -16,8 +14,6 @@
     <link href="./css/pygments.css" rel="stylesheet">
     <link href="./css/font-awesome.min.css" rel="stylesheet">
     <link href="./css/local.css" rel="stylesheet">
-    
-    
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -46,86 +42,43 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-        
             <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
               <a href="#" class="dropdown-toggle"
               data-toggle="dropdown" role="button"
               aria-haspopup="true"
      aria-expanded="false">Contents <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          
-              
             <li><a href="./sourcefile/root_module.f90.html">Source File</a></li>
-        
-        
-        
             <li><a href="./lists/modules.html">Modules</a></li>
-        
-            
-                                
             <li><a href="./lists/procedures.html">Procedures</a></li>
-        
-        
             <li><a href="./lists/absint.html">Abstract Interfaces</a></li>
-               
-            <li><a href="./lists/types.html">Derived Types</a></li>
-        
-               
-        
-        
+                   <li><a href="./lists/types.html">Derived Types</a></li>
+       
             </ul>
         
             </li>
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="./sourcefile/root_module.f90.html">Source File</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="./lists/modules.html">Modules</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="./lists/procedures.html">Procedures</a></li>
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="./lists/absint.html">Abstract Interfaces</a></li>
-                             
-<li class="visible-xs hidden-sm visible-lg"><a href="./lists/types.html">Derived Types</a></li>
-
-
-
-
+                             <li class="visible-xs hidden-sm visible-lg"><a href="./lists/types.html">Derived Types</a></li>
           </ul>
-        
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
     <div class="container">
-    
       <!-- Main component for a primary marketing message or call to action -->
       <div class="jumbotron">
         <p>Root solvers for modern Fortran</p>
-        	 
 	<p> Find us on&hellip;</p>
         <p>
-			 
           <a class="btn btn-lg btn-primary" href="https://github.com/jacobwilliams/roots-fortran" role="button">GitHub</a>
-			 
-			 
-			 
-			 
-			 
-	         
-			 
         </p>
       </div>
 
       <div class="row" id='text'>
-		  
         <div class="col-md-8">
-		  
           <h1>roots-fortran</h1>
           <h1><img alt="roots-fortran" src="media/logo.png"></h1>
 <p><strong>roots-fortran</strong>: root solvers for modern Fortran</p>
@@ -134,7 +87,6 @@
 <h2>Description</h2>
 <p>A modern Fortran library for finding the roots of continuous scalar functions of a single real variable.</p>
 <h2>Compiling</h2>
-<h3>FPM</h3>
 <p>A <code>fmp.toml</code> file is provided for compiling roots-fortran with the <a href="https://github.com/fortran-lang/fpm">Fortran Package Manager</a>. For example, to build:</p>
 <div class="codehilite"><pre><span></span><code>  fpm build --profile release
 </code></pre></div>
@@ -143,15 +95,16 @@
 <div class="codehilite"><pre><span></span><code>  fpm test
 </code></pre></div>
 
-<h3>FoBiS</h3>
-<p>A <a href="https://github.com/szaghi/FoBiS">FoBiS</a> configuration file (<code>roots-fortran.fobis</code>) is also provided that can also build the library and tests. Use the <code>mode</code> flag to indicate what to build. For example:</p>
-<ul>
-<li>To build all the examples using gfortran: <code>FoBiS.py build -f roots-fortran.fobis -mode tests-gnu</code></li>
-<li>To build all the examples using ifort: <code>FoBiS.py build -f roots-fortran.fobis -mode tests-intel</code></li>
-<li>To build a static library using gfortran: <code>FoBiS.py build -f roots-fortran.fobis -mode static-gnu</code></li>
-<li>To build a static library using ifort: <code>FoBiS.py build -f roots-fortran.fobis -mode static-intel</code></li>
-</ul>
-<p>The full set of modes are: <code>static-gnu</code>, <code>static-gnu-debug</code>, <code>static-intel</code>, <code>static-intel-debug</code>, <code>shared-gnu</code>, <code>shared-gnu-debug</code>, <code>shared-intel</code>, <code>shared-intel-debug</code>, <code>tests-gnu</code>, <code>tests-gnu-debug</code>, <code>tests-intel</code>, <code>tests-intel-debug</code></p>
+<p>To use <code>roots-fortran</code> within your fpm project, add the following to your <code>fpm.toml</code> file:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">[dependencies]</span><span class="w"></span>
+<span class="n">roots-fortran</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="o">=</span><span class="s">&quot;https://github.com/jacobwilliams/roots-fortran.git&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+<p>or, to use a specific version:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">[dependencies]</span><span class="w"></span>
+<span class="n">roots-fortran</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="o">=</span><span class="s">&quot;https://github.com/jacobwilliams/roots-fortran.git&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">tag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;1.0.0&quot;</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
 <p>To generate the documentation using <a href="https://github.com/Fortran-FOSS-Programmers/ford">ford</a>, run: <code>FoBis.py rule --execute makedoc -f roots-fortran.fobis</code></p>
 <h2>Usage</h2>
 <h3>Methods</h3>
@@ -175,69 +128,69 @@
 <li>zhang</li>
 </ul>
 <h3>Functional Interface Example</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">program </span><span class="n">main</span>
+<div class="codehilite"><pre><span></span><code><span class="k">program </span><span class="n">main</span><span class="w"></span>
 
-  <span class="k">use </span><span class="n">root_module</span><span class="p">,</span> <span class="n">wp</span> <span class="o">=&gt;</span> <span class="n">root_module_rk</span>
+<span class="w">  </span><span class="k">use </span><span class="n">root_module</span><span class="p">,</span><span class="w"> </span><span class="n">wp</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">root_module_rk</span><span class="w"></span>
 
-  <span class="k">implicit none</span>
+<span class="w">  </span><span class="k">implicit none</span>
 
-<span class="k">  </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">x</span><span class="p">,</span> <span class="n">f</span>
-  <span class="kt">integer</span> <span class="kd">::</span> <span class="n">iflag</span>
+<span class="k">  </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="w"></span>
+<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iflag</span><span class="w"></span>
 
-  <span class="k">call </span><span class="n">root_scalar</span><span class="p">(</span><span class="s1">&#39;bisection&#39;</span><span class="p">,</span><span class="n">func</span><span class="p">,</span><span class="o">-</span><span class="mf">9.0_wp</span><span class="p">,</span><span class="mi">3</span><span class="mf">1.0_wp</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">iflag</span><span class="p">)</span>
+<span class="w">  </span><span class="k">call </span><span class="n">root_scalar</span><span class="p">(</span><span class="s1">&#39;bisection&#39;</span><span class="p">,</span><span class="n">func</span><span class="p">,</span><span class="o">-</span><span class="mf">9.0_wp</span><span class="p">,</span><span class="mi">3</span><span class="mf">1.0_wp</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">iflag</span><span class="p">)</span><span class="w"></span>
 
-  <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="s1">&#39;f(&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="s1">&#39;) = &#39;</span><span class="p">,</span> <span class="n">f</span>
-  <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="s1">&#39;iflag    = &#39;</span><span class="p">,</span> <span class="n">iflag</span>
+<span class="w">  </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="s1">&#39;f(&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="s1">&#39;) = &#39;</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="w"></span>
+<span class="w">  </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="s1">&#39;iflag    = &#39;</span><span class="p">,</span><span class="w"> </span><span class="n">iflag</span><span class="w"></span>
 
 <span class="k">contains</span>
 
-<span class="k">  function </span><span class="n">func</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">result</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="k">  function </span><span class="n">func</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="w"></span>
 
-  <span class="k">implicit none</span>
+<span class="w">  </span><span class="k">implicit none</span>
 
-<span class="k">  </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">x</span>
-  <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">f</span>
+<span class="k">  </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">x</span><span class="w"></span>
+<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">f</span><span class="w"></span>
 
-  <span class="n">f</span> <span class="o">=</span> <span class="o">-</span><span class="mi">20</span><span class="mf">0.0_wp</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">3.0_wp</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
+<span class="w">  </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">20</span><span class="mf">0.0_wp</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">3.0_wp</span><span class="o">*</span><span class="n">x</span><span class="p">)</span><span class="w"></span>
 
-  <span class="k">end function </span><span class="n">func</span>
+<span class="w">  </span><span class="k">end function </span><span class="n">func</span><span class="w"></span>
 
-<span class="k">end program </span><span class="n">main</span>
+<span class="k">end program </span><span class="n">main</span><span class="w"></span>
 </code></pre></div>
 
 <h3>Object Oriented Interface Example</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">program </span><span class="n">main</span>
+<div class="codehilite"><pre><span></span><code><span class="k">program </span><span class="n">main</span><span class="w"></span>
 
-  <span class="k">use </span><span class="n">root_module</span><span class="p">,</span> <span class="n">wp</span> <span class="o">=&gt;</span> <span class="n">root_module_rk</span>
+<span class="w">  </span><span class="k">use </span><span class="n">root_module</span><span class="p">,</span><span class="w"> </span><span class="n">wp</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">root_module_rk</span><span class="w"></span>
 
-  <span class="k">implicit none</span>
+<span class="w">  </span><span class="k">implicit none</span>
 
-<span class="k">  type</span><span class="p">,</span><span class="k">extends</span><span class="p">(</span><span class="n">bisection_solver</span><span class="p">)</span> <span class="kd">::</span> <span class="n">my_solver</span>
-  <span class="k">end type </span><span class="n">my_solver</span>
+<span class="k">  type</span><span class="p">,</span><span class="k">extends</span><span class="p">(</span><span class="n">bisection_solver</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">my_solver</span><span class="w"></span>
+<span class="w">  </span><span class="k">end type </span><span class="n">my_solver</span><span class="w"></span>
 
-  <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">x</span><span class="p">,</span> <span class="n">f</span>
-  <span class="kt">integer</span> <span class="kd">::</span> <span class="n">iflag</span>
-  <span class="k">type</span><span class="p">(</span><span class="n">my_solver</span><span class="p">)</span> <span class="kd">::</span> <span class="n">solver</span>
+<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="w"></span>
+<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iflag</span><span class="w"></span>
+<span class="w">  </span><span class="k">type</span><span class="p">(</span><span class="n">my_solver</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">solver</span><span class="w"></span>
 
-  <span class="k">call </span><span class="n">solver</span><span class="p">%</span><span class="n">initialize</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
-  <span class="k">call </span><span class="n">solver</span><span class="p">%</span><span class="n">solve</span><span class="p">(</span><span class="o">-</span><span class="mf">9.0_wp</span><span class="p">,</span><span class="mi">3</span><span class="mf">1.0_wp</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">iflag</span><span class="p">)</span>
+<span class="w">  </span><span class="k">call </span><span class="n">solver</span><span class="p">%</span><span class="n">initialize</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="k">call </span><span class="n">solver</span><span class="p">%</span><span class="n">solve</span><span class="p">(</span><span class="o">-</span><span class="mf">9.0_wp</span><span class="p">,</span><span class="mi">3</span><span class="mf">1.0_wp</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">iflag</span><span class="p">)</span><span class="w"></span>
 
-  <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="s1">&#39;f(&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="s1">&#39;) = &#39;</span><span class="p">,</span> <span class="n">f</span>
-  <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="s1">&#39;iflag    = &#39;</span><span class="p">,</span> <span class="n">iflag</span>
+<span class="w">  </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="s1">&#39;f(&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="s1">&#39;) = &#39;</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="w"></span>
+<span class="w">  </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="s1">&#39;iflag    = &#39;</span><span class="p">,</span><span class="w"> </span><span class="n">iflag</span><span class="w"></span>
 
 <span class="k">contains</span>
 
-<span class="k">  function </span><span class="n">func</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+<span class="k">  function </span><span class="n">func</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">x</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">class</span><span class="p">(</span><span class="n">root_solver</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">me</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">x</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">f</span>
+<span class="w">    </span><span class="k">class</span><span class="p">(</span><span class="n">root_solver</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">me</span><span class="w"></span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">x</span><span class="w"></span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">f</span><span class="w"></span>
 
-    <span class="n">f</span> <span class="o">=</span> <span class="o">-</span><span class="mi">20</span><span class="mf">0.0_wp</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">3.0_wp</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
+<span class="w">    </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">20</span><span class="mf">0.0_wp</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">3.0_wp</span><span class="o">*</span><span class="n">x</span><span class="p">)</span><span class="w"></span>
 
-  <span class="k">end function </span><span class="n">func</span>
+<span class="w">  </span><span class="k">end function </span><span class="n">func</span><span class="w"></span>
 
-<span class="k">end program </span><span class="n">main</span>
+<span class="k">end program </span><span class="n">main</span><span class="w"></span>
 </code></pre></div>
 
 <h3>Result</h3>
@@ -250,7 +203,7 @@
 <li>Originally this was an idea for the Fortran <a href="https://github.com/fortran-lang/stdlib">stdlib</a>. See: <a href="https://github.com/fortran-lang/stdlib/issues/87">#87: Optimization, Root finding, and Equation Solvers</a>. Eventually, it may be merged into the other one in one form or another.</li>
 </ul>
 <h2>Documentation</h2>
-<p>The latest API documentation can be found <a href="http://jacobwilliams.github.io/roots-fortran/">here</a>. This was generated from the source code using <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>.</p>
+<p>The latest API documentation for the <code>master</code> branch can be found <a href="https://jacobwilliams.github.io/roots-fortran/">here</a>. This was generated from the source code using <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>.</p>
 <h2>License</h2>
 <p>The roots-fortran source code and related files and documentation are distributed under a permissive free software <a href="https://github.com/jacobwilliams/roots-fortran/blob/master/LICENSE.md">license</a> (BSD-style).</p>
 <h2>Similar libraries in other programming languages</h2>
@@ -260,126 +213,69 @@
 <li>C: <a href="https://www.gnu.org/software/gsl/doc/html/roots.html">GSL</a></li>
 </ul>
         </div>
-		  
         <div class="col-md-4">
 	  <div class="well">
           <h2>Developer Info</h2>
           <h4>Jacob Williams</h4>
           
-          
-			   
             <div class="text-center"><div class="btn-group" role="group">
-              
-              
-              
               <a class="btn btn-lg btn-primary" href="https://github.com/jacobwilliams"><i class="fa fa-github fa-lg"></i></a>
-              
-              
-				  
-              
-              
-              
-              
             </div></div>
-            
        </div>
        </div>
-       
       </div>
-      
-      
-      
-      
-      
-      
-		
-        
       <div class="row">
-        
         <div class="col-xs-6 col-sm-3">
               <h3>Source Files</h3>
-              <ul>
-                    <li><a href='./sourcefile/root_module.f90.html'>root_module.f90</a></li>
-                  </ul>
+              <ul>                    <li><a href='./sourcefile/root_module.f90.html'>root_module.f90</a></li>
+</ul>
           </div>
-        
-          
 		  <div class="col-xs-6 col-sm-3">
               <h3>Modules</h3>
-              <ul>
-                    <li><a href='./module/root_module.html'>root_module</a></li>
-                  </ul>
+              <ul>                    <li><a href='./module/root_module.html'>root_module</a></li>
+</ul>
           </div>
-          
-          
 		  <div class="col-xs-6 col-sm-3">
               <h3>Procedures</h3>
-              <ul>
-                    <li><a href='./proc/anderson_bjorck.html'>anderson_bjorck</a></li>
-                  
+              <ul>                    <li><a href='./proc/anderson_bjorck.html'>anderson_bjorck</a></li>
                     <li><a href='./proc/anderson_bjorck_king.html'>anderson_bjorck_king</a></li>
-                  
                     <li><a href='./proc/bdqrf.html'>bdqrf</a></li>
-                  
                     <li><a href='./proc/bisect.html'>bisect</a></li>
-                  
                     <li><a href='./proc/bisection.html'>bisection</a></li>
-                  
                     <li><a href='./proc/blendtf.html'>blendtf</a></li>
-                  
                     <li><a href='./proc/brent.html'>brent</a></li>
-                  
                     <li><a href='./proc/brenth.html'>brenth</a></li>
-                  
                     <li><a href='./proc/brentq.html'>brentq</a></li>
-                  
                     <li><a href='./proc/chandrupatla.html'>chandrupatla</a></li>
-                  </ul>
+</ul>
           </div>
-          
-          
 		  <div class="col-xs-6 col-sm-3">
               <h3>Derived Types</h3>
-              <ul>
-                    <li><a href='./type/anderson_bjorck_king_solver.html'>anderson_bjorck_king_solver</a></li>
-                  
+              <ul>                    <li><a href='./type/anderson_bjorck_king_solver.html'>anderson_bjorck_king_solver</a></li>
                     <li><a href='./type/anderson_bjorck_solver.html'>anderson_bjorck_solver</a></li>
-                  
                     <li><a href='./type/bdqrf_solver.html'>bdqrf_solver</a></li>
-                  
                     <li><a href='./type/bisection_solver.html'>bisection_solver</a></li>
-                  
                     <li><a href='./type/blendtf_solver.html'>blendtf_solver</a></li>
-                  
                     <li><a href='./type/brent_solver.html'>brent_solver</a></li>
-                  
                     <li><a href='./type/brenth_solver.html'>brenth_solver</a></li>
-                  
                     <li><a href='./type/brentq_solver.html'>brentq_solver</a></li>
-                  
                     <li><a href='./type/chandrupatla_solver.html'>chandrupatla_solver</a></li>
-                  
                     <li><a href='./type/illinois_solver.html'>illinois_solver</a></li>
-                  </ul>
+</ul>
           </div>
-          
       </div>
-      
-
     <hr>    
     </div> <!-- /container -->
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-6"><p>roots-fortran was developed by Jacob Williams<br>&copy; 2021 
-                                          </p>
+        <div class="col-xs-6 col-md-6"><p>roots-fortran was developed by Jacob Williams<br>&copy; 2022 
+</p>
         </div>
         <div class="col-xs-6 col-md-6">
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
-            
-            
           </p>
         </div>
       </div>
@@ -407,9 +303,7 @@
         extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
       });
     </script>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
     
     
   </body>

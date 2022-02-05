@@ -4,9 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-   
    <meta name="description" content="Root solvers for modern Fortran">
-    
     <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="../favicon.png">
 
@@ -16,8 +14,6 @@
     <link href="../css/pygments.css" rel="stylesheet">
     <link href="../css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/local.css" rel="stylesheet">
-    
-    
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -46,102 +42,50 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-        
             <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
               <a href="#" class="dropdown-toggle"
               data-toggle="dropdown" role="button"
               aria-haspopup="true"
      aria-expanded="false">Contents <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          
-              
             <li><a href="../sourcefile/root_module.f90.html">Source File</a></li>
-        
-        
-        
             <li><a href="../lists/modules.html">Modules</a></li>
-        
-            
-                                
             <li><a href="../lists/procedures.html">Procedures</a></li>
-        
-        
             <li><a href="../lists/absint.html">Abstract Interfaces</a></li>
-               
-            <li><a href="../lists/types.html">Derived Types</a></li>
-        
-               
-        
-        
+                   <li><a href="../lists/types.html">Derived Types</a></li>
+       
             </ul>
         
             </li>
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../sourcefile/root_module.f90.html">Source File</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/absint.html">Abstract Interfaces</a></li>
-                             
-<li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
-
-
-
-
+                             <li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
           </ul>
-        
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
     <div class="container">
-    
-  
   <div class="row">
     <h1>ridders
       <small>Subroutine</small>
-    
     </h1>
-    
-<div class="row">
+    <div class="row">
   <div class="col-lg-12">
 <div class="well well-sm">
   <ul class="list-inline" style="margin-bottom:0px;display:inline">
-     
-     
-     
-     
-     
-    
-    
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
     title=" 4.0% of total for procedures.">57 statements</a>
      </li> 
-     
-     
-     
     <li><i class="fa fa-code"></i><a href="../src/root_module.f90"> Source File</a></li>
-     
-     
   </ul>
   <ol class="breadcrumb in-well text-right">
-  
-    
      <li><a href='../sourcefile/root_module.f90.html'>root_module.f90</a></li>
-    
      <li><a href='../module/root_module.html'>root_module</a></li>
-    
-  
      <li class="active">ridders</li>
   </ol>
 </div>
@@ -157,362 +101,208 @@
   
   <div class="row">
     <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
-    
-<div id="sidebar">
-  
-<h3>Contents</h3>
+    <div id="sidebar">
+  <h3>Contents</h3>
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="panel panel-primary">
-  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
-  <div class="list-group">
-    <a class="list-group-item" href="../proc/ridders.html#src">ridders</a>
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars-0">Variables</a></h3></div>
+  <div id="vars-0" class="panel-collapse collapse">
+    <div class="list-group">
+      <a class="list-group-item" href="../proc/ridders.html#variable-i~8">i</a>
+      <a class="list-group-item" href="../proc/ridders.html#variable-fh">fh</a>
+      <a class="list-group-item" href="../proc/ridders.html#variable-fl">fl</a>
+      <a class="list-group-item" href="../proc/ridders.html#variable-fm">fm</a>
+      <a class="list-group-item" href="../proc/ridders.html#variable-fnew">fnew</a>
+      <a class="list-group-item" href="../proc/ridders.html#variable-denom">denom</a>
+      <a class="list-group-item" href="../proc/ridders.html#variable-xh">xh</a>
+      <a class="list-group-item" href="../proc/ridders.html#variable-xl">xl</a>
+      <a class="list-group-item" href="../proc/ridders.html#variable-xm~2">xm</a>
+      <a class="list-group-item" href="../proc/ridders.html#variable-xnew">xnew</a>
+    </div>
   </div>
 </div>
-
-
 
 </div>
 
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2>
-private subroutine ridders(me, ax, bx, fax, fbx, xzero, fzero, iflag)
+    <h2>private subroutine ridders(me, ax, bx, fax, fbx, xzero, fzero, iflag)</h2>
     
-    
-   
-</h2>
-    
-  
 
-
-    
     <p>Ridders method to find a root of f(x).</p>
 <h3>See also</h3>
 <ul>
 <li>Ridders, C., "A new algorithm for computing a single root of a real continuous function",
     IEEE Trans. on Circuits and Systems, Vol 26, Issue 11, Nov 1979.</li>
 </ul>
-    
 
     <h3>Arguments</h3>
-    
-      
-<table class="table table-striped varlist">
-<thead><tr><th>Type</th>
-<th>Intent</th><th>Optional</th>
-<th>Attributes</th><th></th><th>Name</th><th></th></thead>
-
-
-
+      <table class="table table-striped varlist">
+<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
 <tbody>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-me~12"></span>class(<a href='../type/ridders_solver.html'>ridders_solver</a>),</td>
-  <td>intent(inout)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(inout)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>me</strong></td><td></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-ax~13"></span>real(kind=wp),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>ax</strong></td><td><p>left endpoint of initial interval</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-bx~13"></span>real(kind=wp),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>bx</strong></td><td><p>right endpoint of initial interval</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-fax~11"></span>real(kind=wp),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>fax</strong></td><td><p><code>f(ax)</code></p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-fbx~11"></span>real(kind=wp),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>fbx</strong></td><td><p><code>f(ax)</code></p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-xzero~10"></span>real(kind=wp),</td>
-  <td>intent(out)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(out)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>xzero</strong></td><td><p>abscissa approximating a zero of <code>f</code> in the interval <code>ax</code>,<code>bx</code></p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-fzero~10"></span>real(kind=wp),</td>
-  <td>intent(out)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(out)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>fzero</strong></td><td><p>value of <code>f</code> at the root (<code>f(xzero)</code>)</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-iflag~10"></span>integer,</td>
-  <td>intent(out)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(out)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>iflag</strong></td><td><p>status flag (<code>0</code>=root found, <code>-2</code>=max iterations reached, <code>-3</code>=singularity in the algorithm)</p></td>
-  
 </tr>
-
 </tbody>
 </table>
 
-    
-    
-    
-    
-     
     <br>
 
     <section class="visible-xs visible-sm hidden-md">
-      
-<h3>Contents</h3>
+      <h3>Contents</h3>
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="panel panel-primary">
-  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
-  <div class="list-group">
-    <a class="list-group-item" href="../proc/ridders.html#src">ridders</a>
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars-1">Variables</a></h3></div>
+  <div id="vars-1" class="panel-collapse collapse">
+    <div class="list-group">
+      <a class="list-group-item" href="../proc/ridders.html#variable-i~8">i</a>
+      <a class="list-group-item" href="../proc/ridders.html#variable-fh">fh</a>
+      <a class="list-group-item" href="../proc/ridders.html#variable-fl">fl</a>
+      <a class="list-group-item" href="../proc/ridders.html#variable-fm">fm</a>
+      <a class="list-group-item" href="../proc/ridders.html#variable-fnew">fnew</a>
+      <a class="list-group-item" href="../proc/ridders.html#variable-denom">denom</a>
+      <a class="list-group-item" href="../proc/ridders.html#variable-xh">xh</a>
+      <a class="list-group-item" href="../proc/ridders.html#variable-xl">xl</a>
+      <a class="list-group-item" href="../proc/ridders.html#variable-xm~2">xm</a>
+      <a class="list-group-item" href="../proc/ridders.html#variable-xnew">xnew</a>
+    </div>
   </div>
 </div>
-
-
 
     </section>
     <br class="visible-xs visible-sm hidden-md">
 
-    
 
-    
-    
-    
-    
-    
-
-    
-    
-    
-    
-    
-
-
-    
-    
-    
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span>    <span class="k">subroutine </span><span class="n">ridders</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">ax</span><span class="p">,</span><span class="n">bx</span><span class="p">,</span><span class="n">fax</span><span class="p">,</span><span class="n">fbx</span><span class="p">,</span><span class="n">xzero</span><span class="p">,</span><span class="n">fzero</span><span class="p">,</span><span class="n">iflag</span><span class="p">)</span>
-
-    <span class="k">implicit none</span>
-
-<span class="k">    class</span><span class="p">(</span><span class="n">ridders_solver</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">me</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">ax</span>      <span class="c">!! left endpoint of initial interval</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">bx</span>      <span class="c">!! right endpoint of initial interval</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">fax</span>     <span class="c">!! `f(ax)`</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">fbx</span>     <span class="c">!! `f(ax)`</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="kd">::</span> <span class="n">xzero</span>   <span class="c">!! abscissa approximating a zero of `f` in the interval `ax`,`bx`</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="kd">::</span> <span class="n">fzero</span>   <span class="c">!! value of `f` at the root (`f(xzero)`)</span>
-    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">iflag</span>   <span class="c">!! status flag (`0`=root found, `-2`=max iterations reached, `-3`=singularity in the algorithm)</span>
-
-    <span class="kt">integer</span>  <span class="kd">::</span> <span class="n">i</span> <span class="c">!! counter</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">fh</span><span class="p">,</span><span class="n">fl</span><span class="p">,</span><span class="n">fm</span><span class="p">,</span><span class="n">fnew</span><span class="p">,</span><span class="n">denom</span><span class="p">,</span><span class="n">xh</span><span class="p">,</span><span class="n">xl</span><span class="p">,</span><span class="n">xm</span><span class="p">,</span><span class="n">xnew</span>
-
-    <span class="c">! initialize:</span>
-    <span class="n">iflag</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">fl</span>    <span class="o">=</span> <span class="n">fax</span>
-    <span class="n">fh</span>    <span class="o">=</span> <span class="n">fbx</span>
-    <span class="n">xl</span>    <span class="o">=</span> <span class="n">ax</span>
-    <span class="n">xh</span>    <span class="o">=</span> <span class="n">bx</span>
-    <span class="n">xzero</span> <span class="o">=</span> <span class="nb">huge</span><span class="p">(</span><span class="mf">1.0_wp</span><span class="p">)</span>
-
-    <span class="k">do </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">me</span><span class="p">%</span><span class="n">maxiter</span>
-
-        <span class="n">xm</span> <span class="o">=</span> <span class="n">bisect</span><span class="p">(</span><span class="n">xl</span><span class="p">,</span><span class="n">xh</span><span class="p">)</span>
-        <span class="n">fm</span> <span class="o">=</span> <span class="n">me</span><span class="p">%</span><span class="n">f</span><span class="p">(</span><span class="n">xm</span><span class="p">)</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">fm</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">me</span><span class="p">%</span><span class="n">ftol</span><span class="p">)</span> <span class="k">then</span>
-            <span class="c">! abs convergence in f</span>
-            <span class="n">xzero</span> <span class="o">=</span> <span class="n">xm</span>
-            <span class="n">fzero</span> <span class="o">=</span> <span class="n">fm</span>
-            <span class="k">exit</span>
-<span class="k">        end if</span>
-
-<span class="k">        </span><span class="n">denom</span> <span class="o">=</span> <span class="nb">sqrt</span><span class="p">(</span><span class="n">fm</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="n">fl</span><span class="o">*</span><span class="n">fh</span><span class="p">)</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">denom</span> <span class="o">==</span> <span class="mf">0.0_wp</span><span class="p">)</span> <span class="k">then</span>
-<span class="k">            </span><span class="n">xzero</span> <span class="o">=</span> <span class="n">xm</span>
-            <span class="n">fzero</span> <span class="o">=</span> <span class="n">fm</span>
-            <span class="n">iflag</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span>        <span class="c">! can&#39;t proceed: denominator is zero [TODO: add a bisection if this happens]</span>
-            <span class="k">exit</span>
-<span class="k">        end if</span>
-
-<span class="k">        </span><span class="n">xnew</span> <span class="o">=</span> <span class="n">xm</span> <span class="o">+</span> <span class="p">(</span><span class="n">xm</span><span class="o">-</span><span class="n">xl</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="nb">sign</span><span class="p">(</span><span class="mf">1.0_wp</span><span class="p">,</span><span class="n">fl</span><span class="o">-</span><span class="n">fh</span><span class="p">)</span><span class="o">*</span><span class="n">fm</span><span class="o">/</span><span class="n">denom</span><span class="p">)</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">converged</span><span class="p">(</span><span class="n">xzero</span><span class="p">,</span><span class="n">xnew</span><span class="p">))</span> <span class="k">then</span>  <span class="c">! relative convergence in x</span>
-            <span class="c">! additional check to prevent false convergence</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">converged</span><span class="p">(</span><span class="n">xl</span><span class="p">,</span><span class="n">xm</span><span class="p">)</span> <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">me</span><span class="p">%</span><span class="n">converged</span><span class="p">(</span><span class="n">xm</span><span class="p">,</span><span class="n">xh</span><span class="p">))</span> <span class="k">exit</span>
-<span class="k">        end if</span>
-
-<span class="k">        </span><span class="n">xzero</span> <span class="o">=</span> <span class="n">xnew</span>
-        <span class="n">fnew</span>  <span class="o">=</span> <span class="n">me</span><span class="p">%</span><span class="n">f</span><span class="p">(</span><span class="n">xzero</span><span class="p">)</span>
-        <span class="n">fzero</span> <span class="o">=</span> <span class="n">fnew</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">fnew</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">me</span><span class="p">%</span><span class="n">ftol</span><span class="p">)</span> <span class="k">exit</span>    <span class="c">! abs convergence in f</span>
-
-        <span class="c">! to keep the root bracketed:</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nb">sign</span><span class="p">(</span><span class="n">fm</span><span class="p">,</span><span class="n">fnew</span><span class="p">)</span> <span class="o">/=</span> <span class="n">fm</span><span class="p">)</span> <span class="k">then</span>
-<span class="k">            </span><span class="n">xl</span> <span class="o">=</span> <span class="n">xm</span>
-            <span class="n">fl</span> <span class="o">=</span> <span class="n">fm</span>
-            <span class="n">xh</span> <span class="o">=</span> <span class="n">xzero</span>
-            <span class="n">fh</span> <span class="o">=</span> <span class="n">fnew</span>
-        <span class="k">else if</span> <span class="p">(</span><span class="nb">sign</span><span class="p">(</span><span class="n">fl</span><span class="p">,</span><span class="n">fnew</span><span class="p">)</span> <span class="o">/=</span> <span class="n">fl</span><span class="p">)</span> <span class="k">then</span>
-<span class="k">            </span><span class="n">xh</span> <span class="o">=</span> <span class="n">xzero</span>
-            <span class="n">fh</span> <span class="o">=</span> <span class="n">fnew</span>
-        <span class="k">else if</span> <span class="p">(</span><span class="nb">sign</span><span class="p">(</span><span class="n">fh</span><span class="p">,</span><span class="n">fnew</span><span class="p">)</span> <span class="o">/=</span> <span class="n">fh</span><span class="p">)</span> <span class="k">then</span>
-<span class="k">            </span><span class="n">xl</span> <span class="o">=</span> <span class="n">xzero</span>
-            <span class="n">fl</span> <span class="o">=</span> <span class="n">fnew</span>
-        <span class="k">end if</span>
-
-<span class="k">        if</span> <span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">converged</span><span class="p">(</span><span class="n">xl</span><span class="p">,</span><span class="n">xh</span><span class="p">))</span> <span class="k">exit</span>    <span class="c">! relative convergence in x</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="n">me</span><span class="p">%</span><span class="n">maxiter</span><span class="p">)</span> <span class="n">iflag</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span>  <span class="c">! max iterations exceeded</span>
-
-    <span class="k">end do</span>
-
-<span class="k">    end subroutine </span><span class="n">ridders</span>
-</pre></div>
+    <section>    
+      <h2>Variables</h2>
+    <table class="table table-striped varlist">
+<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
+<tbody>
+<tr>
+  <td><span class="anchor" id="variable-i~8"></span>integer,</td>
+<td>private</td>  <td></td><td>::</td>
+  <td><strong>i</strong></td><td></td><td></td><td><p>counter</p></td>
+</tr>
+<tr>
+  <td><span class="anchor" id="variable-fh"></span>real(kind=wp),</td>
+<td>private</td>  <td></td><td>::</td>
+  <td><strong>fh</strong></td><td></td><td></td><td></td>
+</tr>
+<tr>
+  <td><span class="anchor" id="variable-fl"></span>real(kind=wp),</td>
+<td>private</td>  <td></td><td>::</td>
+  <td><strong>fl</strong></td><td></td><td></td><td></td>
+</tr>
+<tr>
+  <td><span class="anchor" id="variable-fm"></span>real(kind=wp),</td>
+<td>private</td>  <td></td><td>::</td>
+  <td><strong>fm</strong></td><td></td><td></td><td></td>
+</tr>
+<tr>
+  <td><span class="anchor" id="variable-fnew"></span>real(kind=wp),</td>
+<td>private</td>  <td></td><td>::</td>
+  <td><strong>fnew</strong></td><td></td><td></td><td></td>
+</tr>
+<tr>
+  <td><span class="anchor" id="variable-denom"></span>real(kind=wp),</td>
+<td>private</td>  <td></td><td>::</td>
+  <td><strong>denom</strong></td><td></td><td></td><td></td>
+</tr>
+<tr>
+  <td><span class="anchor" id="variable-xh"></span>real(kind=wp),</td>
+<td>private</td>  <td></td><td>::</td>
+  <td><strong>xh</strong></td><td></td><td></td><td></td>
+</tr>
+<tr>
+  <td><span class="anchor" id="variable-xl"></span>real(kind=wp),</td>
+<td>private</td>  <td></td><td>::</td>
+  <td><strong>xl</strong></td><td></td><td></td><td></td>
+</tr>
+<tr>
+  <td><span class="anchor" id="variable-xm~2"></span>real(kind=wp),</td>
+<td>private</td>  <td></td><td>::</td>
+  <td><strong>xm</strong></td><td></td><td></td><td></td>
+</tr>
+<tr>
+  <td><span class="anchor" id="variable-xnew"></span>real(kind=wp),</td>
+<td>private</td>  <td></td><td>::</td>
+  <td><strong>xnew</strong></td><td></td><td></td><td></td>
+</tr>
+</tbody>
+</table>
 
     </section>
     <br>
     
     
+
+    
+    
+
+
+    
+    
     </div>
   </div>
-
 
     <hr>    
     </div> <!-- /container -->
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-6"><p>roots-fortran was developed by Jacob Williams<br>&copy; 2021 
-                                          </p>
+        <div class="col-xs-6 col-md-6"><p>roots-fortran was developed by Jacob Williams<br>&copy; 2022 
+</p>
         </div>
         <div class="col-xs-6 col-md-6">
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
-            
-            
           </p>
         </div>
       </div>
@@ -540,9 +330,7 @@ private subroutine ridders(me, ax, bx, fax, fbx, xzero, fzero, iflag)
         extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
       });
     </script>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
     
     
   </body>

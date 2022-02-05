@@ -4,9 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-   
    <meta name="description" content="Root solvers for modern Fortran">
-    
     <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="../favicon.png">
 
@@ -16,8 +14,6 @@
     <link href="../css/pygments.css" rel="stylesheet">
     <link href="../css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/local.css" rel="stylesheet">
-    
-    
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -46,102 +42,50 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-        
             <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
               <a href="#" class="dropdown-toggle"
               data-toggle="dropdown" role="button"
               aria-haspopup="true"
      aria-expanded="false">Contents <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          
-              
             <li><a href="../sourcefile/root_module.f90.html">Source File</a></li>
-        
-        
-        
             <li><a href="../lists/modules.html">Modules</a></li>
-        
-            
-                                
             <li><a href="../lists/procedures.html">Procedures</a></li>
-        
-        
             <li><a href="../lists/absint.html">Abstract Interfaces</a></li>
-               
-            <li><a href="../lists/types.html">Derived Types</a></li>
-        
-               
-        
-        
+                   <li><a href="../lists/types.html">Derived Types</a></li>
+       
             </ul>
         
             </li>
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../sourcefile/root_module.f90.html">Source File</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/absint.html">Abstract Interfaces</a></li>
-                             
-<li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
-
-
-
-
+                             <li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
           </ul>
-        
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
     <div class="container">
-    
-  
   <div class="row">
     <h1>root_scalar_by_type
       <small>Subroutine</small>
-    
     </h1>
-    
-<div class="row">
+    <div class="row">
   <div class="col-lg-12">
 <div class="well well-sm">
   <ul class="list-inline" style="margin-bottom:0px;display:inline">
-     
-     
-     
-     
-     
-    
-    
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
     title=" 4.5% of total for procedures.">65 statements</a>
      </li> 
-     
-     
-     
     <li><i class="fa fa-code"></i><a href="../src/root_module.f90"> Source File</a></li>
-     
-     
   </ul>
   <ol class="breadcrumb in-well text-right">
-  
-    
      <li><a href='../sourcefile/root_module.f90.html'>root_module.f90</a></li>
-    
      <li><a href='../module/root_module.html'>root_module</a></li>
-    
-  
      <li class="active">root_scalar_by_type</li>
   </ol>
 </div>
@@ -157,440 +101,227 @@
   
   <div class="row">
     <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
-    
-<div id="sidebar">
-  
-<h3>Contents</h3>
+    <div id="sidebar">
+  <h3>Contents</h3>
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="panel panel-primary">
-  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
-  <div class="list-group">
-    <a class="list-group-item" href="../proc/root_scalar_by_type.html#src">root_scalar_by_type</a>
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars-0">Variables</a></h3></div>
+  <div id="vars-0" class="panel-collapse collapse">
+    <div class="list-group">
+      <a class="list-group-item" href="../proc/root_scalar_by_type.html#variable-s">s</a>
+    </div>
   </div>
 </div>
-
-
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#funcs-0">Functions</a></h3></div>
+  <div id="funcs-0" class="panel-collapse collapse">
+    <div class="list-group">
+      <a class="list-group-item" href="../proc/root_scalar_by_type.html#proc-func_wrapper">func_wrapper</a>
+    </div>
+  </div>
+</div>
 
 </div>
 
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2>
-private subroutine root_scalar_by_type(method, fun, ax, bx, xzero, fzero, iflag, ftol, rtol, atol, maxiter, fax, fbx, bisect_on_failure)
+    <h2>private subroutine root_scalar_by_type(method, fun, ax, bx, xzero, fzero, iflag, ftol, rtol, atol, maxiter, fax, fbx, bisect_on_failure)</h2>
     
-    
-   
-</h2>
-    
-  
 
-
-    
     <p>Non-object-oriented wrapper.</p>
-    
 
     <h3>Arguments</h3>
-    
-      
-<table class="table table-striped varlist">
-<thead><tr><th>Type</th>
-<th>Intent</th><th>Optional</th>
-<th>Attributes</th><th></th><th>Name</th><th></th></thead>
-
-
-
+      <table class="table table-striped varlist">
+<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
 <tbody>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-method~2"></span>type(<a href='../type/root_method.html'>root_method</a>),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>method</strong></td><td><p>the method to use</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-fun~2"></span>procedure(<a href='../interface/func2.html'>func2</a>)</td>
-  <td></td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td></td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>fun</strong></td><td><p>user function to find the root of</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-ax~5"></span>real(kind=wp),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>ax</strong></td><td><p>left endpoint of initial interval</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-bx~5"></span>real(kind=wp),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>bx</strong></td><td><p>right endpoint of initial interval</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-xzero~3"></span>real(kind=wp),</td>
-  <td>intent(out)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(out)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>xzero</strong></td><td><p>abscissa approximating a zero of <code>f</code> in the interval <code>ax</code>,<code>bx</code></p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-fzero~3"></span>real(kind=wp),</td>
-  <td>intent(out)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(out)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>fzero</strong></td><td><p>value of <code>f</code> at the root (<code>f(xzero)</code>)</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-iflag~3"></span>integer,</td>
-  <td>intent(out)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(out)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>iflag</strong></td><td><p>status flag (<code>-1</code>=error, <code>0</code>=root found, <code>-999</code>=invalid method)</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-ftol~4"></span>real(kind=wp),</td>
-  <td>intent(in),</td>
-  <td>optional</td>
-  
-  <td></td><td>::</td>
+<td>intent(in),</td>
+  <td>optional</td>  <td></td><td>::</td>
   <td><strong>ftol</strong></td><td><p>absolute tolerance for <code>f=0</code></p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-rtol~4"></span>real(kind=wp),</td>
-  <td>intent(in),</td>
-  <td>optional</td>
-  
-  <td></td><td>::</td>
+<td>intent(in),</td>
+  <td>optional</td>  <td></td><td>::</td>
   <td><strong>rtol</strong></td><td><p>relative tol for x</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-atol~4"></span>real(kind=wp),</td>
-  <td>intent(in),</td>
-  <td>optional</td>
-  
-  <td></td><td>::</td>
+<td>intent(in),</td>
+  <td>optional</td>  <td></td><td>::</td>
   <td><strong>atol</strong></td><td><p>absolute tol for x</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-maxiter~4"></span>integer,</td>
-  <td>intent(in),</td>
-  <td>optional</td>
-  
-  <td></td><td>::</td>
+<td>intent(in),</td>
+  <td>optional</td>  <td></td><td>::</td>
   <td><strong>maxiter</strong></td><td><p>maximum number of iterations</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-fax~3"></span>real(kind=wp),</td>
-  <td>intent(in),</td>
-  <td>optional</td>
-  
-  <td></td><td>::</td>
+<td>intent(in),</td>
+  <td>optional</td>  <td></td><td>::</td>
   <td><strong>fax</strong></td><td><p>if <code>f(ax)</code> is already known, it can be input here</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-fbx~3"></span>real(kind=wp),</td>
-  <td>intent(in),</td>
-  <td>optional</td>
-  
-  <td></td><td>::</td>
+<td>intent(in),</td>
+  <td>optional</td>  <td></td><td>::</td>
   <td><strong>fbx</strong></td><td><p>if <code>f(bx)</code> is already known, it can be input here</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-bisect_on_failure~2"></span>logical,</td>
-  <td>intent(in),</td>
-  <td>optional</td>
-  
-  <td></td><td>::</td>
+<td>intent(in),</td>
+  <td>optional</td>  <td></td><td>::</td>
   <td><strong>bisect_on_failure</strong></td><td><p>if true, then if the specified method fails,
 it will be retried using the bisection method.
 (default is False). Note that this can use up
 to <code>maxiter</code> additional function evaluations.</p></td>
-  
 </tr>
-
 </tbody>
 </table>
 
-    
-    
-    
-    
-     
     <br>
 
     <section class="visible-xs visible-sm hidden-md">
-      
-<h3>Contents</h3>
+      <h3>Contents</h3>
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="panel panel-primary">
-  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
-  <div class="list-group">
-    <a class="list-group-item" href="../proc/root_scalar_by_type.html#src">root_scalar_by_type</a>
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars-1">Variables</a></h3></div>
+  <div id="vars-1" class="panel-collapse collapse">
+    <div class="list-group">
+      <a class="list-group-item" href="../proc/root_scalar_by_type.html#variable-s">s</a>
+    </div>
   </div>
 </div>
-
-
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#funcs-1">Functions</a></h3></div>
+  <div id="funcs-1" class="panel-collapse collapse">
+    <div class="list-group">
+      <a class="list-group-item" href="../proc/root_scalar_by_type.html#proc-func_wrapper">func_wrapper</a>
+    </div>
+  </div>
+</div>
 
     </section>
     <br class="visible-xs visible-sm hidden-md">
 
-    
 
-    
-    
-    
-    
-    
-
-    
-    
-    
-    
-    
-
-
-    
-    
-    
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span>    <span class="k">subroutine </span><span class="n">root_scalar_by_type</span><span class="p">(</span><span class="n">method</span><span class="p">,</span><span class="n">fun</span><span class="p">,</span><span class="n">ax</span><span class="p">,</span><span class="n">bx</span><span class="p">,</span><span class="n">xzero</span><span class="p">,</span><span class="n">fzero</span><span class="p">,</span><span class="n">iflag</span><span class="p">,&amp;</span>
-                                   <span class="n">ftol</span><span class="p">,</span><span class="n">rtol</span><span class="p">,</span><span class="n">atol</span><span class="p">,</span><span class="n">maxiter</span><span class="p">,</span><span class="n">fax</span><span class="p">,</span><span class="n">fbx</span><span class="p">,&amp;</span>
-                                   <span class="n">bisect_on_failure</span><span class="p">)</span>
-
-    <span class="k">implicit none</span>
-
-<span class="k">    type</span><span class="p">(</span><span class="n">root_method</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">method</span>   <span class="c">!! the method to use</span>
-    <span class="k">procedure</span><span class="p">(</span><span class="n">func2</span><span class="p">)</span>              <span class="kd">::</span> <span class="n">fun</span>      <span class="c">!! user function to find the root of</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>           <span class="kd">::</span> <span class="n">ax</span>       <span class="c">!! left endpoint of initial interval</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>           <span class="kd">::</span> <span class="n">bx</span>       <span class="c">!! right endpoint of initial interval</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>          <span class="kd">::</span> <span class="n">xzero</span>    <span class="c">!! abscissa approximating a zero of `f` in the interval `ax`,`bx`</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>          <span class="kd">::</span> <span class="n">fzero</span>    <span class="c">!! value of `f` at the root (`f(xzero)`)</span>
-    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>           <span class="kd">::</span> <span class="n">iflag</span>    <span class="c">!! status flag (`-1`=error, `0`=root found, `-999`=invalid method)</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span>  <span class="kd">::</span> <span class="n">ftol</span>     <span class="c">!! absolute tolerance for `f=0`</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span>  <span class="kd">::</span> <span class="n">rtol</span>     <span class="c">!! relative tol for x</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span>  <span class="kd">::</span> <span class="n">atol</span>     <span class="c">!! absolute tol for x</span>
-    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span>   <span class="kd">::</span> <span class="n">maxiter</span>  <span class="c">!! maximum number of iterations</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span>  <span class="kd">::</span> <span class="n">fax</span>      <span class="c">!! if `f(ax)` is already known, it can be input here</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span>  <span class="kd">::</span> <span class="n">fbx</span>      <span class="c">!! if `f(bx)` is already known, it can be input here</span>
-    <span class="kt">logical</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span>   <span class="kd">::</span> <span class="n">bisect_on_failure</span>  <span class="c">!! if true, then if the specified method fails,</span>
-                                                        <span class="c">!! it will be retried using the bisection method.</span>
-                                                        <span class="c">!! (default is False). Note that this can use up</span>
-                                                        <span class="c">!! to `maxiter` additional function evaluations.</span>
-
-    <span class="k">class</span><span class="p">(</span><span class="n">root_solver</span><span class="p">),</span><span class="k">allocatable</span> <span class="kd">::</span> <span class="n">s</span>
-
-    <span class="k">select case</span> <span class="p">(</span><span class="n">method</span><span class="p">%</span><span class="n">id</span><span class="p">)</span>
-
-    <span class="k">case</span><span class="p">(</span><span class="n">root_method_brent</span><span class="p">%</span><span class="n">id</span><span class="p">);</span>                <span class="k">allocate</span><span class="p">(</span><span class="n">brent_solver</span>                <span class="kd">::</span> <span class="n">s</span><span class="p">)</span>
-    <span class="k">case</span><span class="p">(</span><span class="n">root_method_bisection</span><span class="p">%</span><span class="n">id</span><span class="p">);</span>            <span class="k">allocate</span><span class="p">(</span><span class="n">bisection_solver</span>            <span class="kd">::</span> <span class="n">s</span><span class="p">)</span>
-    <span class="k">case</span><span class="p">(</span><span class="n">root_method_regula_falsi</span><span class="p">%</span><span class="n">id</span><span class="p">);</span>         <span class="k">allocate</span><span class="p">(</span><span class="n">regula_falsi_solver</span>         <span class="kd">::</span> <span class="n">s</span><span class="p">)</span>
-    <span class="k">case</span><span class="p">(</span><span class="n">root_method_illinois</span><span class="p">%</span><span class="n">id</span><span class="p">);</span>             <span class="k">allocate</span><span class="p">(</span><span class="n">illinois_solver</span>             <span class="kd">::</span> <span class="n">s</span><span class="p">)</span>
-    <span class="k">case</span><span class="p">(</span><span class="n">root_method_anderson_bjorck</span><span class="p">%</span><span class="n">id</span><span class="p">);</span>      <span class="k">allocate</span><span class="p">(</span><span class="n">anderson_bjorck_solver</span>      <span class="kd">::</span> <span class="n">s</span><span class="p">)</span>
-    <span class="k">case</span><span class="p">(</span><span class="n">root_method_ridders</span><span class="p">%</span><span class="n">id</span><span class="p">);</span>              <span class="k">allocate</span><span class="p">(</span><span class="n">ridders_solver</span>              <span class="kd">::</span> <span class="n">s</span><span class="p">)</span>
-    <span class="k">case</span><span class="p">(</span><span class="n">root_method_pegasus</span><span class="p">%</span><span class="n">id</span><span class="p">);</span>              <span class="k">allocate</span><span class="p">(</span><span class="n">pegasus_solver</span>              <span class="kd">::</span> <span class="n">s</span><span class="p">)</span>
-    <span class="k">case</span><span class="p">(</span><span class="n">root_method_bdqrf</span><span class="p">%</span><span class="n">id</span><span class="p">);</span>                <span class="k">allocate</span><span class="p">(</span><span class="n">bdqrf_solver</span>                <span class="kd">::</span> <span class="n">s</span><span class="p">)</span>
-    <span class="k">case</span><span class="p">(</span><span class="n">root_method_muller</span><span class="p">%</span><span class="n">id</span><span class="p">);</span>               <span class="k">allocate</span><span class="p">(</span><span class="n">muller_solver</span>               <span class="kd">::</span> <span class="n">s</span><span class="p">)</span>
-    <span class="k">case</span><span class="p">(</span><span class="n">root_method_brenth</span><span class="p">%</span><span class="n">id</span><span class="p">);</span>               <span class="k">allocate</span><span class="p">(</span><span class="n">brenth_solver</span>               <span class="kd">::</span> <span class="n">s</span><span class="p">)</span>
-    <span class="k">case</span><span class="p">(</span><span class="n">root_method_brentq</span><span class="p">%</span><span class="n">id</span><span class="p">);</span>               <span class="k">allocate</span><span class="p">(</span><span class="n">brentq_solver</span>               <span class="kd">::</span> <span class="n">s</span><span class="p">)</span>
-    <span class="k">case</span><span class="p">(</span><span class="n">root_method_chandrupatla</span><span class="p">%</span><span class="n">id</span><span class="p">);</span>         <span class="k">allocate</span><span class="p">(</span><span class="n">chandrupatla_solver</span>         <span class="kd">::</span> <span class="n">s</span><span class="p">)</span>
-    <span class="k">case</span><span class="p">(</span><span class="n">root_method_toms748</span><span class="p">%</span><span class="n">id</span><span class="p">);</span>              <span class="k">allocate</span><span class="p">(</span><span class="n">toms748_solver</span>              <span class="kd">::</span> <span class="n">s</span><span class="p">)</span>
-    <span class="k">case</span><span class="p">(</span><span class="n">root_method_zhang</span><span class="p">%</span><span class="n">id</span><span class="p">);</span>                <span class="k">allocate</span><span class="p">(</span><span class="n">zhang_solver</span>                <span class="kd">::</span> <span class="n">s</span><span class="p">)</span>
-    <span class="k">case</span><span class="p">(</span><span class="n">root_method_anderson_bjorck_king</span><span class="p">%</span><span class="n">id</span><span class="p">);</span> <span class="k">allocate</span><span class="p">(</span><span class="n">anderson_bjorck_king_solver</span> <span class="kd">::</span> <span class="n">s</span><span class="p">)</span>
-    <span class="k">case</span><span class="p">(</span><span class="n">root_method_blendtf</span><span class="p">%</span><span class="n">id</span><span class="p">);</span>              <span class="k">allocate</span><span class="p">(</span><span class="n">blendtf_solver</span>              <span class="kd">::</span> <span class="n">s</span><span class="p">)</span>
-
-    <span class="k">case </span><span class="n">default</span>
-        <span class="n">iflag</span> <span class="o">=</span> <span class="o">-</span><span class="mi">999</span>    <span class="c">! invalid method</span>
-        <span class="k">return</span>
-<span class="k">    end select</span>
-
-<span class="k">    call </span><span class="n">s</span><span class="p">%</span><span class="n">initialize</span><span class="p">(</span><span class="n">func_wrapper</span><span class="p">,</span><span class="n">ftol</span><span class="p">,</span><span class="n">rtol</span><span class="p">,</span><span class="n">atol</span><span class="p">,</span><span class="n">maxiter</span><span class="p">)</span>
-    <span class="k">call </span><span class="n">s</span><span class="p">%</span><span class="n">solve</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span><span class="n">bx</span><span class="p">,</span><span class="n">xzero</span><span class="p">,</span><span class="n">fzero</span><span class="p">,</span><span class="n">iflag</span><span class="p">,</span><span class="n">fax</span><span class="p">,</span><span class="n">fbx</span><span class="p">,</span><span class="n">bisect_on_failure</span><span class="p">)</span>
-
-    <span class="k">contains</span>
-
-<span class="k">        function </span><span class="n">func_wrapper</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">x</span><span class="p">)</span> <span class="k">result</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-            <span class="k">implicit none</span>
-<span class="k">            class</span><span class="p">(</span><span class="n">root_solver</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">me</span>
-            <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">x</span>
-            <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">f</span>
-            <span class="n">f</span> <span class="o">=</span> <span class="n">fun</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="k">end function </span><span class="n">func_wrapper</span>
-
-    <span class="k">end subroutine </span><span class="n">root_scalar_by_type</span>
-</pre></div>
+    <section>    
+      <h2>Variables</h2>
+    <table class="table table-striped varlist">
+<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
+<tbody>
+<tr>
+  <td><span class="anchor" id="variable-s"></span>class(<a href='../type/root_solver.html'>root_solver</a>),</td>
+<td>private,</td>  <td>allocatable</td><td>::</td>
+  <td><strong>s</strong></td><td></td><td></td><td></td>
+</tr>
+</tbody>
+</table>
 
     </section>
     <br>
     
     
-    </div>
+
+    
+    
+ 
+    <section>
+    <h2>Functions</h2>
+      <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-func_wrapper"></span><h3>function func_wrapper(me, x) result(f)</h3></div>
+  <div class="panel-body">
+           
+<h4>Arguments</h4>      <table class="table table-striped varlist">
+<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
+<tbody>
+<tr>
+  <td><span class="anchor" ></span>class(<a href='../type/root_solver.html'>root_solver</a>),</td>
+<td>intent(inout)</td>
+  <td></td>  <td></td><td>::</td>
+  <td><strong>me</strong></td><td></td>
+</tr>
+<tr>
+  <td><span class="anchor" ></span>real(kind=wp),</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
+  <td><strong>x</strong></td><td></td>
+</tr>
+</tbody>
+</table>
+
+<h4>Return Value <small>real(kind=wp)</small></h4>  
+
+  </div>
   </div>
 
+    </section>
+    <br>
+
+
+    
+    
+    </div>
+  </div>
 
     <hr>    
     </div> <!-- /container -->
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-6"><p>roots-fortran was developed by Jacob Williams<br>&copy; 2021 
-                                          </p>
+        <div class="col-xs-6 col-md-6"><p>roots-fortran was developed by Jacob Williams<br>&copy; 2022 
+</p>
         </div>
         <div class="col-xs-6 col-md-6">
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
-            
-            
           </p>
         </div>
       </div>
@@ -618,9 +349,7 @@ to <code>maxiter</code> additional function evaluations.</p></td>
         extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
       });
     </script>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
     
     
   </body>
