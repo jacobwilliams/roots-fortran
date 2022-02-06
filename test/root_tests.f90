@@ -132,9 +132,9 @@ program root_tests
         integer :: irepeat !! test repeat counter
         integer :: i
         real(wp) :: atol, rtol, ftol
+        real(wp) :: tol_for_check !! for pass/fail check
 
         integer,parameter :: n_repeat = 1  !! number of times to repeat each test for timing purposes
-        real(wp),parameter :: tol_for_check = 1.0e-7_wp  !! for pass/fail check
         integer,parameter :: maxiter = 1000 !! maximum number of iterations
 
         select case (wp)
@@ -142,14 +142,17 @@ program root_tests
             atol = 1.0e-5_wp
             rtol = 1.0e-5_wp
             ftol = 1.0e-5_wp
+            tol_for_check = 1.0e-4_wp
         case(real64)
             atol = 1.0e-15_wp
             rtol = 1.0e-13_wp
             ftol = 1.0e-15_wp
+            tol_for_check = 1.0e-7_wp
         case(real128)
             atol = 1.0e-25_wp
             rtol = 1.0e-23_wp
             ftol = 1.0e-25_wp
+            tol_for_check = 1.0e-16_wp
         case default
             error stop 'unknown real kind'
         end select
