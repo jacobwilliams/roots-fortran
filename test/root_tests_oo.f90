@@ -13,9 +13,9 @@ program root_tests_oo
     integer :: iflag
     character(len=1000) :: line
 
-    real(wp),parameter :: ftol = 1.0e-15_wp
-    real(wp),parameter :: rtol = 1.0e-13_wp
-    real(wp),parameter :: atol = 1.0e-16_wp
+    real(wp),parameter :: ftol = epsilon(1.0_wp) * 10    !1.0e-15_wp
+    real(wp),parameter :: rtol = epsilon(1.0_wp) * 100   !1.0e-13_wp
+    real(wp),parameter :: atol = epsilon(1.0_wp) * 1     !1.0e-16_wp
     integer,parameter  :: maxiter = 1000
 
     character(len=*),parameter :: fmt  = '(A25,   1X,A25,   1X,A25,  1X,A5,1X,A5)' !! format for header
