@@ -15,13 +15,27 @@ A modern Fortran library for finding the roots of continuous scalar functions of
 A `fmp.toml` file is provided for compiling roots-fortran with the [Fortran Package Manager](https://github.com/fortran-lang/fpm). For example, to build:
 
 ```
-  fpm build --profile release
+fpm build --profile release
 ```
 
-And to run the unit tests:
+By default, the library is built with double precision (`real64`) real values. Explicitly specifying the real kind can be done using the following processor flags:
+
+Preprocessor flag | Kind  | Number of bytes
+----------------- | ----- | ---------------
+`REAL32`  | `real(kind=real32)`  | 4
+`REAL64`  | `real(kind=real64)`  | 8
+`REAL128` | `real(kind=real128)` | 16
+
+For example, to build a single precision version of the library, use:
 
 ```
-  fpm test
+fpm build --profile release --flag "-DREAL32"
+```
+
+To run the unit tests:
+
+```
+fpm test
 ```
 
 To use `roots-fortran` within your fpm project, add the following to your `fpm.toml` file:
