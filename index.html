@@ -88,11 +88,42 @@
 <p>A modern Fortran library for finding the roots of continuous scalar functions of a single real variable.</p>
 <h2>Compiling</h2>
 <p>A <code>fmp.toml</code> file is provided for compiling roots-fortran with the <a href="https://github.com/fortran-lang/fpm">Fortran Package Manager</a>. For example, to build:</p>
-<div class="codehilite"><pre><span></span><code>  fpm build --profile release
+<div class="codehilite"><pre><span></span><code>fpm build --profile release
 </code></pre></div>
 
-<p>And to run the unit tests:</p>
-<div class="codehilite"><pre><span></span><code>  fpm test
+<p>By default, the library is built with double precision (<code>real64</code>) real values. Explicitly specifying the real kind can be done using the following processor flags:</p>
+<table>
+<thead>
+<tr>
+<th>Preprocessor flag</th>
+<th>Kind</th>
+<th>Number of bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>REAL32</code></td>
+<td><code>real(kind=real32)</code></td>
+<td>4</td>
+</tr>
+<tr>
+<td><code>REAL64</code></td>
+<td><code>real(kind=real64)</code></td>
+<td>8</td>
+</tr>
+<tr>
+<td><code>REAL128</code></td>
+<td><code>real(kind=real128)</code></td>
+<td>16</td>
+</tr>
+</tbody>
+</table>
+<p>For example, to build a single precision version of the library, use:</p>
+<div class="codehilite"><pre><span></span><code>fpm build --profile release --flag &quot;-DREAL32&quot;
+</code></pre></div>
+
+<p>To run the unit tests:</p>
+<div class="codehilite"><pre><span></span><code>fpm test
 </code></pre></div>
 
 <p>To use <code>roots-fortran</code> within your fpm project, add the following to your <code>fpm.toml</code> file:</p>
@@ -105,7 +136,7 @@
 <span class="n">roots-fortran</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="o">=</span><span class="s">&quot;https://github.com/jacobwilliams/roots-fortran.git&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">tag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;1.0.0&quot;</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
-<p>To generate the documentation using <a href="https://github.com/Fortran-FOSS-Programmers/ford">ford</a>, run: <code>ford roots-fortran.fobis</code></p>
+<p>To generate the documentation using <a href="https://github.com/Fortran-FOSS-Programmers/ford">ford</a>, run: <code>ford roots-fortran.md</code></p>
 <h2>Usage</h2>
 <h3>Methods</h3>
 <p>The module contains the following methods:</p>
@@ -241,7 +272,7 @@
       <div class="row">
         <div class="col-xs-6 col-sm-3">
               <h3>Source Files</h3>
-              <ul>                    <li><a href='./sourcefile/root_module.f90.html'>root_module.f90</a></li>
+              <ul>                    <li><a href='./sourcefile/root_module.f90.html'>root_module.F90</a></li>
 </ul>
           </div>
 		  <div class="col-xs-6 col-sm-3">

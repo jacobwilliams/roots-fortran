@@ -81,10 +81,10 @@
     data-placement="bottom" data-html="true"
     title="100.0% of total for modules and submodules.">1610 statements</a>
      </li> 
-    <li><i class="fa fa-code"></i><a href="../src/root_module.f90"> Source File</a></li>
+    <li><i class="fa fa-code"></i><a href="../src/root_module.F90"> Source File</a></li>
   </ul>
   <ol class="breadcrumb in-well text-right">
-     <li><a href='../sourcefile/root_module.f90.html'>root_module.f90</a></li>
+     <li><a href='../sourcefile/root_module.f90.html'>root_module.F90</a></li>
      <li class="active">root_module</li>
   </ol>
 </div>
@@ -232,6 +232,10 @@
 <ul>
 <li>Jacob Williams</li>
 </ul>
+<p></p><div class="alert alert-info" role="alert"><h4>Note</h4><p>The default real kind (<code>wp</code>) can be
+      changed using optional preprocessor flags.
+      This library was built with real kind:
+      <code>real(kind=real64)</code> [8 bytes]</p></div>
 <br>        <div class="panel panel-default">
       <div class="panel-heading">
   <h3 class="panel-title">Uses</h3>
@@ -378,7 +382,7 @@
 <tr>
   <td><span class="anchor" id="variable-root_module_rk"></span>integer,</td>
 <td>public,</td>  <td>parameter</td><td>::</td>
-  <td><strong>root_module_rk</strong></td><td> =</td><td>real64</td><td><p>real kind used by this module</p></td>
+  <td><strong>root_module_rk</strong></td><td> =</td><td>real64</td><td><p>real kind used by this module [8 bytes]</p></td>
 </tr>
 <tr>
   <td><span class="anchor" id="variable-wp"></span>integer,</td>
