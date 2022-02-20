@@ -84,9 +84,6 @@ program root_tests
         call problems(cases = cases_to_run)
         do ic = 1, size(cases_to_run)
             n = cases_to_run(ic)
-
-            !if (.not.(nprob==28 .and. n==500)) cycle
-
             call test()
         end do
     end do
