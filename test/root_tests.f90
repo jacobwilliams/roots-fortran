@@ -29,11 +29,12 @@ program root_tests
     integer :: num_of_problems
     integer,dimension(:),allocatable :: cases_to_run
     type(pyplot) :: stats_plot   !! pyplot handler
+    integer,dimension(2),parameter :: figsize=[10,5] !! figure size for plogs
 
     character(len=*),parameter :: fmt  = '(   A20,1X,A3,1X,A4,1X,A16,  1X,A25,   1X,A16,  1X,A5,1X,A5,1X,A8  )' !! format for header
     character(len=*),parameter :: dfmt = '(1P,A20,1X,I3,1X,I4,1X,E16.6,1X,E25.16,1X,E16.6,1X,I5,1X,I5,1X,E8.1)' !! format for results
 
-    integer,parameter :: number_of_methods = 16 !! number of methods to test
+    integer,parameter :: number_of_methods = 17 !! number of methods to test
     character(len=100),dimension(number_of_methods),parameter :: methods = [ &
         'bisection           ', &
         'brent               ', &
@@ -50,7 +51,8 @@ program root_tests
         'chandrupatla        ', &
         'toms748             ', &
         'zhang               ', &
-        'blendtf             '] !! method names
+        'blendtf             ', &
+        'barycentric         '] !! method names
 
     integer,dimension(number_of_methods) :: number_of_wins, ivec, number_of_failures, ivec2
 
@@ -66,7 +68,7 @@ program root_tests
     write(iunit_failed, '(A5,1X,A5,1X,A)') 'nprob', 'n', 'Failed Methods'
 
     ! plot:
-    call stats_plot%initialize(grid=.true.,xlabel='Methods',ylabel='Function Evaluations',figsize=[10,5],&
+    call stats_plot%initialize(grid=.true.,xlabel='Methods',ylabel='Function Evaluations',figsize=figsize,&
                                 title='Performance of each method',&
                                 tight_layout=.true.)
 
@@ -82,6 +84,9 @@ program root_tests
         call problems(cases = cases_to_run)
         do ic = 1, size(cases_to_run)
             n = cases_to_run(ic)
+
+            !if (.not.(nprob==28 .and. n==500)) cycle
+
             call test()
         end do
     end do
@@ -110,7 +115,7 @@ program root_tests
     end do
     write(*,*) ''
 
-   ! call generate_plots()  ! comment out for now...
+    !call generate_plots()  ! comment out for now...
 
     contains
 !*****************************************************************************************
@@ -1324,7 +1329,7 @@ program root_tests
                 filename = 'plottest_'//'CASE='//trim(s1)//'_N='//trim(s2)//ext
             end if
 
-            call plt%initialize(grid=.true.,xlabel='x',ylabel='f(x)',figsize=[10,5],&
+            call plt%initialize(grid=.true.,xlabel='x',ylabel='f(x)',figsize=figsize,&
                                 title=title,legend=.true.,&
                                 tight_layout=.true.,&
                                 real_fmt = '(E30.16E3)',&

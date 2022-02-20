@@ -60,6 +60,7 @@ The module contains the following methods:
 
  * anderson_bjorck
  * anderson_bjorck_king
+ * barycentric
  * bdqrf
  * bisection
  * blendtf
