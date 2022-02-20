@@ -79,7 +79,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title="100.0% of total for modules and submodules.">1610 statements</a>
+    title="100.0% of total for modules and submodules.">1744 statements</a>
      </li> 
     <li><i class="fa fa-code"></i><a href="../src/root_module.F90"> Source File</a></li>
   </ul>
@@ -127,6 +127,7 @@
       <a class="list-group-item" href="../module/root_module.html#variable-root_method_zhang">root_method_zhang</a>
       <a class="list-group-item" href="../module/root_module.html#variable-root_method_anderson_bjorck_king">root_method_anderson_bjorck_king</a>
       <a class="list-group-item" href="../module/root_module.html#variable-root_method_blendtf">root_method_blendtf</a>
+      <a class="list-group-item" href="../module/root_module.html#variable-root_method_barycentric">root_method_barycentric</a>
       <a class="list-group-item" href="../module/root_module.html#variable-set_of_root_methods">set_of_root_methods</a>
     </div>
   </div>
@@ -171,6 +172,7 @@
       <a class="list-group-item" href="../module/root_module.html#type-zhang_solver">zhang_solver</a>
       <a class="list-group-item" href="../module/root_module.html#type-anderson_bjorck_king_solver">anderson_bjorck_king_solver</a>
       <a class="list-group-item" href="../module/root_module.html#type-blendtf_solver">blendtf_solver</a>
+      <a class="list-group-item" href="../module/root_module.html#type-barycentric_solver">barycentric_solver</a>
     </div>
   </div>
 </div>
@@ -184,6 +186,7 @@
       <a class="list-group-item" href="../module/root_module.html#proc-regula_falsi_step">regula_falsi_step</a>
       <a class="list-group-item" href="../module/root_module.html#proc-secant">secant</a>
       <a class="list-group-item" href="../module/root_module.html#proc-lowercase">lowercase</a>
+      <a class="list-group-item" href="../module/root_module.html#proc-solution">solution</a>
     </div>
   </div>
 </div>
@@ -212,6 +215,7 @@
       <a class="list-group-item" href="../module/root_module.html#proc-zhang">zhang</a>
       <a class="list-group-item" href="../module/root_module.html#proc-anderson_bjorck_king">anderson_bjorck_king</a>
       <a class="list-group-item" href="../module/root_module.html#proc-blendtf">blendtf</a>
+      <a class="list-group-item" href="../module/root_module.html#proc-barycentric">barycentric</a>
       <a class="list-group-item" href="../module/root_module.html#proc-choose_best">choose_best</a>
       <a class="list-group-item" href="../module/root_module.html#proc-swap">swap</a>
     </div>
@@ -279,6 +283,7 @@
       <a class="list-group-item" href="../module/root_module.html#variable-root_method_zhang">root_method_zhang</a>
       <a class="list-group-item" href="../module/root_module.html#variable-root_method_anderson_bjorck_king">root_method_anderson_bjorck_king</a>
       <a class="list-group-item" href="../module/root_module.html#variable-root_method_blendtf">root_method_blendtf</a>
+      <a class="list-group-item" href="../module/root_module.html#variable-root_method_barycentric">root_method_barycentric</a>
       <a class="list-group-item" href="../module/root_module.html#variable-set_of_root_methods">set_of_root_methods</a>
     </div>
   </div>
@@ -323,6 +328,7 @@
       <a class="list-group-item" href="../module/root_module.html#type-zhang_solver">zhang_solver</a>
       <a class="list-group-item" href="../module/root_module.html#type-anderson_bjorck_king_solver">anderson_bjorck_king_solver</a>
       <a class="list-group-item" href="../module/root_module.html#type-blendtf_solver">blendtf_solver</a>
+      <a class="list-group-item" href="../module/root_module.html#type-barycentric_solver">barycentric_solver</a>
     </div>
   </div>
 </div>
@@ -336,6 +342,7 @@
       <a class="list-group-item" href="../module/root_module.html#proc-regula_falsi_step">regula_falsi_step</a>
       <a class="list-group-item" href="../module/root_module.html#proc-secant">secant</a>
       <a class="list-group-item" href="../module/root_module.html#proc-lowercase">lowercase</a>
+      <a class="list-group-item" href="../module/root_module.html#proc-solution">solution</a>
     </div>
   </div>
 </div>
@@ -364,6 +371,7 @@
       <a class="list-group-item" href="../module/root_module.html#proc-zhang">zhang</a>
       <a class="list-group-item" href="../module/root_module.html#proc-anderson_bjorck_king">anderson_bjorck_king</a>
       <a class="list-group-item" href="../module/root_module.html#proc-blendtf">blendtf</a>
+      <a class="list-group-item" href="../module/root_module.html#proc-barycentric">barycentric</a>
       <a class="list-group-item" href="../module/root_module.html#proc-choose_best">choose_best</a>
       <a class="list-group-item" href="../module/root_module.html#proc-swap">swap</a>
     </div>
@@ -480,9 +488,14 @@
   <td><strong>root_method_blendtf</strong></td><td> =</td><td>root_method(16, 'blendtf')</td><td><p>enum type for <code>blendtf</code> method</p></td>
 </tr>
 <tr>
+  <td><span class="anchor" id="variable-root_method_barycentric"></span>type(<a href='../type/root_method.html'>root_method</a>),</td>
+<td>public,</td>  <td>parameter</td><td>::</td>
+  <td><strong>root_method_barycentric</strong></td><td> =</td><td>root_method(17, 'barycentric')</td><td><p>enum type for <code>barycentric</code> method</p></td>
+</tr>
+<tr>
   <td><span class="anchor" id="variable-set_of_root_methods"></span>type(<a href='../type/root_method.html'>root_method</a>),</td>
 <td>public,</td>  <td>parameter, dimension(*)</td><td>::</td>
-  <td><strong>set_of_root_methods</strong></td><td> =</td><td>[root_method_brent, root_method_bisection, root_method_regula_falsi, root_method_illinois, root_method_anderson_bjorck, root_method_ridders, root_method_pegasus, root_method_bdqrf, root_method_muller, root_method_brenth, root_method_brentq, root_method_chandrupatla, root_method_toms748, root_method_zhang, root_method_anderson_bjorck_king, root_method_blendtf]</td><td><p>list of the available methods (see <a href="../interface/root_scalar.html">root_scalar</a>)</p></td>
+  <td><strong>set_of_root_methods</strong></td><td> =</td><td>[root_method_brent, root_method_bisection, root_method_regula_falsi, root_method_illinois, root_method_anderson_bjorck, root_method_ridders, root_method_pegasus, root_method_bdqrf, root_method_muller, root_method_brenth, root_method_brentq, root_method_chandrupatla, root_method_toms748, root_method_zhang, root_method_anderson_bjorck_king, root_method_blendtf, root_method_barycentric]</td><td><p>list of the available methods (see <a href="../interface/root_scalar.html">root_scalar</a>)</p></td>
 </tr>
 </tbody>
 </table>
@@ -1220,6 +1233,25 @@ startup tasks. All these routines assume that
   </div>
 </div>
 
+     <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="type-barycentric_solver"></span><h3>type, private, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/barycentric_solver.html'>barycentric_solver</a>  </h3></div>
+  <div class="panel-body">
+    <p>barycentric root solver</p>
+     
+     <h4>Type-Bound Procedures</h4>
+      <table class="table table-striped varlist">
+      <tbody>
+       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-initialize'>initialize</a></strong>  => initialize_root_solver </td>
+       <td><p>initialize the class [must be called first]</p></td></tr>
+       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-solve'>solve</a></strong>  </td>
+       <td><p>main routine for finding the root</p></td></tr>
+       <tr><td>procedure, public :: <strong><a href='../type/barycentric_solver.html#boundprocedure-find_root~18'>find_root</a></strong>  => barycentric </td>
+       <td></td></tr>
+       </tbody>
+       </table>
+  </div>
+</div>
+
     </section>
   <br>
     
@@ -1440,6 +1472,53 @@ With a protection to fall back to bisection if:</p><a href="../proc/secant.html"
 </table>
 
 <h4>Return Value <small>character</small></h4>  <p>lowercase version of the string</p>
+
+  </div>
+  </div>
+
+      <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-solution"></span><h3>private function <a href='../proc/solution.html'>solution</a>(x, f, ftol, xzero, fzero)</h3></div>
+  <div class="panel-body">
+       
+<p>Returns true if this is a solution and sets <code>xzero</code> and <code>fzero</code>.</p>
+    
+<h4>Arguments</h4>      <table class="table table-striped varlist">
+<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
+<tbody>
+<tr>
+  <td><span class="anchor" ></span>real(kind=wp),</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
+  <td><strong>x</strong></td><td></td>
+</tr>
+<tr>
+  <td><span class="anchor" ></span>real(kind=wp),</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
+  <td><strong>f</strong></td><td></td>
+</tr>
+<tr>
+  <td><span class="anchor" ></span>real(kind=wp),</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
+  <td><strong>ftol</strong></td><td></td>
+</tr>
+<tr>
+  <td><span class="anchor" ></span>real(kind=wp),</td>
+<td>intent(inout)</td>
+  <td></td>  <td></td><td>::</td>
+  <td><strong>xzero</strong></td><td></td>
+</tr>
+<tr>
+  <td><span class="anchor" ></span>real(kind=wp),</td>
+<td>intent(inout)</td>
+  <td></td>  <td></td><td>::</td>
+  <td><strong>fzero</strong></td><td></td>
+</tr>
+</tbody>
+</table>
+
+<h4>Return Value <small>logical</small></h4>  
 
   </div>
   </div>
@@ -2816,6 +2895,70 @@ to <code>maxiter</code> additional function evaluations.</p></td>
 <tbody>
 <tr>
   <td><span class="anchor" ></span>class(<a href='../type/blendtf_solver.html'>blendtf_solver</a>),</td>
+<td>intent(inout)</td>
+  <td></td>  <td></td><td>::</td>
+  <td><strong>me</strong></td><td></td>
+</tr>
+<tr>
+  <td><span class="anchor" ></span>real(kind=wp),</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
+  <td><strong>ax</strong></td><td><p>left endpoint of initial interval</p></td>
+</tr>
+<tr>
+  <td><span class="anchor" ></span>real(kind=wp),</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
+  <td><strong>bx</strong></td><td><p>right endpoint of initial interval</p></td>
+</tr>
+<tr>
+  <td><span class="anchor" ></span>real(kind=wp),</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
+  <td><strong>fax</strong></td><td><p><code>f(ax)</code></p></td>
+</tr>
+<tr>
+  <td><span class="anchor" ></span>real(kind=wp),</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
+  <td><strong>fbx</strong></td><td><p><code>f(ax)</code></p></td>
+</tr>
+<tr>
+  <td><span class="anchor" ></span>real(kind=wp),</td>
+<td>intent(out)</td>
+  <td></td>  <td></td><td>::</td>
+  <td><strong>xzero</strong></td><td><p>abscissa approximating a zero of <code>f</code> in the interval <code>ax</code>,<code>bx</code></p></td>
+</tr>
+<tr>
+  <td><span class="anchor" ></span>real(kind=wp),</td>
+<td>intent(out)</td>
+  <td></td>  <td></td><td>::</td>
+  <td><strong>fzero</strong></td><td><p>value of <code>f</code> at the root (<code>f(xzero)</code>)</p></td>
+</tr>
+<tr>
+  <td><span class="anchor" ></span>integer,</td>
+<td>intent(out)</td>
+  <td></td>  <td></td><td>::</td>
+  <td><strong>iflag</strong></td><td><p>status flag (<code>0</code>=root found, <code>-2</code>=max iterations reached)</p></td>
+</tr>
+</tbody>
+</table>
+
+
+  </div>
+  </div>
+
+      <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-barycentric"></span><h3>private subroutine <a href='../proc/barycentric.html'>barycentric</a>(me, ax, bx, fax, fbx, xzero, fzero, iflag)</h3></div>
+  <div class="panel-body">
+       
+<p>Barycentric interpolation method.</p><a href="../proc/barycentric.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+    
+<h4>Arguments</h4>      <table class="table table-striped varlist">
+<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
+<tbody>
+<tr>
+  <td><span class="anchor" ></span>class(<a href='../type/barycentric_solver.html'>barycentric_solver</a>),</td>
 <td>intent(inout)</td>
   <td></td>  <td></td><td>::</td>
   <td><strong>me</strong></td><td></td>

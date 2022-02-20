@@ -8,7 +8,7 @@
     <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="../favicon.png">
 
-    <title>regula_falsi_solver &ndash; roots-fortran </title>
+    <title>barycentric_solver &ndash; roots-fortran </title>
 
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/pygments.css" rel="stylesheet">
@@ -69,7 +69,7 @@
 
     <div class="container">
   <div class="row">
-    <h1>regula_falsi_solver
+    <h1>barycentric_solver
     <small>Derived Type</small>
     </h1>
     <div class="row">
@@ -79,14 +79,14 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title="<p> 4.9% of total for derived types.</p>Including implementation: 117 statements,  4.4% of total for derived types.">6 statements</a>
+    title="<p> 4.9% of total for derived types.</p>Including implementation: 197 statements,  7.4% of total for derived types.">6 statements</a>
      </li> 
     <li><i class="fa fa-code"></i><a href="../src/root_module.F90"> Source File</a></li>
   </ul>
   <ol class="breadcrumb in-well text-right">
      <li><a href='../sourcefile/root_module.f90.html'>root_module.F90</a></li>
      <li><a href='../module/root_module.html'>root_module</a></li>
-     <li class="active">regula_falsi_solver</li>
+     <li class="active">barycentric_solver</li>
   </ol>
 </div>
 </div>
@@ -108,9 +108,9 @@
   <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#boundprocs-0">Type-Bound Procedures</a></h3></div>
   <div id="boundprocs-0" class="panel-collapse collapse">
     <div class="list-group">
-      <a class="list-group-item" href="../type/regula_falsi_solver.html#boundprocedure-initialize">initialize</a>
-      <a class="list-group-item" href="../type/regula_falsi_solver.html#boundprocedure-solve">solve</a>
-      <a class="list-group-item" href="../type/regula_falsi_solver.html#boundprocedure-find_root~4">find_root</a>
+      <a class="list-group-item" href="../type/barycentric_solver.html#boundprocedure-initialize">initialize</a>
+      <a class="list-group-item" href="../type/barycentric_solver.html#boundprocedure-solve">solve</a>
+      <a class="list-group-item" href="../type/barycentric_solver.html#boundprocedure-find_root~18">find_root</a>
     </div>
   </div>
 </div>
@@ -120,8 +120,8 @@
     </div>
     
     <div class="col-md-9" id='text'>
-      <h2>type, private, extends(<a href='../type/root_solver.html'>root_solver</a>) :: regula_falsi_solver</h2>
-    <p>Classic Regula Falsi root solver</p>
+      <h2>type, private, extends(<a href='../type/root_solver.html'>root_solver</a>) :: barycentric_solver</h2>
+    <p>barycentric root solver</p>
     <br>
 
     <section class="visible-xs visible-sm hidden-md">
@@ -131,9 +131,9 @@
   <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#boundprocs-1">Type-Bound Procedures</a></h3></div>
   <div id="boundprocs-1" class="panel-collapse collapse">
     <div class="list-group">
-      <a class="list-group-item" href="../type/regula_falsi_solver.html#boundprocedure-initialize">initialize</a>
-      <a class="list-group-item" href="../type/regula_falsi_solver.html#boundprocedure-solve">solve</a>
-      <a class="list-group-item" href="../type/regula_falsi_solver.html#boundprocedure-find_root~4">find_root</a>
+      <a class="list-group-item" href="../type/barycentric_solver.html#boundprocedure-initialize">initialize</a>
+      <a class="list-group-item" href="../type/barycentric_solver.html#boundprocedure-solve">solve</a>
+      <a class="list-group-item" href="../type/barycentric_solver.html#boundprocedure-find_root~18">find_root</a>
     </div>
   </div>
 </div>
@@ -285,17 +285,17 @@ to <code>maxiter</code> additional function evaluations.</p></td>
 </div>
 
      <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-find_root~4"></span><h3>procedure, public :: <strong>find_root</strong>  => <a href='../proc/regula_falsi.html'>regula_falsi</a>   </h3></div>
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-find_root~18"></span><h3>procedure, public :: <strong>find_root</strong>  => <a href='../proc/barycentric.html'>barycentric</a>   </h3></div>
   <ul class="list-group">
       <li class="list-group-item">
-          <h3>private subroutine <a href='../proc/regula_falsi.html'>regula_falsi</a>(me, ax, bx, fax, fbx, xzero, fzero, iflag)</h3>
-<p>Compute the zero of the function f(x) in the interval ax,bx using the regula falsi method.</p>
+          <h3>private subroutine <a href='../proc/barycentric.html'>barycentric</a>(me, ax, bx, fax, fbx, xzero, fzero, iflag)</h3>
+<p>Barycentric interpolation method.</p><a href="../proc/barycentric.html" class="pull-right"><emph>Read more&hellip;</emph></a>
     
 <h4>Arguments</h4>      <table class="table table-striped varlist">
 <thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
 <tbody>
 <tr>
-  <td><span class="anchor" ></span>class(<a href='../type/regula_falsi_solver.html'>regula_falsi_solver</a>),</td>
+  <td><span class="anchor" ></span>class(<a href='../type/barycentric_solver.html'>barycentric_solver</a>),</td>
 <td>intent(inout)</td>
   <td></td>  <td></td><td>::</td>
   <td><strong>me</strong></td><td></td>

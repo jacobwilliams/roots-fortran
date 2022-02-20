@@ -8,7 +8,7 @@
     <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="../favicon.png">
 
-    <title>regula_falsi_step &ndash; roots-fortran</title>
+    <title>solution &ndash; roots-fortran</title>
 
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/pygments.css" rel="stylesheet">
@@ -69,7 +69,7 @@
 
     <div class="container">
   <div class="row">
-    <h1>regula_falsi_step
+    <h1>solution
       <small>Function</small>
     </h1>
     <div class="row">
@@ -79,14 +79,14 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 0.9% of total for procedures.">14 statements</a>
+    title=" 1.0% of total for procedures.">15 statements</a>
      </li> 
     <li><i class="fa fa-code"></i><a href="../src/root_module.F90"> Source File</a></li>
   </ul>
   <ol class="breadcrumb in-well text-right">
      <li><a href='../sourcefile/root_module.f90.html'>root_module.F90</a></li>
      <li><a href='../module/root_module.html'>root_module</a></li>
-     <li class="active">regula_falsi_step</li>
+     <li class="active">solution</li>
   </ol>
 </div>
 </div>
@@ -104,108 +104,68 @@
     <div id="sidebar">
   <h3>Contents</h3>
  
-<div class="panel panel-primary">
-  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars-0">Variables</a></h3></div>
-  <div id="vars-0" class="panel-collapse collapse">
-    <div class="list-group">
-      <a class="list-group-item" href="../proc/regula_falsi_step.html#variable-delta">delta</a>
-    </div>
-  </div>
-</div>
+<em>None</em>
 
 </div>
 
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2>private function regula_falsi_step(x1, x2, f1, f2, ax, bx) result(x3)</h2>
+    <h2>private function solution(x, f, ftol, xzero, fzero)</h2>
     
 
-    <p>Regula Falsi step.
-With a protection to fall back to bisection if:</p>
-<ul>
-<li>the computed point is outside the original interval ([ax,bx]).</li>
-<li>f2 == f1</li>
-</ul>
+    <p>Returns true if this is a solution and sets <code>xzero</code> and <code>fzero</code>.</p>
 
     <h3>Arguments</h3>
       <table class="table table-striped varlist">
 <thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
 <tbody>
 <tr>
-  <td><span class="anchor" id="variable-x1~2"></span>real(kind=wp),</td>
+  <td><span class="anchor" id="variable-x~3"></span>real(kind=wp),</td>
 <td>intent(in)</td>
   <td></td>  <td></td><td>::</td>
-  <td><strong>x1</strong></td><td></td>
+  <td><strong>x</strong></td><td></td>
 </tr>
 <tr>
-  <td><span class="anchor" id="variable-x2~2"></span>real(kind=wp),</td>
+  <td><span class="anchor" id="variable-f~4"></span>real(kind=wp),</td>
 <td>intent(in)</td>
   <td></td>  <td></td><td>::</td>
-  <td><strong>x2</strong></td><td></td>
+  <td><strong>f</strong></td><td></td>
 </tr>
 <tr>
-  <td><span class="anchor" id="variable-f1"></span>real(kind=wp),</td>
+  <td><span class="anchor" id="variable-ftol~2"></span>real(kind=wp),</td>
 <td>intent(in)</td>
   <td></td>  <td></td><td>::</td>
-  <td><strong>f1</strong></td><td></td>
+  <td><strong>ftol</strong></td><td></td>
 </tr>
 <tr>
-  <td><span class="anchor" id="variable-f2"></span>real(kind=wp),</td>
-<td>intent(in)</td>
+  <td><span class="anchor" id="variable-xzero~2"></span>real(kind=wp),</td>
+<td>intent(inout)</td>
   <td></td>  <td></td><td>::</td>
-  <td><strong>f2</strong></td><td></td>
+  <td><strong>xzero</strong></td><td></td>
 </tr>
 <tr>
-  <td><span class="anchor" id="variable-ax~2"></span>real(kind=wp),</td>
-<td>intent(in)</td>
+  <td><span class="anchor" id="variable-fzero~2"></span>real(kind=wp),</td>
+<td>intent(inout)</td>
   <td></td>  <td></td><td>::</td>
-  <td><strong>ax</strong></td><td><p>original interval lower bound</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-bx~2"></span>real(kind=wp),</td>
-<td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>bx</strong></td><td><p>original interval upper bound</p></td>
+  <td><strong>fzero</strong></td><td></td>
 </tr>
 </tbody>
 </table>
 
-   <h3>Return Value <small><span class="anchor" id="variable-x3~2"></span>real(kind=wp)</small></h3>
-    <p>intersection of line connecting x1,x2 with x-axis</p>
+   <h3>Return Value <small><span class="anchor" id="variable-solution"></span>logical</small></h3>
+    
     <br>
 
     <section class="visible-xs visible-sm hidden-md">
       <h3>Contents</h3>
  
-<div class="panel panel-primary">
-  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars-1">Variables</a></h3></div>
-  <div id="vars-1" class="panel-collapse collapse">
-    <div class="list-group">
-      <a class="list-group-item" href="../proc/regula_falsi_step.html#variable-delta">delta</a>
-    </div>
-  </div>
-</div>
+<em>None</em>
 
     </section>
     <br class="visible-xs visible-sm hidden-md">
 
 
-    <section>    
-      <h2>Variables</h2>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-delta"></span>real(kind=wp),</td>
-<td>private</td>  <td></td><td>::</td>
-  <td><strong>delta</strong></td><td></td><td></td><td></td>
-</tr>
-</tbody>
-</table>
-
-    </section>
-    <br>
     
     
 
