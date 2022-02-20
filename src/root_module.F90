@@ -66,6 +66,7 @@
     type(root_method),parameter,public :: root_method_zhang                = root_method(14, 'zhang')                !! enum type for `zhang` method
     type(root_method),parameter,public :: root_method_anderson_bjorck_king = root_method(15, 'anderson_bjorck_king') !! enum type for `anderson_bjorck_king` method
     type(root_method),parameter,public :: root_method_blendtf              = root_method(16, 'blendtf')              !! enum type for `blendtf` method
+    type(root_method),parameter,public :: root_method_barycentric          = root_method(17, 'barycentric')          !! enum type for `barycentric` method
 
     type(root_method),parameter,dimension(*),public :: set_of_root_methods = &
         [ root_method_brent,                &
@@ -83,7 +84,8 @@
           root_method_toms748,              &
           root_method_zhang,                &
           root_method_anderson_bjorck_king, &
-          root_method_blendtf ]  !! list of the available methods (see [[root_scalar]])
+          root_method_blendtf,              &
+          root_method_barycentric ]  !! list of the available methods (see [[root_scalar]])
 
     type,abstract,public :: root_solver
         !! abstract class for the root solver methods
@@ -232,6 +234,14 @@
     private
     procedure,public :: find_root => blendtf
     end type blendtf_solver
+
+    type,extends(root_solver),public :: barycentric_solver
+    !! barycentric root solver
+    private
+    contains
+    private
+    procedure,public :: find_root => barycentric
+    end type barycentric_solver
 
     abstract interface
         function func(me,x) result(f)
@@ -426,6 +436,7 @@
     case(root_method_zhang%id);                allocate(zhang_solver                :: s)
     case(root_method_anderson_bjorck_king%id); allocate(anderson_bjorck_king_solver :: s)
     case(root_method_blendtf%id);              allocate(blendtf_solver              :: s)
+    case(root_method_barycentric%id);          allocate(barycentric_solver          :: s)
 
     case default
         iflag = -999    ! invalid method
@@ -949,7 +960,7 @@
 
         x3 = secant(x1,x2,f1,f2,ax,bx)
         f3 = me%f(x3)
-        if (abs(f3)<=me%ftol)  then  ! f3 is a root
+        if (abs(f3)<=me%ftol) then  ! f3 is a root
             xzero = x3
             fzero = f3
             exit
@@ -1108,7 +1119,7 @@
         x3 = secant(x1,x2,f1,f2,ax,bx)
 
         f3  = me%f(x3)  ! calculate f3
-        if (abs(f3)<=me%ftol)  then ! f3 is a root
+        if (abs(f3)<=me%ftol) then ! f3 is a root
             fzero = f3
             xzero = x3
             return
@@ -2163,7 +2174,7 @@
 
         ! calculate f3:
         f3 = me%f(x3)
-        if (abs(f3)<=me%ftol)  then  ! f3 is a root
+        if (abs(f3)<=me%ftol) then  ! f3 is a root
             xzero = x3
             fzero = f3
             exit
@@ -2187,7 +2198,7 @@
 
         ! calculate f3:
         f3 = me%f(x3)
-        if (abs(f3)<=me%ftol)  then  ! f3 is a root
+        if (abs(f3)<=me%ftol) then  ! f3 is a root
             xzero = x3
             fzero = f3
             exit
@@ -2272,9 +2283,9 @@
         xt2  = (2.0_wp * b + a) / 3.0_wp
         xf   = a - (fa*(b-a))/(fb-fa)
         x    = xt1
-        fxt1 = me%f(xt1); if (solution(xt1,fxt1)) return
-        fxt2 = me%f(xt2); if (solution(xt2,fxt2)) return
-        fxf  = me%f(xf);  if (solution(xf,fxf))   return
+        fxt1 = me%f(xt1); if (solution(xt1,fxt1,me%ftol,xzero,fzero)) return
+        fxt2 = me%f(xt2); if (solution(xt2,fxt2,me%ftol,xzero,fzero)) return
+        fxf  = me%f(xf);  if (solution(xf,fxf,me%ftol,xzero,fzero))   return
         fx   = fxt1
 
         if (abs(fxf) < abs(fxt1)) then
@@ -2326,22 +2337,168 @@
 
     end do
 
-    contains
-
-        logical function solution(x,f)
-        implicit none
-        real(wp),intent(in) :: x
-        real(wp),intent(in) :: f
-        if (abs(f)<=me%ftol) then
-            xzero = x
-            fzero = f
-            solution = .true.
-        else
-            solution = .false.
-        end if
-        end function solution
-
     end subroutine blendtf
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Barycentric interpolation method.
+!
+!### Reference
+!  * Enrique Aguilar-Mendez, Roxana Mitzaye Del Castillo,
+!    "A highly efficient numerical method to solve non-linear functions using barycentric interpolation"
+!    January 2021, Applied Mathematical Sciences 15(7):321-336
+!  * Python implemention here: https://github.com/EnriqueAguilarM/
+
+    subroutine barycentric(me,ax,bx,fax,fbx,xzero,fzero,iflag)
+
+        implicit none
+
+        class(barycentric_solver),intent(inout) :: me
+        real(wp),intent(in)  :: ax      !! left endpoint of initial interval
+        real(wp),intent(in)  :: bx      !! right endpoint of initial interval
+        real(wp),intent(in)  :: fax     !! `f(ax)`
+        real(wp),intent(in)  :: fbx     !! `f(ax)`
+        real(wp),intent(out) :: xzero   !! abscissa approximating a zero of `f` in the interval `ax`,`bx`
+        real(wp),intent(out) :: fzero   !! value of `f` at the root (`f(xzero)`)
+        integer,intent(out)  :: iflag   !! status flag (`0`=root found, `-2`=max iterations reached)
+
+        integer :: i !! iteration counter
+        real(wp) :: k !! a real number in the interval (0, 0.5)
+        real(wp) :: x0,x1,x2,x3,x4,x5,x6,&
+                    f0,f1,f2,f3,f4,f5,f6,&
+                    w0,w1,w2,w3,w22,w32
+
+        real(wp),parameter :: bisection_tol = 1.0e-17_wp  !! if `f0` or `f1` are below this value,
+                                                          !! the method switches to bisection.
+                                                          !! (should be an input or computed from `epsilon`?)
+        real(wp),parameter :: k0 =  1.0_wp / 6.0_wp !! initial value of `k` (should be an input?)
+
+        iflag = 0
+        x0 = ax; f0 = fax
+        x1 = bx; f1 = fbx
+        k = k0
+
+        do i = 1, me%maxiter
+
+            if (i>1) then
+                f0 = me%f(x0)
+                if (solution(x0,f0,me%ftol,xzero,fzero)) return
+                f1 = me%f(x1)
+                if (solution(x1,f1,me%ftol,xzero,fzero)) return
+            end if
+
+            if (me%converged(x0, x1) .or. i == me%maxiter) then
+                if (i == me%maxiter) iflag = -2 ! max iterations reached
+                exit
+            end if
+
+            if (abs(f0)<bisection_tol .or. abs(f1)<bisection_tol) then
+                ! if f is too small, switch to bisection
+                k = 0.5_wp
+            end if
+
+            x2 = x0 + k*(x1-x0)   ! first point for interpolation
+            f2 = me%f(x2)
+            if (solution(x2,f2,me%ftol,xzero,fzero)) return
+
+            if (f0*f2 < 0.0_wp) then
+                x1 = x2
+            else if (f0 == f2) then
+                x0 = x2
+            else
+                x3 = x1 + k*(x0-x1) ! second point for interpolation
+                f3 = me%f(x3)
+                if (solution(x3,f3,me%ftol,xzero,fzero)) return
+
+                if (f3*f1 < 0.0_wp) then
+                    x0 = x3
+                else if (f3 == f1) then
+                    x0 = x2        ! note: typo in python version here?
+                    x1 = x3
+                else
+
+                    w0 = 1.0_wp/(f0*(f0-f2)*(f0-f3))   ! first quadratic interpolation
+                    w2 = 1.0_wp/(f2*(f2-f0)*(f2-f3))
+                    w3 = 1.0_wp/(f3*(f3-f0)*(f3-f2))
+                    x4 = (w0*x0+w2*x2+w3*x3)/(w0+w3+w2)
+                    f4 = me%f(x4)
+                    if (solution(x4,f4,me%ftol,xzero,fzero)) return
+
+                    w1  = 1.0_wp/(f1*(f1-f2)*(f1-f3))  ! second quadratic interpolation
+                    w22 = 1.0_wp/(f2*(f2-f1)*(f2-f3))
+                    w32 = 1.0_wp/(f3*(f3-f1)*(f3-f2))
+                    x5  = (w1*x1+w22*x2+w32*x3)/(w1+w32+w22)
+                    f5  = me%f(x5)
+                    if (solution(x5,f5,me%ftol,xzero,fzero)) return
+
+                    ! determine if x3,x4 are in the interval [x2,x3]
+                    if (x4<x2 .or. x4>x3) then
+                        if (x5<x2 .or. x5>x3) then
+                            x0 = x2
+                            x1 = x3
+                        else
+                            if (f5*f2<0.0_wp) then
+                                x0 = x2
+                                x1 = x5
+                            else
+                                x0 = x5
+                                x1 = x3
+                            end if
+                        end if
+                    else
+                        if (x5<x2 .or. x5>x3) then
+                            if (f4*f2<0.0_wp) then
+                                x0 = x2
+                                x1 = x4
+                            else
+                                x0 = x4
+                                x1 = x3
+                            end if
+                        else
+
+                            if (f5*f4>0.0_wp) then
+                                if (f4*f2<0.0_wp) then
+                                    x0 = x2
+                                    x1 = min(x4,x5)
+                                else
+                                    x0 = max(x4,x5)
+                                    x1 = x3
+                                end if
+                            else
+                                ! cubic interpolation if f4 and f5 have opposite signs
+                                w0 = w0/(f0-f1)
+                                w1 = w1/(f1-f0)
+                                w2 = w2/(f2-f1)
+                                w3 = w3/(f3-f1)
+                                x6 = (w0*x0+w1*x1+w2*x2+w3*x3)/(w0+w1+w3+w2)
+                                f6 = me%f(x6)
+                                if (solution(x6,f6,me%ftol,xzero,fzero)) return
+
+                                ! verify that x6 is in the interval [x2,x3]
+                                if (x6<=x2 .or. x6>=x3) then
+                                    x0 = min(x4,x5)
+                                    x1 = max(x4,x5)
+                                else
+                                    if (f6*f4<0.0_wp) then
+                                        x0 = min(x4,x6)
+                                        x1 = max(x4,x6)
+                                    else
+                                        x0 = min(x5,x6)
+                                        x1 = max(x5,x6)
+                                    end if
+                                end if
+                            end if
+                        end if
+                    end if
+                end if
+            end if
+
+        end do
+
+        call choose_best(x0,x1,f0,f1,xzero,fzero)
+
+    end subroutine barycentric
 !*****************************************************************************************
 
 !*****************************************************************************************
@@ -2526,6 +2683,31 @@
     end do
 
     end function lowercase
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Returns true if this is a solution and sets `xzero` and `fzero`.
+
+    logical function solution(x,f,ftol,xzero,fzero)
+
+    implicit none
+
+    real(wp),intent(in) :: x
+    real(wp),intent(in) :: f
+    real(wp),intent(in) :: ftol
+    real(wp),intent(inout) :: xzero
+    real(wp),intent(inout) :: fzero
+
+    if (abs(f) <= ftol) then
+        xzero = x
+        fzero = f
+        solution = .true.
+    else
+        solution = .false.
+    end if
+
+    end function solution
 !*****************************************************************************************
 
 !*****************************************************************************************
