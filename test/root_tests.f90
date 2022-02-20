@@ -5,7 +5,7 @@
 !### Reference
 !  * G.E. Alefeld, F.A. Potra and Yixun Shi,
 !    "Algorithm 748: Enclosing Zeros of Continuous Functions",
-!    ACM Transactions on Mathematica1 Software,
+!    ACM Transactions on Mathematical Software,
 !    Vol. 21. No. 3. September 1995. Pages 327-344.
 
 program root_tests
