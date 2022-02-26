@@ -747,12 +747,7 @@
 
         ! calculate the new function value:
         f3 = me%f(x3)
-        ! check for root:
-        if (abs(f3)<=me%ftol) then
-            xzero = x3
-            fzero = f3
-            return
-        end if
+        if (solution(x3,f3,me%ftol,xzero,fzero)) return
 
         ! determine new inclusion interval:
         if (f2*f3<0.0_wp) then
@@ -815,12 +810,7 @@
 
         ! calculate the new function value:
         f3 = me%f(x3)
-        ! check for root:
-        if (abs(f3)<=me%ftol) then
-            xzero = x3
-            fzero = f3
-            return
-        end if
+        if (solution(x3,f3,me%ftol,xzero,fzero)) return
 
         ! determine new inclusion interval:
         if (f2*f3<0.0_wp) then
@@ -887,12 +877,7 @@
 
         ! calculate the new function value:
         f3 = me%f(x3)
-        ! check for root:
-        if (abs(f3)<=me%ftol) then
-            xzero = x3
-            fzero = f3
-            return
-        end if
+        if (solution(x3,f3,me%ftol,xzero,fzero)) return
 
         ! determine new inclusion interval:
         if (f2*f3<0.0_wp) then
@@ -960,11 +945,7 @@
 
         x3 = secant(x1,x2,f1,f2,ax,bx)
         f3 = me%f(x3)
-        if (abs(f3)<=me%ftol) then  ! f3 is a root
-            xzero = x3
-            fzero = f3
-            exit
-        end if
+        if (solution(x3,f3,me%ftol,xzero,fzero)) return
 
         ! determine a new inclusion interval:
         if (f2*f3<0.0_wp) then
@@ -1033,12 +1014,7 @@
 
         xm = bisect(xl,xh)
         fm = me%f(xm)
-        if (abs(fm) <= me%ftol) then
-            ! abs convergence in f
-            xzero = xm
-            fzero = fm
-            exit
-        end if
+        if (solution(xm,fm,me%ftol,xzero,fzero)) return
 
         denom = sqrt(fm**2-fl*fh)
         if (denom == 0.0_wp) then
@@ -1119,11 +1095,7 @@
         x3 = secant(x1,x2,f1,f2,ax,bx)
 
         f3  = me%f(x3)  ! calculate f3
-        if (abs(f3)<=me%ftol) then ! f3 is a root
-            fzero = f3
-            xzero = x3
-            return
-        end if
+        if (solution(x3,f3,me%ftol,xzero,fzero)) return
 
         ! determine a new inclusion interval:
         if (f2*f3<=0.0_wp) then  ! root on (x2,x3)
@@ -1277,11 +1249,7 @@
     ! pick a third point in the middle [this could also be an optional input]
     cx  = bisect(ax,bx)
     fcx = me%f(cx)
-    if (abs(fcx)<=me%ftol) then
-        xzero = cx
-        fzero = fcx
-        return
-    end if
+    if (solution(cx,fcx,me%ftol,xzero,fzero)) return
 
     ! [a,b,c]
     a = ax; fa = fax
@@ -1331,7 +1299,7 @@
         if (abs(fb)<=me%ftol) exit
 
         ! stopping criterion
-        if (me%converged(b,bprev) .or. me%converged(a,c) .or. i == me%maxiter) then
+        if (me%converged(a,c) .or. i == me%maxiter) then
             if ( i == me%maxiter ) iflag = -2 ! max iterations exceeded
             exit
         end if
@@ -1598,11 +1566,7 @@
 
         xt = a + t*(b-a)
         ft = me%f(xt)
-        if (abs(ft) <= me%ftol) then
-            xm = xt ! root found
-            fm = ft
-            exit
-        end if
+        if (solution(xt,ft,me%ftol,xzero,fzero)) return
 
         if (ft*fa>0.0_wp) then
             c = a
@@ -2066,11 +2030,8 @@
 
         c = bisect(a,b)
         fc = me%f(c)
-        if (abs(fc)<=me%ftol) then
-            xzero = c
-            fzero = fc
-            return
-        end if
+        if (solution(c,fc,me%ftol,xzero,fzero)) return
+
         if (fa/=fc .and. fb/=fc) then
             ! inverse quadratic interpolation
             s = a*fb*fc/((fa-fb)*(fa-fc)) + &
@@ -2096,11 +2057,7 @@
                 s = secant(c,b,fc,fb,ax,bx)
             end if
             fs = me%f(s)
-            if (abs(fs)<=me%ftol) then
-                xzero = s
-                fzero = fs
-                return
-            end if
+            if (solution(s,fs,me%ftol,xzero,fzero)) return
         end if
 
         if (c>s) then
@@ -2174,11 +2131,7 @@
 
         ! calculate f3:
         f3 = me%f(x3)
-        if (abs(f3)<=me%ftol) then  ! f3 is a root
-            xzero = x3
-            fzero = f3
-            exit
-        end if
+        if (solution(x3,f3,me%ftol,xzero,fzero)) return
 
         ! determine a new inclusion interval:
         if (f2*f3<0.0_wp) then
@@ -2198,11 +2151,7 @@
 
         ! calculate f3:
         f3 = me%f(x3)
-        if (abs(f3)<=me%ftol) then  ! f3 is a root
-            xzero = x3
-            fzero = f3
-            exit
-        end if
+        if (solution(x3,f3,me%ftol,xzero,fzero)) return
 
         ! determine a new inclusion interval:
         if (f2*f3<0.0_wp) then
