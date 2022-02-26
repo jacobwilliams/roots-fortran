@@ -1299,7 +1299,7 @@
         if (abs(fb)<=me%ftol) exit
 
         ! stopping criterion
-        if (me%converged(b,bprev) .or. me%converged(a,c) .or. i == me%maxiter) then
+        if (me%converged(a,c) .or. i == me%maxiter) then
             if ( i == me%maxiter ) iflag = -2 ! max iterations exceeded
             exit
         end if
