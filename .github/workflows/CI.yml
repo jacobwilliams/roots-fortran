@@ -48,7 +48,7 @@ jobs:
         sudo apt-get install -y gcc-${GCC_V} gfortran-${GCC_V}
         sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_V} 100 \
         --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-${GCC_V} \
-        --slave /usr/bingcov gcov /usr/bin/gcov-${GCC_V}
+        --slave /usr/bin/cov gcov /usr/bin/gcov-${GCC_V}
 
     - name: Compile
       run: fpm build --profile release
@@ -65,3 +65,23 @@ jobs:
       with:
         branch: gh-pages # The branch the action should deploy to.
         folder: doc  # The folder the action should deploy.
+
+    - name: Create coverage report
+       run: |
+         mkdir -p ${{ env.COV_DIR }}
+         lcov --capture --initial --base-directory . \
+              --directory build/gfortran_*/ \
+              --output-file ${{ env.COV_DIR }}/coverage.base
+         lcov --capture --base-directory . \
+              --directory build/gfortran_*/ \
+              --output-file ${{ env.COV_DIR }}/coverage.capture
+         lcov --add-tracefile ${{ env.COV_DIR }}/coverage.base \
+              --add-tracefile ${{ env.COV_DIR }}/coverage.capture \
+              --output-file ${{ env.COV_DIR }}/coverage.info
+       env:
+         COV_DIR: build/coverage
+
+     - name: Upload coverage report
+       uses: codecov/codecov-action@v2
+       with:
+         files: build/coverage/coverage.info
