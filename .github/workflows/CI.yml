@@ -49,8 +49,8 @@ jobs:
            --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-${{ matrix.gcc_v }} \
            --slave /usr/bin/gcov gcov /usr/bin/gcov-${{ matrix.gcc_v }}
 
-    - name: Compile
-      run: fpm build --profile release
+    # - name: Compile
+    #   run: fpm build --profile release
 
     - name: Run tests
       run: fpm test --profile debug --flag -coverage
