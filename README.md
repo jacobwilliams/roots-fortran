@@ -183,3 +183,7 @@ The roots-fortran source code and related files and documentation are distribute
   * R. G. Gottlieb, B. F. Thompson, "[Bisected Direct Quadratic Regula Falsi](https://www.researchgate.net/publication/228712261_Bisected_Direct_Quadratic_Regula_Falsi)", Applied Mathematical Sciences, Vol. 4, 2010, no. 15, 709-718.
   * A. Zhang, "[An Improvement to the Brent's Method](https://www.cscjournals.org/download/issuearchive/IJEA/Volume2/IJEA_V2_I1.pdf)", International Journal of Experimental Algorithms (IJEA), Volume (2) : Issue (1) : 2011.
   * E Badr, S Almotairi, A El Ghamry, "[A Comparative Study among New Hybrid Root Finding Algorithms and Traditional Methods](https://www.mdpi.com/2227-7390/9/11/1306)", Mathematics 2021, 9, 1306.
+
+## See also
+
+ * [Code coverage statistics](https://app.codecov.io/gh/jacobwilliams/roots-fortran) [codecov.io]
