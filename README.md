@@ -56,25 +56,31 @@ To generate the documentation using [ford](https://github.com/Fortran-FOSS-Progr
 
 ### Methods
 
-The module contains the following methods:
+The module contains the following methods (in alphabetical order):
 
- * anderson_bjorck
- * anderson_bjorck_king
- * barycentric
- * bdqrf
- * bisection
- * blendtf
- * brent
- * brenth
- * brentq
- * chandrupatla
- * illinois
- * muller
- * pegasus
- * regula_falsi
- * ridders
- * toms748
- * zhang
+ * `anderson_bjorck`
+ * `anderson_bjorck_king` (a variant of `anderson_bjorck`)
+ * `barycentric`
+ * `bdqrf`
+ * `bisection`
+ * `blendtf`
+ * `brent`
+ * `brenth` (a variant of `brent`)
+ * `brentq` (a variant of `brent`)
+ * `chandrupatla`
+ * `illinois`
+ * `muller`
+ * `pegasus`
+ * `regula_falsi`
+ * `ridders`
+ * `toms748`
+ * `zhang`
+
+In general, all the methods are guaranteed to converge. Some will be more efficient (in terms of number of function evaluations) than others for various problems. The methods can be broadly classified into three groups:
+
+ * Simple classical methods (`bisection`, `regula_falsi`, `illinois`, `ridders`).
+ * Newfangled methods (`zhang`, `barycentric`, `blendtf`, `bdqrf`, `anderson_bjorck_king`). These rarely or ever seem to be better than the best methods.
+ * Best methods (`anderson_bjorck`, `muller`, `pegasus`, `toms748`, `brent`, `brentq`, `brenth`, `chandrupatla`). Generally, one of these will be the most efficient method.
 
 ### Functional Interface Example
 
