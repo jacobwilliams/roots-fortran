@@ -5,6 +5,7 @@
 
 [![GitHub release](https://img.shields.io/github/release/jacobwilliams/roots-fortran.svg?style=plastic)](https://github.com/jacobwilliams/roots-fortran/releases/latest)
 ![Build Status](https://github.com/jacobwilliams/roots-fortran/actions/workflows/CI.yml/badge.svg)
+[![codecov](https://codecov.io/gh/jacobwilliams/roots-fortran/branch/master/graph/badge.svg?token=43HK33CSMY)](https://codecov.io/gh/jacobwilliams/roots-fortran)
 
 ## Description
 
