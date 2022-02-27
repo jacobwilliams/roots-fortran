@@ -139,25 +139,31 @@
 <p>To generate the documentation using <a href="https://github.com/Fortran-FOSS-Programmers/ford">ford</a>, run: <code>ford roots-fortran.md</code></p>
 <h2>Usage</h2>
 <h3>Methods</h3>
-<p>The module contains the following methods:</p>
+<p>The module contains the following methods (in alphabetical order):</p>
 <ul>
-<li>anderson_bjorck</li>
-<li>anderson_bjorck_king</li>
-<li>barycentric</li>
-<li>bdqrf</li>
-<li>bisection</li>
-<li>blendtf</li>
-<li>brent</li>
-<li>brenth</li>
-<li>brentq</li>
-<li>chandrupatla</li>
-<li>illinois</li>
-<li>muller</li>
-<li>pegasus</li>
-<li>regula_falsi</li>
-<li>ridders</li>
-<li>toms748</li>
-<li>zhang</li>
+<li><code>anderson_bjorck</code></li>
+<li><code>anderson_bjorck_king</code> (a variant of <code>anderson_bjorck</code>)</li>
+<li><code>barycentric</code></li>
+<li><code>bdqrf</code></li>
+<li><code>bisection</code></li>
+<li><code>blendtf</code></li>
+<li><code>brent</code></li>
+<li><code>brenth</code> (a variant of <code>brent</code>)</li>
+<li><code>brentq</code> (a variant of <code>brent</code>)</li>
+<li><code>chandrupatla</code></li>
+<li><code>illinois</code></li>
+<li><code>muller</code></li>
+<li><code>pegasus</code></li>
+<li><code>regula_falsi</code></li>
+<li><code>ridders</code></li>
+<li><code>toms748</code></li>
+<li><code>zhang</code></li>
+</ul>
+<p>In general, all the methods are guaranteed to converge. Some will be more efficient (in terms of number of function evaluations) than others for various problems. The methods can be broadly classified into three groups:</p>
+<ul>
+<li>Simple classical methods (<code>bisection</code>, <code>regula_falsi</code>, <code>illinois</code>, <code>ridders</code>).</li>
+<li>Newfangled methods (<code>zhang</code>, <code>barycentric</code>, <code>blendtf</code>, <code>bdqrf</code>, <code>anderson_bjorck_king</code>). These rarely or ever seem to be better than the best methods.</li>
+<li>Best methods (<code>anderson_bjorck</code>, <code>muller</code>, <code>pegasus</code>, <code>toms748</code>, <code>brent</code>, <code>brentq</code>, <code>brenth</code>, <code>chandrupatla</code>). Generally, one of these will be the most efficient method.</li>
 </ul>
 <h3>Functional Interface Example</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">program </span><span class="n">main</span><span class="w"></span>

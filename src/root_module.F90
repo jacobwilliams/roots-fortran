@@ -2092,7 +2092,7 @@
 
 !*****************************************************************************************
 !>
-!  Modified anderson-bjorck-king method. Same as anderson_bjorck, but with
+!  Modified anderson-bjorck-king method. Same as [[anderson_bjorck]], but with
 !  an extra initial bisection step.
 !
 !### See also
