@@ -3,9 +3,10 @@
 
 **roots-fortran**: root solvers for modern Fortran
 
-[![GitHub release](https://img.shields.io/github/release/jacobwilliams/roots-fortran.svg?style=plastic)](https://github.com/jacobwilliams/roots-fortran/releases/latest)
-![Build Status](https://github.com/jacobwilliams/roots-fortran/actions/workflows/CI.yml/badge.svg)
-[![codecov](https://codecov.io/gh/jacobwilliams/roots-fortran/branch/master/graph/badge.svg?token=43HK33CSMY)](https://codecov.io/gh/jacobwilliams/roots-fortran)
+[![GitHub release](https://img.shields.io/github/release/jacobwilliams/roots-fortran.svg)](https://github.com/jacobwilliams/roots-fortran/releases/latest)
+[![CI Status](https://github.com/jacobwilliams/roots-fortran/actions/workflows/CI.yml/badge.svg)](https://github.com/jacobwilliams/roots-fortran/actions)
+[![codecov](https://codecov.io/gh/jacobwilliams/roots-fortran/branch/master/graph/badge.svg)](https://codecov.io/gh/jacobwilliams/roots-fortran)
+[![last-commit](https://img.shields.io/github/last-commit/jacobwilliams/roots-fortran)](https://github.com/jacobwilliams/roots-fortran/commits/master)
 
 ## Description
 
