@@ -2528,6 +2528,21 @@
 
 !*****************************************************************************************
 !>
+!  Returns true if the two numbers have opposite signs.
+
+    pure logical function opposite_sign(x1,x2)
+
+    implicit none
+
+    real(wp),intent(in) :: x1,x2
+
+    opposite_sign = sign(1.0_wp,x1) /= sign(1.0_wp,x2)
+
+    end function opposite_sign
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Regula Falsi step.
 !  With a protection to fall back to bisection if:
 !
