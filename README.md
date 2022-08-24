@@ -178,6 +178,10 @@ The roots-fortran source code and related files and documentation are distribute
 * Julia: [Roots.jl](https://github.com/JuliaMath/Roots.jl)
 * Python: [scipy.optimize.root_scalar](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.root_scalar.html)
 * C: [GSL](https://www.gnu.org/software/gsl/doc/html/roots.html)
+* C++: [Boost Math Toolkit](https://www.boost.org/doc/libs/1_80_0/libs/math/doc/html/root_finding.html)
+* MATLAB: [fzero](https://www.mathworks.com/help/matlab/ref/fzero.html)
+* Rust: [roots](https://docs.rs/roots/latest/roots/)
+* R: [uniroot](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/uniroot.html)
 
 ## References
   * D. E. Muller, "[A Method for Solving Algebraic Equations Using an Automatic Computer](https://www.ams.org/journals/mcom/1956-10-056/S0025-5718-1956-0083822-0/S0025-5718-1956-0083822-0.pdf)", Mathematical Tables and Other Aids to Computation, 10 (1956), 208-215.
