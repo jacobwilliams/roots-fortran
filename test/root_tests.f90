@@ -34,7 +34,7 @@ program root_tests
     character(len=*),parameter :: fmt  = '(   A20,1X,A3,1X,A4,1X,A16,  1X,A25,   1X,A16,  1X,A5,1X,A5,1X,A8  )' !! format for header
     character(len=*),parameter :: dfmt = '(1P,A20,1X,I3,1X,I4,1X,E16.6,1X,E25.16,1X,E16.6,1X,I5,1X,I5,1X,E8.1)' !! format for results
 
-    integer,parameter :: number_of_methods = 17 !! number of methods to test
+    integer,parameter :: number_of_methods = 18 !! number of methods to test
     character(len=100),dimension(number_of_methods),parameter :: methods = [ &
         'bisection           ', &
         'brent               ', &
@@ -52,7 +52,8 @@ program root_tests
         'toms748             ', &
         'zhang               ', &
         'blendtf             ', &
-        'barycentric         '] !! method names
+        'barycentric         ', &
+        'itp                 '] !! method names
 
     integer,dimension(number_of_methods) :: number_of_wins, ivec, number_of_failures, ivec2
 
@@ -1202,12 +1203,19 @@ program root_tests
         if (present(x)) f = sin(x) - x**2
         if (present(latex)) latex = '\sin(x) - x^2'
 
+    case(118) ! https://en.wikipedia.org/wiki/ITP_method#Example:_Finding_the_root_of_a_polynomial
+        a = 1.0_wp
+        b = 2.0_wp
+        root = 1.5213797068045798E+00_wp
+        if (present(x)) f = x**3 - x - 2.0_wp
+        if (present(latex)) latex = 'x^3 - x - 2'
+
     case default
         write(*,*) 'invalid case: ', nprob
         error stop 'invalid case'
     end select
 
-    if (present(num_of_problems)) num_of_problems = 117
+    if (present(num_of_problems)) num_of_problems = 118
 
     ! outputs:
     if (present(ax))    ax = a

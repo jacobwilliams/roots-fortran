@@ -77,6 +77,7 @@ The module contains the following methods (in alphabetical order):
  * `ridders`
  * `toms748`
  * `zhang`
+ * `itp`
 
 In general, all the methods are guaranteed to converge. Some will be more efficient (in terms of number of function evaluations) than others for various problems. The methods can be broadly classified into three groups:
 
