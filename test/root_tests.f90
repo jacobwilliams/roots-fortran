@@ -1265,7 +1265,7 @@ program root_tests
         b = 1.0_wp
         root = -2.0065503320580689E-04_wp
         if (present(x)) f = 1.0_wp/10.0_wp**3 + sum([(sin(pi*i**3*x/2.0_wp)/pi/i**3, i = 1, 10)])
-        if (present(latex)) latex = '' ! TODO
+        if (present(latex)) latex = '\frac{1}{10^3} + \sum_{i=1}^{10} \sin (\frac{\pi i^3 x}{2}) / \pi i^3'
     case(127) ! Poly.Frac.
         a = -1.0_wp
         b = 1.0_wp
