@@ -73,6 +73,7 @@ Procedure | Description
 [`brentq`](https://jacobwilliams.github.io/roots-fortran/proc/brentq.html)                             | SciPy variant of `brent`
 [`chandrupatla`](https://jacobwilliams.github.io/roots-fortran/proc/chandrupatla.html)                 | Hybrid quadratic/bisection algorithm
 [`illinois`](https://jacobwilliams.github.io/roots-fortran/proc/illinois.html)                         | Illinois method
+[`itp`](https://jacobwilliams.github.io/roots-fortran/proc/itp.html)                                   | Interpolate Truncate and Project method
 [`muller`](https://jacobwilliams.github.io/roots-fortran/proc/muller.html)                             | Improved Muller method (for real roots only)
 [`pegasus`](https://jacobwilliams.github.io/roots-fortran/proc/pegasus.html)                           | Pegasus method
 [`regula_falsi`](https://jacobwilliams.github.io/roots-fortran/proc/regula_falsi.html)                 | Classic regula falsi method
@@ -84,7 +85,7 @@ In general, all the methods are guaranteed to converge. Some will be more effici
 
  * Simple classical methods (`bisection`, `regula_falsi`, `illinois`, `ridders`).
  * Newfangled methods (`zhang`, `barycentric`, `blendtf`, `bdqrf`, `anderson_bjorck_king`). These rarely or ever seem to be better than the best methods.
- * Best methods (`anderson_bjorck`, `muller`, `pegasus`, `toms748`, `brent`, `brentq`, `brenth`, `chandrupatla`). Generally, one of these will be the most efficient method.
+ * Best methods (`anderson_bjorck`, `muller`, `pegasus`, `toms748`, `brent`, `brentq`, `brenth`, `chandrupatla`, `itp`). Generally, one of these will be the most efficient method.
 
 Note that some of the implementations in this library contain additional checks for robustness, and so may behave better than naive implementations of the same algorithms. In addition, all methods have an option to fall back to bisection if the method fails to converge.
 
