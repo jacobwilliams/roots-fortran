@@ -60,29 +60,33 @@ To generate the documentation using [ford](https://github.com/Fortran-FOSS-Progr
 
 The module contains the following methods (in alphabetical order):
 
- * `anderson_bjorck`
- * `anderson_bjorck_king` (a variant of `anderson_bjorck`)
- * `barycentric`
- * `bdqrf`
- * `bisection`
- * `blendtf`
- * `brent`
- * `brenth` (a variant of `brent`)
- * `brentq` (a variant of `brent`)
- * `chandrupatla`
- * `illinois`
- * `muller`
- * `pegasus`
- * `regula_falsi`
- * `ridders`
- * `toms748`
- * `zhang`
+Procedure | Description
+--- | ---
+[`anderson_bjorck`](https://jacobwilliams.github.io/roots-fortran/proc/anderson_bjorck.html)           | Anderson-Bjorck method
+[`anderson_bjorck_king`](https://jacobwilliams.github.io/roots-fortran/proc/anderson_bjorck_king.html) | a [variant](https://link.springer.com/content/pdf/bbm%3A978-3-642-05175-3%2F1.pdf) of `anderson_bjorck`
+[`barycentric`](https://jacobwilliams.github.io/roots-fortran/proc/barycentric.html)                   | Barycentric interpolation method
+[`bdqrf`](https://jacobwilliams.github.io/roots-fortran/proc/bdqrf.html)                               | Bisected Direct Quadratic Regula Falsi
+[`bisection`](https://jacobwilliams.github.io/roots-fortran/proc/bisection.html)                       | Classic bisection method
+[`blendtf`](https://jacobwilliams.github.io/roots-fortran/proc/blendtf.html)                           | Blended method of trisection and false position
+[`brent`](https://jacobwilliams.github.io/roots-fortran/proc/brent.html)                               | Classic Brent's method (a.k.a. Zeroin)
+[`brenth`](https://jacobwilliams.github.io/roots-fortran/proc/brenth.html)                             | SciPy variant of `brent`
+[`brentq`](https://jacobwilliams.github.io/roots-fortran/proc/brentq.html)                             | SciPy variant of `brent`
+[`chandrupatla`](https://jacobwilliams.github.io/roots-fortran/proc/chandrupatla.html)                 | Hybrid quadratic/bisection algorithm
+[`illinois`](https://jacobwilliams.github.io/roots-fortran/proc/illinois.html)                         | Illinois method
+[`muller`](https://jacobwilliams.github.io/roots-fortran/proc/muller.html)                             | Improved Muller method (for real roots only)
+[`pegasus`](https://jacobwilliams.github.io/roots-fortran/proc/pegasus.html)                           | Pegasus method
+[`regula_falsi`](https://jacobwilliams.github.io/roots-fortran/proc/regula_falsi.html)                 | Classic regula falsi method
+[`ridders`](https://jacobwilliams.github.io/roots-fortran/proc/ridders.html)                           | Classic Ridders method
+[`toms748`](https://jacobwilliams.github.io/roots-fortran/proc/toms748.html)                           | Algorithm 748
+[`zhang`](https://jacobwilliams.github.io/roots-fortran/proc/zhang.html)                               | Zhang's method (with corrections from Stage)
 
 In general, all the methods are guaranteed to converge. Some will be more efficient (in terms of number of function evaluations) than others for various problems. The methods can be broadly classified into three groups:
 
  * Simple classical methods (`bisection`, `regula_falsi`, `illinois`, `ridders`).
  * Newfangled methods (`zhang`, `barycentric`, `blendtf`, `bdqrf`, `anderson_bjorck_king`). These rarely or ever seem to be better than the best methods.
  * Best methods (`anderson_bjorck`, `muller`, `pegasus`, `toms748`, `brent`, `brentq`, `brenth`, `chandrupatla`). Generally, one of these will be the most efficient method.
+
+Note that some of the implementations in this library contain additional checks for robustness, and so may behave better than naive implementations of the same algorithms. In addition, all methods have an option to fall back to bisection if the method fails to converge.
 
 ### Functional Interface Example
 
