@@ -2483,9 +2483,9 @@
     real(wp),intent(in),optional :: k2 !! from [1, 1+phi] [Default is 0.98*(1+phi)]
     integer,intent(in),optional  :: n0 !! [Default is 1
 
-    if (present(k2)) me%k1 = k1
-    if (present(n0)) me%k2 = k2
-    if (present(k1)) me%n0 = n0
+    if (present(k1)) me%k1 = k1
+    if (present(k2)) me%k2 = k2
+    if (present(n0)) me%n0 = n0
 
     end subroutine itp_optional_inputs
 !*****************************************************************************************
