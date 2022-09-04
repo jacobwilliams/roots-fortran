@@ -84,8 +84,8 @@ Procedure | Description
 In general, all the methods are guaranteed to converge. Some will be more efficient (in terms of number of function evaluations) than others for various problems. The methods can be broadly classified into three groups:
 
  * Simple classical methods (`bisection`, `regula_falsi`, `illinois`, `ridders`).
- * Newfangled methods (`zhang`, `barycentric`, `blendtf`, `bdqrf`, `anderson_bjorck_king`, `itp`). These rarely or ever seem to be better than the best methods.
- * Best methods (`anderson_bjorck`, `muller`, `pegasus`, `toms748`, `brent`, `brentq`, `brenth`, `chandrupatla`). Generally, one of these will be the most efficient method.
+ * Newfangled methods (`zhang`, `barycentric`, `blendtf`, `bdqrf`, `anderson_bjorck_king`). These rarely or ever seem to be better than the best methods.
+ * Best methods (`anderson_bjorck`, `muller`, `pegasus`, `toms748`, `brent`, `brentq`, `brenth`, `chandrupatla`, `itp`). Generally, one of these will be the most efficient method.
 
 Note that some of the implementations in this library contain additional checks for robustness, and so may behave better than naive implementations of the same algorithms. In addition, all methods have an option to fall back to bisection if the method fails to converge.
 
