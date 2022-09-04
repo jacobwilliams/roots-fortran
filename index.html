@@ -142,31 +142,91 @@
 <h2>Usage</h2>
 <h3>Methods</h3>
 <p>The module contains the following methods (in alphabetical order):</p>
-<ul>
-<li><code>anderson_bjorck</code></li>
-<li><code>anderson_bjorck_king</code> (a variant of <code>anderson_bjorck</code>)</li>
-<li><code>barycentric</code></li>
-<li><code>bdqrf</code></li>
-<li><code>bisection</code></li>
-<li><code>blendtf</code></li>
-<li><code>brent</code></li>
-<li><code>brenth</code> (a variant of <code>brent</code>)</li>
-<li><code>brentq</code> (a variant of <code>brent</code>)</li>
-<li><code>chandrupatla</code></li>
-<li><code>illinois</code></li>
-<li><code>muller</code></li>
-<li><code>pegasus</code></li>
-<li><code>regula_falsi</code></li>
-<li><code>ridders</code></li>
-<li><code>toms748</code></li>
-<li><code>zhang</code></li>
-</ul>
+<table>
+<thead>
+<tr>
+<th>Procedure</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/anderson_bjorck.html"><code>anderson_bjorck</code></a></td>
+<td>Anderson-Bjorck method</td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/anderson_bjorck_king.html"><code>anderson_bjorck_king</code></a></td>
+<td>a <a href="https://link.springer.com/content/pdf/bbm%3A978-3-642-05175-3%2F1.pdf">variant</a> of <code>anderson_bjorck</code></td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/barycentric.html"><code>barycentric</code></a></td>
+<td>Barycentric interpolation method</td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/bdqrf.html"><code>bdqrf</code></a></td>
+<td>Bisected Direct Quadratic Regula Falsi</td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/bisection.html"><code>bisection</code></a></td>
+<td>Classic bisection method</td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/blendtf.html"><code>blendtf</code></a></td>
+<td>Blended method of trisection and false position</td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/brent.html"><code>brent</code></a></td>
+<td>Classic Brent's method (a.k.a. Zeroin)</td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/brenth.html"><code>brenth</code></a></td>
+<td>SciPy variant of <code>brent</code></td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/brentq.html"><code>brentq</code></a></td>
+<td>SciPy variant of <code>brent</code></td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/chandrupatla.html"><code>chandrupatla</code></a></td>
+<td>Hybrid quadratic/bisection algorithm</td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/illinois.html"><code>illinois</code></a></td>
+<td>Illinois method</td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/muller.html"><code>muller</code></a></td>
+<td>Improved Muller method (for real roots only)</td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/pegasus.html"><code>pegasus</code></a></td>
+<td>Pegasus method</td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/regula_falsi.html"><code>regula_falsi</code></a></td>
+<td>Classic regula falsi method</td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/ridders.html"><code>ridders</code></a></td>
+<td>Classic Ridders method</td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/toms748.html"><code>toms748</code></a></td>
+<td>Algorithm 748</td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/zhang.html"><code>zhang</code></a></td>
+<td>Zhang's method (with corrections from Stage)</td>
+</tr>
+</tbody>
+</table>
 <p>In general, all the methods are guaranteed to converge. Some will be more efficient (in terms of number of function evaluations) than others for various problems. The methods can be broadly classified into three groups:</p>
 <ul>
 <li>Simple classical methods (<code>bisection</code>, <code>regula_falsi</code>, <code>illinois</code>, <code>ridders</code>).</li>
 <li>Newfangled methods (<code>zhang</code>, <code>barycentric</code>, <code>blendtf</code>, <code>bdqrf</code>, <code>anderson_bjorck_king</code>). These rarely or ever seem to be better than the best methods.</li>
 <li>Best methods (<code>anderson_bjorck</code>, <code>muller</code>, <code>pegasus</code>, <code>toms748</code>, <code>brent</code>, <code>brentq</code>, <code>brenth</code>, <code>chandrupatla</code>). Generally, one of these will be the most efficient method.</li>
 </ul>
+<p>Note that some of the implementations in this library contain additional checks for robustness, and so may behave better than naive implementations of the same algorithms. In addition, all methods have an option to fall back to bisection if the method fails to converge.</p>
 <h3>Functional Interface Example</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">program </span><span class="n">main</span><span class="w"></span>
 
