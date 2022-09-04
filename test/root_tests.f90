@@ -1202,12 +1202,21 @@ program root_tests
         if (present(x)) f = sin(x) - x**2
         if (present(latex)) latex = '\sin(x) - x^2'
 
+    ! linear function:
+    case(118)
+        a = -1000.0_wp
+        b = 1.0_wp
+        root = 0.0_wp
+        if (present(x)) f = x
+        if (present(latex)) latex = 'x'
+
+
     case default
         write(*,*) 'invalid case: ', nprob
         error stop 'invalid case'
     end select
 
-    if (present(num_of_problems)) num_of_problems = 117
+    if (present(num_of_problems)) num_of_problems = 118
 
     ! outputs:
     if (present(ax))    ax = a
