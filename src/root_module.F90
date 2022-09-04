@@ -41,6 +41,7 @@
 
     integer,parameter :: wp = root_module_rk  !! local copy of `root_module_rk` with a shorter name
     integer,parameter :: name_len = 32  !! max length of the method names
+    real(wp),parameter,private :: golden_ratio = (1.0_wp + sqrt(5.0_wp))/2.0_wp !! golden ratio `phi`
 
     type,public :: root_method
         !! a type to define enums for the different methods
@@ -67,6 +68,7 @@
     type(root_method),parameter,public :: root_method_anderson_bjorck_king = root_method(15, 'anderson_bjorck_king') !! enum type for `anderson_bjorck_king` method
     type(root_method),parameter,public :: root_method_blendtf              = root_method(16, 'blendtf')              !! enum type for `blendtf` method
     type(root_method),parameter,public :: root_method_barycentric          = root_method(17, 'barycentric')          !! enum type for `barycentric` method
+    type(root_method),parameter,public :: root_method_itp                  = root_method(18, 'itp')                  !! enum type for `itp` method
 
     type(root_method),parameter,dimension(*),public :: set_of_root_methods = &
         [ root_method_brent,                &
@@ -85,7 +87,8 @@
           root_method_zhang,                &
           root_method_anderson_bjorck_king, &
           root_method_blendtf,              &
-          root_method_barycentric ]  !! list of the available methods (see [[root_scalar]])
+          root_method_barycentric,          &
+          root_method_itp                   ]  !! list of the available methods (see [[root_scalar]])
 
     type,abstract,public :: root_solver
         !! abstract class for the root solver methods
@@ -242,6 +245,21 @@
     private
     procedure,public :: find_root => barycentric
     end type barycentric_solver
+
+    type,extends(root_solver),public :: itp_solver
+    !! ITP root solver
+    private
+
+    ! tuning parameters for ITP:
+    real(wp) :: k1 = 0.1_wp  !! from (0, inf)
+    real(wp) :: k2 = 0.98_wp * (1.0_wp + golden_ratio)  !! from [1, 1+phi]
+    integer  :: n0 = 1
+
+    contains
+    private
+    procedure,public :: find_root => itp
+    procedure,public :: set_optional_inputs => itp_optional_inputs
+    end type itp_solver
 
     abstract interface
         function func(me,x) result(f)
@@ -437,6 +455,7 @@
     case(root_method_anderson_bjorck_king%id); allocate(anderson_bjorck_king_solver :: s)
     case(root_method_blendtf%id);              allocate(blendtf_solver              :: s)
     case(root_method_barycentric%id);          allocate(barycentric_solver          :: s)
+    case(root_method_itp%id);                  allocate(itp_solver                  :: s)
 
     case default
         iflag = -999    ! invalid method
@@ -2448,6 +2467,162 @@
         call choose_best(x0,x1,f0,f1,xzero,fzero)
 
     end subroutine barycentric
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  For the [[itp]] method, set the optional inputs.
+
+    subroutine itp_optional_inputs(me,k1,k2,n0)
+
+    implicit none
+
+    class(itp_solver),intent(inout) :: me
+
+    real(wp),intent(in),optional :: k1 !! from (0, inf) [Default is 0.1]
+    real(wp),intent(in),optional :: k2 !! from [1, 1+phi] [Default is 0.98*(1+phi)]
+    integer,intent(in),optional  :: n0 !! [Default is 1
+
+    if (present(k1)) me%k1 = k1
+    if (present(k2)) me%k2 = k2
+    if (present(n0)) me%n0 = n0
+
+    end subroutine itp_optional_inputs
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Compute the zero of the function f(x) in the interval ax,bx using the
+!  Interpolate Truncate and Project (ITP) method.
+!
+!### See also
+!  * Oliveira, I. F. D., Takahashi, R. H. C.,
+!    "An Enhancement of the Bisection Method Average Performance Preserving Minmax Optimality",
+!    ACM Transactions on Mathematical Software. 47 (1): 5:1-5:24. (2020-12-06)
+!
+!### Notes
+!  * This implementation differs from the reference, in that it has an additional
+!    check to make sure the `a,b` values have changed at each iteration. If they
+!    haven't, it will perform a basic bisection.
+
+    subroutine itp(me,ax,bx,fax,fbx,xzero,fzero,iflag)
+
+    implicit none
+
+    class(itp_solver),intent(inout) :: me
+    real(wp),intent(in)    :: ax      !! left endpoint of initial interval
+    real(wp),intent(in)    :: bx      !! right endpoint of initial interval
+    real(wp),intent(in)    :: fax     !! `f(ax)`
+    real(wp),intent(in)    :: fbx     !! `f(ax)`
+    real(wp),intent(out)   :: xzero   !! abscissa approximating a zero of `f` in the interval `ax`,`bx`
+    real(wp),intent(out)   :: fzero   !! value of `f` at the root (`f(xzero)`)
+    integer,intent(out)    :: iflag   !! status flag (`0`=root found, `-2`=max iterations reached)
+
+    real(wp) :: a,b,ya,yb,x12,r,d,xf,bma,sigma,xt,xitp,yitp,term,aprev,bprev,denom
+    integer :: n12, nmax
+    integer :: j !! iteration counter
+    logical :: root_found !! convergence in x
+    logical :: fail !! if we can't interpolate
+
+    real(wp),parameter :: log2 = log(2.0_wp)
+
+    ! initialize:
+    if (fax < fbx) then
+        a  = ax
+        b  = bx
+        ya = fax
+        yb = fbx
+    else
+        a  = bx
+        b  = ax
+        ya = fbx
+        yb = fax
+    end if
+    iflag = 0
+    term = (b-a)/(2.0_wp*me%rtol)
+    n12 = ceiling ( log(term) / log2 ) ! ceiling(log2(term))
+    nmax = n12 + me%n0
+    aprev = huge(1.0_wp) ! initialize to unusual values
+    bprev = huge(1.0_wp) !
+
+    ! main loop
+    do j = 0, min(nmax,me%maxiter)
+
+        x12 = bisect(a,b)
+        bma = b - a
+        ! note: protect for r<0 as mentioned in paper
+        r = max(me%rtol * 2.0_wp ** (nmax-j) - bma/2.0_wp, 0.0_wp)
+        d = me%k1 * bma**me%k2
+
+        ! interpolation:
+        denom = yb - ya
+        fail = abs(denom) <= tiny(1.0_wp)  ! check for divide by zero
+
+        if (.not. fail) then
+            xf = (yb*a - ya*b) / denom
+
+            ! truncation:
+            sigma = sign(1.0_wp, x12 - xf)
+            if (d <= abs(x12-xf)) then
+                xt = xf + sigma * d
+            else
+                xt = x12
+            end if
+
+            ! projection:
+            if (abs(xt - x12) <= r) then
+                xitp = xt
+            else
+                xitp = x12 - sigma * r
+            end if
+
+            ! updating interval:
+            yitp = me%f(xitp)
+            if (solution(xitp,yitp,me%ftol,xzero,fzero)) return
+            if (yitp > 0.0_wp) then
+                b = xitp
+                yb = yitp
+            elseif (yitp < 0.0_wp) then
+                a = xitp
+                ya = yitp
+            else
+                a = xitp
+                b = xitp
+            end if
+
+        end if
+
+        if (fail .or. (a==aprev .and. b==bprev)) then
+            ! if the interval hasn't changed, then it is stuck.
+            ! [this can happen in the test cases].
+            ! So just do a bisection
+            xitp = bisect(a,b)
+            yitp = me%f(xitp)
+            if (solution(xitp,yitp,me%ftol,xzero,fzero)) return
+            if (ya*yitp<0.0_wp) then
+                ! root lies between a and xitp
+                b = xitp
+                yb = yitp
+            else
+                ! root lies between xitp and b
+                a = xitp
+                ya = yitp
+            end if
+        end if
+        aprev = a
+        bprev = b
+
+        ! check for convergence:
+        root_found = me%converged(a,b)
+        if (root_found .or. j==me%maxiter) then
+            call choose_best(a,b,ya,yb,xzero,fzero)
+            if (.not. root_found) iflag = -2  ! max iterations reached
+            exit
+        end if
+
+    end do
+
+    end subroutine itp
 !*****************************************************************************************
 
 !*****************************************************************************************

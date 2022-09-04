@@ -195,6 +195,10 @@
 <td>Illinois method</td>
 </tr>
 <tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/itp.html"><code>itp</code></a></td>
+<td>Interpolate Truncate and Project method</td>
+</tr>
+<tr>
 <td><a href="https://jacobwilliams.github.io/roots-fortran/proc/muller.html"><code>muller</code></a></td>
 <td>Improved Muller method (for real roots only)</td>
 </tr>
@@ -224,7 +228,7 @@
 <ul>
 <li>Simple classical methods (<code>bisection</code>, <code>regula_falsi</code>, <code>illinois</code>, <code>ridders</code>).</li>
 <li>Newfangled methods (<code>zhang</code>, <code>barycentric</code>, <code>blendtf</code>, <code>bdqrf</code>, <code>anderson_bjorck_king</code>). These rarely or ever seem to be better than the best methods.</li>
-<li>Best methods (<code>anderson_bjorck</code>, <code>muller</code>, <code>pegasus</code>, <code>toms748</code>, <code>brent</code>, <code>brentq</code>, <code>brenth</code>, <code>chandrupatla</code>). Generally, one of these will be the most efficient method.</li>
+<li>Best methods (<code>anderson_bjorck</code>, <code>muller</code>, <code>pegasus</code>, <code>toms748</code>, <code>brent</code>, <code>brentq</code>, <code>brenth</code>, <code>chandrupatla</code>, <code>itp</code>). Generally, one of these will be the most efficient method.</li>
 </ul>
 <p>Note that some of the implementations in this library contain additional checks for robustness, and so may behave better than naive implementations of the same algorithms. In addition, all methods have an option to fall back to bisection if the method fails to converge.</p>
 <h3>Functional Interface Example</h3>

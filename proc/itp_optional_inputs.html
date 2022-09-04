@@ -8,7 +8,7 @@
     <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="../favicon.png">
 
-    <title>root_name_to_method &ndash; roots-fortran</title>
+    <title>itp_optional_inputs &ndash; roots-fortran</title>
 
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/pygments.css" rel="stylesheet">
@@ -69,8 +69,8 @@
 
     <div class="container">
   <div class="row">
-    <h1>root_name_to_method
-      <small>Function</small>
+    <h1>itp_optional_inputs
+      <small>Subroutine</small>
     </h1>
     <div class="row">
   <div class="col-lg-12">
@@ -79,14 +79,14 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 0.9% of total for procedures.">15 statements</a>
+    title=" 0.6% of total for procedures.">10 statements</a>
      </li> 
     <li><i class="fa fa-code"></i><a href="../src/root_module.F90"> Source File</a></li>
   </ul>
   <ol class="breadcrumb in-well text-right">
      <li><a href='../sourcefile/root_module.f90.html'>root_module.F90</a></li>
      <li><a href='../module/root_module.html'>root_module</a></li>
-     <li class="active">root_name_to_method</li>
+     <li class="active">itp_optional_inputs</li>
   </ol>
 </div>
 </div>
@@ -107,7 +107,7 @@
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
   <div class="list-group">
-    <a class="list-group-item" href="../proc/root_name_to_method.html#src">root_name_to_method</a>
+    <a class="list-group-item" href="../proc/itp_optional_inputs.html#src">itp_optional_inputs</a>
   </div>
 </div>
 
@@ -116,26 +116,42 @@
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2>private pure function root_name_to_method(name) result(r)</h2>
+    <h2>private subroutine itp_optional_inputs(me, k1, k2, n0)</h2>
     
 
-    <p>Convert a root method name to the corresponding <a href="../type/root_method.html">root_method</a> enum type.</p>
+    <p>For the <a href="../proc/itp.html">itp</a> method, set the optional inputs.</p>
 
     <h3>Arguments</h3>
       <table class="table table-striped varlist">
 <thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
 <tbody>
 <tr>
-  <td><span class="anchor" id="variable-name~2"></span>character(len=*),</td>
-<td>intent(in)</td>
+  <td><span class="anchor" id="variable-me~24"></span>class(<a href='../type/itp_solver.html'>itp_solver</a>),</td>
+<td>intent(inout)</td>
   <td></td>  <td></td><td>::</td>
-  <td><strong>name</strong></td><td><p>method name</p></td>
+  <td><strong>me</strong></td><td></td>
+</tr>
+<tr>
+  <td><span class="anchor" id="variable-k1~2"></span>real(kind=wp),</td>
+<td>intent(in),</td>
+  <td>optional</td>  <td></td><td>::</td>
+  <td><strong>k1</strong></td><td><p>from (0, inf) [Default is 0.1]</p></td>
+</tr>
+<tr>
+  <td><span class="anchor" id="variable-k2~2"></span>real(kind=wp),</td>
+<td>intent(in),</td>
+  <td>optional</td>  <td></td><td>::</td>
+  <td><strong>k2</strong></td><td><p>from [1, 1+phi] [Default is 0.98*(1+phi)]</p></td>
+</tr>
+<tr>
+  <td><span class="anchor" id="variable-n0~2"></span>integer,</td>
+<td>intent(in),</td>
+  <td>optional</td>  <td></td><td>::</td>
+  <td><strong>n0</strong></td><td><p>[Default is 1</p></td>
 </tr>
 </tbody>
 </table>
 
-   <h3>Return Value <small><span class="anchor" id="variable-r"></span>type(<a href='../type/root_method.html'>root_method</a>)</small></h3>
-    <p>the <a href="../type/root_method.html">root_method</a> enum type for that method</p>
     <br>
 
     <section class="visible-xs visible-sm hidden-md">
@@ -144,7 +160,7 @@
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
   <div class="list-group">
-    <a class="list-group-item" href="../proc/root_name_to_method.html#src">root_name_to_method</a>
+    <a class="list-group-item" href="../proc/itp_optional_inputs.html#src">itp_optional_inputs</a>
   </div>
 </div>
 
@@ -162,31 +178,21 @@
     
     <section>
     <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">    </span><span class="k">pure function </span><span class="n">root_name_to_method</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="w"></span>
+    <div class="highlight"><pre><span></span><span class="w">    </span><span class="k">subroutine </span><span class="n">itp_optional_inputs</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">k1</span><span class="p">,</span><span class="n">k2</span><span class="p">,</span><span class="n">n0</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">    </span><span class="k">implicit none</span>
 
-<span class="k">    </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="c">!! method name</span>
-<span class="w">    </span><span class="k">type</span><span class="p">(</span><span class="n">root_method</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="c">!! the [[root_method]] enum type for that method</span>
+<span class="k">    class</span><span class="p">(</span><span class="n">itp_solver</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">me</span><span class="w"></span>
 
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="c">!! counter</span>
-<span class="w">    </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">name</span><span class="p">))</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">name_lowercase</span><span class="w"> </span><span class="c">!! lowercase version of `name`</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">k1</span><span class="w"> </span><span class="c">!! from (0, inf) [Default is 0.1]</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">k2</span><span class="w"> </span><span class="c">!! from [1, 1+phi] [Default is 0.98*(1+phi)]</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">n0</span><span class="w"> </span><span class="c">!! [Default is 1</span>
 
-<span class="w">    </span><span class="c">! convert to lowercase:</span>
-<span class="w">    </span><span class="n">name_lowercase</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lowercase</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">k1</span><span class="p">))</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">k1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">k1</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">k2</span><span class="p">))</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">k2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">k2</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">n0</span><span class="p">))</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">n0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n0</span><span class="w"></span>
 
-<span class="w">    </span><span class="c">! find the name in the list:</span>
-<span class="w">    </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">set_of_root_methods</span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">name_lowercase</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">set_of_root_methods</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">            </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">set_of_root_methods</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"></span>
-<span class="w">            </span><span class="k">return</span>
-<span class="k">        end if</span>
-<span class="k">    end do</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! if the name was not found</span>
-<span class="w">    </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">root_method_null</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">end function </span><span class="n">root_name_to_method</span><span class="w"></span>
+<span class="w">    </span><span class="k">end subroutine </span><span class="n">itp_optional_inputs</span><span class="w"></span>
 </pre></div>
 
     </section>
