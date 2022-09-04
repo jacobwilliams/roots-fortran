@@ -1300,12 +1300,20 @@ program root_tests
         if (present(x)) f = sign(1.0_wp,3.0_wp*x+1.0_wp)*(1.0_wp - sqrt(1.0_wp-(3.0_wp*x+1.0_wp)**2/(9**2)))
         if (present(latex)) latex = '' !todo
 
+    ! linear function:
+    case(132)
+        a = -1000.0_wp
+        b = 1.0_wp
+        root = 0.0_wp
+        if (present(x)) f = x
+        if (present(latex)) latex = 'x'
+
     case default
         write(*,*) 'invalid case: ', nprob
         error stop 'invalid case'
     end select
 
-    if (present(num_of_problems)) num_of_problems = 131
+    if (present(num_of_problems)) num_of_problems = 132
 
     ! outputs:
     if (present(ax))    ax = a
