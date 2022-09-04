@@ -41,6 +41,7 @@
 
     integer,parameter :: wp = root_module_rk  !! local copy of `root_module_rk` with a shorter name
     integer,parameter :: name_len = 32  !! max length of the method names
+    real(wp),parameter,private :: golden_ratio = (1.0_wp + sqrt(5.0_wp))/2.0_wp !! golden ratio `phi`
 
     type,public :: root_method
         !! a type to define enums for the different methods
@@ -248,9 +249,16 @@
     type,extends(root_solver),public :: itp_solver
     !! ITP root solver
     private
+
+    ! tuning parameters for ITP:
+    real(wp) :: k1 = 0.1_wp  !! from (0, inf)
+    real(wp) :: k2 = 0.98_wp * (1.0_wp + golden_ratio)  !! from [1, 1+phi]
+    integer  :: n0 = 1
+
     contains
     private
     procedure,public :: find_root => itp
+    procedure,public :: set_optional_inputs => itp_optional_inputs
     end type itp_solver
 
     abstract interface
@@ -2463,6 +2471,27 @@
 
 !*****************************************************************************************
 !>
+!  For the [[itp]] method, set the optional inputs.
+
+    subroutine itp_optional_inputs(me,k1,k2,n0)
+
+    implicit none
+
+    class(itp_solver),intent(inout) :: me
+
+    real(wp),intent(in),optional :: k1 !! from (0, inf) [Default is 0.1]
+    real(wp),intent(in),optional :: k2 !! from [1, 1+phi] [Default is 0.98*(1+phi)]
+    integer,intent(in),optional  :: n0 !! [Default is 1
+
+    if (present(k2)) me%k1 = k1
+    if (present(n0)) me%k2 = k2
+    if (present(k1)) me%n0 = n0
+
+    end subroutine itp_optional_inputs
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Compute the zero of the function f(x) in the interval ax,bx using the
 !  Interpolate Truncate and Project (ITP) method.
 !
@@ -2495,13 +2524,6 @@
     logical :: root_found !! convergence in x
     logical :: fail !! if we can't interpolate
 
-    real(wp),parameter :: phi = (1.0_wp + sqrt(5.0_wp))/2.0_wp !! golden ratio
-
-    !.... tuning parameters should be optional inputs ....
-    real(wp),parameter :: k1 = 0.1_wp   !! from (0, inf)
-    real(wp),parameter :: k2 = 0.98_wp * (1.0_wp + phi) !! from [1, 1+phi]
-    integer,parameter :: n0 = 1
-
     real(wp),parameter :: log2 = log(2.0_wp)
 
     ! initialize:
@@ -2518,8 +2540,8 @@
     end if
     iflag = 0
     term = (b-a)/(2.0_wp*me%rtol)
-    n12 = int ( anint (log(term) / log2 ) ) ! int(log2(term))
-    nmax = n12 + me%maxiter
+    n12 = ceiling ( log(term) / log2 ) ! ceiling(log2(term))
+    nmax = n12 + me%n0
     aprev = huge(1.0_wp) ! initialize to unusual values
     bprev = huge(1.0_wp) !
 
@@ -2530,7 +2552,7 @@
         bma = b - a
         ! note: protect for r<0 as mentioned in paper
         r = max(me%rtol * 2.0_wp ** (nmax-j) - bma/2.0_wp, 0.0_wp)
-        d = k1 * bma**k2
+        d = me%k1 * bma**me%k2
 
         ! interpolation:
         denom = yb - ya
