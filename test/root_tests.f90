@@ -151,13 +151,6 @@ program root_tests
             rtol = 1.0e-13_wp
             ftol = 1.0e-15_wp
             tol_for_check = 1.0e-7_wp
-
-            ! ! from ITP paper:
-            ! atol = 1.0e-10_wp
-            ! rtol = 1.0e-10_wp
-            ! ftol = 1.0e-10_wp
-            ! tol_for_check = 1.0e-7_wp
-
         case(real128)
             atol = 1.0e-25_wp
             rtol = 1.0e-23_wp
@@ -1274,7 +1267,6 @@ program root_tests
         if (present(latex)) latex = '(x + \frac{2}{3}) / (x + \frac{101}{100})'
 
     ! ill-behaved functions:
-    ! .... NOTE: these aren't behaving for ITP as indicated in the paper ???
     case(128) ! Polynomial 3
         a = -1.0_wp
         b = 1.0_wp
