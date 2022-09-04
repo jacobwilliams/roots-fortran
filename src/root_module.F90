@@ -2534,7 +2534,7 @@
 
         ! interpolation:
         denom = yb - ya
-        fail = abs(denom) <= epsilon(1.0_wp)  ! check for divide by zero
+        fail = abs(denom) <= tiny(1.0_wp)  ! check for divide by zero
 
         if (.not. fail) then
             xf = (yb*a - ya*b) / denom
