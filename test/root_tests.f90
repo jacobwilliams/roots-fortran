@@ -34,7 +34,7 @@ program root_tests
     character(len=*),parameter :: fmt  = '(   A20,1X,A3,1X,A4,1X,A16,  1X,A25,   1X,A16,  1X,A5,1X,A5,1X,A8  )' !! format for header
     character(len=*),parameter :: dfmt = '(1P,A20,1X,I3,1X,I4,1X,E16.6,1X,E25.16,1X,E16.6,1X,I5,1X,I5,1X,E8.1)' !! format for results
 
-    integer,parameter :: number_of_methods = 17 !! number of methods to test
+    integer,parameter :: number_of_methods = 18 !! number of methods to test
     character(len=100),dimension(number_of_methods),parameter :: methods = [ &
         'bisection           ', &
         'brent               ', &
@@ -52,7 +52,8 @@ program root_tests
         'toms748             ', &
         'zhang               ', &
         'blendtf             ', &
-        'barycentric         '] !! method names
+        'barycentric         ', &
+        'itp                 '] !! method names
 
     integer,dimension(number_of_methods) :: number_of_wins, ivec, number_of_failures, ivec2
 
@@ -707,7 +708,7 @@ program root_tests
         root = 0.0_wp
         if (present(x)) f = sin(x*10.0_wp) + sin(x*2.0_wp) + &
                             atan(x/3.0_wp)*x**2 + exp(x) - 1.0_wp
-        if (present(latex)) latex = '\sin(10 x) + \sin(2 x) + \atan(x/3) x^2 + \mathrm{e}^x - 1'
+        if (present(latex)) latex = '\sin(10 x) + \sin(2 x) + \tan^{-1} (x/3) x^2 + \mathrm{e}^x - 1'
 
     ! functions are from:
     !   T. R. Chandrupatla, "A new hybrid quadratic/bisection algorithm for finding the zero of
@@ -1202,12 +1203,109 @@ program root_tests
         if (present(x)) f = sin(x) - x**2
         if (present(latex)) latex = '\sin(x) - x^2'
 
+    case(118) ! https://en.wikipedia.org/wiki/ITP_method#Example:_Finding_the_root_of_a_polynomial
+        a = 1.0_wp
+        b = 2.0_wp
+        root = 1.5213797068045798E+00_wp
+        if (present(x)) f = x**3 - x - 2.0_wp
+        if (present(latex)) latex = 'x^3 - x - 2'
+
+    ! from the ITP paper : Table 1
+    case(119) ! Lambert
+        a = -1.0_wp
+        b = 1.0_wp
+        root = 5.6714329040978384E-01_wp
+        if (present(x)) f = x*exp(x) - 1.0_wp
+        if (present(latex)) latex = 'x \exp(x) - 1'
+    case(120) ! Trigonometric 1
+        a = -1.0_wp
+        b = 1.0_wp
+        root = 1.0E-01_wp
+        if (present(x)) f = tan(x - 1.0_wp / 10.0_wp)
+        if (present(latex)) latex = '\tan( x - \frac{1}{10} )'
+    case(121) ! Trigonometric 2
+        a = -1.0_wp
+        b = 1.0_wp
+        root = -5.2359877559829893E-01_wp
+        if (present(x)) f = sin(x) + 1.0_wp / 2.0_wp
+        if (present(latex)) latex = '\sin(x) + \frac{1}{2}'
+    case(122) ! Polynomial 1
+        a = -1.0_wp
+        b = 1.0_wp
+        root = -8.4391456864926628E-01_wp
+        if (present(x)) f = 4.0_wp*x**5 + x**2 + 1.0_wp
+        if (present(latex)) latex = '4x^5 + x^2 + 1'
+    case(123) ! Polynomial 2
+        a = -1.0_wp
+        b = 1.0_wp
+        root = 8.3507904272355904E-01_wp
+        if (present(x)) f = x + x**10 - 1.0_wp
+        if (present(latex)) latex = 'x + x^{10} - 1'
+    case(124) ! Exponential
+        a = -1.0_wp
+        b = 1.0_wp
+        root = 8.7356852683023178E-01_wp
+        if (present(x)) f = pi**x - exp(1.0_wp)
+        if (present(latex)) latex = '\pi^x - e'
+    case(125) ! Posynomial
+        a = -1.0_wp
+        b = 1.0_wp
+        root = -3.7020127707860923E-02_wp
+        if (present(x)) f = 1.0_wp/3.0_wp + sign(1.0_wp, x)*abs(x)**(1.0_wp/3.0_wp) + x**3
+        if (present(latex)) latex = '1/3 + \sign x |x|^{1/3} + x^3'
+    case(126) ! Weierstrass
+        a = -1.0_wp
+        b = 1.0_wp
+        root = -2.0065503320580689E-04_wp
+        if (present(x)) f = 1.0_wp/10.0_wp**3 + sum([(sin(pi*i**3*x/2.0_wp)/pi/i**3, i = 1, 10)])
+        if (present(latex)) latex = '\frac{1}{10^3} + \sum_{i=1}^{10} \sin (\frac{\pi i^3 x}{2}) / \pi i^3'
+    case(127) ! Poly.Frac.
+        a = -1.0_wp
+        b = 1.0_wp
+        root = -6.6666666666666666E-01_wp
+        if (present(x)) f = (x + 2.0_wp/3.0_wp) / (x + 101.0_wp/100.0_wp)
+        if (present(latex)) latex = '(x + \frac{2}{3}) / (x + \frac{101}{100})'
+
+    ! ill-behaved functions:
+    case(128) ! Polynomial 3
+        a = -1.0_wp
+        b = 1.0_wp
+        root = 1.0e-6_wp
+        if (present(x)) f = (x * 1.0e6_wp - 1.0_wp)**3
+        if (present(latex)) latex = '(x 10^6 - 1)^3'
+    case(129) ! Exp.Poly.
+        a = -1.0_wp
+        b = 1.0_wp
+        root = 1.0e-6_wp
+        if (present(x)) f = exp(x) * (x * 1.0e6_wp - 1.0_wp)**3
+        if (present(latex)) latex = 'e^x (x 10^6 - 1)^3'
+    case(130) ! Tan.Poly.
+        a = -1.0_wp
+        b = 1.0_wp
+        root = 3.3333333333333333E-01_wp
+        if (present(x)) f = (x - 1.0_wp/3.0_wp)**2 * atan( x - 1.0_wp/3.0_wp )
+        if (present(latex)) latex = '\sign (3x + 1) \left( 1 - \sqrt{1 - (3x+1)^2/9^2} \right)'
+    case(131) ! Circles
+        a = -1.0_wp
+        b = 1.0_wp
+        root = -3.3333333333333333E-01_wp
+        if (present(x)) f = sign(1.0_wp,3.0_wp*x+1.0_wp)*(1.0_wp - sqrt(1.0_wp-(3.0_wp*x+1.0_wp)**2/(9**2)))
+        if (present(latex)) latex = '' !todo
+
+    ! linear function:
+    case(132)
+        a = -1000.0_wp
+        b = 1.0_wp
+        root = 0.0_wp
+        if (present(x)) f = x
+        if (present(latex)) latex = 'x'
+
     case default
         write(*,*) 'invalid case: ', nprob
         error stop 'invalid case'
     end select
 
-    if (present(num_of_problems)) num_of_problems = 117
+    if (present(num_of_problems)) num_of_problems = 132
 
     ! outputs:
     if (present(ax))    ax = a
