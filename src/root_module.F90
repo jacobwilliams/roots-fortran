@@ -1194,11 +1194,7 @@
 
         xm = bisect(xup,xdn)
         ym = me%f(xm)
-        if (abs(ym)<=me%ftol) then
-            xzero = xm
-            fzero = ym
-            exit ! Convergence
-        end if
+        if (solution(xm,ym,me%ftol,xzero,fzero)) return ! Convergence
 
         d = (xup - xdn) / 2.0_wp
         a = (yup + ydn - 2.0_wp*ym)/(2.0_wp*d**2)
@@ -1206,7 +1202,7 @@
 
         xzero = xm - 2.0_wp*ym / (b * (1.0_wp + sqrt(1.0_wp - 4.0_wp*a*ym/b**2)))
         fzero = me%f(xzero)
-        if (abs(fzero)<=me%ftol) exit ! Convergence
+        if (solution(xzero,fzero,me%ftol,xzero,fzero)) return ! Convergence
 
         if (fzero>0.0_wp) then
             yup = fzero
