@@ -1114,7 +1114,7 @@
         if (me%solution(x3,f3,xzero,fzero)) return
 
         ! determine a new inclusion interval:
-        if (f2*f3<=0.0_wp) then  ! root on (x2,x3)
+        if (f2*f3<0.0_wp) then  ! root on (x2,x3)
             x1 = x2
             f1 = f2
             f1tmp = f1
