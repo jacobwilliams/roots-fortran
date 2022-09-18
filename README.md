@@ -178,6 +178,11 @@ The latest API documentation for the `master` branch can be found [here](https:/
 
 The roots-fortran source code and related files and documentation are distributed under a permissive free software [license](https://github.com/jacobwilliams/roots-fortran/blob/master/LICENSE.md) (BSD-style).
 
+
+## Related Fortran libraries
+
+* [polyroots-fortran](https://github.com/jacobwilliams/polyroots-fortran) -- For finding all the roots of polynomials with real or complex coefficients.
+
 ## Similar libraries in other programming languages
 
 Language | Library
