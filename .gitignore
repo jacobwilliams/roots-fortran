@@ -5,6 +5,7 @@ build/
 install/
 doc/
 .vscode/
+/tmp
 
 *.gcov
 *.gcov.md*
