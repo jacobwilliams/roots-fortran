@@ -60,26 +60,26 @@ To generate the documentation using [ford](https://github.com/Fortran-FOSS-Progr
 
 The module contains the following methods (in alphabetical order):
 
-Procedure | Description
---- | ---
-[`anderson_bjorck`](https://jacobwilliams.github.io/roots-fortran/proc/anderson_bjorck.html)           | Anderson-Bjorck method
-[`anderson_bjorck_king`](https://jacobwilliams.github.io/roots-fortran/proc/anderson_bjorck_king.html) | a [variant](https://link.springer.com/content/pdf/bbm%3A978-3-642-05175-3%2F1.pdf) of `anderson_bjorck`
-[`barycentric`](https://jacobwilliams.github.io/roots-fortran/proc/barycentric.html)                   | Barycentric interpolation method
-[`bdqrf`](https://jacobwilliams.github.io/roots-fortran/proc/bdqrf.html)                               | Bisected Direct Quadratic Regula Falsi
-[`bisection`](https://jacobwilliams.github.io/roots-fortran/proc/bisection.html)                       | Classic bisection method
-[`blendtf`](https://jacobwilliams.github.io/roots-fortran/proc/blendtf.html)                           | Blended method of trisection and false position
-[`brent`](https://jacobwilliams.github.io/roots-fortran/proc/brent.html)                               | Classic Brent's method (a.k.a. Zeroin)
-[`brenth`](https://jacobwilliams.github.io/roots-fortran/proc/brenth.html)                             | SciPy variant of `brent`
-[`brentq`](https://jacobwilliams.github.io/roots-fortran/proc/brentq.html)                             | SciPy variant of `brent`
-[`chandrupatla`](https://jacobwilliams.github.io/roots-fortran/proc/chandrupatla.html)                 | Hybrid quadratic/bisection algorithm
-[`illinois`](https://jacobwilliams.github.io/roots-fortran/proc/illinois.html)                         | Illinois method
-[`itp`](https://jacobwilliams.github.io/roots-fortran/proc/itp.html)                                   | Interpolate Truncate and Project method
-[`muller`](https://jacobwilliams.github.io/roots-fortran/proc/muller.html)                             | Improved Muller method (for real roots only)
-[`pegasus`](https://jacobwilliams.github.io/roots-fortran/proc/pegasus.html)                           | Pegasus method
-[`regula_falsi`](https://jacobwilliams.github.io/roots-fortran/proc/regula_falsi.html)                 | Classic regula falsi method
-[`ridders`](https://jacobwilliams.github.io/roots-fortran/proc/ridders.html)                           | Classic Ridders method
-[`toms748`](https://jacobwilliams.github.io/roots-fortran/proc/toms748.html)                           | Algorithm 748
-[`zhang`](https://jacobwilliams.github.io/roots-fortran/proc/zhang.html)                               | Zhang's method (with corrections from Stage)
+Procedure | Description | Reference
+--- | --- | ---
+[`anderson_bjorck`](https://jacobwilliams.github.io/roots-fortran/proc/anderson_bjorck.html)           | Anderson-Bjorck method | [King (1973)](https://link.springer.com/article/10.1007/BF01933405)
+[`anderson_bjorck_king`](https://jacobwilliams.github.io/roots-fortran/proc/anderson_bjorck_king.html) | a [variant](https://link.springer.com/content/pdf/bbm%3A978-3-642-05175-3%2F1.pdf) of `anderson_bjorck` | [King (1973)](https://link.springer.com/article/10.1007/BF01933405)
+[`barycentric`](https://jacobwilliams.github.io/roots-fortran/proc/barycentric.html)                   | Barycentric interpolation method | [Mendez & Castillo (2021)](https://www.researchgate.net/publication/352162661_A_highly_efficient_numerical_method_to_solve_non-linear_functions_using_barycentric_interpolation)
+[`bdqrf`](https://jacobwilliams.github.io/roots-fortran/proc/bdqrf.html)                               | Bisected Direct Quadratic Regula Falsi | [Gottlieb & Thompson (2010)](http://www.m-hikari.com/ams/ams-2010/ams-13-16-2010/gottliebAMS13-16-2010.pdf)
+[`bisection`](https://jacobwilliams.github.io/roots-fortran/proc/bisection.html)                       | Classic bisection method | [Bolzano (1817)]()
+[`blendtf`](https://jacobwilliams.github.io/roots-fortran/proc/blendtf.html)                           | Blended method of trisection and false position | [Badr, Almotairi, Ghamry (2021)](https://www.mdpi.com/2227-7390/9/11/1306/htm)
+[`brent`](https://jacobwilliams.github.io/roots-fortran/proc/brent.html)                               | Classic Brent's method (a.k.a. Zeroin) | [Brent (1971)](https://maths-people.anu.edu.au/~brent/pd/rpb005.pdf)
+[`brenth`](https://jacobwilliams.github.io/roots-fortran/proc/brenth.html)                             | SciPy variant of `brent` | [SciPy](https://github.com/scipy/scipy/)
+[`brentq`](https://jacobwilliams.github.io/roots-fortran/proc/brentq.html)                             | SciPy variant of `brent` | [SciPy](https://github.com/scipy/scipy/)
+[`chandrupatla`](https://jacobwilliams.github.io/roots-fortran/proc/chandrupatla.html)                 | Hybrid quadratic/bisection algorithm | [Chandrupatla (1997)](https://dl.acm.org/doi/10.1016/S0965-9978%2896%2900051-8)
+[`illinois`](https://jacobwilliams.github.io/roots-fortran/proc/illinois.html)                         | Illinois method | [Dowell & Jarratt (1971)](https://personal.math.ubc.ca/~loew/mech2/Dowell+Jarratt.pdf)
+[`itp`](https://jacobwilliams.github.io/roots-fortran/proc/itp.html)                                   | Interpolate Truncate and Project method | [Oliveira & Takahashi (2020)](https://dl.acm.org/doi/abs/10.1145/3423597)
+[`muller`](https://jacobwilliams.github.io/roots-fortran/proc/muller.html)                             | Improved Muller method (for real roots only) | [Muller (1956)](https://www.ams.org/journals/mcom/1956-10-056/S0025-5718-1956-0083822-0/S0025-5718-1956-0083822-0.pdf)
+[`pegasus`](https://jacobwilliams.github.io/roots-fortran/proc/pegasus.html)                           | Pegasus method | [Dowell & Jarratt (1972)](https://link.springer.com/article/10.1007/BF01932959)
+[`regula_falsi`](https://jacobwilliams.github.io/roots-fortran/proc/regula_falsi.html)                 | Classic regula falsi method | ?
+[`ridders`](https://jacobwilliams.github.io/roots-fortran/proc/ridders.html)                           | Classic Ridders method | [Ridders (1979)](https://cs.fit.edu/~dmitra/SciComp/Resources/RidderMethod.pdf)
+[`toms748`](https://jacobwilliams.github.io/roots-fortran/proc/toms748.html)                           | Algorithm 748 |  [Alefeld, Potra, Shi (1995)](https://dl.acm.org/doi/abs/10.1145/210089.210111)
+[`zhang`](https://jacobwilliams.github.io/roots-fortran/proc/zhang.html)                               | Zhang's method (with corrections from Stage) | [Zhang (2011)](https://www.cscjournals.org/download/issuearchive/IJEA/Volume2/IJEA_V2_I1.pdf)
 
 In general, all the methods are guaranteed to converge. Some will be more efficient (in terms of number of function evaluations) than others for various problems. The methods can be broadly classified into three groups:
 
