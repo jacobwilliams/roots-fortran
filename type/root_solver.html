@@ -79,7 +79,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title="<p>11.4% of total for derived types.</p>Including implementation: 121 statements,  3.5% of total for derived types.">15 statements</a>
+    title="<p>12.0% of total for derived types.</p>Including implementation: 133 statements,  4.9% of total for derived types.">16 statements</a>
      </li> 
     <li><i class="fa fa-code"></i><a href="../src/root_module.F90"> Source File</a></li>
   </ul>
@@ -125,6 +125,7 @@
       <a class="list-group-item" href="../type/root_solver.html#boundprocedure-find_root">find_root</a>
       <a class="list-group-item" href="../type/root_solver.html#boundprocedure-get_fa_fb">get_fa_fb</a>
       <a class="list-group-item" href="../type/root_solver.html#boundprocedure-converged">converged</a>
+      <a class="list-group-item" href="../type/root_solver.html#boundprocedure-solution">solution</a>
     </div>
   </div>
 </div>
@@ -168,6 +169,7 @@
       <a class="list-group-item" href="../type/root_solver.html#boundprocedure-find_root">find_root</a>
       <a class="list-group-item" href="../type/root_solver.html#boundprocedure-get_fa_fb">get_fa_fb</a>
       <a class="list-group-item" href="../type/root_solver.html#boundprocedure-converged">converged</a>
+      <a class="list-group-item" href="../type/root_solver.html#boundprocedure-solution">solution</a>
     </div>
   </div>
 </div>
@@ -188,27 +190,27 @@
 <tbody>
 <tr>
   <td><span class="anchor" id="variable-f"></span>procedure(<a href='../interface/func.html'>func</a>),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
+<td>private,</td>  <td>pointer</td><td>::</td>
   <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user function to find the root of</p></td>
 </tr>
 <tr>
   <td><span class="anchor" id="variable-ftol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
+<td>private</td>  <td></td><td>::</td>
   <td><strong>ftol</strong></td><td> =</td><td>0.0_wp</td><td><p>absolute tolerance for <code>f=0</code></p></td>
 </tr>
 <tr>
   <td><span class="anchor" id="variable-rtol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
+<td>private</td>  <td></td><td>::</td>
   <td><strong>rtol</strong></td><td> =</td><td>1.0e-6_wp</td><td><p>relative tol for x</p></td>
 </tr>
 <tr>
   <td><span class="anchor" id="variable-atol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
+<td>private</td>  <td></td><td>::</td>
   <td><strong>atol</strong></td><td> =</td><td>1.0e-12_wp</td><td><p>absolute tol for x [not used by all methods]</p></td>
 </tr>
 <tr>
   <td><span class="anchor" id="variable-maxiter"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
+<td>private</td>  <td></td><td>::</td>
   <td><strong>maxiter</strong></td><td> =</td><td>2000</td><td><p>maximum number of iterations [not used by all methods]</p></td>
 </tr>
 </tbody>
@@ -230,10 +232,16 @@
   </div>
   <ul class="list-group">
       <li class="list-group-item">
-          <h3>private subroutine <a href='../proc/initialize_root_solver.html'>initialize_root_solver</a>(me, f, ftol, rtol, atol, maxiter)</h3>
-<p>Initialize the <a href="../type/root_solver.html">root_solver</a> class.</p><a href="../proc/initialize_root_solver.html" class="pull-right"><emph>Read more&hellip;</emph></a>
-    
-<h4>Arguments</h4>      <table class="table table-striped varlist">
+                <h3>
+        private subroutine <a href='../proc/initialize_root_solver.html'>initialize_root_solver</a>(me, f, ftol, rtol, atol, maxiter)</h3>
+      
+    <p>Initialize the <a href="../type/root_solver.html">root_solver</a> class.</p>
+<p>Note that all optional inputs are not used for all methods.</p>
+
+    <h4>
+    Arguments
+    </h4>
+      <table class="table table-striped varlist">
 <thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
 <tbody>
 <tr>
@@ -288,10 +296,15 @@
   </div>
   <ul class="list-group">
       <li class="list-group-item">
-          <h3>private subroutine <a href='../proc/solve.html'>solve</a>(me, ax, bx, xzero, fzero, iflag, fax, fbx, bisect_on_failure)</h3>
-<p>Main wrapper routine for all the methods.</p>
-    
-<h4>Arguments</h4>      <table class="table table-striped varlist">
+                <h3>
+        private subroutine <a href='../proc/solve.html'>solve</a>(me, ax, bx, xzero, fzero, iflag, fax, fbx, bisect_on_failure)</h3>
+      
+    <p>Main wrapper routine for all the methods.</p>
+
+    <h4>
+    Arguments
+    </h4>
+      <table class="table table-striped varlist">
 <thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
 <tbody>
 <tr>
@@ -360,7 +373,7 @@ to <code>maxiter</code> additional function evaluations.</p></td>
 </div>
 
      <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-find_root"></span><h3>procedure(<a href='../interface/root_f.html'>root_f</a>), public, deferred :: <strong>find_root</strong>    </h3></div>
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-find_root"></span><h3>procedure(<a href='../interface/root_f.html'>root_f</a>), private, deferred :: <strong>find_root</strong>    </h3></div>
   <div class="panel-body">
     
     <p>root solver function. Meant to be
@@ -370,9 +383,14 @@ startup tasks. All these routines assume that
   </div>
   <ul class="list-group">
       <li class="list-group-item">
-            <h3>subroutine root_f(me, ax, bx, fax, fbx, xzero, fzero, iflag)<small>Prototype</small></h3><p>Root solver function interface</p>
-    
-<h4>Arguments</h4>      <table class="table table-striped varlist">
+                  <h3>
+        subroutine root_f(me, ax, bx, fax, fbx, xzero, fzero, iflag)<small>Prototype</small></h3>
+    <p>Root solver function interface</p>
+
+    <h4>
+    Arguments
+    </h4>
+      <table class="table table-striped varlist">
 <thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
 <tbody>
 <tr>
@@ -432,13 +450,18 @@ startup tasks. All these routines assume that
 </div>
 
      <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-get_fa_fb"></span><h3>procedure, public :: <strong>get_fa_fb</strong>    </h3></div>
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-get_fa_fb"></span><h3>procedure, private :: <strong>get_fa_fb</strong>    </h3></div>
   <ul class="list-group">
       <li class="list-group-item">
-          <h3>private subroutine <a href='../proc/get_fa_fb.html'>get_fa_fb</a>(me, ax, bx, fax, fbx, fa, fb)</h3>
-<p>Returns the function values at <code>ax</code> and <code>bx</code> to start the root finding algorithm.</p>
-    
-<h4>Arguments</h4>      <table class="table table-striped varlist">
+                <h3>
+        private subroutine <a href='../proc/get_fa_fb.html'>get_fa_fb</a>(me, ax, bx, fax, fbx, fa, fb)</h3>
+      
+    <p>Returns the function values at <code>ax</code> and <code>bx</code> to start the root finding algorithm.</p>
+
+    <h4>
+    Arguments
+    </h4>
+      <table class="table table-striped varlist">
 <thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
 <tbody>
 <tr>
@@ -492,13 +515,18 @@ startup tasks. All these routines assume that
 </div>
 
      <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-converged"></span><h3>procedure, public :: <strong>converged</strong>    </h3></div>
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-converged"></span><h3>procedure, private :: <strong>converged</strong>    </h3></div>
   <ul class="list-group">
       <li class="list-group-item">
-          <h3>private function <a href='../proc/converged.html'>converged</a>(me, a, b)</h3>
-<p>Determines convergence in x based on if the reltol or abstol is satisfied.</p>
-    
-<h4>Arguments</h4>      <table class="table table-striped varlist">
+                <h3>
+        private function <a href='../proc/converged.html'>converged</a>(me, a, b)</h3>
+      
+    <p>Determines convergence in x based on if the reltol or abstol is satisfied.</p>
+
+    <h4>
+    Arguments
+    </h4>
+      <table class="table table-striped varlist">
 <thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
 <tbody>
 <tr>
@@ -522,7 +550,73 @@ startup tasks. All these routines assume that
 </tbody>
 </table>
 
-<h4>Return Value <small>logical</small></h4>  
+      <h4>
+        Return Value <small>logical      
+      </small>
+      </h4>
+      
+
+      </li>
+  </ul>
+</div>
+
+     <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-solution"></span><h3>procedure, private :: <strong>solution</strong>    </h3></div>
+  <div class="panel-body">
+    
+    <p>to check <code>f</code> value against <code>ftol</code></p>
+  </div>
+  <ul class="list-group">
+      <li class="list-group-item">
+                <h3>
+        private function <a href='../proc/solution.html'>solution</a>(me, x, f, xzero, fzero)</h3>
+      
+    <p>Returns true if this is a solution and sets <code>xzero</code> and <code>fzero</code>.</p>
+
+    <h4>
+    Arguments
+    </h4>
+      <table class="table table-striped varlist">
+<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
+<tbody>
+<tr>
+  <td><span class="anchor" ></span>class(<a href='../type/root_solver.html'>root_solver</a>),</td>
+<td>intent(inout)</td>
+  <td></td>  <td></td><td>::</td>
+  <td><strong>me</strong></td><td></td>
+</tr>
+<tr>
+  <td><span class="anchor" ></span>real(kind=wp),</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
+  <td><strong>x</strong></td><td></td>
+</tr>
+<tr>
+  <td><span class="anchor" ></span>real(kind=wp),</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
+  <td><strong>f</strong></td><td></td>
+</tr>
+<tr>
+  <td><span class="anchor" ></span>real(kind=wp),</td>
+<td>intent(inout)</td>
+  <td></td>  <td></td><td>::</td>
+  <td><strong>xzero</strong></td><td></td>
+</tr>
+<tr>
+  <td><span class="anchor" ></span>real(kind=wp),</td>
+<td>intent(inout)</td>
+  <td></td>  <td></td><td>::</td>
+  <td><strong>fzero</strong></td><td></td>
+</tr>
+</tbody>
+</table>
+
+      <h4>
+        Return Value <small>logical      
+      </small>
+      </h4>
+      
 
       </li>
   </ul>
@@ -550,6 +644,7 @@ startup tasks. All these routines assume that
 <span class="w">                                                </span><span class="c">!! \( f(a_x) \) and \( f(b_x) \) have opposite signs.</span>
 <span class="w">        </span><span class="k">procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">get_fa_fb</span><span class="w"></span>
 <span class="w">        </span><span class="k">procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">converged</span><span class="w"></span>
+<span class="w">        </span><span class="k">procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">solution</span><span class="w"> </span><span class="c">!! to check `f` value against `ftol`</span>
 <span class="w">    </span><span class="k">end type </span><span class="n">root_solver</span><span class="w"></span>
 </pre></div>
 

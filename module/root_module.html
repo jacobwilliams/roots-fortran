@@ -79,7 +79,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title="100.0% of total for modules and submodules.">1804 statements</a>
+    title="100.0% of total for modules and submodules.">1801 statements</a>
      </li> 
     <li><i class="fa fa-code"></i><a href="../src/root_module.F90"> Source File</a></li>
   </ul>
@@ -876,12 +876,12 @@ It should evaluate f(x) for any x in the interval (ax,bx)</p>
 <tbody>
 <tr>
   <td><span class="anchor" id="variable-id"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
+<td>private</td>  <td></td><td>::</td>
   <td><strong>id</strong></td><td> =</td><td>0</td><td><p>unique ID code for the method</p></td>
 </tr>
 <tr>
   <td><span class="anchor" id="variable-name"></span>character(len=name_len),</td>
-<td>public</td>  <td></td><td>::</td>
+<td>private</td>  <td></td><td>::</td>
   <td><strong>name</strong></td><td> =</td><td>''</td><td><p>name of the method</p></td>
 </tr>
 </tbody>
@@ -901,27 +901,27 @@ It should evaluate f(x) for any x in the interval (ax,bx)</p>
 <tbody>
 <tr>
   <td><span class="anchor" id="variable-f"></span>procedure(<a href='../interface/func.html'>func</a>),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
+<td>private,</td>  <td>pointer</td><td>::</td>
   <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user function to find the root of</p></td>
 </tr>
 <tr>
   <td><span class="anchor" id="variable-ftol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
+<td>private</td>  <td></td><td>::</td>
   <td><strong>ftol</strong></td><td> =</td><td>0.0_wp</td><td><p>absolute tolerance for <code>f=0</code></p></td>
 </tr>
 <tr>
   <td><span class="anchor" id="variable-rtol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
+<td>private</td>  <td></td><td>::</td>
   <td><strong>rtol</strong></td><td> =</td><td>1.0e-6_wp</td><td><p>relative tol for x</p></td>
 </tr>
 <tr>
   <td><span class="anchor" id="variable-atol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
+<td>private</td>  <td></td><td>::</td>
   <td><strong>atol</strong></td><td> =</td><td>1.0e-12_wp</td><td><p>absolute tol for x [not used by all methods]</p></td>
 </tr>
 <tr>
   <td><span class="anchor" id="variable-maxiter"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
+<td>private</td>  <td></td><td>::</td>
   <td><strong>maxiter</strong></td><td> =</td><td>2000</td><td><p>maximum number of iterations [not used by all methods]</p></td>
 </tr>
 </tbody>
@@ -935,15 +935,17 @@ It should evaluate f(x) for any x in the interval (ax,bx)</p>
        <td><p>initialize the class [must be called first]</p></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-solve'>solve</a></strong>  </td>
        <td><p>main routine for finding the root</p></td></tr>
-       <tr><td>procedure(root_f), public :: <strong><a href='../type/root_solver.html#boundprocedure-find_root'>find_root</a></strong>  </td>
+       <tr><td>procedure(root_f), private :: <strong><a href='../type/root_solver.html#boundprocedure-find_root'>find_root</a></strong>  </td>
        <td><p>root solver function. Meant to be
 called from <a href="../proc/solve.html">solve</a>, which handles some common
 startup tasks. All these routines assume that
 <script type="math/tex"> f(a_x) </script> and <script type="math/tex"> f(b_x) </script> have opposite signs.</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-get_fa_fb'>get_fa_fb</a></strong>  </td>
+       <tr><td>procedure, private :: <strong><a href='../type/root_solver.html#boundprocedure-get_fa_fb'>get_fa_fb</a></strong>  </td>
        <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-converged'>converged</a></strong>  </td>
+       <tr><td>procedure, private :: <strong><a href='../type/root_solver.html#boundprocedure-converged'>converged</a></strong>  </td>
        <td></td></tr>
+       <tr><td>procedure, private :: <strong><a href='../type/root_solver.html#boundprocedure-solution'>solution</a></strong>  </td>
+       <td><p>to check <code>f</code> value against <code>ftol</code></p></td></tr>
        </tbody>
        </table>
   </div>
@@ -953,38 +955,6 @@ startup tasks. All these routines assume that
   <div class="panel-heading codesum"><span class="anchor" id="type-brent_solver"></span><h3>type, public, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/brent_solver.html'>brent_solver</a>  </h3></div>
   <div class="panel-body">
     <p>Classic brent (zeroin) root solver</p>
-     <h4>Components</h4>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-f"></span>procedure(<a href='../interface/func.html'>func</a>),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user function to find the root of</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-ftol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>ftol</strong></td><td> =</td><td>0.0_wp</td><td><p>absolute tolerance for <code>f=0</code></p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-rtol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>rtol</strong></td><td> =</td><td>1.0e-6_wp</td><td><p>relative tol for x</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-atol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>atol</strong></td><td> =</td><td>1.0e-12_wp</td><td><p>absolute tol for x [not used by all methods]</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-maxiter"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>maxiter</strong></td><td> =</td><td>2000</td><td><p>maximum number of iterations [not used by all methods]</p></td>
-</tr>
-</tbody>
-</table>
-
      
      <h4>Type-Bound Procedures</h4>
       <table class="table table-striped varlist">
@@ -993,10 +963,6 @@ startup tasks. All these routines assume that
        <td><p>initialize the class [must be called first]</p></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-solve'>solve</a></strong>  </td>
        <td><p>main routine for finding the root</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-get_fa_fb'>get_fa_fb</a></strong>  </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-converged'>converged</a></strong>  </td>
-       <td></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/brent_solver.html#boundprocedure-find_root~2'>find_root</a></strong>  => brent </td>
        <td></td></tr>
        </tbody>
@@ -1008,38 +974,6 @@ startup tasks. All these routines assume that
   <div class="panel-heading codesum"><span class="anchor" id="type-bisection_solver"></span><h3>type, public, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/bisection_solver.html'>bisection_solver</a>  </h3></div>
   <div class="panel-body">
     <p>Classic bisection root solver</p>
-     <h4>Components</h4>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-f"></span>procedure(<a href='../interface/func.html'>func</a>),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user function to find the root of</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-ftol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>ftol</strong></td><td> =</td><td>0.0_wp</td><td><p>absolute tolerance for <code>f=0</code></p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-rtol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>rtol</strong></td><td> =</td><td>1.0e-6_wp</td><td><p>relative tol for x</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-atol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>atol</strong></td><td> =</td><td>1.0e-12_wp</td><td><p>absolute tol for x [not used by all methods]</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-maxiter"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>maxiter</strong></td><td> =</td><td>2000</td><td><p>maximum number of iterations [not used by all methods]</p></td>
-</tr>
-</tbody>
-</table>
-
      
      <h4>Type-Bound Procedures</h4>
       <table class="table table-striped varlist">
@@ -1048,10 +982,6 @@ startup tasks. All these routines assume that
        <td><p>initialize the class [must be called first]</p></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-solve'>solve</a></strong>  </td>
        <td><p>main routine for finding the root</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-get_fa_fb'>get_fa_fb</a></strong>  </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-converged'>converged</a></strong>  </td>
-       <td></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/bisection_solver.html#boundprocedure-find_root~3'>find_root</a></strong>  => bisection </td>
        <td></td></tr>
        </tbody>
@@ -1063,38 +993,6 @@ startup tasks. All these routines assume that
   <div class="panel-heading codesum"><span class="anchor" id="type-regula_falsi_solver"></span><h3>type, public, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/regula_falsi_solver.html'>regula_falsi_solver</a>  </h3></div>
   <div class="panel-body">
     <p>Classic Regula Falsi root solver</p>
-     <h4>Components</h4>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-f"></span>procedure(<a href='../interface/func.html'>func</a>),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user function to find the root of</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-ftol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>ftol</strong></td><td> =</td><td>0.0_wp</td><td><p>absolute tolerance for <code>f=0</code></p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-rtol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>rtol</strong></td><td> =</td><td>1.0e-6_wp</td><td><p>relative tol for x</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-atol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>atol</strong></td><td> =</td><td>1.0e-12_wp</td><td><p>absolute tol for x [not used by all methods]</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-maxiter"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>maxiter</strong></td><td> =</td><td>2000</td><td><p>maximum number of iterations [not used by all methods]</p></td>
-</tr>
-</tbody>
-</table>
-
      
      <h4>Type-Bound Procedures</h4>
       <table class="table table-striped varlist">
@@ -1103,10 +1001,6 @@ startup tasks. All these routines assume that
        <td><p>initialize the class [must be called first]</p></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-solve'>solve</a></strong>  </td>
        <td><p>main routine for finding the root</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-get_fa_fb'>get_fa_fb</a></strong>  </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-converged'>converged</a></strong>  </td>
-       <td></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/regula_falsi_solver.html#boundprocedure-find_root~4'>find_root</a></strong>  => regula_falsi </td>
        <td></td></tr>
        </tbody>
@@ -1118,38 +1012,6 @@ startup tasks. All these routines assume that
   <div class="panel-heading codesum"><span class="anchor" id="type-illinois_solver"></span><h3>type, public, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/illinois_solver.html'>illinois_solver</a>  </h3></div>
   <div class="panel-body">
     <p>Illinois (modified Regula Falsi) root solver</p>
-     <h4>Components</h4>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-f"></span>procedure(<a href='../interface/func.html'>func</a>),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user function to find the root of</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-ftol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>ftol</strong></td><td> =</td><td>0.0_wp</td><td><p>absolute tolerance for <code>f=0</code></p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-rtol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>rtol</strong></td><td> =</td><td>1.0e-6_wp</td><td><p>relative tol for x</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-atol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>atol</strong></td><td> =</td><td>1.0e-12_wp</td><td><p>absolute tol for x [not used by all methods]</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-maxiter"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>maxiter</strong></td><td> =</td><td>2000</td><td><p>maximum number of iterations [not used by all methods]</p></td>
-</tr>
-</tbody>
-</table>
-
      
      <h4>Type-Bound Procedures</h4>
       <table class="table table-striped varlist">
@@ -1158,10 +1020,6 @@ startup tasks. All these routines assume that
        <td><p>initialize the class [must be called first]</p></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-solve'>solve</a></strong>  </td>
        <td><p>main routine for finding the root</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-get_fa_fb'>get_fa_fb</a></strong>  </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-converged'>converged</a></strong>  </td>
-       <td></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/illinois_solver.html#boundprocedure-find_root~5'>find_root</a></strong>  => illinois </td>
        <td></td></tr>
        </tbody>
@@ -1173,38 +1031,6 @@ startup tasks. All these routines assume that
   <div class="panel-heading codesum"><span class="anchor" id="type-anderson_bjorck_solver"></span><h3>type, public, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/anderson_bjorck_solver.html'>anderson_bjorck_solver</a>  </h3></div>
   <div class="panel-body">
     <p>anderson bjorck root solver</p>
-     <h4>Components</h4>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-f"></span>procedure(<a href='../interface/func.html'>func</a>),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user function to find the root of</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-ftol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>ftol</strong></td><td> =</td><td>0.0_wp</td><td><p>absolute tolerance for <code>f=0</code></p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-rtol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>rtol</strong></td><td> =</td><td>1.0e-6_wp</td><td><p>relative tol for x</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-atol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>atol</strong></td><td> =</td><td>1.0e-12_wp</td><td><p>absolute tol for x [not used by all methods]</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-maxiter"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>maxiter</strong></td><td> =</td><td>2000</td><td><p>maximum number of iterations [not used by all methods]</p></td>
-</tr>
-</tbody>
-</table>
-
      
      <h4>Type-Bound Procedures</h4>
       <table class="table table-striped varlist">
@@ -1213,10 +1039,6 @@ startup tasks. All these routines assume that
        <td><p>initialize the class [must be called first]</p></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-solve'>solve</a></strong>  </td>
        <td><p>main routine for finding the root</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-get_fa_fb'>get_fa_fb</a></strong>  </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-converged'>converged</a></strong>  </td>
-       <td></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/anderson_bjorck_solver.html#boundprocedure-find_root~6'>find_root</a></strong>  => anderson_bjorck </td>
        <td></td></tr>
        </tbody>
@@ -1228,38 +1050,6 @@ startup tasks. All these routines assume that
   <div class="panel-heading codesum"><span class="anchor" id="type-ridders_solver"></span><h3>type, public, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/ridders_solver.html'>ridders_solver</a>  </h3></div>
   <div class="panel-body">
     <p>ridders root solver</p>
-     <h4>Components</h4>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-f"></span>procedure(<a href='../interface/func.html'>func</a>),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user function to find the root of</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-ftol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>ftol</strong></td><td> =</td><td>0.0_wp</td><td><p>absolute tolerance for <code>f=0</code></p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-rtol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>rtol</strong></td><td> =</td><td>1.0e-6_wp</td><td><p>relative tol for x</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-atol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>atol</strong></td><td> =</td><td>1.0e-12_wp</td><td><p>absolute tol for x [not used by all methods]</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-maxiter"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>maxiter</strong></td><td> =</td><td>2000</td><td><p>maximum number of iterations [not used by all methods]</p></td>
-</tr>
-</tbody>
-</table>
-
      
      <h4>Type-Bound Procedures</h4>
       <table class="table table-striped varlist">
@@ -1268,10 +1058,6 @@ startup tasks. All these routines assume that
        <td><p>initialize the class [must be called first]</p></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-solve'>solve</a></strong>  </td>
        <td><p>main routine for finding the root</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-get_fa_fb'>get_fa_fb</a></strong>  </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-converged'>converged</a></strong>  </td>
-       <td></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/ridders_solver.html#boundprocedure-find_root~7'>find_root</a></strong>  => ridders </td>
        <td></td></tr>
        </tbody>
@@ -1283,38 +1069,6 @@ startup tasks. All these routines assume that
   <div class="panel-heading codesum"><span class="anchor" id="type-pegasus_solver"></span><h3>type, public, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/pegasus_solver.html'>pegasus_solver</a>  </h3></div>
   <div class="panel-body">
     <p>pegasus root solver</p>
-     <h4>Components</h4>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-f"></span>procedure(<a href='../interface/func.html'>func</a>),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user function to find the root of</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-ftol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>ftol</strong></td><td> =</td><td>0.0_wp</td><td><p>absolute tolerance for <code>f=0</code></p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-rtol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>rtol</strong></td><td> =</td><td>1.0e-6_wp</td><td><p>relative tol for x</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-atol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>atol</strong></td><td> =</td><td>1.0e-12_wp</td><td><p>absolute tol for x [not used by all methods]</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-maxiter"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>maxiter</strong></td><td> =</td><td>2000</td><td><p>maximum number of iterations [not used by all methods]</p></td>
-</tr>
-</tbody>
-</table>
-
      
      <h4>Type-Bound Procedures</h4>
       <table class="table table-striped varlist">
@@ -1323,10 +1077,6 @@ startup tasks. All these routines assume that
        <td><p>initialize the class [must be called first]</p></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-solve'>solve</a></strong>  </td>
        <td><p>main routine for finding the root</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-get_fa_fb'>get_fa_fb</a></strong>  </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-converged'>converged</a></strong>  </td>
-       <td></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/pegasus_solver.html#boundprocedure-find_root~8'>find_root</a></strong>  => pegasus </td>
        <td></td></tr>
        </tbody>
@@ -1338,38 +1088,6 @@ startup tasks. All these routines assume that
   <div class="panel-heading codesum"><span class="anchor" id="type-bdqrf_solver"></span><h3>type, public, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/bdqrf_solver.html'>bdqrf_solver</a>  </h3></div>
   <div class="panel-body">
     <p>bdqrf root solver</p>
-     <h4>Components</h4>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-f"></span>procedure(<a href='../interface/func.html'>func</a>),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user function to find the root of</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-ftol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>ftol</strong></td><td> =</td><td>0.0_wp</td><td><p>absolute tolerance for <code>f=0</code></p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-rtol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>rtol</strong></td><td> =</td><td>1.0e-6_wp</td><td><p>relative tol for x</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-atol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>atol</strong></td><td> =</td><td>1.0e-12_wp</td><td><p>absolute tol for x [not used by all methods]</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-maxiter"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>maxiter</strong></td><td> =</td><td>2000</td><td><p>maximum number of iterations [not used by all methods]</p></td>
-</tr>
-</tbody>
-</table>
-
      
      <h4>Type-Bound Procedures</h4>
       <table class="table table-striped varlist">
@@ -1378,10 +1096,6 @@ startup tasks. All these routines assume that
        <td><p>initialize the class [must be called first]</p></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-solve'>solve</a></strong>  </td>
        <td><p>main routine for finding the root</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-get_fa_fb'>get_fa_fb</a></strong>  </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-converged'>converged</a></strong>  </td>
-       <td></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/bdqrf_solver.html#boundprocedure-find_root~9'>find_root</a></strong>  => bdqrf </td>
        <td></td></tr>
        </tbody>
@@ -1393,38 +1107,6 @@ startup tasks. All these routines assume that
   <div class="panel-heading codesum"><span class="anchor" id="type-muller_solver"></span><h3>type, public, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/muller_solver.html'>muller_solver</a>  </h3></div>
   <div class="panel-body">
     <p>muller root solver</p>
-     <h4>Components</h4>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-f"></span>procedure(<a href='../interface/func.html'>func</a>),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user function to find the root of</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-ftol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>ftol</strong></td><td> =</td><td>0.0_wp</td><td><p>absolute tolerance for <code>f=0</code></p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-rtol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>rtol</strong></td><td> =</td><td>1.0e-6_wp</td><td><p>relative tol for x</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-atol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>atol</strong></td><td> =</td><td>1.0e-12_wp</td><td><p>absolute tol for x [not used by all methods]</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-maxiter"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>maxiter</strong></td><td> =</td><td>2000</td><td><p>maximum number of iterations [not used by all methods]</p></td>
-</tr>
-</tbody>
-</table>
-
      
      <h4>Type-Bound Procedures</h4>
       <table class="table table-striped varlist">
@@ -1433,10 +1115,6 @@ startup tasks. All these routines assume that
        <td><p>initialize the class [must be called first]</p></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-solve'>solve</a></strong>  </td>
        <td><p>main routine for finding the root</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-get_fa_fb'>get_fa_fb</a></strong>  </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-converged'>converged</a></strong>  </td>
-       <td></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/muller_solver.html#boundprocedure-find_root~10'>find_root</a></strong>  => muller </td>
        <td></td></tr>
        </tbody>
@@ -1448,38 +1126,6 @@ startup tasks. All these routines assume that
   <div class="panel-heading codesum"><span class="anchor" id="type-brenth_solver"></span><h3>type, public, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/brenth_solver.html'>brenth_solver</a>  </h3></div>
   <div class="panel-body">
     <p>brenth root solver</p>
-     <h4>Components</h4>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-f"></span>procedure(<a href='../interface/func.html'>func</a>),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user function to find the root of</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-ftol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>ftol</strong></td><td> =</td><td>0.0_wp</td><td><p>absolute tolerance for <code>f=0</code></p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-rtol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>rtol</strong></td><td> =</td><td>1.0e-6_wp</td><td><p>relative tol for x</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-atol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>atol</strong></td><td> =</td><td>1.0e-12_wp</td><td><p>absolute tol for x [not used by all methods]</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-maxiter"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>maxiter</strong></td><td> =</td><td>2000</td><td><p>maximum number of iterations [not used by all methods]</p></td>
-</tr>
-</tbody>
-</table>
-
      
      <h4>Type-Bound Procedures</h4>
       <table class="table table-striped varlist">
@@ -1488,10 +1134,6 @@ startup tasks. All these routines assume that
        <td><p>initialize the class [must be called first]</p></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-solve'>solve</a></strong>  </td>
        <td><p>main routine for finding the root</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-get_fa_fb'>get_fa_fb</a></strong>  </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-converged'>converged</a></strong>  </td>
-       <td></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/brenth_solver.html#boundprocedure-find_root~11'>find_root</a></strong>  => brenth </td>
        <td></td></tr>
        </tbody>
@@ -1503,38 +1145,6 @@ startup tasks. All these routines assume that
   <div class="panel-heading codesum"><span class="anchor" id="type-brentq_solver"></span><h3>type, public, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/brentq_solver.html'>brentq_solver</a>  </h3></div>
   <div class="panel-body">
     <p>brentq root solver</p>
-     <h4>Components</h4>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-f"></span>procedure(<a href='../interface/func.html'>func</a>),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user function to find the root of</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-ftol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>ftol</strong></td><td> =</td><td>0.0_wp</td><td><p>absolute tolerance for <code>f=0</code></p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-rtol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>rtol</strong></td><td> =</td><td>1.0e-6_wp</td><td><p>relative tol for x</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-atol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>atol</strong></td><td> =</td><td>1.0e-12_wp</td><td><p>absolute tol for x [not used by all methods]</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-maxiter"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>maxiter</strong></td><td> =</td><td>2000</td><td><p>maximum number of iterations [not used by all methods]</p></td>
-</tr>
-</tbody>
-</table>
-
      
      <h4>Type-Bound Procedures</h4>
       <table class="table table-striped varlist">
@@ -1543,10 +1153,6 @@ startup tasks. All these routines assume that
        <td><p>initialize the class [must be called first]</p></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-solve'>solve</a></strong>  </td>
        <td><p>main routine for finding the root</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-get_fa_fb'>get_fa_fb</a></strong>  </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-converged'>converged</a></strong>  </td>
-       <td></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/brentq_solver.html#boundprocedure-find_root~12'>find_root</a></strong>  => brentq </td>
        <td></td></tr>
        </tbody>
@@ -1558,38 +1164,6 @@ startup tasks. All these routines assume that
   <div class="panel-heading codesum"><span class="anchor" id="type-chandrupatla_solver"></span><h3>type, public, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/chandrupatla_solver.html'>chandrupatla_solver</a>  </h3></div>
   <div class="panel-body">
     <p>chandrupatla root solver</p>
-     <h4>Components</h4>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-f"></span>procedure(<a href='../interface/func.html'>func</a>),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user function to find the root of</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-ftol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>ftol</strong></td><td> =</td><td>0.0_wp</td><td><p>absolute tolerance for <code>f=0</code></p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-rtol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>rtol</strong></td><td> =</td><td>1.0e-6_wp</td><td><p>relative tol for x</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-atol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>atol</strong></td><td> =</td><td>1.0e-12_wp</td><td><p>absolute tol for x [not used by all methods]</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-maxiter"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>maxiter</strong></td><td> =</td><td>2000</td><td><p>maximum number of iterations [not used by all methods]</p></td>
-</tr>
-</tbody>
-</table>
-
      
      <h4>Type-Bound Procedures</h4>
       <table class="table table-striped varlist">
@@ -1598,10 +1172,6 @@ startup tasks. All these routines assume that
        <td><p>initialize the class [must be called first]</p></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-solve'>solve</a></strong>  </td>
        <td><p>main routine for finding the root</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-get_fa_fb'>get_fa_fb</a></strong>  </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-converged'>converged</a></strong>  </td>
-       <td></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/chandrupatla_solver.html#boundprocedure-find_root~13'>find_root</a></strong>  => chandrupatla </td>
        <td></td></tr>
        </tbody>
@@ -1613,38 +1183,6 @@ startup tasks. All these routines assume that
   <div class="panel-heading codesum"><span class="anchor" id="type-toms748_solver"></span><h3>type, public, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/toms748_solver.html'>toms748_solver</a>  </h3></div>
   <div class="panel-body">
     <p>TOMS748 root solver</p>
-     <h4>Components</h4>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-f"></span>procedure(<a href='../interface/func.html'>func</a>),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user function to find the root of</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-ftol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>ftol</strong></td><td> =</td><td>0.0_wp</td><td><p>absolute tolerance for <code>f=0</code></p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-rtol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>rtol</strong></td><td> =</td><td>1.0e-6_wp</td><td><p>relative tol for x</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-atol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>atol</strong></td><td> =</td><td>1.0e-12_wp</td><td><p>absolute tol for x [not used by all methods]</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-maxiter"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>maxiter</strong></td><td> =</td><td>2000</td><td><p>maximum number of iterations [not used by all methods]</p></td>
-</tr>
-</tbody>
-</table>
-
      
      <h4>Type-Bound Procedures</h4>
       <table class="table table-striped varlist">
@@ -1653,10 +1191,6 @@ startup tasks. All these routines assume that
        <td><p>initialize the class [must be called first]</p></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-solve'>solve</a></strong>  </td>
        <td><p>main routine for finding the root</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-get_fa_fb'>get_fa_fb</a></strong>  </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-converged'>converged</a></strong>  </td>
-       <td></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/toms748_solver.html#boundprocedure-find_root~14'>find_root</a></strong>  => toms748 </td>
        <td></td></tr>
        </tbody>
@@ -1668,38 +1202,6 @@ startup tasks. All these routines assume that
   <div class="panel-heading codesum"><span class="anchor" id="type-zhang_solver"></span><h3>type, public, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/zhang_solver.html'>zhang_solver</a>  </h3></div>
   <div class="panel-body">
     <p>zhang root solver</p>
-     <h4>Components</h4>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-f"></span>procedure(<a href='../interface/func.html'>func</a>),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user function to find the root of</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-ftol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>ftol</strong></td><td> =</td><td>0.0_wp</td><td><p>absolute tolerance for <code>f=0</code></p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-rtol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>rtol</strong></td><td> =</td><td>1.0e-6_wp</td><td><p>relative tol for x</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-atol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>atol</strong></td><td> =</td><td>1.0e-12_wp</td><td><p>absolute tol for x [not used by all methods]</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-maxiter"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>maxiter</strong></td><td> =</td><td>2000</td><td><p>maximum number of iterations [not used by all methods]</p></td>
-</tr>
-</tbody>
-</table>
-
      
      <h4>Type-Bound Procedures</h4>
       <table class="table table-striped varlist">
@@ -1708,10 +1210,6 @@ startup tasks. All these routines assume that
        <td><p>initialize the class [must be called first]</p></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-solve'>solve</a></strong>  </td>
        <td><p>main routine for finding the root</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-get_fa_fb'>get_fa_fb</a></strong>  </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-converged'>converged</a></strong>  </td>
-       <td></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/zhang_solver.html#boundprocedure-find_root~15'>find_root</a></strong>  => zhang </td>
        <td></td></tr>
        </tbody>
@@ -1723,38 +1221,6 @@ startup tasks. All these routines assume that
   <div class="panel-heading codesum"><span class="anchor" id="type-anderson_bjorck_king_solver"></span><h3>type, public, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/anderson_bjorck_king_solver.html'>anderson_bjorck_king_solver</a>  </h3></div>
   <div class="panel-body">
     <p>anderson-bjorck-king root solver</p>
-     <h4>Components</h4>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-f"></span>procedure(<a href='../interface/func.html'>func</a>),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user function to find the root of</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-ftol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>ftol</strong></td><td> =</td><td>0.0_wp</td><td><p>absolute tolerance for <code>f=0</code></p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-rtol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>rtol</strong></td><td> =</td><td>1.0e-6_wp</td><td><p>relative tol for x</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-atol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>atol</strong></td><td> =</td><td>1.0e-12_wp</td><td><p>absolute tol for x [not used by all methods]</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-maxiter"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>maxiter</strong></td><td> =</td><td>2000</td><td><p>maximum number of iterations [not used by all methods]</p></td>
-</tr>
-</tbody>
-</table>
-
      
      <h4>Type-Bound Procedures</h4>
       <table class="table table-striped varlist">
@@ -1763,10 +1229,6 @@ startup tasks. All these routines assume that
        <td><p>initialize the class [must be called first]</p></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-solve'>solve</a></strong>  </td>
        <td><p>main routine for finding the root</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-get_fa_fb'>get_fa_fb</a></strong>  </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-converged'>converged</a></strong>  </td>
-       <td></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/anderson_bjorck_king_solver.html#boundprocedure-find_root~16'>find_root</a></strong>  => anderson_bjorck_king </td>
        <td></td></tr>
        </tbody>
@@ -1778,38 +1240,6 @@ startup tasks. All these routines assume that
   <div class="panel-heading codesum"><span class="anchor" id="type-blendtf_solver"></span><h3>type, public, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/blendtf_solver.html'>blendtf_solver</a>  </h3></div>
   <div class="panel-body">
     <p>blendtf root solver</p>
-     <h4>Components</h4>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-f"></span>procedure(<a href='../interface/func.html'>func</a>),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user function to find the root of</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-ftol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>ftol</strong></td><td> =</td><td>0.0_wp</td><td><p>absolute tolerance for <code>f=0</code></p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-rtol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>rtol</strong></td><td> =</td><td>1.0e-6_wp</td><td><p>relative tol for x</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-atol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>atol</strong></td><td> =</td><td>1.0e-12_wp</td><td><p>absolute tol for x [not used by all methods]</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-maxiter"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>maxiter</strong></td><td> =</td><td>2000</td><td><p>maximum number of iterations [not used by all methods]</p></td>
-</tr>
-</tbody>
-</table>
-
      
      <h4>Type-Bound Procedures</h4>
       <table class="table table-striped varlist">
@@ -1818,10 +1248,6 @@ startup tasks. All these routines assume that
        <td><p>initialize the class [must be called first]</p></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-solve'>solve</a></strong>  </td>
        <td><p>main routine for finding the root</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-get_fa_fb'>get_fa_fb</a></strong>  </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-converged'>converged</a></strong>  </td>
-       <td></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/blendtf_solver.html#boundprocedure-find_root~17'>find_root</a></strong>  => blendtf </td>
        <td></td></tr>
        </tbody>
@@ -1833,38 +1259,6 @@ startup tasks. All these routines assume that
   <div class="panel-heading codesum"><span class="anchor" id="type-barycentric_solver"></span><h3>type, public, extends(<a href='../type/root_solver.html'>root_solver</a>) :: <a href='../type/barycentric_solver.html'>barycentric_solver</a>  </h3></div>
   <div class="panel-body">
     <p>barycentric root solver</p>
-     <h4>Components</h4>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-f"></span>procedure(<a href='../interface/func.html'>func</a>),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user function to find the root of</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-ftol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>ftol</strong></td><td> =</td><td>0.0_wp</td><td><p>absolute tolerance for <code>f=0</code></p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-rtol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>rtol</strong></td><td> =</td><td>1.0e-6_wp</td><td><p>relative tol for x</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-atol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>atol</strong></td><td> =</td><td>1.0e-12_wp</td><td><p>absolute tol for x [not used by all methods]</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-maxiter"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>maxiter</strong></td><td> =</td><td>2000</td><td><p>maximum number of iterations [not used by all methods]</p></td>
-</tr>
-</tbody>
-</table>
-
      
      <h4>Type-Bound Procedures</h4>
       <table class="table table-striped varlist">
@@ -1873,10 +1267,6 @@ startup tasks. All these routines assume that
        <td><p>initialize the class [must be called first]</p></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-solve'>solve</a></strong>  </td>
        <td><p>main routine for finding the root</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-get_fa_fb'>get_fa_fb</a></strong>  </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-converged'>converged</a></strong>  </td>
-       <td></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/barycentric_solver.html#boundprocedure-find_root~18'>find_root</a></strong>  => barycentric </td>
        <td></td></tr>
        </tbody>
@@ -1893,43 +1283,18 @@ startup tasks. All these routines assume that
 <thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
 <tbody>
 <tr>
-  <td><span class="anchor" id="variable-f"></span>procedure(<a href='../interface/func.html'>func</a>),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user function to find the root of</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-ftol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>ftol</strong></td><td> =</td><td>0.0_wp</td><td><p>absolute tolerance for <code>f=0</code></p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-rtol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>rtol</strong></td><td> =</td><td>1.0e-6_wp</td><td><p>relative tol for x</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-atol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>atol</strong></td><td> =</td><td>1.0e-12_wp</td><td><p>absolute tol for x [not used by all methods]</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-maxiter"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>maxiter</strong></td><td> =</td><td>2000</td><td><p>maximum number of iterations [not used by all methods]</p></td>
-</tr>
-<tr>
   <td><span class="anchor" id="variable-k1"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
+<td>private</td>  <td></td><td>::</td>
   <td><strong>k1</strong></td><td> =</td><td>0.1_wp</td><td><p>from (0, inf)</p></td>
 </tr>
 <tr>
   <td><span class="anchor" id="variable-k2"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
+<td>private</td>  <td></td><td>::</td>
   <td><strong>k2</strong></td><td> =</td><td>0.98_wp*(1.0_wp+golden_ratio)</td><td><p>from [1, 1+phi]</p></td>
 </tr>
 <tr>
   <td><span class="anchor" id="variable-n0"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
+<td>private</td>  <td></td><td>::</td>
   <td><strong>n0</strong></td><td> =</td><td>1</td><td></td>
 </tr>
 </tbody>
@@ -1943,10 +1308,6 @@ startup tasks. All these routines assume that
        <td><p>initialize the class [must be called first]</p></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-solve'>solve</a></strong>  </td>
        <td><p>main routine for finding the root</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-get_fa_fb'>get_fa_fb</a></strong>  </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/root_solver.html#boundprocedure-converged'>converged</a></strong>  </td>
-       <td></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/itp_solver.html#boundprocedure-find_root~19'>find_root</a></strong>  => itp </td>
        <td></td></tr>
        <tr><td>procedure, public :: <strong><a href='../type/itp_solver.html#boundprocedure-set_optional_inputs'>set_optional_inputs</a></strong>  => itp_optional_inputs </td>
@@ -2181,7 +1542,7 @@ With a protection to fall back to bisection if:</p><a href="../proc/secant.html"
   </div>
 
       <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-solution"></span><h3>private function <a href='../proc/solution.html'>solution</a>(x, f, ftol, xzero, fzero)</h3></div>
+  <div class="panel-heading codesum"><span class="anchor" id="proc-solution"></span><h3>private function <a href='../proc/solution.html'>solution</a>(me, x, f, xzero, fzero)</h3></div>
   <div class="panel-body">
        
 <p>Returns true if this is a solution and sets <code>xzero</code> and <code>fzero</code>.</p>
@@ -2189,6 +1550,12 @@ With a protection to fall back to bisection if:</p><a href="../proc/secant.html"
 <h4>Arguments</h4>      <table class="table table-striped varlist">
 <thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
 <tbody>
+<tr>
+  <td><span class="anchor" ></span>class(<a href='../type/root_solver.html'>root_solver</a>),</td>
+<td>intent(inout)</td>
+  <td></td>  <td></td><td>::</td>
+  <td><strong>me</strong></td><td></td>
+</tr>
 <tr>
   <td><span class="anchor" ></span>real(kind=wp),</td>
 <td>intent(in)</td>
@@ -2200,12 +1567,6 @@ With a protection to fall back to bisection if:</p><a href="../proc/secant.html"
 <td>intent(in)</td>
   <td></td>  <td></td><td>::</td>
   <td><strong>f</strong></td><td></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-<td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>ftol</strong></td><td></td>
 </tr>
 <tr>
   <td><span class="anchor" ></span>real(kind=wp),</td>

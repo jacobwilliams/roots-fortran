@@ -131,7 +131,7 @@
 <thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
 <tbody>
 <tr>
-  <td><span class="anchor" id="variable-me~13"></span>class(<a href='../type/pegasus_solver.html'>pegasus_solver</a>),</td>
+  <td><span class="anchor" id="variable-me~14"></span>class(<a href='../type/pegasus_solver.html'>pegasus_solver</a>),</td>
 <td>intent(inout)</td>
   <td></td>  <td></td><td>::</td>
   <td><strong>me</strong></td><td></td>
@@ -237,10 +237,10 @@
 <span class="w">        </span><span class="n">x3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">secant</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="n">f1</span><span class="p">,</span><span class="n">f2</span><span class="p">,</span><span class="n">ax</span><span class="p">,</span><span class="n">bx</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">        </span><span class="n">f3</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">f</span><span class="p">(</span><span class="n">x3</span><span class="p">)</span><span class="w">  </span><span class="c">! calculate f3</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">solution</span><span class="p">(</span><span class="n">x3</span><span class="p">,</span><span class="n">f3</span><span class="p">,</span><span class="n">me</span><span class="p">%</span><span class="n">ftol</span><span class="p">,</span><span class="n">xzero</span><span class="p">,</span><span class="n">fzero</span><span class="p">))</span><span class="w"> </span><span class="k">return</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">solution</span><span class="p">(</span><span class="n">x3</span><span class="p">,</span><span class="n">f3</span><span class="p">,</span><span class="n">xzero</span><span class="p">,</span><span class="n">fzero</span><span class="p">))</span><span class="w"> </span><span class="k">return</span><span class="w"></span>
 
 <span class="w">        </span><span class="c">! determine a new inclusion interval:</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">f2</span><span class="o">*</span><span class="n">f3</span><span class="o">&lt;=</span><span class="mf">0.0_wp</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w">  </span><span class="c">! root on (x2,x3)</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">f2</span><span class="o">*</span><span class="n">f3</span><span class="o">&lt;</span><span class="mf">0.0_wp</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w">  </span><span class="c">! root on (x2,x3)</span>
 <span class="w">            </span><span class="n">x1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x2</span><span class="w"></span>
 <span class="w">            </span><span class="n">f1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f2</span><span class="w"></span>
 <span class="w">            </span><span class="n">f1tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f1</span><span class="w"></span>

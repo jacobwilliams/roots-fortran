@@ -108,6 +108,7 @@
                                                 !! \( f(a_x) \) and \( f(b_x) \) have opposite signs.
         procedure :: get_fa_fb
         procedure :: converged
+        procedure :: solution !! to check `f` value against `ftol`
     end type root_solver
 
     type,extends(root_solver),public :: brent_solver
@@ -512,17 +513,13 @@
         call me%get_fa_fb(ax,bx,fax,fbx,fa,fb)
 
         ! check trivial cases first:
-        if (abs(fa)<=me%ftol) then
+        if (me%solution(ax,fa,xzero,fzero)) then
 
             iflag = 0
-            xzero = ax
-            fzero = fa
 
-        else if (abs(fb)<=me%ftol) then
+        else if (me%solution(bx,fb,xzero,fzero)) then
 
             iflag = 0
-            xzero = bx
-            fzero = fb
 
         else if (fa*fb>0.0_wp) then
 
@@ -766,7 +763,7 @@
 
         ! calculate the new function value:
         f3 = me%f(x3)
-        if (solution(x3,f3,me%ftol,xzero,fzero)) return
+        if (me%solution(x3,f3,xzero,fzero)) return
 
         ! determine new inclusion interval:
         if (f2*f3<0.0_wp) then
@@ -829,7 +826,7 @@
 
         ! calculate the new function value:
         f3 = me%f(x3)
-        if (solution(x3,f3,me%ftol,xzero,fzero)) return
+        if (me%solution(x3,f3,xzero,fzero)) return
 
         ! determine new inclusion interval:
         if (f2*f3<0.0_wp) then
@@ -896,7 +893,7 @@
 
         ! calculate the new function value:
         f3 = me%f(x3)
-        if (solution(x3,f3,me%ftol,xzero,fzero)) return
+        if (me%solution(x3,f3,xzero,fzero)) return
 
         ! determine new inclusion interval:
         if (f2*f3<0.0_wp) then
@@ -964,7 +961,7 @@
 
         x3 = secant(x1,x2,f1,f2,ax,bx)
         f3 = me%f(x3)
-        if (solution(x3,f3,me%ftol,xzero,fzero)) return
+        if (me%solution(x3,f3,xzero,fzero)) return
 
         ! determine a new inclusion interval:
         if (f2*f3<0.0_wp) then
@@ -1033,7 +1030,7 @@
 
         xm = bisect(xl,xh)
         fm = me%f(xm)
-        if (solution(xm,fm,me%ftol,xzero,fzero)) return
+        if (me%solution(xm,fm,xzero,fzero)) return
 
         denom = sqrt(fm**2-fl*fh)
         if (denom == 0.0_wp) then
@@ -1114,10 +1111,10 @@
         x3 = secant(x1,x2,f1,f2,ax,bx)
 
         f3  = me%f(x3)  ! calculate f3
-        if (solution(x3,f3,me%ftol,xzero,fzero)) return
+        if (me%solution(x3,f3,xzero,fzero)) return
 
         ! determine a new inclusion interval:
-        if (f2*f3<=0.0_wp) then  ! root on (x2,x3)
+        if (f2*f3<0.0_wp) then  ! root on (x2,x3)
             x1 = x2
             f1 = f2
             f1tmp = f1
@@ -1194,7 +1191,7 @@
 
         xm = bisect(xup,xdn)
         ym = me%f(xm)
-        if (solution(xm,ym,me%ftol,xzero,fzero)) return ! Convergence
+        if (me%solution(xm,ym,xzero,fzero)) return ! Convergence
 
         d = (xup - xdn) / 2.0_wp
         a = (yup + ydn - 2.0_wp*ym)/(2.0_wp*d**2)
@@ -1202,7 +1199,7 @@
 
         xzero = xm - 2.0_wp*ym / (b * (1.0_wp + sqrt(1.0_wp - 4.0_wp*a*ym/b**2)))
         fzero = me%f(xzero)
-        if (solution(xzero,fzero,me%ftol,xzero,fzero)) return ! Convergence
+        if (me%solution(xzero,fzero,xzero,fzero)) return ! Convergence
 
         if (fzero>0.0_wp) then
             yup = fzero
@@ -1264,7 +1261,7 @@
     ! pick a third point in the middle [this could also be an optional input]
     cx  = bisect(ax,bx)
     fcx = me%f(cx)
-    if (solution(cx,fcx,me%ftol,xzero,fzero)) return
+    if (me%solution(cx,fcx,xzero,fzero)) return
 
     ! [a,b,c]
     a = ax; fa = fax
@@ -1581,7 +1578,7 @@
 
         xt = a + t*(b-a)
         ft = me%f(xt)
-        if (solution(xt,ft,me%ftol,xzero,fzero)) return
+        if (me%solution(xt,ft,xzero,fzero)) return
 
         if (ft*fa>0.0_wp) then
             c = a
@@ -2045,7 +2042,7 @@
 
         c = bisect(a,b)
         fc = me%f(c)
-        if (solution(c,fc,me%ftol,xzero,fzero)) return
+        if (me%solution(c,fc,xzero,fzero)) return
 
         if (fa/=fc .and. fb/=fc) then
             ! inverse quadratic interpolation
@@ -2072,7 +2069,7 @@
                 s = secant(c,b,fc,fb,ax,bx)
             end if
             fs = me%f(s)
-            if (solution(s,fs,me%ftol,xzero,fzero)) return
+            if (me%solution(s,fs,xzero,fzero)) return
         end if
 
         if (c>s) then
@@ -2146,7 +2143,7 @@
 
         ! calculate f3:
         f3 = me%f(x3)
-        if (solution(x3,f3,me%ftol,xzero,fzero)) return
+        if (me%solution(x3,f3,xzero,fzero)) return
 
         ! determine a new inclusion interval:
         if (f2*f3<0.0_wp) then
@@ -2166,7 +2163,7 @@
 
         ! calculate f3:
         f3 = me%f(x3)
-        if (solution(x3,f3,me%ftol,xzero,fzero)) return
+        if (me%solution(x3,f3,xzero,fzero)) return
 
         ! determine a new inclusion interval:
         if (f2*f3<0.0_wp) then
@@ -2247,9 +2244,9 @@
         xt2  = (2.0_wp * b + a) / 3.0_wp
         xf   = a - (fa*(b-a))/(fb-fa)
         x    = xt1
-        fxt1 = me%f(xt1); if (solution(xt1,fxt1,me%ftol,xzero,fzero)) return
-        fxt2 = me%f(xt2); if (solution(xt2,fxt2,me%ftol,xzero,fzero)) return
-        fxf  = me%f(xf);  if (solution(xf,fxf,me%ftol,xzero,fzero))   return
+        fxt1 = me%f(xt1); if (me%solution(xt1,fxt1,xzero,fzero)) return
+        fxt2 = me%f(xt2); if (me%solution(xt2,fxt2,xzero,fzero)) return
+        fxf  = me%f(xf);  if (me%solution(xf,fxf,xzero,fzero))   return
         fx   = fxt1
 
         if (abs(fxf) < abs(fxt1)) then
@@ -2347,9 +2344,9 @@
 
             if (i>1) then
                 f0 = me%f(x0)
-                if (solution(x0,f0,me%ftol,xzero,fzero)) return
+                if (me%solution(x0,f0,xzero,fzero)) return
                 f1 = me%f(x1)
-                if (solution(x1,f1,me%ftol,xzero,fzero)) return
+                if (me%solution(x1,f1,xzero,fzero)) return
             end if
 
             if (me%converged(x0, x1) .or. i == me%maxiter) then
@@ -2364,7 +2361,7 @@
 
             x2 = x0 + k*(x1-x0)   ! first point for interpolation
             f2 = me%f(x2)
-            if (solution(x2,f2,me%ftol,xzero,fzero)) return
+            if (me%solution(x2,f2,xzero,fzero)) return
 
             if (f0*f2 < 0.0_wp) then
                 x1 = x2
@@ -2373,7 +2370,7 @@
             else
                 x3 = x1 + k*(x0-x1) ! second point for interpolation
                 f3 = me%f(x3)
-                if (solution(x3,f3,me%ftol,xzero,fzero)) return
+                if (me%solution(x3,f3,xzero,fzero)) return
 
                 if (f3*f1 < 0.0_wp) then
                     x0 = x3
@@ -2387,14 +2384,14 @@
                     w3 = 1.0_wp/(f3*(f3-f0)*(f3-f2))
                     x4 = (w0*x0+w2*x2+w3*x3)/(w0+w3+w2)
                     f4 = me%f(x4)
-                    if (solution(x4,f4,me%ftol,xzero,fzero)) return
+                    if (me%solution(x4,f4,xzero,fzero)) return
 
                     w1  = 1.0_wp/(f1*(f1-f2)*(f1-f3))  ! second quadratic interpolation
                     w22 = 1.0_wp/(f2*(f2-f1)*(f2-f3))
                     w32 = 1.0_wp/(f3*(f3-f1)*(f3-f2))
                     x5  = (w1*x1+w22*x2+w32*x3)/(w1+w32+w22)
                     f5  = me%f(x5)
-                    if (solution(x5,f5,me%ftol,xzero,fzero)) return
+                    if (me%solution(x5,f5,xzero,fzero)) return
 
                     ! determine if x3,x4 are in the interval [x2,x3]
                     if (x4<x2 .or. x4>x3) then
@@ -2437,7 +2434,7 @@
                                 w3 = w3/(f3-f1)
                                 x6 = (w0*x0+w1*x1+w2*x2+w3*x3)/(w0+w1+w3+w2)
                                 f6 = me%f(x6)
-                                if (solution(x6,f6,me%ftol,xzero,fzero)) return
+                                if (me%solution(x6,f6,xzero,fzero)) return
 
                                 ! verify that x6 is in the interval [x2,x3]
                                 if (x6<=x2 .or. x6>=x3) then
@@ -2574,7 +2571,7 @@
 
             ! updating interval:
             yitp = me%f(xitp)
-            if (solution(xitp,yitp,me%ftol,xzero,fzero)) return
+            if (me%solution(xitp,yitp,xzero,fzero)) return
             if (yitp > 0.0_wp) then
                 b = xitp
                 yb = yitp
@@ -2594,7 +2591,7 @@
             ! So just do a bisection
             xitp = bisect(a,b)
             yitp = me%f(xitp)
-            if (solution(xitp,yitp,me%ftol,xzero,fzero)) return
+            if (me%solution(xitp,yitp,xzero,fzero)) return
             if (ya*yitp<0.0_wp) then
                 ! root lies between a and xitp
                 b = xitp
@@ -2809,17 +2806,17 @@
 !>
 !  Returns true if this is a solution and sets `xzero` and `fzero`.
 
-    logical function solution(x,f,ftol,xzero,fzero)
+    logical function solution(me,x,f,xzero,fzero)
 
     implicit none
 
+    class(root_solver),intent(inout) :: me
     real(wp),intent(in) :: x
     real(wp),intent(in) :: f
-    real(wp),intent(in) :: ftol
     real(wp),intent(inout) :: xzero
     real(wp),intent(inout) :: fzero
 
-    if (abs(f) <= ftol) then
+    if (abs(f) <= me%ftol) then
         xzero = x
         fzero = f
         solution = .true.

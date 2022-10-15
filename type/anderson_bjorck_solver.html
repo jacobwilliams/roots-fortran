@@ -79,7 +79,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title="<p> 4.5% of total for derived types.</p>Including implementation: 156 statements,  4.5% of total for derived types.">6 statements</a>
+    title="<p> 4.5% of total for derived types.</p>Including implementation: 114 statements,  4.2% of total for derived types.">6 statements</a>
      </li> 
     <li><i class="fa fa-code"></i><a href="../src/root_module.F90"> Source File</a></li>
   </ul>
@@ -105,25 +105,11 @@
   <h3>Contents</h3>
  
 <div class="panel panel-primary">
-  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars-0">Variables</a></h3></div>
-  <div id="vars-0" class="panel-collapse collapse">
-    <div class="list-group">
-      <a class="list-group-item" href="../type/anderson_bjorck_solver.html#variable-f">f</a>
-      <a class="list-group-item" href="../type/anderson_bjorck_solver.html#variable-ftol">ftol</a>
-      <a class="list-group-item" href="../type/anderson_bjorck_solver.html#variable-rtol">rtol</a>
-      <a class="list-group-item" href="../type/anderson_bjorck_solver.html#variable-atol">atol</a>
-      <a class="list-group-item" href="../type/anderson_bjorck_solver.html#variable-maxiter">maxiter</a>
-    </div>
-  </div>
-</div>
-<div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#boundprocs-0">Type-Bound Procedures</a></h3></div>
   <div id="boundprocs-0" class="panel-collapse collapse">
     <div class="list-group">
       <a class="list-group-item" href="../type/anderson_bjorck_solver.html#boundprocedure-initialize">initialize</a>
       <a class="list-group-item" href="../type/anderson_bjorck_solver.html#boundprocedure-solve">solve</a>
-      <a class="list-group-item" href="../type/anderson_bjorck_solver.html#boundprocedure-get_fa_fb">get_fa_fb</a>
-      <a class="list-group-item" href="../type/anderson_bjorck_solver.html#boundprocedure-converged">converged</a>
       <a class="list-group-item" href="../type/anderson_bjorck_solver.html#boundprocedure-find_root~6">find_root</a>
     </div>
   </div>
@@ -148,25 +134,11 @@
       <h3>Contents</h3>
  
 <div class="panel panel-primary">
-  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars-1">Variables</a></h3></div>
-  <div id="vars-1" class="panel-collapse collapse">
-    <div class="list-group">
-      <a class="list-group-item" href="../type/anderson_bjorck_solver.html#variable-f">f</a>
-      <a class="list-group-item" href="../type/anderson_bjorck_solver.html#variable-ftol">ftol</a>
-      <a class="list-group-item" href="../type/anderson_bjorck_solver.html#variable-rtol">rtol</a>
-      <a class="list-group-item" href="../type/anderson_bjorck_solver.html#variable-atol">atol</a>
-      <a class="list-group-item" href="../type/anderson_bjorck_solver.html#variable-maxiter">maxiter</a>
-    </div>
-  </div>
-</div>
-<div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#boundprocs-1">Type-Bound Procedures</a></h3></div>
   <div id="boundprocs-1" class="panel-collapse collapse">
     <div class="list-group">
       <a class="list-group-item" href="../type/anderson_bjorck_solver.html#boundprocedure-initialize">initialize</a>
       <a class="list-group-item" href="../type/anderson_bjorck_solver.html#boundprocedure-solve">solve</a>
-      <a class="list-group-item" href="../type/anderson_bjorck_solver.html#boundprocedure-get_fa_fb">get_fa_fb</a>
-      <a class="list-group-item" href="../type/anderson_bjorck_solver.html#boundprocedure-converged">converged</a>
       <a class="list-group-item" href="../type/anderson_bjorck_solver.html#boundprocedure-find_root~6">find_root</a>
     </div>
   </div>
@@ -181,41 +153,6 @@
     </section>
     <br class="visible-xs visible-sm hidden-md">
 
-    <section>
-    <h2>Components</h2>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-f"></span>procedure(<a href='../interface/func.html'>func</a>),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user function to find the root of</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-ftol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>ftol</strong></td><td> =</td><td>0.0_wp</td><td><p>absolute tolerance for <code>f=0</code></p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-rtol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>rtol</strong></td><td> =</td><td>1.0e-6_wp</td><td><p>relative tol for x</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-atol"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>atol</strong></td><td> =</td><td>1.0e-12_wp</td><td><p>absolute tol for x [not used by all methods]</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-maxiter"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>maxiter</strong></td><td> =</td><td>2000</td><td><p>maximum number of iterations [not used by all methods]</p></td>
-</tr>
-</tbody>
-</table>
-
-    </section>
-    <br>
     
     
     
@@ -230,10 +167,16 @@
   </div>
   <ul class="list-group">
       <li class="list-group-item">
-          <h3>private subroutine <a href='../proc/initialize_root_solver.html'>initialize_root_solver</a>(me, f, ftol, rtol, atol, maxiter)</h3>
-<p>Initialize the <a href="../type/root_solver.html">root_solver</a> class.</p><a href="../proc/initialize_root_solver.html" class="pull-right"><emph>Read more&hellip;</emph></a>
-    
-<h4>Arguments</h4>      <table class="table table-striped varlist">
+                <h3>
+        private subroutine <a href='../proc/initialize_root_solver.html'>initialize_root_solver</a>(me, f, ftol, rtol, atol, maxiter)</h3>
+      
+    <p>Initialize the <a href="../type/root_solver.html">root_solver</a> class.</p>
+<p>Note that all optional inputs are not used for all methods.</p>
+
+    <h4>
+    Arguments
+    </h4>
+      <table class="table table-striped varlist">
 <thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
 <tbody>
 <tr>
@@ -288,10 +231,15 @@
   </div>
   <ul class="list-group">
       <li class="list-group-item">
-          <h3>private subroutine <a href='../proc/solve.html'>solve</a>(me, ax, bx, xzero, fzero, iflag, fax, fbx, bisect_on_failure)</h3>
-<p>Main wrapper routine for all the methods.</p>
-    
-<h4>Arguments</h4>      <table class="table table-striped varlist">
+                <h3>
+        private subroutine <a href='../proc/solve.html'>solve</a>(me, ax, bx, xzero, fzero, iflag, fax, fbx, bisect_on_failure)</h3>
+      
+    <p>Main wrapper routine for all the methods.</p>
+
+    <h4>
+    Arguments
+    </h4>
+      <table class="table table-striped varlist">
 <thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
 <tbody>
 <tr>
@@ -360,110 +308,23 @@ to <code>maxiter</code> additional function evaluations.</p></td>
 </div>
 
      <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-get_fa_fb"></span><h3>procedure, public :: <strong>get_fa_fb</strong>    </h3></div>
-  <ul class="list-group">
-      <li class="list-group-item">
-          <h3>private subroutine <a href='../proc/get_fa_fb.html'>get_fa_fb</a>(me, ax, bx, fax, fbx, fa, fb)</h3>
-<p>Returns the function values at <code>ax</code> and <code>bx</code> to start the root finding algorithm.</p>
-    
-<h4>Arguments</h4>      <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" ></span>class(<a href='../type/root_solver.html'>root_solver</a>),</td>
-<td>intent(inout)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>me</strong></td><td></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-<td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>ax</strong></td><td><p>left endpoint of initial interval</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-<td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>bx</strong></td><td><p>right endpoint of initial interval</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-<td>intent(in),</td>
-  <td>optional</td>  <td></td><td>::</td>
-  <td><strong>fax</strong></td><td><p>if <code>f(ax)</code> is already known, it can be input here</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-<td>intent(in),</td>
-  <td>optional</td>  <td></td><td>::</td>
-  <td><strong>fbx</strong></td><td><p>if <code>f(bx)</code> is already known, it can be input here</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-<td>intent(out)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>fa</strong></td><td><p><code>f(ax)</code> to use</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-<td>intent(out)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>fb</strong></td><td><p><code>f(ax)</code> to use</p></td>
-</tr>
-</tbody>
-</table>
-
-
-      </li>
-  </ul>
-</div>
-
-     <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-converged"></span><h3>procedure, public :: <strong>converged</strong>    </h3></div>
-  <ul class="list-group">
-      <li class="list-group-item">
-          <h3>private function <a href='../proc/converged.html'>converged</a>(me, a, b)</h3>
-<p>Determines convergence in x based on if the reltol or abstol is satisfied.</p>
-    
-<h4>Arguments</h4>      <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" ></span>class(<a href='../type/root_solver.html'>root_solver</a>),</td>
-<td>intent(inout)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>me</strong></td><td></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-<td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>a</strong></td><td><p>old value</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-<td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>b</strong></td><td><p>new value</p></td>
-</tr>
-</tbody>
-</table>
-
-<h4>Return Value <small>logical</small></h4>  
-
-      </li>
-  </ul>
-</div>
-
-     <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-find_root~6"></span><h3>procedure, public :: <strong>find_root</strong>  => <a href='../proc/anderson_bjorck.html'>anderson_bjorck</a>   </h3></div>
   <ul class="list-group">
       <li class="list-group-item">
-          <h3>private subroutine <a href='../proc/anderson_bjorck.html'>anderson_bjorck</a>(me, ax, bx, fax, fbx, xzero, fzero, iflag)</h3>
-<p>Compute the zero of the function f(x) in the interval ax,bx using the Anderson-Bjorck method.</p><a href="../proc/anderson_bjorck.html" class="pull-right"><emph>Read more&hellip;</emph></a>
-    
-<h4>Arguments</h4>      <table class="table table-striped varlist">
+                <h3>
+        private subroutine <a href='../proc/anderson_bjorck.html'>anderson_bjorck</a>(me, ax, bx, fax, fbx, xzero, fzero, iflag)</h3>
+      
+    <p>Compute the zero of the function f(x) in the interval ax,bx using the Anderson-Bjorck method.</p>
+<h3>See also</h3>
+<ul>
+<li>G.E. Mullges &amp; F. Uhlig, "Numerical Algorithms with Fortran",
+    Springer, 1996. Section 2.8.2, p 36.</li>
+</ul>
+
+    <h4>
+    Arguments
+    </h4>
+      <table class="table table-striped varlist">
 <thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
 <tbody>
 <tr>

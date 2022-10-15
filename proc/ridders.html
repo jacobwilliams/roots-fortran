@@ -131,7 +131,7 @@
 <thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
 <tbody>
 <tr>
-  <td><span class="anchor" id="variable-me~12"></span>class(<a href='../type/ridders_solver.html'>ridders_solver</a>),</td>
+  <td><span class="anchor" id="variable-me~13"></span>class(<a href='../type/ridders_solver.html'>ridders_solver</a>),</td>
 <td>intent(inout)</td>
   <td></td>  <td></td><td>::</td>
   <td><strong>me</strong></td><td></td>
@@ -235,7 +235,7 @@
 
 <span class="w">        </span><span class="n">xm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bisect</span><span class="p">(</span><span class="n">xl</span><span class="p">,</span><span class="n">xh</span><span class="p">)</span><span class="w"></span>
 <span class="w">        </span><span class="n">fm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">f</span><span class="p">(</span><span class="n">xm</span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">solution</span><span class="p">(</span><span class="n">xm</span><span class="p">,</span><span class="n">fm</span><span class="p">,</span><span class="n">me</span><span class="p">%</span><span class="n">ftol</span><span class="p">,</span><span class="n">xzero</span><span class="p">,</span><span class="n">fzero</span><span class="p">))</span><span class="w"> </span><span class="k">return</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">solution</span><span class="p">(</span><span class="n">xm</span><span class="p">,</span><span class="n">fm</span><span class="p">,</span><span class="n">xzero</span><span class="p">,</span><span class="n">fzero</span><span class="p">))</span><span class="w"> </span><span class="k">return</span>
 
 <span class="k">        </span><span class="n">denom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">sqrt</span><span class="p">(</span><span class="n">fm</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="n">fl</span><span class="o">*</span><span class="n">fh</span><span class="p">)</span><span class="w"></span>
 <span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">denom</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mf">0.0_wp</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>

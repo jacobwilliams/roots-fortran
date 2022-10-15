@@ -134,7 +134,7 @@
 <thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
 <tbody>
 <tr>
-  <td><span class="anchor" id="variable-me~15"></span>class(<a href='../type/muller_solver.html'>muller_solver</a>),</td>
+  <td><span class="anchor" id="variable-me~16"></span>class(<a href='../type/muller_solver.html'>muller_solver</a>),</td>
 <td>intent(inout)</td>
   <td></td>  <td></td><td>::</td>
   <td><strong>me</strong></td><td></td>
@@ -232,7 +232,7 @@
 <span class="w">    </span><span class="c">! pick a third point in the middle [this could also be an optional input]</span>
 <span class="w">    </span><span class="n">cx</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">bisect</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span><span class="n">bx</span><span class="p">)</span><span class="w"></span>
 <span class="w">    </span><span class="n">fcx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">f</span><span class="p">(</span><span class="n">cx</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">solution</span><span class="p">(</span><span class="n">cx</span><span class="p">,</span><span class="n">fcx</span><span class="p">,</span><span class="n">me</span><span class="p">%</span><span class="n">ftol</span><span class="p">,</span><span class="n">xzero</span><span class="p">,</span><span class="n">fzero</span><span class="p">))</span><span class="w"> </span><span class="k">return</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">solution</span><span class="p">(</span><span class="n">cx</span><span class="p">,</span><span class="n">fcx</span><span class="p">,</span><span class="n">xzero</span><span class="p">,</span><span class="n">fzero</span><span class="p">))</span><span class="w"> </span><span class="k">return</span><span class="w"></span>
 
 <span class="w">    </span><span class="c">! [a,b,c]</span>
 <span class="w">    </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ax</span><span class="p">;</span><span class="w"> </span><span class="n">fa</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fax</span><span class="w"></span>
