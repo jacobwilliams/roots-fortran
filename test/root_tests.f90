@@ -36,24 +36,24 @@ program root_tests
 
     integer,parameter :: number_of_methods = 18 !! number of methods to test
     character(len=100),dimension(number_of_methods),parameter :: methods = [ &
+        'anderson_bjorck_king', &
+        'zhang               ', &
+        'barycentric         ', &
+        'ridders             ', &
+        'regula_falsi        ', &
+        'bdqrf               ', &
+        'blendtf             ', &
         'bisection           ', &
+        'illinois            ', &
+        'itp                 ', &
+        'pegasus             ', &
+        'toms748             ', &
+        'anderson_bjorck     ', &
         'brent               ', &
         'brentq              ', &
-        'brenth              ', &
-        'regula_falsi        ', &
-        'illinois            ', &
-        'anderson_bjorck     ', &
-        'anderson_bjorck_king', &
-        'ridders             ', &
-        'pegasus             ', &
-        'bdqrf               ', &
         'muller              ', &
-        'chandrupatla        ', &
-        'toms748             ', &
-        'zhang               ', &
-        'blendtf             ', &
-        'barycentric         ', &
-        'itp                 '] !! method names
+        'brenth              ', &
+        'chandrupatla        '] !! method names
 
     integer,dimension(number_of_methods) :: number_of_wins, ivec, number_of_failures, ivec2
 
