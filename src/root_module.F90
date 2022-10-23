@@ -1236,8 +1236,9 @@
 !### Reference
 !  * D. E. Muller, "A Method for Solving Algebraic Equations Using an Automatic Computer",
 !    Mathematical Tables and Other Aids to Computation, 10 (1956), 208-215.
-!  * Regular Muller here (Julia version):
-!    https://github.com/JuliaMath/Roots.jl/blob/97dbe2e178656e39b7f646cff278e4e985d60116/src/simple.jl
+!    [link](https://www.ams.org/journals/mcom/1956-10-056/S0025-5718-1956-0083822-0/S0025-5718-1956-0083822-0.pdf)
+!  * [Roots.jl](https://github.com/JuliaMath/Roots.jl/blob/master/src/simple.jl), 
+!    Julia version of standard Muller
 
     subroutine muller (me,ax,bx,fax,fbx,xzero,fzero,iflag)
 
