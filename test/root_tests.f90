@@ -1312,7 +1312,7 @@ program root_tests
             b = x2
             root = 7.4771853245531515E+01_wp
             if (present(x)) f = y1 + ((x - x1) / (x2 - x1)) * (y2 - y1)
-            if (present(latex)) latex = '1012 + (x/x2)(-2126)'
+            if (present(latex)) latex = '1012 - 2126 x / 157.08'
         end block tmp
 
     case default
