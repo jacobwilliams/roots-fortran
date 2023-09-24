@@ -1237,7 +1237,7 @@
 !  * D. E. Muller, "A Method for Solving Algebraic Equations Using an Automatic Computer",
 !    Mathematical Tables and Other Aids to Computation, 10 (1956), 208-215.
 !    [link](https://www.ams.org/journals/mcom/1956-10-056/S0025-5718-1956-0083822-0/S0025-5718-1956-0083822-0.pdf)
-!  * [Roots.jl](https://github.com/JuliaMath/Roots.jl/blob/master/src/simple.jl), 
+!  * [Roots.jl](https://github.com/JuliaMath/Roots.jl/blob/master/src/simple.jl),
 !    Julia version of standard Muller
 
     subroutine muller (me,ax,bx,fax,fbx,xzero,fzero,iflag)
@@ -2517,24 +2517,25 @@
     integer :: j !! iteration counter
     logical :: root_found !! convergence in x
     logical :: fail !! if we can't interpolate
+    real(wp) :: factor !! factor to ensure f(ax)<f(bx)
 
     real(wp),parameter :: log2 = log(2.0_wp)
 
     ! initialize:
-    if (fax < fbx) then
-        a  = ax
-        b  = bx
-        ya = fax
-        yb = fbx
+    if (fax < fbx) then  ! a requirement for the algorithm ?
+        factor = 1.0_wp
     else
-        a  = bx
-        b  = ax
-        ya = fbx
-        yb = fax
+        ! flip the sign of the function to ensure fax < fbx
+        ! note that a < b is already enforced by the calling routine.
+        factor = -1.0_wp
     end if
+    a  = ax
+    b  = bx
+    ya = factor*fax
+    yb = factor*fbx
     iflag = 0
     term = (b-a)/(2.0_wp*me%rtol)
-    n12 = ceiling ( log(term) / log2 ) ! ceiling(log2(term))
+    n12 = ceiling ( log(abs(term)) / log2 ) ! ceiling(log2(term))
     nmax = n12 + me%n0
     aprev = huge(1.0_wp) ! initialize to unusual values
     bprev = huge(1.0_wp) !
@@ -2571,7 +2572,7 @@
             end if
 
             ! updating interval:
-            yitp = me%f(xitp)
+            yitp = factor*me%f(xitp)
             if (me%solution(xitp,yitp,xzero,fzero)) return
             if (yitp > 0.0_wp) then
                 b = xitp
@@ -2591,7 +2592,7 @@
             ! [this can happen in the test cases].
             ! So just do a bisection
             xitp = bisect(a,b)
-            yitp = me%f(xitp)
+            yitp = factor*me%f(xitp)
             if (me%solution(xitp,yitp,xzero,fzero)) return
             if (ya*yitp<0.0_wp) then
                 ! root lies between a and xitp
