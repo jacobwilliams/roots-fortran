@@ -1300,12 +1300,27 @@ program root_tests
         if (present(x)) f = x
         if (present(latex)) latex = 'x'
 
+    ! another linear test case (see Issue #25)
+    case(133)
+
+        tmp : block
+            real(wp),parameter :: x1 = 0.0_wp
+            real(wp),parameter :: x2 = 157.08_wp
+            real(wp),parameter :: y1 = 1012.0_wp
+            real(wp),parameter :: y2 = -1114.0_wp
+            a = x1
+            b = x2
+            root = 7.4771853245531515E+01_wp
+            if (present(x)) f = y1 + ((x - x1) / (x2 - x1)) * (y2 - y1)
+            if (present(latex)) latex = '1012 - 2126 x / 157.08'
+        end block tmp
+
     case default
         write(*,*) 'invalid case: ', nprob
         error stop 'invalid case'
     end select
 
-    if (present(num_of_problems)) num_of_problems = 132
+    if (present(num_of_problems)) num_of_problems = 133
 
     ! outputs:
     if (present(ax))    ax = a
