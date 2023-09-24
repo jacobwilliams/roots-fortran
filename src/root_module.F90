@@ -615,6 +615,8 @@
 !
 !### See also
 !  * [zeroin.f](http://www.netlib.org/go/zeroin.f) from Netlib
+!
+!@note This method ignores the value of `atol`.
 
     subroutine brent(me,ax,bx,fax,fbx,xzero,fzero,iflag)
 
