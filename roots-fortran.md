@@ -14,7 +14,7 @@ display: public
          private
 source: true
 graph: false
-search: false
+search: true
 preprocessor: gfortran -E
 exclude: pyplot_module.f90
          face.F90
