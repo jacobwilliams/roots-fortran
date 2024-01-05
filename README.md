@@ -3,6 +3,7 @@
 
 **roots-fortran**: root solvers for modern Fortran
 
+[![Language](https://img.shields.io/badge/-Fortran-734f96?logo=fortran&logoColor=white)](https://github.com/topics/fortran)
 [![GitHub release](https://img.shields.io/github/release/jacobwilliams/roots-fortran.svg)](https://github.com/jacobwilliams/roots-fortran/releases/latest)
 [![CI Status](https://github.com/jacobwilliams/roots-fortran/actions/workflows/CI.yml/badge.svg)](https://github.com/jacobwilliams/roots-fortran/actions)
 [![codecov](https://codecov.io/gh/jacobwilliams/roots-fortran/branch/master/graph/badge.svg)](https://codecov.io/gh/jacobwilliams/roots-fortran)
