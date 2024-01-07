@@ -15,7 +15,7 @@ A modern Fortran library for finding the roots of continuous scalar functions of
 
 ## Compiling
 
-A `fmp.toml` file is provided for compiling roots-fortran with the [Fortran Package Manager](https://github.com/fortran-lang/fpm). For example, to build:
+A `fpm.toml` file is provided for compiling roots-fortran with the [Fortran Package Manager](https://github.com/fortran-lang/fpm). For example, to build:
 
 ```
 fpm build --profile release
