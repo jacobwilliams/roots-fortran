@@ -34,7 +34,7 @@ program root_tests
     character(len=*),parameter :: fmt  = '(   A20,1X,A3,1X,A4,1X,A16,  1X,A25,   1X,A16,  1X,A5,1X,A5,1X,A8  )' !! format for header
     character(len=*),parameter :: dfmt = '(1P,A20,1X,I3,1X,I4,1X,E16.6,1X,E25.16,1X,E16.6,1X,I5,1X,I5,1X,E8.1)' !! format for results
 
-    integer,parameter :: number_of_methods = 18 !! number of methods to test
+    integer,parameter :: number_of_methods = 19 !! number of methods to test
     character(len=100),dimension(number_of_methods),parameter :: methods = [ &
         'anderson_bjorck_king', &
         'zhang               ', &
@@ -53,9 +53,16 @@ program root_tests
         'brentq              ', &
         'muller              ', &
         'brenth              ', &
-        'chandrupatla        '] !! method names
+        'chandrupatla        ', &
+        'rbp                 '] !! method names
 
     integer,dimension(number_of_methods) :: number_of_wins, ivec, number_of_failures, ivec2
+
+    write(*,*) ''
+    write(*,*) '-------------------------------------------------'
+    write(*,*) 'root_tests'
+    write(*,*) '-------------------------------------------------'
+    write(*,*) ''
 
     number_of_wins = 0
     number_of_failures = 0
@@ -82,6 +89,8 @@ program root_tests
     do nprob = 1, num_of_problems
         ! write(*,*) 'nprob: ', nprob
         ! write(*,*) 'cases_to_run: ', cases_to_run
+        ! if (nprob/=128) cycle
+        !if (nprob/=52) cycle
         call problems(cases = cases_to_run)
         do ic = 1, size(cases_to_run)
             n = cases_to_run(ic)
@@ -113,7 +122,7 @@ program root_tests
     end do
     write(*,*) ''
 
-    !call generate_plots()  ! comment out for now...
+    ! call generate_plots()  ! comment out for now...
 
     contains
 !*****************************************************************************************
@@ -172,6 +181,8 @@ program root_tests
             repeat('-',25),repeat('-',16),repeat('-',5),repeat('-',5),repeat('-',8)
 
         do imeth = 1, number_of_methods
+
+             !if (imeth<=number_of_methods-1) cycle    ! debugging .....
 
             call problems(ax=ax, bx=bx, xroot=root)
 
@@ -1315,12 +1326,32 @@ program root_tests
             if (present(latex)) latex = '1012 - 2126 x / 157.08'
         end block tmp
 
+    ! see Table 1 from RBP paper
+    case(134)
+        a = 0.5_wp
+        b = 5.0_wp
+        root = 1.0_wp
+        if (present(x)) f = log(x)
+        if (present(latex)) latex = '\log x'
+    case(135)
+        a = 0.5_wp
+        b = 8.0_wp
+        root = 1.0000408355647269E+00_wp
+        if (present(x)) f = (10.0_wp - x) * exp(-10.0_wp*x) - x**10 + 1.0_wp
+        if (present(latex)) latex = '(10-x)e^{-10x} - x^{10} + 1'
+    case(136)
+        a = 1.0_wp
+        b = 4.0_wp
+        root = 1.6968123868097515E+00_wp
+        if (present(x)) f = exp(sin(x)) - x - 1.0_wp
+        if (present(latex)) latex = 'e^(\sin x) - x - 1'
+
     case default
         write(*,*) 'invalid case: ', nprob
         error stop 'invalid case'
     end select
 
-    if (present(num_of_problems)) num_of_problems = 133
+    if (present(num_of_problems)) num_of_problems = 136
 
     ! outputs:
     if (present(ax))    ax = a
@@ -1410,6 +1441,8 @@ program root_tests
     call problems(num_of_problems=num_of_problems)
 
     do nprob = 1, num_of_problems
+        ! if (nprob/=128) cycle
+        !if (nprob/=52) cycle
 
         write(*,*) 'case', nprob, '/', num_of_problems
 

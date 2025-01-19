@@ -1,7 +1,7 @@
 Roots-Fortran: Root solvers for modern Fortran
 <https://github.com/jacobwilliams/roots-fortran>
 
-Copyright (c) 2021-2022, Jacob Williams
+Copyright (c) 2021-2025, Jacob Williams
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
