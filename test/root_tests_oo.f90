@@ -27,6 +27,12 @@ program root_tests_oo
     end type my_solver
     type(my_solver) :: solver
 
+    write(*,*) ''
+    write(*,*) '-------------------------------------------------'
+    write(*,*) 'root_tests_oo'
+    write(*,*) '-------------------------------------------------'
+    write(*,*) ''
+
     ! case 19
     ax = 0.0_wp
     bx = 1.0_wp
