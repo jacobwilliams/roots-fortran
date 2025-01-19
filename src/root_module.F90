@@ -69,6 +69,7 @@
     type(root_method),parameter,public :: root_method_blendtf              = root_method(16, 'blendtf')              !! enum type for `blendtf` method
     type(root_method),parameter,public :: root_method_barycentric          = root_method(17, 'barycentric')          !! enum type for `barycentric` method
     type(root_method),parameter,public :: root_method_itp                  = root_method(18, 'itp')                  !! enum type for `itp` method
+    type(root_method),parameter,public :: root_method_rbp                  = root_method(19, 'rbp')                  !! enum type for `rbp` method
 
     type(root_method),parameter,dimension(*),public :: set_of_root_methods = &
         [ root_method_brent,                &
@@ -88,7 +89,8 @@
           root_method_anderson_bjorck_king, &
           root_method_blendtf,              &
           root_method_barycentric,          &
-          root_method_itp                   ]  !! list of the available methods (see [[root_scalar]])
+          root_method_itp,                  &
+          root_method_rbp                   ]  !! list of the available methods (see [[root_scalar]])
 
     type,abstract,public :: root_solver
         !! abstract class for the root solver methods
@@ -261,6 +263,14 @@
     procedure,public :: find_root => itp
     procedure,public :: set_optional_inputs => itp_optional_inputs
     end type itp_solver
+
+    type,extends(root_solver),public :: rbp_solver
+    !! RBP root solver
+    private
+    contains
+    private
+    procedure,public :: find_root => rbp
+    end type rbp_solver
 
     abstract interface
         function func(me,x) result(f)
@@ -457,6 +467,7 @@
     case(root_method_blendtf%id);              allocate(blendtf_solver              :: s)
     case(root_method_barycentric%id);          allocate(barycentric_solver          :: s)
     case(root_method_itp%id);                  allocate(itp_solver                  :: s)
+    case(root_method_rbp%id);                  allocate(rbp_solver                  :: s)
 
     case default
         iflag = -999    ! invalid method
@@ -2620,6 +2631,115 @@
     end do
 
     end subroutine itp
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Regula Falsi-Bisection-Parabolic Algorithm (RBP)
+!
+!### See also
+!  * Alojz Suhadolnik, "Combined bracketing methods for solving nonlinear equations",
+!    Applied Mathematics Letters, Volume 25, Issue 11, November 2012, Pages 1755-1760.
+!    https://www.sciencedirect.com/science/article/pii/S0893965912000778
+!
+!@note This differs from the reference in that it will fallback to bisection if the
+!      parabolic interpolation fails.
+
+    subroutine rbp(me,ax,bx,fax,fbx,xzero,fzero,iflag)
+
+    implicit none
+
+    class(rbp_solver),intent(inout) :: me
+    real(wp),intent(in)    :: ax      !! left endpoint of initial interval
+    real(wp),intent(in)    :: bx      !! right endpoint of initial interval
+    real(wp),intent(in)    :: fax     !! `f(ax)`
+    real(wp),intent(in)    :: fbx     !! `f(ax)`
+    real(wp),intent(out)   :: xzero   !! abscissa approximating a zero of `f` in the interval `ax`,`bx`
+    real(wp),intent(out)   :: fzero   !! value of `f` at the root (`f(xzero)`)
+    integer,intent(out)    :: iflag   !! status flag (`0`=root found, `-2`=max iterations reached)
+
+    real(wp) :: xa,xb,xc,x0p,fa,fb,fc,a,b,c,xp,fp,denom
+    integer :: i  !! iteration counter
+    logical :: root_found
+    logical :: error  !! used to check for errors in parabolic interpolation
+
+    iflag = 0
+    xa = ax
+    xb = bx
+    xc = bisect(xa,xb)
+    x0p = xc
+
+    ! function values:
+    fa = fax
+    fb = fbx
+    fc = me%f(xc)
+    if (me%solution(xc,fc,xzero,fzero)) return
+
+    do i = 1, me%maxiter
+
+        a = (fa-fc)/(xa-xc)/(xa-xb) + (fc-fb)/(xb-xc)/(xa-xb)
+        b = (fc-fa)*(xb-xc)/(xa-xc)/(xa-xb) - (fc-fb)*(xa-xc)/(xb-xc)/(xa-xb)
+        c = fc
+
+        ! root of the parabola:
+        denom = b + sign(1.0_wp, b)*sqrt(b**2 - 4*a*c)
+        error = denom == 0.0_wp
+        if (.not. error) then
+            xp = xc - 2.0_wp*c / denom
+            error = xp==xa .or. xp==xb .or. xp==xc
+        end if
+        if (error) then
+            ! failure in parabolic interpolation - fall back to bisection
+            if (fa*fc<0.0_wp) then
+                xp = bisect(xa,xc)
+            else
+                xp = bisect(xc,xb)
+            end if
+        end if
+        fp = me%f(xp)
+        if (me%solution(xp,fp,xzero,fzero)) return
+
+        ! we can check for convergence here.
+        ! since everything below is used for the next iteration
+        root_found = me%converged(x0p,xp) .and. i>1
+        if (root_found .or. i==me%maxiter) then
+            xzero = xp
+            fzero = fp
+            if (.not. root_found) iflag = -2  ! max iterations reached
+            exit
+        end if
+
+        ! new endpoints of the interval:
+        if (fa*fp < 0.0_wp) then
+            xb = xp
+            fb = fp
+            if (fa*fc > 0.0_wp) then
+                xa = xc
+                fa = fc
+            end if
+        else
+            xa = xp
+            fa = fp
+            if (fb*fc > 0.0_wp) then
+                xb = xc
+                fb = fc
+            end if
+        end if
+
+        ! switching mechanism between bisection and regula falsi:
+        if (abs(fa-fb)>10.0_wp*abs(xa-xb) .or. abs(fa-fb)<0.1_wp*abs(xa-xb)) then
+            xc = bisect(xa,xb)
+        else
+            xc = regula_falsi_step(xa,xb,fa,fb,ax,bx)
+        end if
+        fc = me%f(xc)
+        if (me%solution(xc,fc,xzero,fzero)) return
+
+        x0p = xp
+
+    end do
+
+    end subroutine rbp
 !*****************************************************************************************
 
 !*****************************************************************************************

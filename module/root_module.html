@@ -38,7 +38,7 @@
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="navbar-nav">
                   <li class="nav-item">
-                    <a class="nav-link" href="sourcefile/root_module.f90.html">Source File</a>
+                    <a class="nav-link" href="../sourcefile/root_module.f90.html">Source File</a>
                   </li>
                 <li class="nav-item">
                   <a class="nav-link" href="../lists/modules.html">Modules</a>
@@ -75,9 +75,8 @@
         <ul class="list-inline" style="margin-bottom:0px;display:inline">
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
-              <a data-bs-toggle="tooltip"
-                 data-bs-placement="bottom" data-html="true"
-                 title="100.0% of total for modules and submodules.">1800 statements</a>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title="100.0% of total for modules and submodules.">1883 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -139,6 +138,7 @@
             <a class="list-group-item" href="../module/root_module.html#variable-root_method_blendtf">root_method_blendtf</a>
             <a class="list-group-item" href="../module/root_module.html#variable-root_method_barycentric">root_method_barycentric</a>
             <a class="list-group-item" href="../module/root_module.html#variable-root_method_itp">root_method_itp</a>
+            <a class="list-group-item" href="../module/root_module.html#variable-root_method_rbp">root_method_rbp</a>
             <a class="list-group-item" href="../module/root_module.html#variable-set_of_root_methods">set_of_root_methods</a>
         </div>
       </div>
@@ -203,6 +203,7 @@
             <a class="list-group-item" href="../module/root_module.html#type-blendtf_solver">blendtf_solver</a>
             <a class="list-group-item" href="../module/root_module.html#type-barycentric_solver">barycentric_solver</a>
             <a class="list-group-item" href="../module/root_module.html#type-itp_solver">itp_solver</a>
+            <a class="list-group-item" href="../module/root_module.html#type-rbp_solver">rbp_solver</a>
         </div>
       </div>
     </div>
@@ -256,6 +257,7 @@
             <a class="list-group-item" href="../module/root_module.html#proc-barycentric">barycentric</a>
             <a class="list-group-item" href="../module/root_module.html#proc-itp_optional_inputs">itp_optional_inputs</a>
             <a class="list-group-item" href="../module/root_module.html#proc-itp">itp</a>
+            <a class="list-group-item" href="../module/root_module.html#proc-rbp">rbp</a>
             <a class="list-group-item" href="../module/root_module.html#proc-choose_best">choose_best</a>
             <a class="list-group-item" href="../module/root_module.html#proc-swap">swap</a>
         </div>
@@ -322,8 +324,11 @@
 <!-- iso_fortran_env -->
 <g id="module~~root_module~~UsesGraph_node2" class="node">
 <title>iso_fortran_env</title>
+<g id="a_module~~root_module~~UsesGraph_node2"><a xlink:href="http://fortranwiki.org/fortran/show/iso_fortran_env" xlink:title="iso_fortran_env">
 <polygon fill="#337ab7" stroke="#337ab7" points="94,-24 0,-24 0,0 94,0 94,-24"/>
 <text text-anchor="middle" x="47" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">iso_fortran_env</text>
+</a>
+</g>
 </g>
 <!-- module~root_module&#45;&gt;iso_fortran_env -->
 <g id="module~~root_module~~UsesGraph_edge1" class="edge">
@@ -817,6 +822,23 @@ parameter
         </tr>
         <tr>
             <td>
+              <span class="anchor" id="variable-root_method_rbp"></span>
+              type(<a href='../type/root_method.html'>root_method</a>),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>root_method_rbp</strong></td>
+<td> =</td>
+                <td>root_method(19, &#39;rbp&#39;)</td>
+            <td>
+                <p>enum type for <code>rbp</code> method</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
               <span class="anchor" id="variable-set_of_root_methods"></span>
               type(<a href='../type/root_method.html'>root_method</a>),
             </td>
@@ -827,7 +849,7 @@ parameter,               dimension(*)
             <td>::</td>
             <td><strong>set_of_root_methods</strong></td>
 <td> =</td>
-                <td>[root_method_brent, root_method_bisection, root_method_regula_falsi, root_method_illinois, root_method_anderson_bjorck, root_method_ridders, root_method_pegasus, root_method_bdqrf, root_method_muller, root_method_brenth, root_method_brentq, root_method_chandrupatla, root_method_toms748, root_method_zhang, root_method_anderson_bjorck_king, root_method_blendtf, root_method_barycentric, root_method_itp]</td>
+                <td>[root_method_brent, root_method_bisection, root_method_regula_falsi, root_method_illinois, root_method_anderson_bjorck, root_method_ridders, root_method_pegasus, root_method_bdqrf, root_method_muller, root_method_brenth, root_method_brentq, root_method_chandrupatla, root_method_toms748, root_method_zhang, root_method_anderson_bjorck_king, root_method_blendtf, root_method_barycentric, root_method_itp, root_method_rbp]</td>
             <td>
                 <p>list of the available methods (see <a href="../interface/root_scalar.html">root_scalar</a>)</p>
             </td>
@@ -1677,7 +1699,7 @@ It should evaluate f(x) for any x in the interval (ax,bx)</p>
     <div class="card-header codesum">
       <span class="anchor" id="type-root_solver"></span>
       <h3>
-        type, public&nbsp;::&nbsp;
+        type, public, abstract&nbsp;::&nbsp;
         <a href='../type/root_solver.html'>root_solver</a>
         
       </h3>
@@ -1804,7 +1826,7 @@ It should evaluate f(x) for any x in the interval (ax,bx)</p>
                 <td>  procedure(<a href='../interface/root_f.html'>root_f</a>), private, deferred ::
   <strong><a href='../type/root_solver.html#boundprocedure-find_root'>find_root</a></strong></td>
                 <td><p>root solver function. Meant to be
-called from <a href="root_solver.html#boundprocedure-solve">solve</a>, which handles some common
+called from <a href="../type/root_solver.html#boundprocedure-solve">solve</a>, which handles some common
 startup tasks. All these routines assume that
 <script type="math/tex"> f(a_x) </script> and <script type="math/tex"> f(b_x) </script> have opposite signs.</p></td>
               </tr>
@@ -2582,6 +2604,44 @@ startup tasks. All these routines assume that
     </div>
   </div>
 
+              <div class="card">
+    <div class="card-header codesum">
+      <span class="anchor" id="type-rbp_solver"></span>
+      <h3>
+        type, public, extends(<a href='../type/root_solver.html'>root_solver</a>)&nbsp;::&nbsp;
+        <a href='../type/rbp_solver.html'>rbp_solver</a>
+        
+      </h3>
+    </div>
+    <div class="card-body">
+      <p>RBP root solver</p>
+
+
+
+
+        <h4>Type-Bound Procedures</h4>
+        <table class="table table-striped varlist">
+          <tbody>
+              <tr>
+                <td>  procedure, public ::
+  <strong><a href='../type/root_solver.html#boundprocedure-initialize'>initialize</a></strong> => <a href='/home/runner/work/roots-fortran/roots-fortran/doc/proc/initialize_root_solver.html'>initialize_root_solver</a></td>
+                <td>../../<p>initialize the class [must be called first]</p></td>
+              </tr>
+              <tr>
+                <td>  procedure, public ::
+  <strong><a href='../type/root_solver.html#boundprocedure-solve'>solve</a></strong></td>
+                <td>../../<p>main routine for finding the root</p></td>
+              </tr>
+              <tr>
+                <td>  procedure, public ::
+  <strong><a href='../type/rbp_solver.html#boundprocedure-find_root~20'>find_root</a></strong> => <a href='/home/runner/work/roots-fortran/roots-fortran/doc/proc/rbp.html'>rbp</a></td>
+                <td></td>
+              </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+
         </section>
         <br>
 
@@ -2652,7 +2712,7 @@ startup tasks. All these routines assume that
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-me~26"></span>
+              <span class="anchor" id="variable-me~27"></span>
               class(<a href='../type/root_solver.html'>root_solver</a>),
             </td>
 <td>intent(inout)</td>
@@ -2667,7 +2727,7 @@ startup tasks. All these routines assume that
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-a~12"></span>
+              <span class="anchor" id="variable-a~13"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -2682,7 +2742,7 @@ startup tasks. All these routines assume that
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-b~13"></span>
+              <span class="anchor" id="variable-b~14"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -2848,7 +2908,7 @@ With a protection to fall back to bisection if:</p><a href="../proc/regula_falsi
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-ax~24"></span>
+              <span class="anchor" id="variable-ax~25"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -2863,7 +2923,7 @@ With a protection to fall back to bisection if:</p><a href="../proc/regula_falsi
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-bx~24"></span>
+              <span class="anchor" id="variable-bx~25"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -2969,7 +3029,7 @@ With a protection to fall back to bisection if:</p><a href="../proc/secant.html"
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-ax~25"></span>
+              <span class="anchor" id="variable-ax~26"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -2984,7 +3044,7 @@ With a protection to fall back to bisection if:</p><a href="../proc/secant.html"
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-bx~25"></span>
+              <span class="anchor" id="variable-bx~26"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -3074,7 +3134,7 @@ With a protection to fall back to bisection if:</p><a href="../proc/secant.html"
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-me~27"></span>
+              <span class="anchor" id="variable-me~28"></span>
               class(<a href='../type/root_solver.html'>root_solver</a>),
             </td>
 <td>intent(inout)</td>
@@ -3119,7 +3179,7 @@ With a protection to fall back to bisection if:</p><a href="../proc/secant.html"
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-xzero~23"></span>
+              <span class="anchor" id="variable-xzero~24"></span>
               real(kind=wp),
             </td>
 <td>intent(inout)</td>
@@ -3134,7 +3194,7 @@ With a protection to fall back to bisection if:</p><a href="../proc/secant.html"
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-fzero~23"></span>
+              <span class="anchor" id="variable-fzero~24"></span>
               real(kind=wp),
             </td>
 <td>intent(inout)</td>
@@ -6089,7 +6149,7 @@ to <code>maxiter</code> additional function evaluations.</p>
 </h3></div>
     <div class="card-body">
           
-  <p>Modified anderson-bjorck-king method. Same as <a href="anderson_bjorck.html">anderson_bjorck</a>, but with
+  <p>Modified anderson-bjorck-king method. Same as <a href="../proc/anderson_bjorck.html">anderson_bjorck</a>, but with
   an extra initial bisection step.</p><a href="../proc/anderson_bjorck_king.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
@@ -6525,7 +6585,7 @@ to <code>maxiter</code> additional function evaluations.</p>
 </h3></div>
     <div class="card-body">
           
-  <p>For the <a href="itp.html">itp</a> method, set the optional inputs.</p>
+  <p>For the <a href="../proc/itp.html">itp</a> method, set the optional inputs.</p>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -6752,6 +6812,151 @@ to <code>maxiter</code> additional function evaluations.</p>
   </div>
 
               <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rbp"></span> <h3>private  subroutine <a href='../proc/rbp.html'>rbp</a>(me, ax, bx, fax, fbx, xzero, fzero, iflag)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Regula Falsi-Bisection-Parabolic Algorithm (RBP)</p><a href="../proc/rbp.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-me~26"></span>
+              class(<a href='../type/rbp_solver.html'>rbp_solver</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ax~24"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ax</strong></td>
+            <td>
+<p>left endpoint of initial interval</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-bx~24"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>bx</strong></td>
+            <td>
+<p>right endpoint of initial interval</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fax~24"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>fax</strong></td>
+            <td>
+<p><code>f(ax)</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fbx~24"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>fbx</strong></td>
+            <td>
+<p><code>f(ax)</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-xzero~23"></span>
+              real(kind=wp),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>xzero</strong></td>
+            <td>
+<p>abscissa approximating a zero of <code>f</code> in the interval <code>ax</code>,<code>bx</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fzero~23"></span>
+              real(kind=wp),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>fzero</strong></td>
+            <td>
+<p>value of <code>f</code> at the root (<code>f(xzero)</code>)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-iflag~23"></span>
+              integer,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>iflag</strong></td>
+            <td>
+<p>status flag (<code>0</code>=root found, <code>-2</code>=max iterations reached)</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
     <div class="card-header codesum"><span class="anchor" id="proc-choose_best"></span> <h3>private pure subroutine <a href='../proc/choose_best.html'>choose_best</a>(x1, x2, f1, f2, xbest, fbest)  
 </h3></div>
     <div class="card-body">
@@ -6887,7 +7092,7 @@ to <code>maxiter</code> additional function evaluations.</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-a~13"></span>
+              <span class="anchor" id="variable-a~14"></span>
               real(kind=wp),
             </td>
 <td>intent(inout)</td>
@@ -6902,7 +7107,7 @@ to <code>maxiter</code> additional function evaluations.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-b~14"></span>
+              <span class="anchor" id="variable-b~15"></span>
               real(kind=wp),
             </td>
 <td>intent(inout)</td>
@@ -6935,7 +7140,10 @@ to <code>maxiter</code> additional function evaluations.</p>
     <footer>
       <div class="container">
         <div class="row justify-content-between">
-          <div class="col"><p>roots-fortran was developed by Jacob Williams<br>&copy; 2024 
+          <div class="col">
+            <p>
+              roots-fortran
+ was developed by Jacob Williams<br>              &copy; 2025 
 </p>
           </div>
           <div class="col">

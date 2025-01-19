@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -36,7 +38,7 @@
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="navbar-nav">
                   <li class="nav-item">
-                    <a class="nav-link" href="sourcefile/root_module.f90.html">Source File</a>
+                    <a class="nav-link" href="./sourcefile/root_module.f90.html">Source File</a>
                   </li>
                 <li class="nav-item">
                   <a class="nav-link" href="./lists/modules.html">Modules</a>
@@ -62,14 +64,18 @@
     </div>
 
     <div class="container">
-      <!-- Main component for a primary marketing message or call to action -->
-      <div class="p-5 mb-4 bg-light border rounded-3" id="jumbotron">
-        <p>Root solvers for modern Fortran</p>
-	<p> Find us on&hellip;</p>
-        <p>
-          <a class="btn btn-lg btn-primary" href="https://github.com/jacobwilliams/roots-fortran" role="button">GitHub</a>
-        </p>
-      </div>
+  <!-- Main component for a primary marketing message or call to action -->
+    <div class="p-5 mb-4 bg-light border rounded-3" id="jumbotron">
+      <p>Root solvers for modern Fortran</p>
+        <p> Find us on&hellip;</p>
+      <p>
+        <a class="btn btn-lg btn-primary" href="https://github.com/jacobwilliams/roots-fortran" role="button">GitHub</a>
+        
+        
+        
+        
+      </p>
+    </div>
 
       <div class="row" id='text'>
         <div class=col-md-8>
@@ -222,6 +228,11 @@
 <td><a href="https://www.cscjournals.org/download/issuearchive/IJEA/Volume2/IJEA_V2_I1.pdf">Zhang (2011)</a></td>
 </tr>
 <tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/rbp.html"><code>rbp</code></a></td>
+<td>Regula Falsi-Bisection-Parabolic method</td>
+<td><a href="https://www.sciencedirect.com/science/article/pii/S0893965912000778">Suhadolnik (2012)</a></td>
+</tr>
+<tr>
 <td><a href="https://jacobwilliams.github.io/roots-fortran/proc/itp.html"><code>itp</code></a></td>
 <td>Interpolate Truncate and Project method</td>
 <td><a href="https://dl.acm.org/doi/abs/10.1145/3423597">Oliveira &amp; Takahashi (2020)</a></td>
@@ -241,7 +252,7 @@
 <p>In general, all the methods are guaranteed to converge. Some will be more efficient (in terms of number of function evaluations) than others for various problems. The methods can be broadly classified into three groups:</p>
 <ul>
 <li>Simple classical methods (<code>bisection</code>, <code>regula_falsi</code>, <code>illinois</code>, <code>ridders</code>).</li>
-<li>Newfangled methods (<code>zhang</code>, <code>barycentric</code>, <code>blendtf</code>, <code>bdqrf</code>, <code>anderson_bjorck_king</code>). These rarely or ever seem to be better than the best methods.</li>
+<li>Newfangled methods (<code>zhang</code>, <code>barycentric</code>, <code>blendtf</code>, <code>bdqrf</code>, <code>anderson_bjorck_king</code>, <code>rbp</code>). These rarely or ever seem to be better than the best methods.</li>
 <li>Best methods (<code>anderson_bjorck</code>, <code>muller</code>, <code>pegasus</code>, <code>toms748</code>, <code>brent</code>, <code>brentq</code>, <code>brenth</code>, <code>chandrupatla</code>, <code>itp</code>). Generally, one of these will be the most efficient method.</li>
 </ul>
 <p>Note that some of the implementations in this library contain additional checks for robustness, and so may behave better than naive implementations of the same algorithms. In addition, all methods have an option to fall back to bisection if the method fails to converge.</p>
@@ -387,12 +398,19 @@
 </ul>
         </div>
           <div class="col-md-4">
-	        <div class="card card-body bg-light">
+            <div class="card card-body bg-light">
               <h2 class="card-title">Developer Info</h2>
               <h4 class="card-text">Jacob Williams</h4>
               <p class="card-text"></p>
                 <div class="text-center"><div class="btn-group" role="group">
-                      <a class="btn btn-lg btn-primary" href="https://github.com/jacobwilliams"><i class="fa fa-github fa-lg"></i></a>
+                    
+                    <a class="btn btn-lg btn-primary" href="https://github.com/jacobwilliams"><i class="fa fa-github fa-lg"></i></a>
+                    
+                    
+                    
+                    
+                    
+                    
                 </div></div>
             </div>
           </div>
@@ -449,7 +467,10 @@
     <footer>
       <div class="container">
         <div class="row justify-content-between">
-          <div class="col"><p>roots-fortran was developed by Jacob Williams<br>&copy; 2024 
+          <div class="col">
+            <p>
+              roots-fortran
+ was developed by Jacob Williams<br>              &copy; 2025 
 </p>
           </div>
           <div class="col">
