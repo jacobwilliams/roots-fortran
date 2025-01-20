@@ -2658,10 +2658,9 @@
     real(wp),intent(out)   :: fzero   !! value of `f` at the root (`f(xzero)`)
     integer,intent(out)    :: iflag   !! status flag (`0`=root found, `-2`=max iterations reached)
 
-    real(wp) :: xa,xb,xc,x0p,fa,fb,fc,a,b,c,xp,fp,denom
+    real(wp) :: xa,xb,xc,x0p,fa,fb,fc,xp,fp,df,dx
     integer :: i  !! iteration counter
     logical :: root_found
-    logical :: error  !! used to check for errors in parabolic interpolation
 
     iflag = 0
     xa = ax
@@ -2677,25 +2676,8 @@
 
     do i = 1, me%maxiter
 
-        a = (fa-fc)/(xa-xc)/(xa-xb) + (fc-fb)/(xb-xc)/(xa-xb)
-        b = (fc-fa)*(xb-xc)/(xa-xc)/(xa-xb) - (fc-fb)*(xa-xc)/(xb-xc)/(xa-xb)
-        c = fc
-
-        ! root of the parabola:
-        denom = b + sign(1.0_wp, b)*sqrt(b**2 - 4*a*c)
-        error = denom == 0.0_wp
-        if (.not. error) then
-            xp = xc - 2.0_wp*c / denom
-            error = xp==xa .or. xp==xb .or. xp==xc
-        end if
-        if (error) then
-            ! failure in parabolic interpolation - fall back to bisection
-            if (fa*fc<0.0_wp) then
-                xp = bisect(xa,xc)
-            else
-                xp = bisect(xc,xb)
-            end if
-        end if
+        ! parabolic interpolation:
+        xp = parabolic(xa,xb,xc,fa,fb,fc)
         fp = me%f(xp)
         if (me%solution(xp,fp,xzero,fzero)) return
 
@@ -2727,7 +2709,9 @@
         end if
 
         ! switching mechanism between bisection and regula falsi:
-        if (abs(fa-fb)>10.0_wp*abs(xa-xb) .or. abs(fa-fb)<0.1_wp*abs(xa-xb)) then
+        df = abs(fa-fb)
+        dx = abs(xa-xb)
+        if (df>10.0_wp*dx .or. df<0.1_wp*dx) then
             xc = bisect(xa,xb)
         else
             xc = regula_falsi_step(xa,xb,fa,fb,ax,bx)
@@ -2877,6 +2861,43 @@
     end if
 
     end function secant
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Parabolic interpolation, with the option to fall back to bisection
+!  if the parabolic interpolation fails. Used by [[rbp]].
+
+    pure function parabolic(xa,xb,xc,fa,fb,fc) result(xp)
+
+    real(wp),intent(in) :: xa,xb,xc
+    real(wp),intent(in) :: fa,fb,fc
+    real(wp) :: xp
+
+    real(wp) :: a,b,c,denom
+    logical :: error  !! used to check for errors in parabolic interpolation
+
+    a = (fa-fc)/(xa-xc)/(xa-xb) + (fc-fb)/(xb-xc)/(xa-xb)
+    b = (fc-fa)*(xb-xc)/(xa-xc)/(xa-xb) - (fc-fb)*(xa-xc)/(xb-xc)/(xa-xb)
+    c = fc
+
+    ! root of the parabola:
+    denom = b + sign(1.0_wp, b)*sqrt(b**2 - 4*a*c)
+    error = denom == 0.0_wp
+    if (.not. error) then
+        xp = xc - 2.0_wp*c / denom
+        error = xp==xa .or. xp==xb .or. xp==xc
+    end if
+    if (error) then
+        ! failure in parabolic interpolation - fall back to bisection
+        if (fa*fc<0.0_wp) then
+            xp = bisect(xa,xc)
+        else
+            xp = bisect(xc,xb)
+        end if
+    end if
+
+    end function parabolic
 !*****************************************************************************************
 
 !*****************************************************************************************
