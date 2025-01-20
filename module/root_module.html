@@ -76,7 +76,7 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title="100.0% of total for modules and submodules.">1883 statements</a>
+                 title="100.0% of total for modules and submodules.">1892 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -220,6 +220,7 @@
             <a class="list-group-item" href="../module/root_module.html#proc-bisect">bisect</a>
             <a class="list-group-item" href="../module/root_module.html#proc-regula_falsi_step">regula_falsi_step</a>
             <a class="list-group-item" href="../module/root_module.html#proc-secant">secant</a>
+            <a class="list-group-item" href="../module/root_module.html#proc-parabolic">parabolic</a>
             <a class="list-group-item" href="../module/root_module.html#proc-lowercase">lowercase</a>
             <a class="list-group-item" href="../module/root_module.html#proc-solution">solution</a>
         </div>
@@ -2727,7 +2728,7 @@ startup tasks. All these routines assume that
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-a~13"></span>
+              <span class="anchor" id="variable-a~12"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -2742,7 +2743,7 @@ startup tasks. All these routines assume that
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-b~14"></span>
+              <span class="anchor" id="variable-b~13"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -3065,6 +3066,127 @@ With a protection to fall back to bisection if:</p><a href="../proc/secant.html"
     <small>real(kind=wp)</small>
     </h4>
     <p>intersection of secant step with x-axis</p>
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-parabolic"></span> <h3>private pure function <a href='../proc/parabolic.html'>parabolic</a>(xa, xb, xc, fa, fb, fc) result(xp)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Parabolic interpolation, with the option to fall back to bisection
+if the parabolic interpolation fails. Used by <a href="../proc/rbp.html">rbp</a>.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-xa~2"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>xa</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-xb~2"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>xb</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-xc~2"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>xc</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fa~13"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>fa</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fb~13"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>fb</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fc~7"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>fc</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>real(kind=wp)</small>
+    </h4>
+    
 
     </div>
   </div>
