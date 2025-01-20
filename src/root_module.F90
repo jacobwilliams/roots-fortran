@@ -2730,11 +2730,11 @@
 !>
 !  Determines convergence in x based on if the reltol or abstol is satisfied.
 
-    function converged(me,a,b)
+    pure function converged(me,a,b)
 
     implicit none
 
-    class(root_solver),intent(inout) :: me
+    class(root_solver),intent(in) :: me
     real(wp),intent(in) :: a !! old value
     real(wp),intent(in) :: b !! new value
     logical :: converged
@@ -2810,7 +2810,7 @@
 !   * the computed point is outside the original interval ([ax,bx]).
 !   * f2 == f1
 
-    function regula_falsi_step(x1,x2,f1,f2,ax,bx) result(x3)
+    pure function regula_falsi_step(x1,x2,f1,f2,ax,bx) result(x3)
 
     implicit none
 
