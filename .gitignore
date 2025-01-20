@@ -28,3 +28,10 @@ files/*.json
 *.txt
 *.py
 *.pdf
+
+# latex
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.synctex.gz

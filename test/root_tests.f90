@@ -22,7 +22,7 @@ program root_tests
     integer :: imeth !! method counter
     integer :: ifunc !! number of function evaluations
     real(wp) :: root !! known root value
-    integer :: iunit,istat,iunit_failed
+    integer :: iunit,istat,iunit_failed,iunit_results
     real(wp) :: ax,bx
     integer :: i !! counter
     integer :: ic !! case counter
@@ -32,29 +32,29 @@ program root_tests
     integer,dimension(2),parameter :: figsize=[10,5] !! figure size for plogs
 
     character(len=*),parameter :: fmt  = '(   A20,1X,A3,1X,A4,1X,A16,  1X,A25,   1X,A16,  1X,A5,1X,A5,1X,A8  )' !! format for header
-    character(len=*),parameter :: dfmt = '(1P,A20,1X,I3,1X,I4,1X,E16.6,1X,E25.16,1X,E16.6,1X,I5,1X,I5,1X,E8.1)' !! format for results
+    character(len=*),parameter :: dfmt = '(1P,A20,1X,I3,1X,I4,1X,E16.6,1X,E25.16,1X,E16.6,1X,I5,1X,I5,1X,E8.1,1x,a)' !! format for results
 
     integer,parameter :: number_of_methods = 19 !! number of methods to test
     character(len=100),dimension(number_of_methods),parameter :: methods = [ &
-        'anderson_bjorck_king', &
-        'zhang               ', &
-        'barycentric         ', &
-        'ridders             ', &
-        'regula_falsi        ', &
-        'bdqrf               ', &
-        'blendtf             ', &
-        'bisection           ', &
-        'illinois            ', &
-        'itp                 ', &
-        'pegasus             ', &
-        'toms748             ', &
-        'anderson_bjorck     ', &
-        'brent               ', &
-        'brentq              ', &
-        'muller              ', &
-        'brenth              ', &
-        'chandrupatla        ', &
-        'rbp                 '] !! method names
+    'anderson_bjorck_king', &
+'zhang               ', &
+'barycentric         ', &
+'ridders             ', &
+'regula_falsi        ', &
+'blendtf             ', &
+'bdqrf               ', &
+'bisection           ', &
+'itp                 ', &
+'illinois            ', &
+'rbp                 ', &
+'pegasus             ', &
+'toms748             ', &
+'brent               ', &
+'brentq              ', &
+'anderson_bjorck     ', &
+'muller              ', &
+'brenth              ', &
+'chandrupatla        '  ] !! method names - the order here is roughly the order of worst to best (see the root report output file).
 
     integer,dimension(number_of_methods) :: number_of_wins, ivec, number_of_failures, ivec2
 
@@ -70,10 +70,47 @@ program root_tests
     ! open output files:
     open(newunit=iunit,        file='root_report_best.txt',     status='REPLACE', iostat=istat)
     open(newunit=iunit_failed, file='root_report_failures.txt', status='REPLACE', iostat=istat)
+    open(newunit=iunit_results, file='table.tex', status='REPLACE', iostat=istat)
 
     ! output file headers:
     write(iunit, '(A5,1X,A5,1X,A5,1X,A)')  'nprob', 'n', 'evals', 'Best Methods'
     write(iunit_failed, '(A5,1X,A5,1X,A)') 'nprob', 'n', 'Failed Methods'
+
+    write(iunit_results,'(a)') '% !TeX root = table.tex'
+
+    write(iunit_results,'(a)') '\documentclass{article}'
+    write(iunit_results,'(a)') '\usepackage[utf8]{inputenc}'
+    write(iunit_results,'(a)') '\usepackage{longtable}'
+    write(iunit_results,'(a)') '\usepackage{pdflscape}'
+    write(iunit_results,'(a)') '\usepackage{amsmath}'
+    write(iunit_results,'(a)') '\usepackage[table]{xcolor}'
+    write(iunit_results,'(a)') '\usepackage{multirow}'
+
+    ! write(iunit_results,'(a)') '\usepackage[a4paper, margin=0.1in]{geometry}'
+    write(iunit_results,'(a)') '\usepackage[paperheight=22in,paperwidth=40in, margin=0.1in]{geometry}'
+
+    write(iunit_results,'(a)') ''
+    write(iunit_results,'(a)') '\DeclareMathOperator{\sign}{sign}'
+    write(iunit_results,'(a)') '\begin{document}'
+    write(iunit_results,'(a)') ''
+    write(iunit_results,'(a)') '\begin{landscape}'
+
+    write(iunit_results,'(a)') ''
+    write(iunit_results,'(a)') '\section{Function Evaluations}'
+    write(iunit_results,'(a)') ''
+
+    ! cols are num, func, bounds, [methods]
+    write(iunit_results,'(a)') '\begin{longtable}{'//repeat('c',number_of_methods+4)//'}'
+    write(iunit_results,'(a)',advance='NO') 'No. & $f(x)$ & n & $[x_a, x_b]$ & '
+    do imeth = 1, number_of_methods
+        if (imeth==number_of_methods) then
+            write(iunit_results,'(a)') '\verb|' // trim(methods(imeth))//'|' // '\\'
+            write(iunit_results,'(a)') '\hline \hline'
+        else
+            write(iunit_results,'(a)',advance='NO') '\verb|' // trim(methods(imeth))//'|' // ' & '
+        end if
+    end do
+
 
     ! plot:
     call stats_plot%initialize(grid=.true.,xlabel='Methods',ylabel='Function Evaluations',figsize=figsize,&
@@ -89,8 +126,6 @@ program root_tests
     do nprob = 1, num_of_problems
         ! write(*,*) 'nprob: ', nprob
         ! write(*,*) 'cases_to_run: ', cases_to_run
-        ! if (nprob/=128) cycle
-        !if (nprob/=52) cycle
         call problems(cases = cases_to_run)
         do ic = 1, size(cases_to_run)
             n = cases_to_run(ic)
@@ -98,9 +133,14 @@ program root_tests
         end do
     end do
 
+    write(iunit_results,'(a)') '\end{longtable}'
+    write(iunit_results,'(a)') '\end{landscape}'
+    write(iunit_results,'(a)') '\end{document}'
+
     ! close output files:
     close(iunit)
     close(iunit_failed)
+    close(iunit_results)
 
     call stats_plot%savefig('stats_plot.pdf',istat=istat,pyfile='stats_plot.py')
 
@@ -136,7 +176,7 @@ program root_tests
         character(len=1000) :: line
         integer,dimension(number_of_methods) :: fevals !! func evals for each case
         real(wp),dimension(number_of_methods) :: cases_per_sec !! speed of each case
-        integer :: best_feval
+        integer :: best_feval, worst_feval
         real(wp) :: best_cases_per_second
         character(len=:),allocatable :: best,failures
         logical :: root_found
@@ -145,6 +185,8 @@ program root_tests
         integer :: i
         real(wp) :: atol, rtol, ftol
         real(wp) :: tol_for_check !! for pass/fail check
+        character(len=:),allocatable :: latex, tmp, latex_line, bounds, fevals_line, eqn
+        character(len=10) :: itmp, nstr
 
         integer,parameter :: n_repeat = 1  !! number of times to repeat each test for timing purposes
         integer,parameter :: maxiter = 1000 !! maximum number of iterations
@@ -182,9 +224,11 @@ program root_tests
 
         do imeth = 1, number_of_methods
 
-             !if (imeth<=number_of_methods-1) cycle    ! debugging .....
+            ! nprob is the problem being solved
 
-            call problems(ax=ax, bx=bx, xroot=root)
+            call problems(ax=ax, bx=bx, xroot=root, latex=latex, bounds = bounds)
+            tmp = latex
+            if (imeth/=1) tmp = ''
 
             call cpu_time(tstart)
             do irepeat = 1, n_repeat
@@ -195,7 +239,7 @@ program root_tests
             call cpu_time(tfinish)
 
             error = xzero-root
-            write(line, dfmt) trim(methods(imeth)),nprob,n,error,xzero,fzero,ifunc,iflag,n_repeat / (tfinish-tstart)
+            write(line, dfmt) trim(methods(imeth)),nprob,n,error,xzero,fzero,ifunc,iflag,n_repeat / (tfinish-tstart), trim(tmp)
 
             root_found = abs(fzero) <= tol_for_check !.and. abs(error) <= tol_for_check
 
@@ -224,6 +268,7 @@ program root_tests
 
         ! best in terms of lowest function evals:
         best_feval = minval(fevals)
+        worst_feval = maxval(fevals)
         if (best_feval==huge(1)) best_feval = -1 ! if none of them converged
         best = ''
         failures = ''
@@ -244,6 +289,59 @@ program root_tests
                 number_of_failures(imeth) = number_of_failures(imeth) + 1
             end if
         end do
+
+        ! latex table line:
+        latex_line = repeat(' ', 1000)
+        fevals_line = ''
+        do i = 1, size(fevals)
+            write(itmp, '(I10)') fevals(i); itmp = trim(adjustl(itmp))
+            if (fevals(i) == best_feval) then
+                if (count(fevals==best_feval)==1) then
+                    ! the sole winner
+                    fevals_line = fevals_line // '\cellcolor{green!75} ' // itmp // '&'
+                else
+                    ! this one has multiple winners
+                    fevals_line = fevals_line // '\cellcolor{green!25} ' // itmp // '&'
+                end if
+            else if (fevals(i)<=best_feval+5 ) then   ! close to best
+                fevals_line = fevals_line // '\cellcolor{green!5} ' // itmp // '&'
+            else if (fevals(i) == worst_feval) then
+                if (count(fevals==worst_feval)==1) then
+                    ! the sole loser
+                    fevals_line = fevals_line // '\cellcolor{red!75} ' // itmp // '&'
+                else
+                    ! this one has multiple losers
+                    fevals_line = fevals_line // '\cellcolor{red!25} ' // itmp // '&'
+                end if
+            else if (fevals(i)>=best_feval*2 ) then   ! close to worst
+                fevals_line = fevals_line // '\cellcolor{red!5} ' // itmp // '&'
+            else
+                fevals_line = fevals_line // itmp // '&'
+            end if
+        end do
+
+        ! n input to some of the problems:
+        if (size(cases_to_run)>1) then
+            write(nstr,'(I10)') n; nstr = trim(adjustl(nstr))
+            if (ic==1) then
+                write(itmp,'(I10)') size(cases_to_run); itmp = trim(adjustl(itmp))
+                eqn = '\multirow{'//itmp//'}{*}{$'//trim(latex)//'$}'
+            else
+                eqn = ''
+            end if
+        else
+            nstr = ''
+            eqn = '$'//trim(latex) // '$'
+        end if
+
+        ! write the row of the latex table:
+        write(latex_line,'(i4,a)') nprob, ' & '//eqn//' & '// nstr//' & '// '$['//bounds//']$ & '//fevals_line
+        latex_line = trim(latex_line)
+        latex_line(len(latex_line):len(latex_line)) = ' '
+        latex_line = trim(latex_line) // '\\'
+        if (ic==size(cases_to_run)) latex_line = latex_line//'\hline'
+        write(iunit_results,'(a)') latex_line
+
 
     !     ! best in terms of fastest cpu time:
     !     best_cases_per_second = maxval(cases_per_sec)
@@ -274,7 +372,7 @@ program root_tests
 
     end subroutine test
 
-    subroutine problems(x, ax, bx, fx, xroot, cases, num_of_problems, latex)
+    subroutine problems(x, ax, bx, fx, xroot, cases, num_of_problems, latex, bounds)
 
     !! returns all the information about the test case.
 
@@ -287,6 +385,7 @@ program root_tests
     integer,dimension(:),allocatable,intent(out),optional :: cases !! list of `n` cases to test
     integer,intent(out),optional :: num_of_problems  !! total number of problems
     character(len=:),allocatable,intent(out),optional :: latex !! LaTeX string of `f(x)`
+    character(len=:),allocatable,intent(out),optional :: bounds !! LaTeX string of the bounds
 
     real(wp),parameter :: pi = acos(-1.0_wp)
 
@@ -297,6 +396,7 @@ program root_tests
     dn = real(n, wp)
     ns = [1] ! default case
     if (present(latex)) latex = ''
+    if (present(bounds)) bounds = ''
 
     select case (nprob)
     case (1)
@@ -305,6 +405,7 @@ program root_tests
         root = 1.8954942670339809E+00_wp
         if (present(x)) f = sin(x) - x/2.0_wp
         if (present(latex)) latex = '\sin x - x/2'
+        if (present(bounds)) bounds = '\pi/2, \pi'
     case (2:11)
 
         select case (nprob)
@@ -312,42 +413,52 @@ program root_tests
             a = 1.0_wp + 1.0e-9_wp
             b = (2.0_wp)*(2.0_wp) - 1.0e-9_wp
             root = 3.0229153472730570E+00_wp
+            if (present(bounds)) bounds = '1 + 1 \times 10^{-9}, 4 - 1 \times 10^{-9}'
         case (3)
             a = (2.0_wp)*(2.0_wp) + 1.0e-9_wp
             b = (3.0_wp)*(3.0_wp) - 1.0e-9_wp
             root = 6.6837535608080781E+00_wp
+            if (present(bounds)) bounds = '4 + 1 \times 10^{-9}, 9 - 1 \times 10^{-9}'
         case (4)
             a = (3.0_wp)*(3.0_wp) + 1.0e-9_wp
             b = (4.0_wp)*(4.0_wp) - 1.0e-9_wp
             root = 1.1238701655002212E+01_wp
+            if (present(bounds)) bounds = '9 + 1 \times 10^{-9}, 16 - 1 \times 10^{-9}'
         case (5)
             a = (4.0_wp)*(4.0_wp) + 1.0e-9_wp
             b = (5.0_wp)*(5.0_wp) - 1.0e-9_wp
             root = 1.9676000080623409E+01_wp
+            if (present(bounds)) bounds = '16 + 1 \times 10^{-9}, 25 - 1 \times 10^{-9}'
         case (6)
             a = (5.0_wp)*(5.0_wp) + 1.0e-9_wp
             b = (6.0_wp)*(6.0_wp) - 1.0e-9_wp
             root = 2.9828227326504754E+01_wp
+            if (present(bounds)) bounds = '25 + 1 \times 10^{-9}, 36 - 1 \times 10^{-9}'
         case (7)
             a = (6.0_wp)*(6.0_wp) + 1.0e-9_wp
             b = (7.0_wp)*(7.0_wp) - 1.0e-9_wp
             root = 4.1906116195289413E+01_wp
+            if (present(bounds)) bounds = '36 + 1 \times 10^{-9}, 49 - 1 \times 10^{-9}'
         case (8)
             a = (7.0_wp)*(7.0_wp) + 1.0e-9_wp
             b = (8.0_wp)*(8.0_wp) - 1.0e-9_wp
             root = 5.5953595800143094E+01_wp
+            if (present(bounds)) bounds = '49 + 1 \times 10^{-9}, 64 - 1 \times 10^{-9}'
         case (9)
             a = (8.0_wp)*(8.0_wp) + 1.0e-9_wp
             b = (9.0_wp)*(9.0_wp) - 1.0e-9_wp
             root = 7.1985665586587795E+01_wp
+            if (present(bounds)) bounds = '64 + 1 \times 10^{-9}, 81 - 1 \times 10^{-9}'
         case (10)
             a = (9.0_wp)*(9.0_wp) + 1.0e-9_wp
             b = (10.0_wp)*(10.0_wp) - 1.0e-9_wp
             root = 9.0008868539166666E+01_wp
+            if (present(bounds)) bounds = '81 + 1 \times 10^{-9}, 100 - 1 \times 10^{-9}'
         case (11)
             a = (10.0_wp)*(10.0_wp) + 1.0e-9_wp
             b = (11.0_wp)*(11.0_wp) - 1.0e-9_wp
             root = 1.1002653274833019E+02_wp
+            if (present(bounds)) bounds = '100 + 1 \times 10^{-9}, 121 - 1 \times 10^{-9}'
         end select
         if (present(x)) then
             f = 0.0_wp
@@ -364,18 +475,21 @@ program root_tests
         root = 0.0_wp
         if (present(x)) f = -40.0_wp*x*exp(-1.0_wp*x)
         if (present(latex)) latex = '-40 x \mathrm{e}^{-x}'
+        if (present(bounds)) bounds = '-9,31'
     case (13)
         a = -9.0_wp
         b = 31.0_wp
         root = 0.0_wp
         if (present(x)) f = -100.0_wp*x*exp(-2.0_wp*x)
         if (present(latex)) latex = '-100 x \mathrm{e}^{-2 x}'
+        if (present(bounds)) bounds = '-9,31'
     case (14)
         a = -9.0_wp
         b = 31.0_wp
         root = 0.0_wp
         if (present(x)) f = -200.0_wp*x*exp(-3.0_wp*x)
         if (present(latex)) latex = '-200 x \mathrm{e}^{-3 x}'
+        if (present(bounds)) bounds = '-9,31'
     case (15)
         a = 0.0_wp
         b = 5.0_wp
@@ -393,17 +507,20 @@ program root_tests
         end if
         if (present(x)) f = x**n - 0.2_wp
         if (present(latex)) latex = 'x^n - 0.2'
+        if (present(bounds)) bounds = '0,5'
     case (16:17)
         select case (nprob)
         case(16)
             a = 0.0_wp
             b = 5.0_wp
             ns = [4, 6, 8, 10, 12]
+            if (present(bounds)) bounds = '0,5'
         case (17)
             a = -0.95_wp
             b = 4.05_wp
             root = 1.0_wp
             ns = [8, 10, 12, 14]
+            if (present(bounds)) bounds = '-0.95,4.05'
         end select
         root = 1.0_wp
         if (present(x)) f = x**n - 1.0_wp
@@ -414,6 +531,7 @@ program root_tests
         root = pi / 6.0_wp
         if (present(x)) f = sin(x) - 0.5_wp
         if (present(latex)) latex = '\sin x - 0.5'
+        if (present(bounds)) bounds = '0,1.5'
     case (19)
         a = 0.0_wp
         b = 1.0_wp
@@ -435,6 +553,7 @@ program root_tests
         end if
         if (present(x)) f = 2.0_wp*x*exp(-dn) - 2.0_wp*exp(-dn*x) + 1.0_wp
         if (present(latex)) latex = '2 x \mathrm{e}^{-n} - 2 \mathrm{e}^{-n x} + 1'
+        if (present(bounds)) bounds = '0,1'
     case (20)
         a = 0.0_wp
         b = 1.0_wp
@@ -449,6 +568,7 @@ program root_tests
         end if
         if (present(x)) f = (1.0_wp + (1.0_wp - dn)**2)*x - (1.0_wp - dn*x)**2
         if (present(latex)) latex = '(1 + (1 - n)^2)x - (1 - n x)^2'
+        if (present(bounds)) bounds = '0,1'
     case (21)
         a = 0.0_wp
         b = 1.0_wp
@@ -465,6 +585,7 @@ program root_tests
         end if
         if (present(x)) f = x**2 - (1.0_wp - x)**n
         if (present(latex)) latex = 'x^2 - (1-x)^n'
+        if (present(bounds)) bounds = '0,1'
     case (22)
         a = 0.0_wp
         b = 1.0_wp
@@ -483,6 +604,7 @@ program root_tests
         end if
         if (present(x)) f = (1.0_wp + (1.0_wp - dn)**4)*x - (1.0_wp - dn*x)**4
         if (present(latex)) latex = '(1 + (1 - n)^4) x - (1 - n x)^4'
+        if (present(bounds)) bounds = '0,1'
     case (23)
         a = 0.0_wp
         b = 1.0_wp
@@ -499,6 +621,7 @@ program root_tests
         end if
         if (present(x)) f = (x - 1.0_wp)*exp(-dn*x) + x**n
         if (present(latex)) latex = '(x - 1) \mathrm{e}^{-n x} + x^n'
+        if (present(bounds)) bounds = '0,1'
     case (24)
         a = 0.01_wp
         b = 1.0_wp
@@ -514,6 +637,7 @@ program root_tests
         end if
         if (present(x)) f = (dn*x - 1.0_wp)/((dn - 1.0_wp)*x)
         if (present(latex)) latex = '\frac{n x - 1}{(n - 1)x}'
+        if (present(bounds)) bounds = '0.01,1'
     case (25)
         a = 1.0_wp
         b = 100.0_wp
@@ -521,6 +645,7 @@ program root_tests
         root = real(n,wp)
         if (present(x)) f = x**(1.0_wp/dn) - dn**(1.0_wp/dn)
         if (present(latex)) latex = 'x^{1/n} - n^{1/n}'
+        if (present(bounds)) bounds = '1,100'
     case (26)
         a = -1.0_wp
         b = 4.0_wp
@@ -534,11 +659,13 @@ program root_tests
         end if
         if (present(latex)) latex = '\left\{ \begin{array}{cl} 0 & \mathrm{if~}x=0 \\'//&
                                     ' x \mathrm{e}^{-1/x^2} & \mathrm{otherwise} \end{array} \right.'
+        if (present(bounds)) bounds = '-1,4'
     case (27)
         a = -10000.0_wp
         b = pi/2.0_wp
         root = 6.2380651896161232E-01_wp
-        ns = [(i, i = 1, 40)]
+!        ns = [(i, i = 1, 40)]
+        ns = [(i, i = 1, 2)]
         if (present(x)) then
             if (x >= 0.0_wp) then
                 f = (x/1.5_wp + sin(x) - 1.0_wp)*dn/20.0_wp
@@ -548,10 +675,13 @@ program root_tests
         end if
         if (present(latex)) latex = '\left\{ \begin{array}{cl} (x/1.5 + \sin(x) - 1) n/20 & \mathrm{if~}x \ge 0 \\'//&
                                     ' -n/20 & \mathrm{otherwise} \end{array} \right.'
+        if (present(bounds)) bounds = '-10000,\pi/2'
     case (28)
         a = -10000.0_wp
         b = 1.0e-4_wp
-        ns = [ [(i, i = 20,40)], [(i*100, i = 1, 10)] ]
+        if (present(bounds)) bounds = '-10000,1 \times 10^{-4}'
+ !       ns = [ [(i, i = 20,40)], [(i*100, i = 1, 10)] ]
+        ns = [20, 40, 100]
         if (present(xroot)) then
             select case (n)
             case(20);   root = 5.9051305594219711E-05_wp
@@ -609,6 +739,7 @@ program root_tests
         root = 8.6547403310161445E-01_wp
         if (present(x)) f = cos(x) - x**3
         if (present(latex)) latex = '\cos x - x^3'
+        if (present(bounds)) bounds = '0,4'
 
     ! 30-36 : Gottlieb's paper [table 1 & 2]
     case (30)
@@ -617,48 +748,56 @@ program root_tests
         root = asin(2.0_wp/3.0_wp)
         if (present(x)) f = 3.0_wp * sin(x) - 2.0_wp
         if (present(latex)) latex = '3 \sin x - 2'
+        if (present(bounds)) bounds = '0,1'
     case (31)
         a = -1.0_wp
         b = 1.0_wp
         root = 5.6714329040978387E-01_wp
         if (present(x)) f = x*exp(x) - 1.0_wp
         if (present(latex)) latex = 'x \mathrm{e}^x - 1'
+        if (present(bounds)) bounds = '-1,1'
     case (32)
         a = 0.1_wp
         b = 0.9_wp
         root = 8.0413309750366432E-01_wp
         if (present(x)) f = 11.0_wp * x**11 - 1.0_wp
         if (present(latex)) latex = '11 x^{11} - 1'
+        if (present(bounds)) bounds = '0.1,0.9'
     case (33)
         a = 2.8_wp
         b = 3.1_wp
         root = 3.0_wp
         if (present(x)) f = exp(x**2 + 7.0_wp*x - 30.0_wp) - 1.0_wp
         if (present(latex)) latex = '\mathrm{e}^{x^2 + 7x - 30} - 1'
+        if (present(bounds)) bounds = '2.8,3.1'
     case (34)
         a = -1.3_wp
         b = -0.5_wp
         root = -6.2944648407333333E-01_wp
         if (present(x)) f = 1.0_wp/x - sin(x) + 1.0_wp
         if (present(latex)) latex = '1/x - \sin x + 1'
+        if (present(bounds)) bounds = '-1.3,-0.5'
     case (35)
         a = 2.0_wp
         b = 3.0_wp
         root = 2.0945514815423266E+00_wp
         if (present(x)) f = x**3 - 2.0_wp*x - 5.0_wp
         if (present(latex)) latex = 'x^3 - 2 x - 5'
+        if (present(bounds)) bounds = '2,3'
     case (36)
         a = 0.5_wp
         b = 2.0_wp
         root = 1.0_wp
         if (present(x)) f = 1.0_wp/x - 1.0_wp
         if (present(latex)) latex = '1/x - 1'
+        if (present(bounds)) bounds = '0.5,2'
     case (37)
         a = -10.0_wp
         b = 10.0_wp
         root = 1.0_wp
         if (present(x)) f = x**3 - 5.0_wp*x**2 + 12.0_wp*x - 8.0_wp
         if (present(latex)) latex = 'x^3 - 5 x^2 + 12 x - 8'
+        if (present(bounds)) bounds = '-10,10'
     case (38)
         a = 0.0_wp
         b = 10.0_wp
@@ -666,6 +805,7 @@ program root_tests
         if (present(x)) f = x**5 - 61.0_wp*x**4 + 1368.0_wp*x**3 - &
                             13548.0_wp*x**2 + 54256.0_wp*x - 42016.0_wp ! x in [0, 10]
         if (present(latex)) latex = 'x^5 - 61 x^4 + 1368 x^3 - 13548 x^2 + 54256 x - 42016'
+        if (present(bounds)) bounds = '0,10'
     case (39)
         a = 0.0_wp
         b = 10.0_wp
@@ -673,12 +813,14 @@ program root_tests
         if (present(x)) f = x**5-61.0_wp*x**4+6801.0_wp/5.0_wp*x**3-66531.0_wp/&
                             5.0_wp*x**2+5205601.0_wp/100.0_wp*x-4005001.0_wp/100.0_wp
         if (present(latex)) latex = 'x^5 - 61 x^4 + 6801 x^3 / 5 - 66531 x^2 / 5 + 5205601 x / 100 - 4005001/100'
+        if (present(bounds)) bounds = '0,10'
     case (40)
         a = 0.0_wp
         b = 10.0_wp
         root = 1.0_wp
         if (present(x)) f = (x-1.0_wp)**5
         if (present(latex)) latex = '(x-1)^5'
+        if (present(bounds)) bounds = '0,10'
     case (41)
         !From: http://www.mth.pdx.edu/~daescu/mth451_551/Muller_bisection.pdf
         a = -2.0_wp
@@ -686,6 +828,7 @@ program root_tests
         root = 0.0_wp
         if (present(x)) f = atan(x)
         if (present(latex)) latex = '\tan^{-1} x'
+        if (present(bounds)) bounds = '-2,3'
     case (42)
         !From: http://www.mth.pdx.edu/~daescu/mth451_551/Muller_bisection.pdf
         a = 0.0_wp     ! x1 is the location of the root for this case
@@ -693,6 +836,7 @@ program root_tests
         root = 0.0_wp
         if (present(x)) f = exp(x) - 2.0_wp*x - 1.0_wp
         if (present(latex)) latex = '\mathrm{e}^{x} - 2 x - 1'
+        if (present(bounds)) bounds = '0,3'
     case (43)
         a = 0.0_wp
         b = 0.7_wp
@@ -1263,7 +1407,7 @@ program root_tests
         b = 1.0_wp
         root = -3.7020127707860923E-02_wp
         if (present(x)) f = 1.0_wp/3.0_wp + sign(1.0_wp, x)*abs(x)**(1.0_wp/3.0_wp) + x**3
-        if (present(latex)) latex = '1/3 + \sign x |x|^{1/3} + x^3'
+        if (present(latex)) latex = '1/3 + \sign(x) |x|^{1/3} + x^3'
     case(126) ! Weierstrass
         a = -1.0_wp
         b = 1.0_wp
@@ -1295,13 +1439,13 @@ program root_tests
         b = 1.0_wp
         root = 3.3333333333333333E-01_wp
         if (present(x)) f = (x - 1.0_wp/3.0_wp)**2 * atan( x - 1.0_wp/3.0_wp )
-        if (present(latex)) latex = '\sign (3x + 1) \left( 1 - \sqrt{1 - (3x+1)^2/9^2} \right)'
+        if (present(latex)) latex = '(x - 1/3)^2 \arctan ( x - 1/3 )'
     case(131) ! Circles
         a = -1.0_wp
         b = 1.0_wp
         root = -3.3333333333333333E-01_wp
         if (present(x)) f = sign(1.0_wp,3.0_wp*x+1.0_wp)*(1.0_wp - sqrt(1.0_wp-(3.0_wp*x+1.0_wp)**2/(9**2)))
-        if (present(latex)) latex = '' !todo
+        if (present(latex)) latex = '\sign (3x + 1) \left( 1 - \sqrt{1 - (3x+1)^2/9^2} \right)'
 
     ! linear function:
     case(132)
@@ -1344,14 +1488,22 @@ program root_tests
         b = 4.0_wp
         root = 1.6968123868097515E+00_wp
         if (present(x)) f = exp(sin(x)) - x - 1.0_wp
-        if (present(latex)) latex = 'e^(\sin x) - x - 1'
+        if (present(latex)) latex = 'e^{\sin x} - x - 1'
+    case(137)
+        a = 0.1_wp
+        b = pi / 3.0_wp
+        root = asin(1.0_wp/2.0_wp)
+        if (present(x)) f = 2.0_wp * sin(x) - 1.0_wp
+        if (present(latex)) latex = '2 \sin x - 1'
+
+
 
     case default
         write(*,*) 'invalid case: ', nprob
         error stop 'invalid case'
     end select
 
-    if (present(num_of_problems)) num_of_problems = 136
+    if (present(num_of_problems)) num_of_problems = 137
 
     ! outputs:
     if (present(ax))    ax = a
