@@ -881,8 +881,12 @@ program root_tests
         !case 11 from "Algorithm 748: Enclosing Zeros of Continuous Functions" (n=20)
         a = 0.01_wp
         b = 1.0_wp
+        ns = [20,30]
+        if (n==20) then
         root = 0.05_wp
-        ns = [20]
+        else
+            root = 3.3333333333333333E-02_wp
+        end if
         if (present(x)) f = (real(n,wp)*x-1.0_wp)/((real(n,wp)-1.0_wp)*x)
         if (present(latex)) latex = '\frac{n x - 1}{(n - 1) x}'
         if (present(bounds)) bounds = '0.01,1'
@@ -1506,7 +1510,7 @@ program root_tests
         b = 1.0_wp
         root = 1.0E-01_wp
         if (present(x)) f = tan(x - 1.0_wp / 10.0_wp)
-        if (present(latex)) latex = '\tan( x - \frac{1}{10} )'
+        if (present(latex)) latex = '\tan( x - 1/10 )'
         if (present(bounds)) bounds = '-1,1'
     case(121) ! Trigonometric 2
         a = -1.0_wp
