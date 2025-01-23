@@ -17,6 +17,8 @@ program root_tests
 
     implicit none
 
+    character(len=:),allocatable :: kind_str !! real kind string
+
     integer :: nprob
     integer :: n
     integer :: imeth !! method counter
@@ -30,6 +32,9 @@ program root_tests
     integer,dimension(:),allocatable :: cases_to_run
     type(pyplot) :: stats_plot   !! pyplot handler
     integer,dimension(2),parameter :: figsize=[10,5] !! figure size for plogs
+    character(len=30) :: r_str
+    real(wp) :: atol, rtol, ftol
+    real(wp) :: tol_for_check !! for pass/fail check
 
     character(len=*),parameter :: fmt  = '(   A20,1X,A3,1X,A4,1X,A16,  1X,A25,   1X,A16,  1X,A5,1X,A5,1X,A8  )' !! format for header
     character(len=*),parameter :: dfmt = '(1P,A20,1X,I3,1X,I4,1X,E16.6,1X,E25.16,1X,E16.6,1X,I5,1X,I5,1X,E8.1,1x,a)' !! format for results
@@ -59,6 +64,29 @@ program root_tests
 
     integer,dimension(number_of_methods) :: number_of_wins, ivec, number_of_failures, ivec2
 
+    select case (wp)
+    case(real32)
+        atol = 1.0e-5_wp
+        rtol = 1.0e-5_wp
+        ftol = 1.0e-5_wp
+        tol_for_check = 1.0e-4_wp
+        kind_str = 'real32'
+    case(real64)
+        atol = 1.0e-15_wp
+        rtol = 1.0e-13_wp
+        ftol = 1.0e-15_wp
+        tol_for_check = 1.0e-7_wp
+        kind_str = 'real64'
+    case(real128)
+        atol = 1.0e-25_wp
+        rtol = 1.0e-23_wp
+        ftol = 1.0e-25_wp
+        tol_for_check = 1.0e-16_wp
+        kind_str = 'real128'
+    case default
+        error stop 'unknown real kind'
+    end select
+
     write(*,*) ''
     write(*,*) '-------------------------------------------------'
     write(*,*) 'root_tests'
@@ -71,13 +99,13 @@ program root_tests
     ! open output files:
     open(newunit=iunit,        file='root_report_best.txt',     status='REPLACE', iostat=istat)
     open(newunit=iunit_failed, file='root_report_failures.txt', status='REPLACE', iostat=istat)
-    open(newunit=iunit_results, file='table.tex', status='REPLACE', iostat=istat)
+    open(newunit=iunit_results, file='table_'//kind_str//'.tex', status='REPLACE', iostat=istat)
 
     ! output file headers:
     write(iunit, '(A5,1X,A5,1X,A5,1X,A)')  'nprob', 'n', 'evals', 'Best Methods'
     write(iunit_failed, '(A5,1X,A5,1X,A)') 'nprob', 'n', 'Failed Methods'
 
-    write(iunit_results,'(a)') '% !TeX root = table.tex'
+    write(iunit_results,'(a)') '% !TeX root = '//'table_'//kind_str//'.tex'
 
     write(iunit_results,'(a)') '\documentclass{article}'
     write(iunit_results,'(a)') '\usepackage[utf8]{inputenc}'
@@ -97,12 +125,20 @@ program root_tests
     write(iunit_results,'(a)') '\begin{landscape}'
 
     write(iunit_results,'(a)') ''
-    write(iunit_results,'(a)') '\section{Function Evaluations}'
+    write(iunit_results,'(a)') '\section{Function Evaluations ('//kind_str//')}'
     write(iunit_results,'(a)') ''
 
+    ! write(iunit_results,'(a)') '\begin{align}'
+    write(r_str, '(1p,E10.1)') atol; write(iunit_results,'(a)') '$\epsilon_{abs}  = '//trim(adjustl(r_str)//'$\\')
+    write(r_str, '(1p,E10.1)') rtol; write(iunit_results,'(a)') '$\epsilon_{rel}  = '//trim(adjustl(r_str)//'$\\')
+    write(r_str, '(1p,E10.1)') ftol; write(iunit_results,'(a)') '$\epsilon_{func} = '//trim(adjustl(r_str)//'$\\')
+    ! write(iunit_results,'(a)') '\end{align}'
+    write(iunit_results,'(a)') ''
+
+
     ! cols are num, func, bounds, [methods]
-    write(iunit_results,'(a)') '\begin{longtable}{'//repeat('c',number_of_methods+4)//'}'
-    write(iunit_results,'(a)',advance='NO') 'No. & $f(x)$ & n & $[x_a, x_b]$ & '
+    write(iunit_results,'(a)') '\begin{longtable}{'//repeat('c',number_of_methods+5)//'}'
+    write(iunit_results,'(a)',advance='NO') 'No. & $f(x)$ & n & $[x_a, x_b]$ & $x_{root}$ &'
     do imeth = 1, number_of_methods
         if (imeth==number_of_methods) then
             write(iunit_results,'(a)') '\verb|' // trim(methods(imeth))//'|' // '\\'
@@ -143,7 +179,7 @@ program root_tests
     close(iunit_failed)
     close(iunit_results)
 
-    call stats_plot%savefig('stats_plot.pdf',istat=istat,pyfile='stats_plot.py')
+    call stats_plot%savefig('stats_plot_'//kind_str//'.pdf',istat=istat,pyfile='stats_plot.py')
 
     ! another summary:
     ivec  = [(i, i = 1, number_of_methods)]
@@ -184,34 +220,13 @@ program root_tests
         real(wp) :: tstart, tfinish  !! for `cpu_time`
         integer :: irepeat !! test repeat counter
         integer :: i
-        real(wp) :: atol, rtol, ftol
-        real(wp) :: tol_for_check !! for pass/fail check
         character(len=:),allocatable :: latex, tmp, latex_line, bounds, fevals_line, eqn
         character(len=10) :: itmp, nstr
         integer :: n_bounds_cases, bounds_cases_first
+        character(len=30) :: root_str
 
         integer,parameter :: n_repeat = 1  !! number of times to repeat each test for timing purposes
         integer,parameter :: maxiter = 1000 !! maximum number of iterations
-
-        select case (wp)
-        case(real32)
-            atol = 1.0e-5_wp
-            rtol = 1.0e-5_wp
-            ftol = 1.0e-5_wp
-            tol_for_check = 1.0e-4_wp
-        case(real64)
-            atol = 1.0e-15_wp
-            rtol = 1.0e-13_wp
-            ftol = 1.0e-15_wp
-            tol_for_check = 1.0e-7_wp
-        case(real128)
-            atol = 1.0e-25_wp
-            rtol = 1.0e-23_wp
-            ftol = 1.0e-25_wp
-            tol_for_check = 1.0e-16_wp
-        case default
-            error stop 'unknown real kind'
-        end select
 
         write(output_unit,fmt) &
             repeat('-',20),repeat('-',3),repeat('-',4),repeat('-',16),&
@@ -348,8 +363,12 @@ program root_tests
             eqn = '$'//trim(latex) // '$'
         end if
 
+        ! root string:
+        write(root_str, '(1p,e30.15)') root; root_str = trim(adjustl(root_str))
+
         ! write the row of the latex table:
-        write(latex_line,'(i4,a)') nprob, ' & '//eqn//' & '// nstr//' & '// '$['//bounds//']$ & '//fevals_line
+        write(latex_line,'(i4,a)') nprob, ' & '//eqn//' & '// nstr//' & '// '$['//&
+                                   bounds//']$ & '//trim(root_str)//' & '//fevals_line
         latex_line = trim(latex_line)
         latex_line(len(latex_line):len(latex_line)) = ' '
         latex_line = trim(latex_line) // '\\'
@@ -673,9 +692,19 @@ program root_tests
         if (present(x)) f = x**(1.0_wp/dn) - dn**(1.0_wp/dn)
         if (present(latex)) latex = 'x^{1/n} - n^{1/n}'
         if (present(bounds)) bounds = '1,100'
-    case (26)
-        a = -1.0_wp
-        b = 4.0_wp
+    case (26:27)
+        if (present(n_bounds_cases)) n_bounds_cases = 2
+        if (present(bounds_cases_first)) bounds_cases_first = 26
+        select case (nprob)
+        case(26)
+            a = -1.0_wp
+            b = 4.0_wp
+            if (present(bounds)) bounds = '-1,4'
+        case(27)
+            a = -1.1234_wp
+            b = 4.4567_wp
+            if (present(bounds)) bounds = '-1.1234,4.4567'
+        end select
         root = 0.0_wp    ! this is just almost impossible to get
         if (present(x)) then
             if (x == 0.0_wp) then
@@ -686,8 +715,8 @@ program root_tests
         end if
         if (present(latex)) latex = '\left\{ \begin{array}{cl} 0 & \mathrm{if~}x=0 \\'//&
                                     ' x \mathrm{e}^{-1/x^2} & \mathrm{otherwise} \end{array} \right.'
-        if (present(bounds)) bounds = '-1,4'
-    case (27)
+
+    case (28)
         a = -10000.0_wp
         b = pi/2.0_wp
         root = 6.2380651896161232E-01_wp
@@ -703,7 +732,7 @@ program root_tests
         if (present(latex)) latex = '\left\{ \begin{array}{cl} (x/1.5 + \sin(x) - 1) n/20 & \mathrm{if~}x \ge 0 \\'//&
                                     ' -n/20 & \mathrm{otherwise} \end{array} \right.'
         if (present(bounds)) bounds = '-10000,\pi/2'
-    case (28)
+    case (29)
         a = -10000.0_wp
         b = 1.0e-4_wp
         if (present(bounds)) bounds = '-10000,1 \times 10^{-4}'
@@ -759,14 +788,6 @@ program root_tests
                                     ' \mathrm{e}^{500 (n + 1) x} - 1.859 & x \ge 0\\'//&
                                     ' -0.859 & \mathrm{otherwise}'//&
                                     ' \end{array} \right.'
-    case (29)
-        ! Zhang test case
-        a = 0.0_wp
-        b = 4.0_wp
-        root = 8.6547403310161445E-01_wp
-        if (present(x)) f = cos(x) - x**3
-        if (present(latex)) latex = '\cos x - x^3'
-        if (present(bounds)) bounds = '0,4'
 
     ! 30-36 : Gottlieb's paper [table 1 & 2]
     case (30)
@@ -1710,6 +1731,14 @@ program root_tests
         if (present(x)) f = x**5
         if (present(latex)) latex = 'x^5'
         if (present(bounds)) bounds = '-0.5,1/3'
+    case (145)
+        ! Zhang test case
+        a = 0.0_wp
+        b = 4.0_wp
+        root = 8.6547403310161445E-01_wp
+        if (present(x)) f = cos(x) - x**3
+        if (present(latex)) latex = '\cos x - x^3'
+        if (present(bounds)) bounds = '0,4'
 
 
     case default
