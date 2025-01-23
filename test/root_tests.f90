@@ -1028,7 +1028,8 @@ program root_tests
             emx = exp(-x)
             f = -(3062.0_wp*t1*emx)/(xi + t1*emx) - 1013.0_wp + 1628.0_wp/x
         end if
-        if (present(latex)) latex = '-\frac{3062 \cdot 0.38511 \cdot \mathrm{e}^{-x}}{0.61489 + 0.38511 \cdot \mathrm{e}^{-x}} - 1013 + 1628/x'
+        if (present(latex)) latex = '-\frac{3062 \cdot 0.38511 \cdot \mathrm{e}^{-x}}{0.61489 '//&
+                                    '+ 0.38511 \cdot \mathrm{e}^{-x}} - 1013 + 1628/x'
     case (61:62)
         if (present(n_bounds_cases)) n_bounds_cases = 2
         if (present(bounds_cases_first)) bounds_cases_first = 61
