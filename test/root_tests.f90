@@ -34,27 +34,28 @@ program root_tests
     character(len=*),parameter :: fmt  = '(   A20,1X,A3,1X,A4,1X,A16,  1X,A25,   1X,A16,  1X,A5,1X,A5,1X,A8  )' !! format for header
     character(len=*),parameter :: dfmt = '(1P,A20,1X,I3,1X,I4,1X,E16.6,1X,E25.16,1X,E16.6,1X,I5,1X,I5,1X,E8.1,1x,a)' !! format for results
 
-    integer,parameter :: number_of_methods = 19 !! number of methods to test
+    integer,parameter :: number_of_methods = 20 !! number of methods to test
     character(len=100),dimension(number_of_methods),parameter :: methods = [ &
     'anderson_bjorck_king', &
-'zhang               ', &
-'barycentric         ', &
-'ridders             ', &
-'regula_falsi        ', &
-'blendtf             ', &
-'bdqrf               ', &
-'bisection           ', &
-'itp                 ', &
-'illinois            ', &
-'rbp                 ', &
-'pegasus             ', &
-'toms748             ', &
-'brent               ', &
-'brentq              ', &
-'anderson_bjorck     ', &
-'muller              ', &
-'brenth              ', &
-'chandrupatla        '  ] !! method names - the order here is roughly the order of worst to best (see the root report output file).
+    'zhang               ', &
+    'barycentric         ', &
+    'regula_falsi        ', &
+    'ridders             ', &
+    'bdqrf               ', &
+    'blendtf             ', &
+    'bisection           ', &
+    'itp                 ', &
+    'illinois            ', &
+    'rbp                 ', &
+    'modab               ', &
+    'pegasus             ', &
+    'toms748             ', &
+    'brent               ', &
+    'brentq              ', &
+    'anderson_bjorck     ', &
+    'muller              ', &
+    'brenth              ', &
+    'chandrupatla        ' ] !! method names - the order here is roughly the order of worst to best (see the root report output file).
 
     integer,dimension(number_of_methods) :: number_of_wins, ivec, number_of_failures, ivec2
 
@@ -87,7 +88,7 @@ program root_tests
     write(iunit_results,'(a)') '\usepackage{multirow}'
 
     ! write(iunit_results,'(a)') '\usepackage[a4paper, margin=0.1in]{geometry}'
-    write(iunit_results,'(a)') '\usepackage[paperheight=22in,paperwidth=40in, margin=0.1in]{geometry}'
+    write(iunit_results,'(a)') '\usepackage[paperheight=25in,paperwidth=40in, margin=0.1in]{geometry}'
 
     write(iunit_results,'(a)') ''
     write(iunit_results,'(a)') '\DeclareMathOperator{\sign}{sign}'
@@ -883,7 +884,7 @@ program root_tests
         b = 1.0_wp
         ns = [20,30]
         if (n==20) then
-        root = 0.05_wp
+            root = 0.05_wp
         else
             root = 3.3333333333333333E-02_wp
         end if
