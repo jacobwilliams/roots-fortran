@@ -41,26 +41,26 @@ program root_tests
 
     integer,parameter :: number_of_methods = 20 !! number of methods to test
     character(len=100),dimension(number_of_methods),parameter :: methods = [ &
-    'anderson_bjorck_king', &
-    'zhang               ', &
-    'barycentric         ', &
-    'regula_falsi        ', &
-    'ridders             ', &
-    'bdqrf               ', &
-    'blendtf             ', &
-    'bisection           ', &
-    'itp                 ', &
-    'illinois            ', &
-    'rbp                 ', &
-    'modab               ', &
-    'pegasus             ', &
-    'toms748             ', &
-    'brent               ', &
-    'brentq              ', &
-    'anderson_bjorck     ', &
-    'muller              ', &
-    'brenth              ', &
-    'chandrupatla        ' ] !! method names - the order here is roughly the order of worst to best (see the root report output file).
+                     'barycentric         ', &
+                     'anderson_bjorck_king', &
+                     'zhang               ', &
+                     'bisection           ', &
+                     'regula_falsi        ', &
+                     'illinois            ', &
+                     'ridders             ', &
+                     'blendtf             ', &
+                     'bdqrf               ', &
+                     'rbp                 ', &
+                     'itp                 ', &
+                     'modab               ', &
+                     'pegasus             ', &
+                     'muller              ', &
+                     'chandrupatla        ', &
+                     'anderson_bjorck     ', &
+                     'brent               ', &
+                     'toms748             ', &
+                     'brentq              ', &
+                     'brenth              ' ] !! method names - the order here is roughly the order of worst to best (see the root report output file).
 
     integer,dimension(number_of_methods) :: number_of_wins, ivec, number_of_failures, ivec2
 
@@ -68,19 +68,19 @@ program root_tests
     case(real32)
         atol = 1.0e-5_wp
         rtol = 1.0e-5_wp
-        ftol = 1.0e-5_wp
+        ftol = 0.0_wp
         tol_for_check = 1.0e-4_wp
         kind_str = 'real32'
     case(real64)
         atol = 1.0e-15_wp
         rtol = 1.0e-13_wp
-        ftol = 1.0e-15_wp
+        ftol = 0.0_wp
         tol_for_check = 1.0e-7_wp
         kind_str = 'real64'
     case(real128)
         atol = 1.0e-25_wp
         rtol = 1.0e-23_wp
-        ftol = 1.0e-25_wp
+        ftol = 0.0_wp
         tol_for_check = 1.0e-16_wp
         kind_str = 'real128'
     case default
@@ -513,6 +513,8 @@ program root_tests
             f = -2.0_wp*f
         end if
         if (present(latex)) latex = '-2 \sum_{i=1}^{20} ((2i - 5)^2)/(x - i^2)^3'
+
+    !.... 13 & 14 don't actually converge to the right root with real64 since the func value is lower than the tol on the bound....
     case (12)
         a = -9.0_wp
         b = 31.0_wp
@@ -534,6 +536,7 @@ program root_tests
         if (present(x)) f = -200.0_wp*x*exp(-3.0_wp*x)
         if (present(latex)) latex = '-200 x \mathrm{e}^{-3 x}'
         if (present(bounds)) bounds = '-9,31'
+
     case (15)
         a = 0.0_wp
         b = 5.0_wp
@@ -1746,7 +1749,7 @@ program root_tests
         error stop 'invalid case'
     end select
 
-    if (present(num_of_problems)) num_of_problems = 144
+    if (present(num_of_problems)) num_of_problems = 145
 
     ! outputs:
     if (present(ax))    ax = a
