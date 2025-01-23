@@ -76,7 +76,7 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title=" 4.2% of total for procedures.">71 statements</a>
+                 title=" 4.1% of total for procedures.">73 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -848,6 +848,7 @@ implementation in a submodule of an interface in a parent module.
 <span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="n">root_method_barycentric</span><span class="p">%</span><span class="n">id</span><span class="p">);</span><span class="w">          </span><span class="k">allocate</span><span class="p">(</span><span class="n">barycentric_solver</span><span class="w">          </span><span class="kd">::</span><span class="w"> </span><span class="n">s</span><span class="p">)</span>
 <span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="n">root_method_itp</span><span class="p">%</span><span class="n">id</span><span class="p">);</span><span class="w">                  </span><span class="k">allocate</span><span class="p">(</span><span class="n">itp_solver</span><span class="w">                  </span><span class="kd">::</span><span class="w"> </span><span class="n">s</span><span class="p">)</span>
 <span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="n">root_method_rbp</span><span class="p">%</span><span class="n">id</span><span class="p">);</span><span class="w">                  </span><span class="k">allocate</span><span class="p">(</span><span class="n">rbp_solver</span><span class="w">                  </span><span class="kd">::</span><span class="w"> </span><span class="n">s</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="n">root_method_modab</span><span class="p">%</span><span class="n">id</span><span class="p">);</span><span class="w">                </span><span class="k">allocate</span><span class="p">(</span><span class="n">modab_solver</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">s</span><span class="p">)</span>
 
 <span class="w">    </span><span class="k">case </span><span class="n">default</span>
 <span class="w">        </span><span class="n">iflag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">999</span><span class="w">    </span><span class="c">! invalid method</span>

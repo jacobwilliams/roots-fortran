@@ -76,7 +76,7 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title="100.0% of total for modules and submodules.">1892 statements</a>
+                 title="100.0% of total for modules and submodules.">1975 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -139,6 +139,7 @@
             <a class="list-group-item" href="../module/root_module.html#variable-root_method_barycentric">root_method_barycentric</a>
             <a class="list-group-item" href="../module/root_module.html#variable-root_method_itp">root_method_itp</a>
             <a class="list-group-item" href="../module/root_module.html#variable-root_method_rbp">root_method_rbp</a>
+            <a class="list-group-item" href="../module/root_module.html#variable-root_method_modab">root_method_ModAB</a>
             <a class="list-group-item" href="../module/root_module.html#variable-set_of_root_methods">set_of_root_methods</a>
         </div>
       </div>
@@ -204,6 +205,7 @@
             <a class="list-group-item" href="../module/root_module.html#type-barycentric_solver">barycentric_solver</a>
             <a class="list-group-item" href="../module/root_module.html#type-itp_solver">itp_solver</a>
             <a class="list-group-item" href="../module/root_module.html#type-rbp_solver">rbp_solver</a>
+            <a class="list-group-item" href="../module/root_module.html#type-modab_solver">modab_solver</a>
         </div>
       </div>
     </div>
@@ -259,6 +261,7 @@
             <a class="list-group-item" href="../module/root_module.html#proc-itp_optional_inputs">itp_optional_inputs</a>
             <a class="list-group-item" href="../module/root_module.html#proc-itp">itp</a>
             <a class="list-group-item" href="../module/root_module.html#proc-rbp">rbp</a>
+            <a class="list-group-item" href="../module/root_module.html#proc-modab">ModAB</a>
             <a class="list-group-item" href="../module/root_module.html#proc-choose_best">choose_best</a>
             <a class="list-group-item" href="../module/root_module.html#proc-swap">swap</a>
         </div>
@@ -840,6 +843,23 @@ parameter
         </tr>
         <tr>
             <td>
+              <span class="anchor" id="variable-root_method_modab"></span>
+              type(<a href='../type/root_method.html'>root_method</a>),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>root_method_ModAB</strong></td>
+<td> =</td>
+                <td>root_method(20, &#39;modab&#39;)</td>
+            <td>
+                <p>enum type for <code>ModAB</code> method</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
               <span class="anchor" id="variable-set_of_root_methods"></span>
               type(<a href='../type/root_method.html'>root_method</a>),
             </td>
@@ -850,7 +870,7 @@ parameter,               dimension(*)
             <td>::</td>
             <td><strong>set_of_root_methods</strong></td>
 <td> =</td>
-                <td>[root_method_brent, root_method_bisection, root_method_regula_falsi, root_method_illinois, root_method_anderson_bjorck, root_method_ridders, root_method_pegasus, root_method_bdqrf, root_method_muller, root_method_brenth, root_method_brentq, root_method_chandrupatla, root_method_toms748, root_method_zhang, root_method_anderson_bjorck_king, root_method_blendtf, root_method_barycentric, root_method_itp, root_method_rbp]</td>
+                <td>[root_method_brent, root_method_bisection, root_method_regula_falsi, root_method_illinois, root_method_anderson_bjorck, root_method_ridders, root_method_pegasus, root_method_bdqrf, root_method_muller, root_method_brenth, root_method_brentq, root_method_chandrupatla, root_method_toms748, root_method_zhang, root_method_anderson_bjorck_king, root_method_blendtf, root_method_barycentric, root_method_itp, root_method_rbp, root_method_ModAB]</td>
             <td>
                 <p>list of the available methods (see <a href="../interface/root_scalar.html">root_scalar</a>)</p>
             </td>
@@ -2643,6 +2663,44 @@ startup tasks. All these routines assume that
     </div>
   </div>
 
+              <div class="card">
+    <div class="card-header codesum">
+      <span class="anchor" id="type-modab_solver"></span>
+      <h3>
+        type, public, extends(<a href='../type/root_solver.html'>root_solver</a>)&nbsp;::&nbsp;
+        <a href='../type/modab_solver.html'>modab_solver</a>
+        
+      </h3>
+    </div>
+    <div class="card-body">
+      <p>ModAB root solver</p>
+
+
+
+
+        <h4>Type-Bound Procedures</h4>
+        <table class="table table-striped varlist">
+          <tbody>
+              <tr>
+                <td>  procedure, public ::
+  <strong><a href='../type/root_solver.html#boundprocedure-initialize'>initialize</a></strong> => <a href='/home/runner/work/roots-fortran/roots-fortran/doc/proc/initialize_root_solver.html'>initialize_root_solver</a></td>
+                <td>../../<p>initialize the class [must be called first]</p></td>
+              </tr>
+              <tr>
+                <td>  procedure, public ::
+  <strong><a href='../type/root_solver.html#boundprocedure-solve'>solve</a></strong></td>
+                <td>../../<p>main routine for finding the root</p></td>
+              </tr>
+              <tr>
+                <td>  procedure, public ::
+  <strong><a href='../type/modab_solver.html#boundprocedure-find_root~21'>find_root</a></strong> => <a href='/home/runner/work/roots-fortran/roots-fortran/doc/proc/modab.html'>ModAB</a></td>
+                <td></td>
+              </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+
         </section>
         <br>
 
@@ -2713,7 +2771,7 @@ startup tasks. All these routines assume that
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-me~27"></span>
+              <span class="anchor" id="variable-me~28"></span>
               class(<a href='../type/root_solver.html'>root_solver</a>),
             </td>
 <td>intent(in)</td>
@@ -2788,7 +2846,7 @@ startup tasks. All these routines assume that
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-x1~9"></span>
+              <span class="anchor" id="variable-x1~10"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -2803,7 +2861,7 @@ startup tasks. All these routines assume that
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-x2~9"></span>
+              <span class="anchor" id="variable-x2~10"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -2849,7 +2907,7 @@ With a protection to fall back to bisection if:</p><a href="../proc/regula_falsi
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-x1~10"></span>
+              <span class="anchor" id="variable-x1~11"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -2864,7 +2922,7 @@ With a protection to fall back to bisection if:</p><a href="../proc/regula_falsi
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-x2~10"></span>
+              <span class="anchor" id="variable-x2~11"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -2909,7 +2967,7 @@ With a protection to fall back to bisection if:</p><a href="../proc/regula_falsi
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-ax~25"></span>
+              <span class="anchor" id="variable-ax~26"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -2924,7 +2982,7 @@ With a protection to fall back to bisection if:</p><a href="../proc/regula_falsi
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-bx~25"></span>
+              <span class="anchor" id="variable-bx~26"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -2970,7 +3028,7 @@ With a protection to fall back to bisection if:</p><a href="../proc/secant.html"
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-x1~11"></span>
+              <span class="anchor" id="variable-x1~12"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -2985,7 +3043,7 @@ With a protection to fall back to bisection if:</p><a href="../proc/secant.html"
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-x2~11"></span>
+              <span class="anchor" id="variable-x2~12"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -3030,7 +3088,7 @@ With a protection to fall back to bisection if:</p><a href="../proc/secant.html"
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-ax~26"></span>
+              <span class="anchor" id="variable-ax~27"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -3045,7 +3103,7 @@ With a protection to fall back to bisection if:</p><a href="../proc/secant.html"
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-bx~26"></span>
+              <span class="anchor" id="variable-bx~27"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -3256,7 +3314,7 @@ if the parabolic interpolation fails. Used by <a href="../proc/rbp.html">rbp</a>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-me~28"></span>
+              <span class="anchor" id="variable-me~29"></span>
               class(<a href='../type/root_solver.html'>root_solver</a>),
             </td>
 <td>intent(inout)</td>
@@ -3301,7 +3359,7 @@ if the parabolic interpolation fails. Used by <a href="../proc/rbp.html">rbp</a>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-xzero~24"></span>
+              <span class="anchor" id="variable-xzero~25"></span>
               real(kind=wp),
             </td>
 <td>intent(inout)</td>
@@ -3316,7 +3374,7 @@ if the parabolic interpolation fails. Used by <a href="../proc/rbp.html">rbp</a>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-fzero~24"></span>
+              <span class="anchor" id="variable-fzero~25"></span>
               real(kind=wp),
             </td>
 <td>intent(inout)</td>
@@ -7079,6 +7137,151 @@ to <code>maxiter</code> additional function evaluations.</p>
   </div>
 
               <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-modab"></span> <h3>private  subroutine <a href='../proc/modab.html'>ModAB</a>(me, ax, bx, fax, fbx, xzero, fzero, iflag)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Ganchovski &amp; Traykov "Modified Anderson-Bjork" method.</p><a href="../proc/modab.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-me~27"></span>
+              class(<a href='../type/modab_solver.html'>modab_solver</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ax~25"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ax</strong></td>
+            <td>
+<p>left endpoint of initial interval</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-bx~25"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>bx</strong></td>
+            <td>
+<p>right endpoint of initial interval</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fax~25"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>fax</strong></td>
+            <td>
+<p><code>f(ax)</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fbx~25"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>fbx</strong></td>
+            <td>
+<p><code>f(ax)</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-xzero~24"></span>
+              real(kind=wp),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>xzero</strong></td>
+            <td>
+<p>abscissa approximating a zero of <code>f</code> in the interval <code>ax</code>,<code>bx</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fzero~24"></span>
+              real(kind=wp),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>fzero</strong></td>
+            <td>
+<p>value of <code>f</code> at the root (<code>f(xzero)</code>)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-iflag~24"></span>
+              integer,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>iflag</strong></td>
+            <td>
+<p>status flag (<code>0</code>=root found, <code>-2</code>=max iterations reached)</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
     <div class="card-header codesum"><span class="anchor" id="proc-choose_best"></span> <h3>private pure subroutine <a href='../proc/choose_best.html'>choose_best</a>(x1, x2, f1, f2, xbest, fbest)  
 </h3></div>
     <div class="card-body">
@@ -7099,7 +7302,7 @@ to <code>maxiter</code> additional function evaluations.</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-x1~8"></span>
+              <span class="anchor" id="variable-x1~9"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -7114,7 +7317,7 @@ to <code>maxiter</code> additional function evaluations.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-x2~8"></span>
+              <span class="anchor" id="variable-x2~9"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>

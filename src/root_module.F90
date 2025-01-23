@@ -70,6 +70,7 @@
     type(root_method),parameter,public :: root_method_barycentric          = root_method(17, 'barycentric')          !! enum type for `barycentric` method
     type(root_method),parameter,public :: root_method_itp                  = root_method(18, 'itp')                  !! enum type for `itp` method
     type(root_method),parameter,public :: root_method_rbp                  = root_method(19, 'rbp')                  !! enum type for `rbp` method
+    type(root_method),parameter,public :: root_method_ModAB                  = root_method(20, 'modab')                  !! enum type for `ModAB` method
 
     type(root_method),parameter,dimension(*),public :: set_of_root_methods = &
         [ root_method_brent,                &
@@ -90,7 +91,8 @@
           root_method_blendtf,              &
           root_method_barycentric,          &
           root_method_itp,                  &
-          root_method_rbp                   ]  !! list of the available methods (see [[root_scalar]])
+          root_method_rbp,                  &
+          root_method_ModAB                 ]  !! list of the available methods (see [[root_scalar]])
 
     type,abstract,public :: root_solver
         !! abstract class for the root solver methods
@@ -271,6 +273,14 @@
     private
     procedure,public :: find_root => rbp
     end type rbp_solver
+
+    type,extends(root_solver),public :: modab_solver
+    !! ModAB root solver
+    private
+    contains
+    private
+    procedure,public :: find_root => ModAB
+    end type modab_solver
 
     abstract interface
         function func(me,x) result(f)
@@ -468,6 +478,7 @@
     case(root_method_barycentric%id);          allocate(barycentric_solver          :: s)
     case(root_method_itp%id);                  allocate(itp_solver                  :: s)
     case(root_method_rbp%id);                  allocate(rbp_solver                  :: s)
+    case(root_method_modab%id);                allocate(modab_solver                :: s)
 
     case default
         iflag = -999    ! invalid method
@@ -2724,6 +2735,103 @@
     end do
 
     end subroutine rbp
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Ganchovski & Traykov "Modified Anderson-Bjork" method.
+!
+!### See also
+!  * N Ganchovski and A Traykov, "Modified Anderson-Bjork's method for solving
+!    non-linear equations in structural mechanics", IOP Conf. Ser.: Mater. Sci. Eng. 1276,
+!    Feb. 2023.
+
+    subroutine ModAB(me,ax,bx,fax,fbx,xzero,fzero,iflag)
+
+    implicit none
+
+    class(modab_solver),intent(inout) :: me
+    real(wp),intent(in)    :: ax      !! left endpoint of initial interval
+    real(wp),intent(in)    :: bx      !! right endpoint of initial interval
+    real(wp),intent(in)    :: fax     !! `f(ax)`
+    real(wp),intent(in)    :: fbx     !! `f(ax)`
+    real(wp),intent(out)   :: xzero   !! abscissa approximating a zero of `f` in the interval `ax`,`bx`
+    real(wp),intent(out)   :: fzero   !! value of `f` at the root (`f(xzero)`)
+    integer,intent(out)    :: iflag   !! status flag (`0`=root found, `-2`=max iterations reached)
+
+    real(wp) :: x1,x2,x0,x3,y1,y2,y3,ym,m
+    integer :: i  !! iteration counter
+    logical :: root_found, bis
+    integer :: side !! for tracking the side
+
+    integer,parameter :: expected_iters = -int(log(epsilon(1.0_wp))/2.0_wp) + 1
+
+    iflag = 0
+    side = 0
+    x1 = ax; y1 = fax
+    x2 = bx; y2 = fbx
+    x0 = x1
+    bis = .true.
+
+    do i = 1, me%maxiter
+
+        if (bis) then
+            x3 = bisect(x1,x2)
+            y3 = me%f(x3)
+            if (me%solution(x3,y3,xzero,fzero)) return
+            ym = bisect(y1,y2)
+            if (abs(ym-y3) < 0.25_wp*(abs(ym) + abs(y3))) bis = .false.
+        else
+            x3 = regula_falsi_step(x1,x2,y1,y2,ax,bx)
+            y3 = me%f(x3)
+            if (me%solution(x3,y3,xzero,fzero)) return
+        end if
+
+        ! convergence check:
+        root_found = me%converged(x3,x0)
+        if (root_found .or. i==me%maxiter) then
+            xzero = x3
+            fzero = y3
+            if (.not. root_found) iflag = -2  ! max iterations reached
+            exit
+        end if
+
+        x0 = x3
+        select case (side)
+        case(1)
+            m = 1.0_wp - y3/y1
+            if (m<=0.0_wp) then
+                y2 = y2 / 2.0_wp
+            else
+                y2 = y2 * m
+            end if
+        case(2)
+            m = 1.0_wp - y3/y2
+            if (m<=0.0_wp) then
+                y1 = y1 / 2.0_wp
+            else
+                y1 = y1 * m
+            end if
+        end select
+
+        if (sign(1.0_wp,y1) == sign(1.0_wp,y3)) then
+            if (.not. bis) side = 1
+            x1 = x3
+            y1 = y3
+        else
+            if (.not. bis) side = 2
+            x2 = x3
+            y2 = y3
+        end if
+        if (mod(i,expected_iters) == 0) then
+            ! reset to bisection if expected number of iterations is exceeded
+            bis = .true.
+            side = 0
+        end if
+
+    end do
+
+    end subroutine ModAB
 !*****************************************************************************************
 
 !*****************************************************************************************
