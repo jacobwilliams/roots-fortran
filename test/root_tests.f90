@@ -1902,6 +1902,7 @@ program root_tests
     end function func
 
     pure subroutine insertion_sort(vec, vec2, vec3)
+    !! sort an integer vector ascending, carrying along another integer vector.
 
     implicit none
 
@@ -1968,8 +1969,6 @@ program root_tests
     call problems(num_of_problems=num_of_problems)
 
     do nprob = 1, num_of_problems
-        ! if (nprob/=128) cycle
-        !if (nprob/=52) cycle
 
         write(*,*) 'case', nprob, '/', num_of_problems
 
