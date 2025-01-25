@@ -68,7 +68,7 @@ program root_tests
     case(real32)
         atol = 1.0e-5_wp
         rtol = 1.0e-5_wp
-        ftol = 1.0e-5_wp
+        ftol = 1.0e-6_wp
         tol_for_check = 1.0e-4_wp
         kind_str = 'real32'
     case(real64)
@@ -171,6 +171,11 @@ program root_tests
     end do
 
     write(iunit_results,'(a)') '\end{longtable}'
+
+    write(iunit_results,'(a)') ' '
+    write(iunit_results,'(a)') '$^*$ indicates that the method failed and bisection was used.'
+    write(iunit_results,'(a)') ' '
+
     write(iunit_results,'(a)') '\end{landscape}'
     write(iunit_results,'(a)') '\end{document}'
 
@@ -213,6 +218,7 @@ program root_tests
         character(len=1000) :: line
         integer,dimension(number_of_methods) :: fevals !! func evals for each case
         real(wp),dimension(number_of_methods) :: cases_per_sec !! speed of each case
+        logical,dimension(number_of_methods) :: bisect_used !! if the method failed and bisection was used
         integer :: best_feval, worst_feval
         real(wp) :: best_cases_per_second
         character(len=:),allocatable :: best,failures
@@ -224,9 +230,11 @@ program root_tests
         character(len=10) :: itmp, nstr
         integer :: n_bounds_cases, bounds_cases_first
         character(len=30) :: root_str
+        logical :: bis
 
         integer,parameter :: n_repeat = 1  !! number of times to repeat each test for timing purposes
         integer,parameter :: maxiter = 1000 !! maximum number of iterations
+        logical,parameter :: bisect_on_failure = .true. !! to fall back to bisection if method fails
 
         write(output_unit,fmt) &
             repeat('-',20),repeat('-',3),repeat('-',4),repeat('-',16),&
@@ -252,13 +260,16 @@ program root_tests
             call cpu_time(tstart)
             do irepeat = 1, n_repeat
                 ifunc = 0 ! reset func evals counter
-                call root_scalar(methods(imeth),func,ax,bx,xzero,fzero,iflag,bisect_on_failure=.true., &
+                call root_scalar(methods(imeth),func,ax,bx,xzero,fzero,iflag,&
+                                 bisect_on_failure = bisect_on_failure, &
+                                 bisect_used = bis, &
                                  atol = atol, rtol = rtol, ftol = ftol, maxiter = maxiter )
             end do
             call cpu_time(tfinish)
 
             error = xzero-root
-            write(line, dfmt) trim(methods(imeth)),nprob,n,error,xzero,fzero,ifunc,iflag,n_repeat / (tfinish-tstart), trim(tmp)
+            write(line, dfmt) trim(methods(imeth)),nprob,n,error,xzero,fzero,ifunc,iflag,&
+                              n_repeat / (tfinish-tstart), trim(tmp)
 
             root_found = abs(fzero) <= tol_for_check !.and. abs(error) <= tol_for_check
 
@@ -276,6 +287,7 @@ program root_tests
                 fevals(imeth) = huge(1)
                 cases_per_sec(imeth) = huge(1.0_wp)
             end if
+            bisect_used(imeth) = bis
 
         end do
 
@@ -314,7 +326,10 @@ program root_tests
         fevals_line = ''
         do i = 1, size(fevals)
             write(itmp, '(I10)') fevals(i); itmp = trim(adjustl(itmp))
-            if (fevals(i) == best_feval) then
+            if (bisect_used(i)) itmp = trim(itmp) // '$^*$'
+            if (bisect_used(i)) then
+                fevals_line = fevals_line // '\cellcolor{red!75} ' // itmp // '&'  ! always color red if it failed
+            else if (fevals(i) == best_feval) then
                 if (count(fevals==best_feval)==1) then
                     ! the sole winner
                     fevals_line = fevals_line // '\cellcolor{green!75} ' // itmp // '&'
