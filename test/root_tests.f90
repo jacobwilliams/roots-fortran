@@ -32,7 +32,7 @@ program root_tests
     integer,dimension(:),allocatable :: cases_to_run
     type(pyplot) :: stats_plot   !! pyplot handler
     integer,dimension(2),parameter :: figsize=[10,5] !! figure size for plogs
-    character(len=30) :: r_str
+    character(len=10) :: r_str
     real(wp) :: atol, rtol, ftol
     real(wp) :: tol_for_check !! for pass/fail check
 
@@ -129,9 +129,9 @@ program root_tests
     write(iunit_results,'(a)') ''
 
     ! write(iunit_results,'(a)') '\begin{align}'
-    write(r_str, '(1p,E10.1)') atol; write(iunit_results,'(a)') '$\epsilon_{abs}  = '//trim(adjustl(r_str)//'$\\')
-    write(r_str, '(1p,E10.1)') rtol; write(iunit_results,'(a)') '$\epsilon_{rel}  = '//trim(adjustl(r_str)//'$\\')
-    write(r_str, '(1p,E10.1)') ftol; write(iunit_results,'(a)') '$\epsilon_{func} = '//trim(adjustl(r_str)//'$\\')
+    write(r_str, '(1p,E10.1)') atol; write(iunit_results,'(a)') '$\epsilon_{abs}  = '//trim(adjustl(r_str))//'$\\'
+    write(r_str, '(1p,E10.1)') rtol; write(iunit_results,'(a)') '$\epsilon_{rel}  = '//trim(adjustl(r_str))//'$\\'
+    write(r_str, '(1p,E10.1)') ftol; write(iunit_results,'(a)') '$\epsilon_{func} = '//trim(adjustl(r_str))//'$\\'
     ! write(iunit_results,'(a)') '\end{align}'
     write(iunit_results,'(a)') ''
 
