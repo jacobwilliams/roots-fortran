@@ -65,7 +65,7 @@
     type(root_method),parameter,public :: root_method_chandrupatla         = root_method(12, 'chandrupatla')         !! enum type for `chandrupatla` method
     type(root_method),parameter,public :: root_method_toms748              = root_method(13, 'toms748')              !! enum type for `toms748` method
     type(root_method),parameter,public :: root_method_zhang                = root_method(14, 'zhang')                !! enum type for `zhang` method
-    type(root_method),parameter,public :: root_method_anderson_bjorck_king = root_method(15, 'anderson_bjorck_king') !! enum type for `anderson_bjorck_king` method
+    type(root_method),parameter,public :: root_method_anderson_bjorck_kroger = root_method(15, 'abkk')               !! enum type for `anderson_bjorck_kroger` method
     type(root_method),parameter,public :: root_method_blendtf              = root_method(16, 'blendtf')              !! enum type for `blendtf` method
     type(root_method),parameter,public :: root_method_barycentric          = root_method(17, 'barycentric')          !! enum type for `barycentric` method
     type(root_method),parameter,public :: root_method_itp                  = root_method(18, 'itp')                  !! enum type for `itp` method
@@ -87,7 +87,7 @@
           root_method_chandrupatla,         &
           root_method_toms748,              &
           root_method_zhang,                &
-          root_method_anderson_bjorck_king, &
+          root_method_anderson_bjorck_kroger, &
           root_method_blendtf,              &
           root_method_barycentric,          &
           root_method_itp,                  &
@@ -227,13 +227,13 @@
     procedure,public :: find_root => zhang
     end type zhang_solver
 
-    type,extends(root_solver),public :: anderson_bjorck_king_solver
-    !! anderson-bjorck-king root solver
+    type,extends(root_solver),public :: anderson_bjorck_kroger_solver
+    !! modified anderson-bjorck-king root solver
     private
     contains
     private
-    procedure,public :: find_root => anderson_bjorck_king
-    end type anderson_bjorck_king_solver
+    procedure,public :: find_root => anderson_bjorck_kroger
+    end type anderson_bjorck_kroger_solver
 
     type,extends(root_solver),public :: blendtf_solver
     !! blendtf root solver
@@ -473,7 +473,7 @@
     case(root_method_chandrupatla%id);         allocate(chandrupatla_solver         :: s)
     case(root_method_toms748%id);              allocate(toms748_solver              :: s)
     case(root_method_zhang%id);                allocate(zhang_solver                :: s)
-    case(root_method_anderson_bjorck_king%id); allocate(anderson_bjorck_king_solver :: s)
+    case(root_method_anderson_bjorck_kroger%id); allocate(anderson_bjorck_kroger_solver :: s)
     case(root_method_blendtf%id);              allocate(blendtf_solver              :: s)
     case(root_method_barycentric%id);          allocate(barycentric_solver          :: s)
     case(root_method_itp%id);                  allocate(itp_solver                  :: s)
@@ -2133,16 +2133,16 @@
 !  an extra initial bisection step.
 !
 !### See also
-!  * Kroger & Torsten, "On-Line Trajectory Generation in Robotic Systems", 2010.
+!  * Torsten Kroger, "On-Line Trajectory Generation in Robotic Systems", 2010.
 !    https://link.springer.com/content/pdf/bbm%3A978-3-642-05175-3%2F1.pdf
 !
-!@note Really, should name this something else.
+!@note This was originally called `anderson_bjorck_king` but that was a misnomer.
 
-    subroutine anderson_bjorck_king(me,ax,bx,fax,fbx,xzero,fzero,iflag)
+    subroutine anderson_bjorck_kroger(me,ax,bx,fax,fbx,xzero,fzero,iflag)
 
     implicit none
 
-    class(anderson_bjorck_king_solver),intent(inout) :: me
+    class(anderson_bjorck_kroger_solver),intent(inout) :: me
     real(wp),intent(in)    :: ax      !! left endpoint of initial interval
     real(wp),intent(in)    :: bx      !! right endpoint of initial interval
     real(wp),intent(in)    :: fax     !! `f(ax)`
@@ -2220,7 +2220,7 @@
 
     end do
 
-    end subroutine anderson_bjorck_king
+    end subroutine anderson_bjorck_kroger
 !*****************************************************************************************
 
 !*****************************************************************************************

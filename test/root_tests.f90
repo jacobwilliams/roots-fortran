@@ -41,26 +41,26 @@ program root_tests
 
     integer,parameter :: number_of_methods = 20 !! number of methods to test
     character(len=100),dimension(number_of_methods),parameter :: methods = [ &
-                     'barycentric         ', &
-                     'anderson_bjorck_king', &
-                     'zhang               ', &
-                     'bisection           ', &
-                     'regula_falsi        ', &
-                     'illinois            ', &
-                     'ridders             ', &
-                     'blendtf             ', &
-                     'bdqrf               ', &
-                     'rbp                 ', &
-                     'itp                 ', &
-                     'modab               ', &
-                     'pegasus             ', &
-                     'muller              ', &
-                     'chandrupatla        ', &
-                     'anderson_bjorck     ', &
-                     'brent               ', &
-                     'toms748             ', &
-                     'brentq              ', &
-                     'brenth              ' ] !! method names - the order here is roughly the order of worst to best (see the root report output file).
+            'bisection             ', &
+            'regula_falsi          ', &
+            'abkk                  ', &
+            'barycentric           ', &
+            'zhang                 ', &
+            'ridders               ', &
+            'illinois              ', &
+            'blendtf               ', &
+            'itp                   ', &
+            'bdqrf                 ', &
+            'rbp                   ', &
+            'modab                 ', &
+            'pegasus               ', &
+            'toms748               ', &
+            'brent                 ', &
+            'brentq                ', &
+            'anderson_bjorck       ', &
+            'brenth                ', &
+            'muller                ', &
+            'chandrupatla          ' ] !! method names - the order here is roughly the order of worst to best (see the root report output file). - but with bis and rf as the first wo
 
     integer,dimension(number_of_methods) :: number_of_wins, ivec, number_of_failures, ivec2
 
@@ -514,28 +514,46 @@ program root_tests
         end if
         if (present(latex)) latex = '-2 \sum_{i=1}^{20} ((2i - 5)^2)/(x - i^2)^3'
 
-    !.... 13 & 14 don't actually converge to the right root with real64 since the func value is lower than the tol on the bound....
     case (12)
+        !.... some of these don't actually converge to the right root with
+        !     real64 since the func value is lower than the tol on the bound....
         a = -9.0_wp
         b = 31.0_wp
         root = 0.0_wp
-        if (present(x)) f = -40.0_wp*x*exp(-1.0_wp*x)
-        if (present(latex)) latex = '-40 x \mathrm{e}^{-x}'
+        ns = [40,100,200]
+
+        if (present(x)) f = -n*x*exp(-1.0_wp*x)
+        if (present(latex)) latex = '-n x \mathrm{e}^{-x}'
         if (present(bounds)) bounds = '-9,31'
-    case (13)
-        a = -9.0_wp
-        b = 31.0_wp
-        root = 0.0_wp
-        if (present(x)) f = -100.0_wp*x*exp(-2.0_wp*x)
-        if (present(latex)) latex = '-100 x \mathrm{e}^{-2 x}'
-        if (present(bounds)) bounds = '-9,31'
-    case (14)
-        a = -9.0_wp
-        b = 31.0_wp
-        root = 0.0_wp
-        if (present(x)) f = -200.0_wp*x*exp(-3.0_wp*x)
-        if (present(latex)) latex = '-200 x \mathrm{e}^{-3 x}'
-        if (present(bounds)) bounds = '-9,31'
+        ! case (13)
+        !     a = -9.0_wp
+        !     b = 31.0_wp
+        !     root = 0.0_wp
+        !     if (present(x)) f = -100.0_wp*x*exp(-2.0_wp*x)
+        !     if (present(latex)) latex = '-100 x \mathrm{e}^{-2 x}'
+        !     if (present(bounds)) bounds = '-9,31'
+        ! case (14)
+        !     a = -9.0_wp
+        !     b = 31.0_wp
+        !     root = 0.0_wp
+        !     if (present(x)) f = -200.0_wp*x*exp(-3.0_wp*x)
+        !     if (present(latex)) latex = '-200 x \mathrm{e}^{-3 x}'
+        !     if (present(bounds)) bounds = '-9,31'
+
+    case(13)
+        a = -3.0_wp
+        b = 2.0_wp
+        root = -2.1038034027355365E+00_wp
+        if (present(x)) f = x**3 - 2.0_wp*x - x + 3.0_wp
+        if (present(latex)) latex = 'x^3 - 2x - x + 3'
+        if (present(bounds)) bounds = '-3,2'
+    case(14)
+        a = 0.0_wp
+        b = 2.0_wp
+        root = 3.5446310437502532E-01_wp
+        if (present(x)) f = exp(-x) - x - sin(x)
+        if (present(latex)) latex = 'e^{-x} - x - \sin(x)'
+        if (present(bounds)) bounds = '0,2'
 
     case (15)
         a = 0.0_wp
@@ -621,7 +639,7 @@ program root_tests
         if (present(bounds)) bounds = '0,1'
     case (21)
         a = 0.0_wp
-        b = 1.0_wp
+        b = 1.01_wp
         ns = [2,5,10,15,20]
         if (present(xroot)) then
             select case (n)
@@ -635,7 +653,7 @@ program root_tests
         end if
         if (present(x)) f = x**2 - (1.0_wp - x)**n
         if (present(latex)) latex = 'x^2 - (1-x)^n'
-        if (present(bounds)) bounds = '0,1'
+        if (present(bounds)) bounds = '0,1.01'
     case (22)
         a = 0.0_wp
         b = 1.0_wp
@@ -883,12 +901,12 @@ program root_tests
         if (present(bounds)) bounds = '-2,3'
     case (42)
         !From: http://www.mth.pdx.edu/~daescu/mth451_551/Muller_bisection.pdf
-        a = 0.0_wp     ! x1 is the location of the root for this case
-        b = 3.0_wp
+        a = -0.001_wp     ! x1 is close to the location of the root for this case - changed bound from 0,3 to this
+        b = 1.0_wp
         root = 0.0_wp
         if (present(x)) f = exp(x) - 2.0_wp*x - 1.0_wp
         if (present(latex)) latex = '\mathrm{e}^{x} - 2 x - 1'
-        if (present(bounds)) bounds = '0,3'
+        if (present(bounds)) bounds = '-0.001,1'
     case (43)
         a = 0.0_wp
         b = 0.7_wp
@@ -1752,12 +1770,12 @@ program root_tests
     ! http://sergiogaldino.pbworks.com/w/file/fetch/66011429/0130-1943543
     ! see: Root-test-functions.pdf : https://www.researchgate.net/publication/373922895_Additional_test_functions
     case(146)
-        a = 0.5_wp
+        a = 0.51_wp   ! change bounds from .5,1.5 so first bisection isn't the root
         b = 1.5_wp
         root = 1.0E+00_wp
         if (present(x)) f = x**3 - 1.0_wp
         if (present(latex)) latex = 'x^3 - 1'
-        if (present(bounds)) bounds = '0.5,1.5'
+        if (present(bounds)) bounds = '0.51,1.5'
     case(147)
         a = 0.1_wp
         b = 1.0_wp
@@ -1838,20 +1856,6 @@ program root_tests
         if (present(x)) f = (x**2 - x - 6.0_wp) * (x**2 - 3.0_wp * x + 2.0_wp)
         if (present(latex)) latex = '(x^2 - x - 6)(x^2 - 3x + 2)'
 
-    case(158)
-        a = -3.0_wp
-        b = 2.0_wp
-        root = -2.1038034027355365E+00_wp
-        if (present(x)) f = x**3 - 2.0_wp*x - x + 3.0_wp
-        if (present(latex)) latex = 'x^3 - 2x - x + 3'
-        if (present(bounds)) bounds = '-3,2'
-    case(159)
-        a = 0.0_wp
-        b = 2.0_wp
-        root = 3.5446310437502532E-01_wp
-        if (present(x)) f = exp(-x) - x - sin(x)
-        if (present(latex)) latex = 'e^{-x} - x - \sin(x)'
-        if (present(bounds)) bounds = '0,2'
 
 
     case default
@@ -1859,7 +1863,7 @@ program root_tests
         error stop 'invalid case'
     end select
 
-    if (present(num_of_problems)) num_of_problems = 159
+    if (present(num_of_problems)) num_of_problems = 157
 
     ! outputs:
     if (present(ax))    ax = a

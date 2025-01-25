@@ -72,7 +72,7 @@ Procedure | Description | Reference
 [`illinois`](https://jacobwilliams.github.io/roots-fortran/proc/illinois.html)                         | Illinois method | [Dowell & Jarratt (1971)](https://personal.math.ubc.ca/~loew/mech2/Dowell+Jarratt.pdf)
 [`pegasus`](https://jacobwilliams.github.io/roots-fortran/proc/pegasus.html)                           | Pegasus method | [Dowell & Jarratt (1972)](https://link.springer.com/article/10.1007/BF01932959)
 [`anderson_bjorck`](https://jacobwilliams.github.io/roots-fortran/proc/anderson_bjorck.html)           | Anderson-Bjorck method | [King (1973)](https://link.springer.com/article/10.1007/BF01933405)
-[`anderson_bjorck_king`](https://jacobwilliams.github.io/roots-fortran/proc/anderson_bjorck_king.html) | A [variant](https://link.springer.com/content/pdf/bbm%3A978-3-642-05175-3%2F1.pdf) of `anderson_bjorck` | [King (1973)](https://link.springer.com/article/10.1007/BF01933405)
+[`abkk`](https://jacobwilliams.github.io/roots-fortran/proc/abkk.html) | A [variant](https://link.springer.com/content/pdf/bbm%3A978-3-642-05175-3%2F1.pdf) of `anderson_bjorck` | [King (1973)](https://link.springer.com/article/10.1007/BF01933405)
 [`ridders`](https://jacobwilliams.github.io/roots-fortran/proc/ridders.html)                           | Classic Ridders method | [Ridders (1979)](https://cs.fit.edu/~dmitra/SciComp/Resources/RidderMethod.pdf)
 [`toms748`](https://jacobwilliams.github.io/roots-fortran/proc/toms748.html)                           | Algorithm 748 |  [Alefeld, Potra, Shi (1995)](https://dl.acm.org/doi/abs/10.1145/210089.210111)
 [`chandrupatla`](https://jacobwilliams.github.io/roots-fortran/proc/chandrupatla.html)                 | Hybrid quadratic/bisection algorithm | [Chandrupatla (1997)](https://dl.acm.org/doi/10.1016/S0965-9978%2896%2900051-8)
@@ -87,7 +87,7 @@ Procedure | Description | Reference
 In general, all the methods are guaranteed to converge. Some will be more efficient (in terms of number of function evaluations) than others for various problems. The methods can be broadly classified into three groups:
 
  * Simple classical methods (`bisection`, `regula_falsi`, `illinois`, `ridders`).
- * Newfangled methods (`zhang`, `barycentric`, `blendtf`, `bdqrf`, `anderson_bjorck_king`, `rbp`). These rarely or ever seem to be better than the best methods.
+ * Newfangled methods (`zhang`, `barycentric`, `blendtf`, `bdqrf`, `abkk`, `rbp`). These rarely or ever seem to be better than the best methods.
  * Best methods (`anderson_bjorck`, `muller`, `pegasus`, `toms748`, `brent`, `brentq`, `brenth`, `chandrupatla`, `itp`). Generally, one of these will be the most efficient method.
 
 Note that some of the implementations in this library contain additional checks for robustness, and so may behave better than naive implementations of the same algorithms. In addition, all methods have an option to fall back to bisection if the method fails to converge.
