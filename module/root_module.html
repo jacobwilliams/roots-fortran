@@ -134,7 +134,7 @@
             <a class="list-group-item" href="../module/root_module.html#variable-root_method_chandrupatla">root_method_chandrupatla</a>
             <a class="list-group-item" href="../module/root_module.html#variable-root_method_toms748">root_method_toms748</a>
             <a class="list-group-item" href="../module/root_module.html#variable-root_method_zhang">root_method_zhang</a>
-            <a class="list-group-item" href="../module/root_module.html#variable-root_method_anderson_bjorck_king">root_method_anderson_bjorck_king</a>
+            <a class="list-group-item" href="../module/root_module.html#variable-root_method_anderson_bjorck_kroger">root_method_anderson_bjorck_kroger</a>
             <a class="list-group-item" href="../module/root_module.html#variable-root_method_blendtf">root_method_blendtf</a>
             <a class="list-group-item" href="../module/root_module.html#variable-root_method_barycentric">root_method_barycentric</a>
             <a class="list-group-item" href="../module/root_module.html#variable-root_method_itp">root_method_itp</a>
@@ -200,7 +200,7 @@
             <a class="list-group-item" href="../module/root_module.html#type-chandrupatla_solver">chandrupatla_solver</a>
             <a class="list-group-item" href="../module/root_module.html#type-toms748_solver">toms748_solver</a>
             <a class="list-group-item" href="../module/root_module.html#type-zhang_solver">zhang_solver</a>
-            <a class="list-group-item" href="../module/root_module.html#type-anderson_bjorck_king_solver">anderson_bjorck_king_solver</a>
+            <a class="list-group-item" href="../module/root_module.html#type-anderson_bjorck_kroger_solver">anderson_bjorck_kroger_solver</a>
             <a class="list-group-item" href="../module/root_module.html#type-blendtf_solver">blendtf_solver</a>
             <a class="list-group-item" href="../module/root_module.html#type-barycentric_solver">barycentric_solver</a>
             <a class="list-group-item" href="../module/root_module.html#type-itp_solver">itp_solver</a>
@@ -255,7 +255,7 @@
             <a class="list-group-item" href="../module/root_module.html#proc-chandrupatla">chandrupatla</a>
             <a class="list-group-item" href="../module/root_module.html#proc-toms748">toms748</a>
             <a class="list-group-item" href="../module/root_module.html#proc-zhang">zhang</a>
-            <a class="list-group-item" href="../module/root_module.html#proc-anderson_bjorck_king">anderson_bjorck_king</a>
+            <a class="list-group-item" href="../module/root_module.html#proc-anderson_bjorck_kroger">anderson_bjorck_kroger</a>
             <a class="list-group-item" href="../module/root_module.html#proc-blendtf">blendtf</a>
             <a class="list-group-item" href="../module/root_module.html#proc-barycentric">barycentric</a>
             <a class="list-group-item" href="../module/root_module.html#proc-itp_optional_inputs">itp_optional_inputs</a>
@@ -758,7 +758,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-root_method_anderson_bjorck_king"></span>
+              <span class="anchor" id="variable-root_method_anderson_bjorck_kroger"></span>
               type(<a href='../type/root_method.html'>root_method</a>),
             </td>
               <td>public,</td>
@@ -766,11 +766,11 @@ parameter
 parameter               
             </td>
             <td>::</td>
-            <td><strong>root_method_anderson_bjorck_king</strong></td>
+            <td><strong>root_method_anderson_bjorck_kroger</strong></td>
 <td> =</td>
-                <td>root_method(15, &#39;anderson_bjorck_king&#39;)</td>
+                <td>root_method(15, &#39;abkk&#39;)</td>
             <td>
-                <p>enum type for <code>anderson_bjorck_king</code> method</p>
+                <p>enum type for <code>anderson_bjorck_kroger</code> method</p>
             </td>
         </tr>
         <tr>
@@ -870,7 +870,7 @@ parameter,               dimension(*)
             <td>::</td>
             <td><strong>set_of_root_methods</strong></td>
 <td> =</td>
-                <td>[root_method_brent, root_method_bisection, root_method_regula_falsi, root_method_illinois, root_method_anderson_bjorck, root_method_ridders, root_method_pegasus, root_method_bdqrf, root_method_muller, root_method_brenth, root_method_brentq, root_method_chandrupatla, root_method_toms748, root_method_zhang, root_method_anderson_bjorck_king, root_method_blendtf, root_method_barycentric, root_method_itp, root_method_rbp, root_method_ModAB]</td>
+                <td>[root_method_brent, root_method_bisection, root_method_regula_falsi, root_method_illinois, root_method_anderson_bjorck, root_method_ridders, root_method_pegasus, root_method_bdqrf, root_method_muller, root_method_brenth, root_method_brentq, root_method_chandrupatla, root_method_toms748, root_method_zhang, root_method_anderson_bjorck_kroger, root_method_blendtf, root_method_barycentric, root_method_itp, root_method_rbp, root_method_ModAB]</td>
             <td>
                 <p>list of the available methods (see <a href="../interface/root_scalar.html">root_scalar</a>)</p>
             </td>
@@ -2405,15 +2405,15 @@ startup tasks. All these routines assume that
 
               <div class="card">
     <div class="card-header codesum">
-      <span class="anchor" id="type-anderson_bjorck_king_solver"></span>
+      <span class="anchor" id="type-anderson_bjorck_kroger_solver"></span>
       <h3>
         type, public, extends(<a href='../type/root_solver.html'>root_solver</a>)&nbsp;::&nbsp;
-        <a href='../type/anderson_bjorck_king_solver.html'>anderson_bjorck_king_solver</a>
+        <a href='../type/anderson_bjorck_kroger_solver.html'>anderson_bjorck_kroger_solver</a>
         
       </h3>
     </div>
     <div class="card-body">
-      <p>anderson-bjorck-king root solver</p>
+      <p>modified anderson-bjorck-king root solver</p>
 
 
 
@@ -2433,7 +2433,7 @@ startup tasks. All these routines assume that
               </tr>
               <tr>
                 <td>  procedure, public ::
-  <strong><a href='../type/anderson_bjorck_king_solver.html#boundprocedure-find_root~16'>find_root</a></strong> => <a href='/home/runner/work/roots-fortran/roots-fortran/doc/proc/anderson_bjorck_king.html'>anderson_bjorck_king</a></td>
+  <strong><a href='../type/anderson_bjorck_kroger_solver.html#boundprocedure-find_root~16'>find_root</a></strong> => <a href='/home/runner/work/roots-fortran/roots-fortran/doc/proc/anderson_bjorck_kroger.html'>anderson_bjorck_kroger</a></td>
                 <td></td>
               </tr>
           </tbody>
@@ -6325,12 +6325,12 @@ to <code>maxiter</code> additional function evaluations.</p>
   </div>
 
               <div class="card">
-    <div class="card-header codesum"><span class="anchor" id="proc-anderson_bjorck_king"></span> <h3>private  subroutine <a href='../proc/anderson_bjorck_king.html'>anderson_bjorck_king</a>(me, ax, bx, fax, fbx, xzero, fzero, iflag)  
+    <div class="card-header codesum"><span class="anchor" id="proc-anderson_bjorck_kroger"></span> <h3>private  subroutine <a href='../proc/anderson_bjorck_kroger.html'>anderson_bjorck_kroger</a>(me, ax, bx, fax, fbx, xzero, fzero, iflag)  
 </h3></div>
     <div class="card-body">
           
   <p>Modified anderson-bjorck-king method. Same as <a href="../proc/anderson_bjorck.html">anderson_bjorck</a>, but with
-  an extra initial bisection step.</p><a href="../proc/anderson_bjorck_king.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  an extra initial bisection step.</p><a href="../proc/anderson_bjorck_kroger.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -6346,7 +6346,7 @@ to <code>maxiter</code> additional function evaluations.</p>
         <tr>
             <td>
               <span class="anchor" id="variable-me~21"></span>
-              class(<a href='../type/anderson_bjorck_king_solver.html'>anderson_bjorck_king_solver</a>),
+              class(<a href='../type/anderson_bjorck_kroger_solver.html'>anderson_bjorck_kroger_solver</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>

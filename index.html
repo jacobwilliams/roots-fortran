@@ -198,7 +198,7 @@
 <td><a href="https://link.springer.com/article/10.1007/BF01933405">King (1973)</a></td>
 </tr>
 <tr>
-<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/anderson_bjorck_king.html"><code>anderson_bjorck_king</code></a></td>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/abkk.html"><code>abkk</code></a></td>
 <td>A <a href="https://link.springer.com/content/pdf/bbm%3A978-3-642-05175-3%2F1.pdf">variant</a> of <code>anderson_bjorck</code></td>
 <td><a href="https://link.springer.com/article/10.1007/BF01933405">King (1973)</a></td>
 </tr>
@@ -257,7 +257,7 @@
 <p>In general, all the methods are guaranteed to converge. Some will be more efficient (in terms of number of function evaluations) than others for various problems. The methods can be broadly classified into three groups:</p>
 <ul>
 <li>Simple classical methods (<code>bisection</code>, <code>regula_falsi</code>, <code>illinois</code>, <code>ridders</code>).</li>
-<li>Newfangled methods (<code>zhang</code>, <code>barycentric</code>, <code>blendtf</code>, <code>bdqrf</code>, <code>anderson_bjorck_king</code>, <code>rbp</code>). These rarely or ever seem to be better than the best methods.</li>
+<li>Newfangled methods (<code>zhang</code>, <code>barycentric</code>, <code>blendtf</code>, <code>bdqrf</code>, <code>abkk</code>, <code>rbp</code>). These rarely or ever seem to be better than the best methods.</li>
 <li>Best methods (<code>anderson_bjorck</code>, <code>muller</code>, <code>pegasus</code>, <code>toms748</code>, <code>brent</code>, <code>brentq</code>, <code>brenth</code>, <code>chandrupatla</code>, <code>itp</code>). Generally, one of these will be the most efficient method.</li>
 </ul>
 <p>Note that some of the implementations in this library contain additional checks for robustness, and so may behave better than naive implementations of the same algorithms. In addition, all methods have an option to fall back to bisection if the method fails to converge.</p>
@@ -447,7 +447,7 @@
           <div class="col-xs-6 col-sm-3">
             <div>
               <h3>Procedures</h3>
-              <ul><li><a href='proc/anderson_bjorck.html'>anderson_bjorck</a></li><li><a href='proc/anderson_bjorck_king.html'>anderson_bjorck_king</a></li><li><a href='proc/barycentric.html'>barycentric</a></li><li><a href='proc/bdqrf.html'>bdqrf</a></li><li><a href='proc/bisect.html'>bisect</a></li><li><a href='proc/bisection.html'>bisection</a></li><li><a href='proc/blendtf.html'>blendtf</a></li><li><a href='proc/brent.html'>brent</a></li><li><a href='proc/brenth.html'>brenth</a></li><li><a href='proc/brentq.html'>brentq</a></li></ul>
+              <ul><li><a href='proc/anderson_bjorck.html'>anderson_bjorck</a></li><li><a href='proc/anderson_bjorck_kroger.html'>anderson_bjorck_kroger</a></li><li><a href='proc/barycentric.html'>barycentric</a></li><li><a href='proc/bdqrf.html'>bdqrf</a></li><li><a href='proc/bisect.html'>bisect</a></li><li><a href='proc/bisection.html'>bisection</a></li><li><a href='proc/blendtf.html'>blendtf</a></li><li><a href='proc/brent.html'>brent</a></li><li><a href='proc/brenth.html'>brenth</a></li><li><a href='proc/brentq.html'>brentq</a></li></ul>
             </div>
             <div>
               <ul>
@@ -458,7 +458,7 @@
           <div class="col-xs-6 col-sm-3">
             <div>
               <h3>Derived Types</h3>
-              <ul><li><a href='type/anderson_bjorck_king_solver.html'>anderson_bjorck_king_solver</a></li><li><a href='type/anderson_bjorck_solver.html'>anderson_bjorck_solver</a></li><li><a href='type/barycentric_solver.html'>barycentric_solver</a></li><li><a href='type/bdqrf_solver.html'>bdqrf_solver</a></li><li><a href='type/bisection_solver.html'>bisection_solver</a></li><li><a href='type/blendtf_solver.html'>blendtf_solver</a></li><li><a href='type/brent_solver.html'>brent_solver</a></li><li><a href='type/brenth_solver.html'>brenth_solver</a></li><li><a href='type/brentq_solver.html'>brentq_solver</a></li><li><a href='type/chandrupatla_solver.html'>chandrupatla_solver</a></li></ul>
+              <ul><li><a href='type/anderson_bjorck_kroger_solver.html'>anderson_bjorck_kroger_solver</a></li><li><a href='type/anderson_bjorck_solver.html'>anderson_bjorck_solver</a></li><li><a href='type/barycentric_solver.html'>barycentric_solver</a></li><li><a href='type/bdqrf_solver.html'>bdqrf_solver</a></li><li><a href='type/bisection_solver.html'>bisection_solver</a></li><li><a href='type/blendtf_solver.html'>blendtf_solver</a></li><li><a href='type/brent_solver.html'>brent_solver</a></li><li><a href='type/brenth_solver.html'>brenth_solver</a></li><li><a href='type/brentq_solver.html'>brentq_solver</a></li><li><a href='type/chandrupatla_solver.html'>chandrupatla_solver</a></li></ul>
             </div>
             <div>
               <ul>
