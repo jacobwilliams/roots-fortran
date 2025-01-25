@@ -35,4 +35,5 @@ files/*.json
 *.fls
 *.log
 *.synctex.gz
-table.tex
+table*.tex
+table*.pdf
