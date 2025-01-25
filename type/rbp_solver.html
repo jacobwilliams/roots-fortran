@@ -76,7 +76,7 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title="<p> 4.1% of total for derived types.</p>Including implementation: 130 statements,  4.4% of total for derived types.">6 statements</a>
+                 title="<p> 4.1% of total for derived types.</p>Including implementation: 137 statements,  4.4% of total for derived types.">6 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -402,7 +402,7 @@ said component(s).
     <ul class="list-group">
         <li class="list-group-item">
                   <h3>
-    private  subroutine <a href='../proc/solve.html'>solve</a>(me, ax, bx, xzero, fzero, iflag, fax, fbx, bisect_on_failure)  
+    private  subroutine <a href='../proc/solve.html'>solve</a>(me, ax, bx, xzero, fzero, iflag, fax, fbx, bisect_on_failure, bisect_used)  
 </h3>
     
 
@@ -555,6 +555,21 @@ said component(s).
 it will be retried using the bisection method.
 (default is False). Note that this can use up
 to <code>maxiter</code> additional function evaluations.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              logical,
+            </td>
+<td>intent(out),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>bisect_used</strong></td>
+            <td>
+<p>if the bisection method was used after failure</p>
             </td>
         </tr>
     </tbody>

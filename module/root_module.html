@@ -76,7 +76,7 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title="100.0% of total for modules and submodules.">1975 statements</a>
+                 title="100.0% of total for modules and submodules.">1984 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -893,7 +893,7 @@ parameter,               dimension(*)
     <ul class="list-group">
           <li class="list-group-item">
                 <h3>
-    private  subroutine <a href='../proc/root_scalar_by_name.html'>root_scalar_by_name</a>(method, fun, ax, bx, xzero, fzero, iflag, ftol, rtol, atol, maxiter, fax, fbx, bisect_on_failure)  
+    private  subroutine <a href='../proc/root_scalar_by_name.html'>root_scalar_by_name</a>(method, fun, ax, bx, xzero, fzero, iflag, ftol, rtol, atol, maxiter, fax, fbx, bisect_on_failure, bisect_used)  
 
     </h3>
     
@@ -1123,6 +1123,21 @@ it will be retried using the bisection method.
 to <code>maxiter</code> additional function evaluations.</p>
             </td>
         </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-bisect_used"></span>
+              logical,
+            </td>
+<td>intent(out),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>bisect_used</strong></td>
+            <td>
+<p>if the bisection method was used after failure</p>
+            </td>
+        </tr>
     </tbody>
   </table>
 
@@ -1130,7 +1145,7 @@ to <code>maxiter</code> additional function evaluations.</p>
           </li>
           <li class="list-group-item">
                 <h3>
-    private  subroutine <a href='../proc/root_scalar_by_type.html'>root_scalar_by_type</a>(method, fun, ax, bx, xzero, fzero, iflag, ftol, rtol, atol, maxiter, fax, fbx, bisect_on_failure)  
+    private  subroutine <a href='../proc/root_scalar_by_type.html'>root_scalar_by_type</a>(method, fun, ax, bx, xzero, fzero, iflag, ftol, rtol, atol, maxiter, fax, fbx, bisect_on_failure, bisect_used)  
 
     </h3>
     
@@ -1358,6 +1373,21 @@ to <code>maxiter</code> additional function evaluations.</p>
 it will be retried using the bisection method.
 (default is False). Note that this can use up
 to <code>maxiter</code> additional function evaluations.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-bisect_used~2"></span>
+              logical,
+            </td>
+<td>intent(out),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>bisect_used</strong></td>
+            <td>
+<p>if the bisection method was used after failure</p>
             </td>
         </tr>
     </tbody>
@@ -3520,7 +3550,7 @@ if the parabolic interpolation fails. Used by <a href="../proc/rbp.html">rbp</a>
   </div>
 
               <div class="card">
-    <div class="card-header codesum"><span class="anchor" id="proc-root_scalar_by_name"></span> <h3>private  subroutine <a href='../proc/root_scalar_by_name.html'>root_scalar_by_name</a>(method, fun, ax, bx, xzero, fzero, iflag, ftol, rtol, atol, maxiter, fax, fbx, bisect_on_failure)  
+    <div class="card-header codesum"><span class="anchor" id="proc-root_scalar_by_name"></span> <h3>private  subroutine <a href='../proc/root_scalar_by_name.html'>root_scalar_by_name</a>(method, fun, ax, bx, xzero, fzero, iflag, ftol, rtol, atol, maxiter, fax, fbx, bisect_on_failure, bisect_used)  
 </h3></div>
     <div class="card-body">
           
@@ -3750,6 +3780,21 @@ it will be retried using the bisection method.
 to <code>maxiter</code> additional function evaluations.</p>
             </td>
         </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-bisect_used"></span>
+              logical,
+            </td>
+<td>intent(out),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>bisect_used</strong></td>
+            <td>
+<p>if the bisection method was used after failure</p>
+            </td>
+        </tr>
     </tbody>
   </table>
 
@@ -3758,7 +3803,7 @@ to <code>maxiter</code> additional function evaluations.</p>
   </div>
 
               <div class="card">
-    <div class="card-header codesum"><span class="anchor" id="proc-root_scalar_by_type"></span> <h3>private  subroutine <a href='../proc/root_scalar_by_type.html'>root_scalar_by_type</a>(method, fun, ax, bx, xzero, fzero, iflag, ftol, rtol, atol, maxiter, fax, fbx, bisect_on_failure)  
+    <div class="card-header codesum"><span class="anchor" id="proc-root_scalar_by_type"></span> <h3>private  subroutine <a href='../proc/root_scalar_by_type.html'>root_scalar_by_type</a>(method, fun, ax, bx, xzero, fzero, iflag, ftol, rtol, atol, maxiter, fax, fbx, bisect_on_failure, bisect_used)  
 </h3></div>
     <div class="card-body">
           
@@ -3988,6 +4033,21 @@ it will be retried using the bisection method.
 to <code>maxiter</code> additional function evaluations.</p>
             </td>
         </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-bisect_used~2"></span>
+              logical,
+            </td>
+<td>intent(out),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>bisect_used</strong></td>
+            <td>
+<p>if the bisection method was used after failure</p>
+            </td>
+        </tr>
     </tbody>
   </table>
 
@@ -3996,7 +4056,7 @@ to <code>maxiter</code> additional function evaluations.</p>
   </div>
 
               <div class="card">
-    <div class="card-header codesum"><span class="anchor" id="proc-solve"></span> <h3>private  subroutine <a href='../proc/solve.html'>solve</a>(me, ax, bx, xzero, fzero, iflag, fax, fbx, bisect_on_failure)  
+    <div class="card-header codesum"><span class="anchor" id="proc-solve"></span> <h3>private  subroutine <a href='../proc/solve.html'>solve</a>(me, ax, bx, xzero, fzero, iflag, fax, fbx, bisect_on_failure, bisect_used)  
 </h3></div>
     <div class="card-body">
           
@@ -4149,6 +4209,21 @@ to <code>maxiter</code> additional function evaluations.</p>
 it will be retried using the bisection method.
 (default is False). Note that this can use up
 to <code>maxiter</code> additional function evaluations.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-bisect_used~3"></span>
+              logical,
+            </td>
+<td>intent(out),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>bisect_used</strong></td>
+            <td>
+<p>if the bisection method was used after failure</p>
             </td>
         </tr>
     </tbody>

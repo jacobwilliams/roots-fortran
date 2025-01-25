@@ -389,7 +389,7 @@
 
     subroutine root_scalar_by_name(method,fun,ax,bx,xzero,fzero,iflag,&
                                    ftol,rtol,atol,maxiter,fax,fbx,&
-                                   bisect_on_failure)
+                                   bisect_on_failure,bisect_used)
 
     implicit none
 
@@ -410,6 +410,7 @@
                                                         !! it will be retried using the bisection method.
                                                         !! (default is False). Note that this can use up
                                                         !! to `maxiter` additional function evaluations.
+    logical,intent(out),optional  :: bisect_used  !! if the bisection method was used after failure
 
     type(root_method) :: r
 
@@ -418,7 +419,7 @@
     if (r%id /= 0) then
         call root_scalar(r,fun,ax,bx,xzero,fzero,iflag,&
                          ftol,rtol,atol,maxiter,fax,fbx,&
-                         bisect_on_failure)
+                         bisect_on_failure,bisect_used)
     else
         iflag = -999    ! invalid method
         return
@@ -433,7 +434,7 @@
 
     subroutine root_scalar_by_type(method,fun,ax,bx,xzero,fzero,iflag,&
                                    ftol,rtol,atol,maxiter,fax,fbx,&
-                                   bisect_on_failure)
+                                   bisect_on_failure,bisect_used)
 
     implicit none
 
@@ -454,6 +455,7 @@
                                                         !! it will be retried using the bisection method.
                                                         !! (default is False). Note that this can use up
                                                         !! to `maxiter` additional function evaluations.
+    logical,intent(out),optional  :: bisect_used  !! if the bisection method was used after failure
 
     class(root_solver),allocatable :: s
 
@@ -486,7 +488,8 @@
     end select
 
     call s%initialize(func_wrapper,ftol,rtol,atol,maxiter)
-    call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx,bisect_on_failure)
+    call s%solve(ax,bx,xzero,fzero,iflag,fax,fbx,&
+                 bisect_on_failure,bisect_used)
 
     contains
 
@@ -505,7 +508,7 @@
 !>
 !  Main wrapper routine for all the methods.
 
-    subroutine solve(me,ax,bx,xzero,fzero,iflag,fax,fbx,bisect_on_failure)
+    subroutine solve(me,ax,bx,xzero,fzero,iflag,fax,fbx,bisect_on_failure,bisect_used)
 
     implicit none
 
@@ -521,9 +524,12 @@
                                                           !! it will be retried using the bisection method.
                                                           !! (default is False). Note that this can use up
                                                         !! to `maxiter` additional function evaluations.
+    logical,intent(out),optional     :: bisect_used !! if the bisection method was used after failure
 
     real(wp) :: fa !! `f(ax)` passed to the lower level routine
     real(wp) :: fb !! `f(bx)` passed to the lower level routine
+
+    if (present(bisect_used)) bisect_used = .false.
 
     if (ax==bx) then
         ! ax must be /= bx
@@ -563,13 +569,19 @@
             ! if it failed, then we have the option to then try bisection
             if (iflag /= 0) then
                 if (present(bisect_on_failure)) then
-                    if (bisect_on_failure) then
-                        ! use the wrapper routine for that with the input class
-                        call root_scalar(root_method_bisection,&
-                                         func_wrapper,ax,bx,xzero,fzero,iflag,&
-                                         me%ftol,me%rtol,me%atol,me%maxiter,fa,fb,&
-                                         bisect_on_failure = .false.)
-                    end if
+                    select type (me)
+                    class is (bisection_solver)
+                        ! can't bisect after failed bisection
+                    class default
+                        if (bisect_on_failure) then
+                            ! use the wrapper routine for that with the input class
+                            call root_scalar(root_method_bisection,&
+                                             func_wrapper,ax,bx,xzero,fzero,iflag,&
+                                             me%ftol,me%rtol,me%atol,me%maxiter,fa,fb,&
+                                             bisect_on_failure = .false.)
+                            if (present(bisect_used)) bisect_used = .true.
+                        end if
+                    end select
                 end if
             end if
 
