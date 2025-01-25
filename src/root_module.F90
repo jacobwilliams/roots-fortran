@@ -2135,6 +2135,8 @@
 !### See also
 !  * Kroger & Torsten, "On-Line Trajectory Generation in Robotic Systems", 2010.
 !    https://link.springer.com/content/pdf/bbm%3A978-3-642-05175-3%2F1.pdf
+!
+!@note Really, should name this something else.
 
     subroutine anderson_bjorck_king(me,ax,bx,fax,fbx,xzero,fzero,iflag)
 

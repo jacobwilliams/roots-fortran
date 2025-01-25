@@ -68,19 +68,19 @@ program root_tests
     case(real32)
         atol = 1.0e-5_wp
         rtol = 1.0e-5_wp
-        ftol = 0.0_wp
+        ftol = 1.0e-5_wp
         tol_for_check = 1.0e-4_wp
         kind_str = 'real32'
     case(real64)
         atol = 1.0e-15_wp
         rtol = 1.0e-13_wp
-        ftol = 0.0_wp
+        ftol = 1.0e-15_wp
         tol_for_check = 1.0e-7_wp
         kind_str = 'real64'
     case(real128)
         atol = 1.0e-25_wp
         rtol = 1.0e-23_wp
-        ftol = 0.0_wp
+        ftol = 1.0e-25_wp
         tol_for_check = 1.0e-16_wp
         kind_str = 'real128'
     case default
@@ -253,7 +253,7 @@ program root_tests
             do irepeat = 1, n_repeat
                 ifunc = 0 ! reset func evals counter
                 call root_scalar(methods(imeth),func,ax,bx,xzero,fzero,iflag,bisect_on_failure=.true., &
-                                 atol = atol, rtol = rtol, ftol = ftol, maxiter = maxiter)
+                                 atol = atol, rtol = rtol, ftol = ftol, maxiter = maxiter )
             end do
             call cpu_time(tfinish)
 
@@ -584,7 +584,7 @@ program root_tests
     case (19)
         a = 0.0_wp
         b = 1.0_wp
-        ns = [1,2,3,4,5,20,40,60,80,100]
+        ns = [1,2,3,4,5,10,20,40,60,80,100]
         if (present(xroot)) then
             select case (n)
             case(1);    root = 4.2247770964123666E-01_wp
@@ -592,6 +592,7 @@ program root_tests
             case(3);    root = 2.2370545765466297E-01_wp
             case(4);    root = 1.7171914751950839E-01_wp
             case(5);    root = 1.3825715505682408E-01_wp
+            case(10);   root = 6.9314088687023473E-02_wp
             case(20);   root = 3.4657359020853851E-02_wp
             case(40);   root = 1.7328679513998633E-02_wp
             case(60);   root = 1.1552453009332422E-02_wp
@@ -1371,9 +1372,14 @@ program root_tests
     case(101)
         a = 0.0_wp
         b = 1.0_wp
-        root = 4.5250914557764123E-01_wp
-        if (present(x)) f = x**2 + sin(x/10.0_wp) - 0.25_wp
-        if (present(latex)) latex = 'x^2 + \sin (x/10) - 0.25'
+        ns = [5,10,20]
+        select case (n)
+            case(5); root  = 4.0999201798913713E-01_wp
+            case(10); root = 4.5250914557764123E-01_wp
+            case(20); root = 4.7562684859606241E-01_wp
+        end select
+        if (present(x)) f = x**2 + sin(x/n) - 0.25_wp
+        if (present(latex)) latex = 'x^2 + \sin (x/n) - 0.25'
         if (present(bounds)) bounds = '0,1'
 
     ! case(102)
@@ -1608,7 +1614,7 @@ program root_tests
         b = 1.0_wp
         root = 3.3333333333333333E-01_wp
         if (present(x)) f = (x - 1.0_wp/3.0_wp)**2 * atan( x - 1.0_wp/3.0_wp )
-        if (present(latex)) latex = '(x - 1/3)^2 \arctan ( x - 1/3 )'
+        if (present(latex)) latex = '(x - 1/3)^2 \tan^{-1} ( x - 1/3 )'
         if (present(bounds)) bounds = '-1,1'
     case(131) ! Circles
         a = -1.0_wp
@@ -1743,13 +1749,117 @@ program root_tests
         if (present(latex)) latex = '\cos x - x^3'
         if (present(bounds)) bounds = '0,4'
 
+    ! http://sergiogaldino.pbworks.com/w/file/fetch/66011429/0130-1943543
+    ! see: Root-test-functions.pdf : https://www.researchgate.net/publication/373922895_Additional_test_functions
+    case(146)
+        a = 0.5_wp
+        b = 1.5_wp
+        root = 1.0E+00_wp
+        if (present(x)) f = x**3 - 1.0_wp
+        if (present(latex)) latex = 'x^3 - 1'
+        if (present(bounds)) bounds = '0.5,1.5'
+    case(147)
+        a = 0.1_wp
+        b = 1.0_wp
+        root = 3.9942229171096819E-01_wp
+        if (present(x)) f = x**2 * ( x**2/3.0_wp + sqrt(2.0_wp) * sin(x)) - sqrt(3.0_wp)/18.0_wp
+        if (present(latex)) latex = 'x^2 ( x^2/3 + \sqrt{2} \sin x ) - \sqrt{3/18}'
+        if (present(bounds)) bounds = '0.1,1'
+    case(148)
+        a = -1.8_wp
+        b = 0.0_wp
+        root = -1.0E+00_wp
+        if (present(x)) f = x**3 + 1.0_wp
+        if (present(latex)) latex = 'x^3 + 1'
+        if (present(bounds)) bounds = '-1.8,0'
+    case(149)
+        a = 7.0_wp
+        b = 8.0_wp
+        root = 7.14_wp
+        if (present(x)) f = sin((x-7.14_wp)**3)
+        if (present(latex)) latex = '\sin((x-7.14)^3)'
+        if (present(bounds)) bounds = '7,8'
+    case(150)
+        a = 2.6_wp
+        b = 3.6_wp
+        root = 3.0_wp
+        if (present(x)) f = exp((x-3.0_wp)**5) - 1.0_wp
+        if (present(latex)) latex = 'e^{(x-3)^5} - 1'
+        if (present(bounds)) bounds = '2.6,3.6'
+    case(151)
+        a = 4.0_wp
+        b = 5.0_wp
+        root = 4.2671683045421243E+00_wp
+        if (present(x)) f = exp((x-3.0_wp)**5) - exp(x-1.0_wp)
+        if (present(latex)) latex = 'e^{(x-3)^5} - e^{x-1}'
+        if (present(bounds)) bounds = '4,5'
+    case(152)
+        a = 0.05_wp
+        b = 5.0_wp
+        root = 1.0_wp / pi
+        if (present(x)) f = pi - 1.0_wp/x
+        if (present(latex)) latex = '\pi - 1/x'
+        if (present(bounds)) bounds = '0.05,5'
+    case(153)
+        a = 0.0_wp
+        b = 1.5_wp
+        root = 1.3258176636680325E+00_wp
+        if (present(x)) f = 4.0_wp - tan(x)
+        if (present(latex)) latex = '4 - \tan x'
+        if (present(bounds)) bounds = '0,1.5'
+
+    case(154)
+        a = 0.0_wp
+        b = 10.0_wp
+        root = 1.3825715505682408E-01_wp
+        if (present(x)) f = 2.0_wp * x * exp(-5.0_wp) - 2.0_wp * exp(-5.0_wp*x) + 1.0_wp
+        if (present(latex)) latex = '2 x e^{-5} - 2 e^{-5x} + 1'
+        if (present(bounds)) bounds = '0,10'
+    case(155:157)
+        if (present(n_bounds_cases)) n_bounds_cases = 3
+        if (present(bounds_cases_first)) bounds_cases_first = 155
+        select case (nprob)
+        case(155)
+            a = 0.0_wp
+            b = 1.9_wp
+            if (present(bounds)) bounds = '0,1.9'
+            root = 1.0_wp
+        case(156)
+            a = 1.001_wp
+            b = 2.001_wp
+            if (present(bounds)) bounds = '1.001,2.001'
+            root = 2.0_wp
+        case(157)
+            a = 2.5_wp
+            b = 10.0_wp
+            if (present(bounds)) bounds = '2.5,10'
+            root = 3.0_wp
+        end select
+        if (present(x)) f = (x**2 - x - 6.0_wp) * (x**2 - 3.0_wp * x + 2.0_wp)
+        if (present(latex)) latex = '(x^2 - x - 6)(x^2 - 3x + 2)'
+
+    case(158)
+        a = -3.0_wp
+        b = 2.0_wp
+        root = -2.1038034027355365E+00_wp
+        if (present(x)) f = x**3 - 2.0_wp*x - x + 3.0_wp
+        if (present(latex)) latex = 'x^3 - 2x - x + 3'
+        if (present(bounds)) bounds = '-3,2'
+    case(159)
+        a = 0.0_wp
+        b = 2.0_wp
+        root = 3.5446310437502532E-01_wp
+        if (present(x)) f = exp(-x) - x - sin(x)
+        if (present(latex)) latex = 'e^{-x} - x - \sin(x)'
+        if (present(bounds)) bounds = '0,2'
+
 
     case default
         write(*,*) 'invalid case: ', nprob
         error stop 'invalid case'
     end select
 
-    if (present(num_of_problems)) num_of_problems = 145
+    if (present(num_of_problems)) num_of_problems = 159
 
     ! outputs:
     if (present(ax))    ax = a
