@@ -527,14 +527,14 @@ implementation in a submodule of an interface in a parent module.
 
 <span class="w">        </span><span class="c">! determine a new inclusion interval:</span>
 <span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">f2</span><span class="o">*</span><span class="n">f3</span><span class="o">&lt;</span><span class="mf">0.0_wp</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="w">            </span><span class="c">! zero lies between x2 and x3</span>
+<span class="w">            </span><span class="c">! zero lies between x2 and x3   ! x1-----x3--*--x2</span>
 <span class="w">            </span><span class="n">x1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x2</span>
 <span class="w">            </span><span class="n">x2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x3</span>
 <span class="w">            </span><span class="n">f1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f2</span>
 <span class="w">            </span><span class="n">f2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f3</span>
-<span class="w">            </span><span class="n">f1tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f1</span>
+<span class="w">            </span><span class="n">f1tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f2</span>
 <span class="w">        </span><span class="k">else</span>
-<span class="w">            </span><span class="c">! zero lies between x1 and x3</span>
+<span class="w">            </span><span class="c">! zero lies between x1 and x3   ! x1--*--x3-----x2</span>
 <span class="w">            </span><span class="n">g</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0_wp</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">f3</span><span class="o">/</span><span class="n">f2</span>
 <span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">g</span><span class="o">&lt;=</span><span class="mf">0.0_wp</span><span class="p">)</span><span class="w"> </span><span class="n">g</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.5_wp</span>
 <span class="w">            </span><span class="n">x2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x3</span>

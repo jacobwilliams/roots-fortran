@@ -911,7 +911,7 @@
     real(wp),intent(out)   :: fzero   !! value of `f` at the root (`f(xzero)`)
     integer,intent(out)    :: iflag   !! status flag (`0`=root found, `-2`=max iterations reached)
 
-    real(wp) :: x1,x2,x3,f1,f2,f3,delta,f1tmp
+    real(wp) :: x1,x2,x3,f1,f2,f3,f1tmp
     integer :: i !! iteration counter
     logical :: root_found !! convergence in x
 
@@ -1001,14 +1001,14 @@
 
         ! determine a new inclusion interval:
         if (f2*f3<0.0_wp) then
-            ! zero lies between x2 and x3
+            ! zero lies between x2 and x3   ! x1-----x3--*--x2
             x1 = x2
             x2 = x3
             f1 = f2
             f2 = f3
-            f1tmp = f1
+            f1tmp = f2
         else
-            ! zero lies between x1 and x3
+            ! zero lies between x1 and x3   ! x1--*--x3-----x2
             g = 1.0_wp - f3/f2
             if (g<=0.0_wp) g = 0.5_wp
             x2 = x3
@@ -2211,7 +2211,7 @@
             x2 = x3
             f1 = f2
             f2 = f3
-            f1tmp = f1
+            f1tmp = f2
         else
             ! zero lies between x1 and x3
             g = 1.0_wp-f3/f2
