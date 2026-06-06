@@ -1,0 +1,885 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Root solvers for modern Fortran">
+    <meta name="author" content="Jacob Williams" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>solve &ndash; roots-fortran</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">roots-fortran </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../sourcefile/root_module.f90.html">Source File</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>solve
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 3.2% of total for procedures.">57 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/root_module.F90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/root_module.f90.html'>root_module.F90</a></li>
+                <li class="breadcrumb-item"><a href='../module/root_module.html'>root_module</a></li>
+            <li class="breadcrumb-item active" aria-current="page">solve</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/solve.html#src">solve</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>private  subroutine solve(me, ax, bx, xzero, fzero, iflag, fax, fbx, bisect_on_failure, bisect_used)  
+</h2>
+    
+
+    <p>Main wrapper routine for all the methods.</p>
+
+    <h3>Type Bound</h3>
+    <p><a href='../type/root_solver.html'>root_solver</a></p>
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-me~5"></span>
+              class(<a href='../type/root_solver.html'>root_solver</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ax~4"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ax</strong></td>
+            <td>
+                <p>left endpoint of initial interval</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-bx~4"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>bx</strong></td>
+            <td>
+                <p>right endpoint of initial interval</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-xzero~4"></span>
+              real(kind=wp),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>xzero</strong></td>
+            <td>
+                <p>abscissa approximating a zero of <code>f</code> in the interval <code>ax</code>,<code>bx</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fzero~4"></span>
+              real(kind=wp),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>fzero</strong></td>
+            <td>
+                <p>value of <code>f</code> at the root (<code>f(xzero)</code>)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-iflag~4"></span>
+              integer,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>iflag</strong></td>
+            <td>
+                <p>status flag (<code>-1</code>=error, <code>0</code>=root found, <code>-4</code>=ax must be /= bx)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fax~4"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>fax</strong></td>
+            <td>
+                <p>if <code>f(ax)</code> is already known, it can be input here</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fbx~4"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>fbx</strong></td>
+            <td>
+                <p>if <code>f(bx)</code> is already known, it can be input here</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-bisect_on_failure~3"></span>
+              logical,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>bisect_on_failure</strong></td>
+            <td>
+                <p>if true, then if the specified method fails,
+it will be retried using the bisection method.
+(default is False). Note that this can use up
+to <code>maxiter</code> additional function evaluations.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-bisect_used~3"></span>
+              logical,
+            </td>
+<td>intent(out),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>bisect_used</strong></td>
+            <td>
+                <p>if the bisection method was used after failure</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~solve~~CallsGraph Pages: 1 -->
+<svg id="procsolveCallsGraph" width="641pt" height="147pt"
+ viewBox="0.00 0.00 641.00 147.27" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~solve~~CallsGraph" class="graph" transform="scale(0.83 0.83) rotate(0) translate(4 173.14)">
+<title>proc~~solve~~CallsGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-173.14 767,-173.14 767,4 -4,4"/>
+<!-- proc~solve -->
+<g id="proc~~solve~~CallsGraph_node1" class="node">
+<title>proc~solve</title>
+<polygon fill="none" stroke="black" points="109,-85.14 0,-85.14 0,-61.14 109,-61.14 109,-85.14"/>
+<text text-anchor="middle" x="54.5" y="-70.74" font-family="Helvetica,sans-Serif" font-size="10.50">root_solver%solve</text>
+</g>
+<!-- find_root -->
+<g id="proc~~solve~~CallsGraph_node2" class="node">
+<title>find_root</title>
+<polygon fill="#777777" stroke="#777777" points="239.5,-169.14 180.5,-169.14 180.5,-145.14 239.5,-145.14 239.5,-169.14"/>
+<text text-anchor="middle" x="210" y="-154.74" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">find_root</text>
+</g>
+<!-- proc~solve&#45;&gt;find_root -->
+<g id="proc~~solve~~CallsGraph_edge1" class="edge">
+<title>proc~solve&#45;&gt;find_root</title>
+<path fill="none" stroke="#000000" d="M69.84,-85.28C86.84,-99.16 116.47,-121.82 145,-136.14 153.05,-140.18 162.05,-143.69 170.7,-146.62"/>
+<polygon fill="#000000" stroke="#000000" points="169.65,-149.96 180.24,-149.69 171.79,-143.3 169.65,-149.96"/>
+</g>
+<!-- interface~root_scalar -->
+<g id="proc~~solve~~CallsGraph_node3" class="node">
+<title>interface~root_scalar</title>
+<g id="a_proc~~solve~~CallsGraph_node3"><a xlink:href="../interface/root_scalar.html" xlink:title="root_scalar">
+<polygon fill="#a7506f" stroke="#a7506f" points="245.5,-127.14 174.5,-127.14 174.5,-103.14 245.5,-103.14 245.5,-127.14"/>
+<text text-anchor="middle" x="210" y="-112.74" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">root_scalar</text>
+</a>
+</g>
+</g>
+<!-- proc~solve&#45;&gt;interface~root_scalar -->
+<g id="proc~~solve~~CallsGraph_edge2" class="edge">
+<title>proc~solve&#45;&gt;interface~root_scalar</title>
+<path fill="none" stroke="#000000" d="M99.49,-85.18C119.89,-90.76 144.1,-97.38 164.56,-102.98"/>
+<polygon fill="#000000" stroke="#000000" points="163.7,-106.37 174.27,-105.64 165.55,-99.62 163.7,-106.37"/>
+</g>
+<!-- proc~get_fa_fb -->
+<g id="proc~~solve~~CallsGraph_node4" class="node">
+<title>proc~get_fa_fb</title>
+<g id="a_proc~~solve~~CallsGraph_node4"><a xlink:href="../proc/get_fa_fb.html" xlink:title="root_solver%get_fa_fb">
+<polygon fill="#d9534f" stroke="#d9534f" points="275,-85.14 145,-85.14 145,-61.14 275,-61.14 275,-85.14"/>
+<text text-anchor="middle" x="210" y="-70.74" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">root_solver%get_fa_fb</text>
+</a>
+</g>
+</g>
+<!-- proc~solve&#45;&gt;proc~get_fa_fb -->
+<g id="proc~~solve~~CallsGraph_edge3" class="edge">
+<title>proc~solve&#45;&gt;proc~get_fa_fb</title>
+<path fill="none" stroke="#000000" d="M109.19,-73.14C117.45,-73.14 126.11,-73.14 134.73,-73.14"/>
+<polygon fill="#000000" stroke="#000000" points="134.8,-76.64 144.8,-73.14 134.8,-69.64 134.8,-76.64"/>
+</g>
+<!-- proc~solution -->
+<g id="proc~~solve~~CallsGraph_node5" class="node">
+<title>proc~solution</title>
+<g id="a_proc~~solve~~CallsGraph_node5"><a xlink:href="../proc/solution.html" xlink:title="root_solver%solution">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="271.5,-43.14 148.5,-43.14 148.5,-19.14 271.5,-19.14 271.5,-43.14"/>
+<text text-anchor="middle" x="210" y="-28.74" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">root_solver%solution</text>
+</a>
+</g>
+</g>
+<!-- proc~solve&#45;&gt;proc~solution -->
+<g id="proc~~solve~~CallsGraph_edge4" class="edge">
+<title>proc~solve&#45;&gt;proc~solution</title>
+<path fill="none" stroke="#000000" d="M99.49,-61.1C116.83,-56.36 136.92,-50.86 155.12,-45.88"/>
+<polygon fill="#000000" stroke="#000000" points="156.28,-49.19 165.01,-43.18 154.44,-42.44 156.28,-49.19"/>
+</g>
+<!-- proc~root_scalar_by_name -->
+<g id="proc~~solve~~CallsGraph_node6" class="node">
+<title>proc~root_scalar_by_name</title>
+<g id="a_proc~~solve~~CallsGraph_node6"><a xlink:href="../proc/root_scalar_by_name.html" xlink:title="root_scalar_by_name">
+<polygon fill="#d9534f" stroke="#d9534f" points="436,-127.14 311,-127.14 311,-103.14 436,-103.14 436,-127.14"/>
+<text text-anchor="middle" x="373.5" y="-112.74" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">root_scalar_by_name</text>
+</a>
+</g>
+</g>
+<!-- interface~root_scalar&#45;&gt;proc~root_scalar_by_name -->
+<g id="proc~~solve~~CallsGraph_edge5" class="edge">
+<title>interface~root_scalar&#45;&gt;proc~root_scalar_by_name</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M245.65,-109.48C261.75,-108.62 281.54,-108.27 300.65,-108.43"/>
+<polygon fill="#000000" stroke="#000000" points="300.82,-111.93 310.86,-108.56 300.91,-104.93 300.82,-111.93"/>
+</g>
+<!-- proc~root_scalar_by_type -->
+<g id="proc~~solve~~CallsGraph_node7" class="node">
+<title>proc~root_scalar_by_type</title>
+<g id="a_proc~~solve~~CallsGraph_node7"><a xlink:href="../proc/root_scalar_by_type.html" xlink:title="root_scalar_by_type">
+<polygon fill="#d9534f" stroke="#d9534f" points="432.5,-44.14 314.5,-44.14 314.5,-20.14 432.5,-20.14 432.5,-44.14"/>
+<text text-anchor="middle" x="373.5" y="-29.74" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">root_scalar_by_type</text>
+</a>
+</g>
+</g>
+<!-- interface~root_scalar&#45;&gt;proc~root_scalar_by_type -->
+<g id="proc~~solve~~CallsGraph_edge6" class="edge">
+<title>interface~root_scalar&#45;&gt;proc~root_scalar_by_type</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M245.82,-105.45C255.47,-102.31 265.8,-98.49 275,-94.14 301.26,-81.72 329.01,-63.51 348.16,-50.04"/>
+<polygon fill="#000000" stroke="#000000" points="350.21,-52.87 356.32,-44.22 346.15,-47.18 350.21,-52.87"/>
+</g>
+<!-- proc~root_scalar_by_name&#45;&gt;interface~root_scalar -->
+<g id="proc~~solve~~CallsGraph_edge7" class="edge">
+<title>proc~root_scalar_by_name&#45;&gt;interface~root_scalar</title>
+<path fill="none" stroke="#000000" d="M310.86,-121.72C292.57,-122.05 272.88,-121.9 255.86,-121.26"/>
+<polygon fill="#000000" stroke="#000000" points="255.79,-117.75 245.65,-120.8 255.48,-124.75 255.79,-117.75"/>
+</g>
+<!-- proc~root_name_to_method -->
+<g id="proc~~solve~~CallsGraph_node9" class="node">
+<title>proc~root_name_to_method</title>
+<g id="a_proc~~solve~~CallsGraph_node9"><a xlink:href="../proc/root_name_to_method.html" xlink:title="root_name_to_method">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="632.5,-127.14 500.5,-127.14 500.5,-103.14 632.5,-103.14 632.5,-127.14"/>
+<text text-anchor="middle" x="566.5" y="-112.74" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">root_name_to_method</text>
+</a>
+</g>
+</g>
+<!-- proc~root_scalar_by_name&#45;&gt;proc~root_name_to_method -->
+<g id="proc~~solve~~CallsGraph_edge8" class="edge">
+<title>proc~root_scalar_by_name&#45;&gt;proc~root_name_to_method</title>
+<path fill="none" stroke="#000000" d="M436.25,-115.14C453.38,-115.14 472.17,-115.14 489.99,-115.14"/>
+<polygon fill="#000000" stroke="#000000" points="490.35,-118.64 500.35,-115.14 490.35,-111.64 490.35,-118.64"/>
+</g>
+<!-- proc~root_scalar_by_type&#45;&gt;proc~solve -->
+<g id="proc~~solve~~CallsGraph_edge10" class="edge">
+<title>proc~root_scalar_by_type&#45;&gt;proc~solve</title>
+<path fill="none" stroke="#000000" d="M336.51,-20.05C290.86,-6.65 210.26,10.52 145,-10.14 117.91,-18.72 91.93,-38.77 75.01,-53.96"/>
+<polygon fill="#000000" stroke="#000000" points="72.42,-51.6 67.46,-60.96 77.18,-56.73 72.42,-51.6"/>
+</g>
+<!-- proc~initialize_root_solver -->
+<g id="proc~~solve~~CallsGraph_node8" class="node">
+<title>proc~initialize_root_solver</title>
+<g id="a_proc~~solve~~CallsGraph_node8"><a xlink:href="../proc/initialize_root_solver.html" xlink:title="root_solver%initialize_root_solver">
+<polygon fill="#d9534f" stroke="#d9534f" points="661,-44.14 472,-44.14 472,-20.14 661,-20.14 661,-44.14"/>
+<text text-anchor="middle" x="566.5" y="-29.74" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">root_solver%initialize_root_solver</text>
+</a>
+</g>
+</g>
+<!-- proc~root_scalar_by_type&#45;&gt;proc~initialize_root_solver -->
+<g id="proc~~solve~~CallsGraph_edge9" class="edge">
+<title>proc~root_scalar_by_type&#45;&gt;proc~initialize_root_solver</title>
+<path fill="none" stroke="#000000" d="M432.58,-32.14C441.89,-32.14 451.75,-32.14 461.74,-32.14"/>
+<polygon fill="#000000" stroke="#000000" points="461.74,-35.64 471.74,-32.14 461.74,-28.64 461.74,-35.64"/>
+</g>
+<!-- proc~lowercase -->
+<g id="proc~~solve~~CallsGraph_node10" class="node">
+<title>proc~lowercase</title>
+<g id="a_proc~~solve~~CallsGraph_node10"><a xlink:href="../proc/lowercase.html" xlink:title="lowercase">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="763,-127.14 697,-127.14 697,-103.14 763,-103.14 763,-127.14"/>
+<text text-anchor="middle" x="730" y="-112.74" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">lowercase</text>
+</a>
+</g>
+</g>
+<!-- proc~root_name_to_method&#45;&gt;proc~lowercase -->
+<g id="proc~~solve~~CallsGraph_edge11" class="edge">
+<title>proc~root_name_to_method&#45;&gt;proc~lowercase</title>
+<path fill="none" stroke="#000000" d="M632.72,-115.14C650.82,-115.14 670,-115.14 686.43,-115.14"/>
+<polygon fill="#000000" stroke="#000000" points="686.8,-118.64 696.8,-115.14 686.8,-111.64 686.8,-118.64"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panprocsolveCallsGraph = svgPanZoom('#procsolveCallsGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Called by</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~solve~~CalledByGraph Pages: 1 -->
+<svg id="procsolveCalledByGraph" width="385pt" height="74pt"
+ viewBox="0.00 0.00 385.00 74.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~solve~~CalledByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 70)">
+<title>proc~~solve~~CalledByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-70 381,-70 381,4 -4,4"/>
+<!-- proc~solve -->
+<g id="proc~~solve~~CalledByGraph_node1" class="node">
+<title>proc~solve</title>
+<polygon fill="none" stroke="black" points="109,-44 0,-44 0,-20 109,-20 109,-44"/>
+<text text-anchor="middle" x="54.5" y="-29.6" font-family="Helvetica,sans-Serif" font-size="10.50">root_solver%solve</text>
+</g>
+<!-- interface~root_scalar -->
+<g id="proc~~solve~~CalledByGraph_node3" class="node">
+<title>interface~root_scalar</title>
+<g id="a_proc~~solve~~CalledByGraph_node3"><a xlink:href="../interface/root_scalar.html" xlink:title="root_scalar">
+<polygon fill="#a7506f" stroke="#a7506f" points="216,-24 145,-24 145,0 216,0 216,-24"/>
+<text text-anchor="middle" x="180.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">root_scalar</text>
+</a>
+</g>
+</g>
+<!-- proc~solve&#45;&gt;interface~root_scalar -->
+<g id="proc~~solve~~CalledByGraph_edge4" class="edge">
+<title>proc~solve&#45;&gt;interface~root_scalar</title>
+<path fill="none" stroke="#000000" d="M109.17,-23.34C117.73,-21.96 126.51,-20.55 134.83,-19.2"/>
+<polygon fill="#000000" stroke="#000000" points="135.4,-22.66 144.72,-17.61 134.29,-15.75 135.4,-22.66"/>
+</g>
+<!-- proc~root_scalar_by_type -->
+<g id="proc~~solve~~CalledByGraph_node2" class="node">
+<title>proc~root_scalar_by_type</title>
+<g id="a_proc~~solve~~CalledByGraph_node2"><a xlink:href="../proc/root_scalar_by_type.html" xlink:title="root_scalar_by_type">
+<polygon fill="#d9534f" stroke="#d9534f" points="373.5,-66 255.5,-66 255.5,-42 373.5,-42 373.5,-66"/>
+<text text-anchor="middle" x="314.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">root_scalar_by_type</text>
+</a>
+</g>
+</g>
+<!-- proc~root_scalar_by_type&#45;&gt;proc~solve -->
+<g id="proc~~solve~~CalledByGraph_edge1" class="edge">
+<title>proc~root_scalar_by_type&#45;&gt;proc~solve</title>
+<path fill="none" stroke="#000000" d="M255.31,-49.04C214.85,-45.59 160.93,-40.99 119.3,-37.44"/>
+<polygon fill="#000000" stroke="#000000" points="119.53,-33.95 109.27,-36.59 118.94,-40.92 119.53,-33.95"/>
+</g>
+<!-- interface~root_scalar&#45;&gt;proc~root_scalar_by_type -->
+<g id="proc~~solve~~CalledByGraph_edge2" class="edge">
+<title>interface~root_scalar&#45;&gt;proc~root_scalar_by_type</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M216.18,-23.04C231.24,-27.83 249.12,-33.52 265.43,-38.7"/>
+<polygon fill="#000000" stroke="#000000" points="264.75,-42.16 275.34,-41.86 266.87,-35.49 264.75,-42.16"/>
+</g>
+<!-- proc~root_scalar_by_name -->
+<g id="proc~~solve~~CalledByGraph_node4" class="node">
+<title>proc~root_scalar_by_name</title>
+<g id="a_proc~~solve~~CalledByGraph_node4"><a xlink:href="../proc/root_scalar_by_name.html" xlink:title="root_scalar_by_name">
+<polygon fill="#d9534f" stroke="#d9534f" points="377,-24 252,-24 252,0 377,0 377,-24"/>
+<text text-anchor="middle" x="314.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">root_scalar_by_name</text>
+</a>
+</g>
+</g>
+<!-- interface~root_scalar&#45;&gt;proc~root_scalar_by_name -->
+<g id="proc~~solve~~CalledByGraph_edge5" class="edge">
+<title>interface~root_scalar&#45;&gt;proc~root_scalar_by_name</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M216.18,-5.98C224.17,-5.58 232.96,-5.34 241.89,-5.27"/>
+<polygon fill="#000000" stroke="#000000" points="242,-8.77 251.99,-5.26 241.99,-1.77 242,-8.77"/>
+</g>
+<!-- proc~root_scalar_by_name&#45;&gt;interface~root_scalar -->
+<g id="proc~~solve~~CalledByGraph_edge3" class="edge">
+<title>proc~root_scalar_by_name&#45;&gt;interface~root_scalar</title>
+<path fill="none" stroke="#000000" d="M251.99,-18.74C243.34,-18.79 234.59,-18.69 226.33,-18.43"/>
+<polygon fill="#000000" stroke="#000000" points="226.31,-14.93 216.18,-18.02 226.03,-21.92 226.31,-14.93"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">    </span><span class="k">subroutine </span><span class="n">solve</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">ax</span><span class="p">,</span><span class="n">bx</span><span class="p">,</span><span class="n">xzero</span><span class="p">,</span><span class="n">fzero</span><span class="p">,</span><span class="n">iflag</span><span class="p">,</span><span class="n">fax</span><span class="p">,</span><span class="n">fbx</span><span class="p">,</span><span class="n">bisect_on_failure</span><span class="p">,</span><span class="n">bisect_used</span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">implicit none</span>
+
+<span class="k">    class</span><span class="p">(</span><span class="n">root_solver</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">me</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">ax</span><span class="w">      </span><span class="c">!! left endpoint of initial interval</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">bx</span><span class="w">      </span><span class="c">!! right endpoint of initial interval</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w">             </span><span class="kd">::</span><span class="w"> </span><span class="n">xzero</span><span class="w">   </span><span class="c">!! abscissa approximating a zero of `f` in the interval `ax`,`bx`</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w">             </span><span class="kd">::</span><span class="w"> </span><span class="n">fzero</span><span class="w">   </span><span class="c">!! value of `f` at the root (`f(xzero)`)</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">iflag</span><span class="w">   </span><span class="c">!! status flag (`-1`=error, `0`=root found, `-4`=ax must be /= bx)</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">fax</span><span class="w">     </span><span class="c">!! if `f(ax)` is already known, it can be input here</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">fbx</span><span class="w">     </span><span class="c">!! if `f(bx)` is already known, it can be input here</span>
+<span class="w">    </span><span class="kt">logical</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w">      </span><span class="kd">::</span><span class="w"> </span><span class="n">bisect_on_failure</span><span class="w"> </span><span class="c">!! if true, then if the specified method fails,</span>
+<span class="w">                                                          </span><span class="c">!! it will be retried using the bisection method.</span>
+<span class="w">                                                          </span><span class="c">!! (default is False). Note that this can use up</span>
+<span class="w">                                                        </span><span class="c">!! to `maxiter` additional function evaluations.</span>
+<span class="w">    </span><span class="kt">logical</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">),</span><span class="k">optional</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">bisect_used</span><span class="w"> </span><span class="c">!! if the bisection method was used after failure</span>
+
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">fa</span><span class="w"> </span><span class="c">!! `f(ax)` passed to the lower level routine</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">fb</span><span class="w"> </span><span class="c">!! `f(bx)` passed to the lower level routine</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">bisect_used</span><span class="p">))</span><span class="w"> </span><span class="n">bisect_used</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ax</span><span class="o">==</span><span class="n">bx</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="c">! ax must be /= bx</span>
+<span class="w">        </span><span class="n">iflag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">4</span>
+<span class="w">        </span><span class="n">xzero</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ax</span><span class="w">  </span><span class="c">! just to return something</span>
+<span class="w">        </span><span class="n">fzero</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fa</span><span class="w">  </span><span class="c">!</span>
+<span class="w">    </span><span class="k">else</span>
+
+<span class="k">        call </span><span class="n">me</span><span class="p">%</span><span class="n">get_fa_fb</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span><span class="n">bx</span><span class="p">,</span><span class="n">fax</span><span class="p">,</span><span class="n">fbx</span><span class="p">,</span><span class="n">fa</span><span class="p">,</span><span class="n">fb</span><span class="p">)</span>
+
+<span class="w">        </span><span class="c">! check trivial cases first:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">solution</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span><span class="n">fa</span><span class="p">,</span><span class="n">xzero</span><span class="p">,</span><span class="n">fzero</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+
+<span class="k">            </span><span class="n">iflag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+
+<span class="w">        </span><span class="k">else if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">solution</span><span class="p">(</span><span class="n">bx</span><span class="p">,</span><span class="n">fb</span><span class="p">,</span><span class="n">xzero</span><span class="p">,</span><span class="n">fzero</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+
+<span class="k">            </span><span class="n">iflag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+
+<span class="w">        </span><span class="k">else if</span><span class="w"> </span><span class="p">(</span><span class="n">fa</span><span class="o">*</span><span class="n">fb</span><span class="o">&gt;</span><span class="mf">0.0_wp</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+
+<span class="w">            </span><span class="c">! f(ax) and f(bx) do not have different signs</span>
+<span class="w">            </span><span class="n">iflag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span>
+<span class="w">            </span><span class="n">xzero</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ax</span><span class="w">  </span><span class="c">! just to return something</span>
+<span class="w">            </span><span class="n">fzero</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fa</span><span class="w">  </span><span class="c">!</span>
+
+<span class="w">        </span><span class="k">else</span>
+
+<span class="w">            </span><span class="c">! call the root solver.</span>
+<span class="w">            </span><span class="c">! make sure order is correct.</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ax</span><span class="o">&lt;</span><span class="n">bx</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">                call </span><span class="n">me</span><span class="p">%</span><span class="n">find_root</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span><span class="n">bx</span><span class="p">,</span><span class="n">fa</span><span class="p">,</span><span class="n">fb</span><span class="p">,</span><span class="n">xzero</span><span class="p">,</span><span class="n">fzero</span><span class="p">,</span><span class="n">iflag</span><span class="p">)</span>
+<span class="w">            </span><span class="k">else</span>
+<span class="k">                call </span><span class="n">me</span><span class="p">%</span><span class="n">find_root</span><span class="p">(</span><span class="n">bx</span><span class="p">,</span><span class="n">ax</span><span class="p">,</span><span class="n">fb</span><span class="p">,</span><span class="n">fa</span><span class="p">,</span><span class="n">xzero</span><span class="p">,</span><span class="n">fzero</span><span class="p">,</span><span class="n">iflag</span><span class="p">)</span>
+<span class="w">            </span><span class="k">end if</span>
+
+<span class="w">            </span><span class="c">! if it failed, then we have the option to then try bisection</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">iflag</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">                if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">bisect_on_failure</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">                    select type</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">)</span>
+<span class="w">                    </span><span class="k">class is</span><span class="w"> </span><span class="p">(</span><span class="n">bisection_solver</span><span class="p">)</span>
+<span class="w">                        </span><span class="c">! can&#39;t bisect after failed bisection</span>
+<span class="w">                    </span><span class="k">class </span><span class="n">default</span>
+<span class="w">                        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">bisect_on_failure</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="w">                            </span><span class="c">! use the wrapper routine for that with the input class</span>
+<span class="w">                            </span><span class="k">call </span><span class="n">root_scalar</span><span class="p">(</span><span class="n">root_method_bisection</span><span class="p">,&amp;</span>
+<span class="w">                                             </span><span class="n">func_wrapper</span><span class="p">,</span><span class="n">ax</span><span class="p">,</span><span class="n">bx</span><span class="p">,</span><span class="n">xzero</span><span class="p">,</span><span class="n">fzero</span><span class="p">,</span><span class="n">iflag</span><span class="p">,&amp;</span>
+<span class="w">                                             </span><span class="n">me</span><span class="p">%</span><span class="n">ftol</span><span class="p">,</span><span class="n">me</span><span class="p">%</span><span class="n">rtol</span><span class="p">,</span><span class="n">me</span><span class="p">%</span><span class="n">atol</span><span class="p">,</span><span class="n">me</span><span class="p">%</span><span class="n">maxiter</span><span class="p">,</span><span class="n">fa</span><span class="p">,</span><span class="n">fb</span><span class="p">,&amp;</span>
+<span class="w">                                             </span><span class="n">bisect_on_failure</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.)</span>
+<span class="w">                            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">bisect_used</span><span class="p">))</span><span class="w"> </span><span class="n">bisect_used</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">                        </span><span class="k">end if</span>
+<span class="k">                    end select</span>
+<span class="k">                end if</span>
+<span class="k">            end if</span>
+
+<span class="k">        end if</span>
+
+<span class="k">    end if</span>
+
+<span class="k">    contains</span>
+
+<span class="k">    function </span><span class="n">func_wrapper</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="w">        </span><span class="c">!! wrapper function to use bisection</span>
+<span class="w">        </span><span class="k">implicit none</span>
+<span class="k">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">x</span>
+<span class="w">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">f</span>
+<span class="w">        </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="w">    </span><span class="k">end function </span><span class="n">func_wrapper</span>
+
+<span class="w">    </span><span class="k">end subroutine </span><span class="n">solve</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              roots-fortran
+ was developed by Jacob Williams<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

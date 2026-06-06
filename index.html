@@ -1,0 +1,507 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Root solvers for modern Fortran">
+    <meta name="author" content="Jacob Williams" >
+    <link rel="icon" href="./favicon.png">
+
+    <title> roots-fortran </title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="./css/fontawesome.min.css" rel="stylesheet">
+    <link href="./css/brands.min.css" rel="stylesheet">
+    <link href="./css/regular.min.css" rel="stylesheet">
+    <link href="./css/solid.min.css" rel="stylesheet">
+    <link href="./css/v4-font-face.min.css" rel="stylesheet">
+    <link href="./css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="./css/local.css" rel="stylesheet">
+    <link href="./css/pygments.css" rel="stylesheet">
+    <script src="./js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="./index.html">roots-fortran </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="./sourcefile/root_module.f90.html">Source File</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="./lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="./lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="./lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="./lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="./search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <!-- Main component for a primary marketing message or call to action -->
+    <div class="p-5 mb-4 bg-light border rounded-3" id="jumbotron">
+      <p>Root solvers for modern Fortran</p>
+        <p> Find us on&hellip;</p>
+      <p>
+        <a class="btn btn-lg btn-primary" href="https://github.com/jacobwilliams/roots-fortran" role="button">GitHub</a>
+        
+        
+        
+        
+      </p>
+    </div>
+
+      <div class="row" id='text'>
+        <div class=col-md-8>
+          <h1>roots-fortran</h1>
+          <h1><img alt="roots-fortran" src="media/logo.png"></h1>
+<p><strong>roots-fortran</strong>: root solvers for modern Fortran</p>
+<p><a href="https://github.com/topics/fortran"><img alt="Language" src="https://img.shields.io/badge/-Fortran-734f96?logo=fortran&amp;logoColor=white"></a>
+<a href="https://github.com/jacobwilliams/roots-fortran/releases/latest"><img alt="GitHub release" src="https://img.shields.io/github/release/jacobwilliams/roots-fortran.svg"></a>
+<a href="https://github.com/jacobwilliams/roots-fortran/actions"><img alt="CI Status" src="https://github.com/jacobwilliams/roots-fortran/actions/workflows/CI.yml/badge.svg"></a>
+<a href="https://codecov.io/gh/jacobwilliams/roots-fortran"><img alt="codecov" src="https://codecov.io/gh/jacobwilliams/roots-fortran/branch/master/graph/badge.svg"></a>
+<a href="https://github.com/jacobwilliams/roots-fortran/commits/master"><img alt="last-commit" src="https://img.shields.io/github/last-commit/jacobwilliams/roots-fortran"></a></p>
+<h2>Description</h2>
+<p>A modern Fortran library for finding the roots of continuous scalar functions of a single real variable.</p>
+<h2>Compiling</h2>
+<p>A <code>fpm.toml</code> file is provided for compiling roots-fortran with the <a href="https://github.com/fortran-lang/fpm">Fortran Package Manager</a>. For example, to build:</p>
+<div class="codehilite"><pre><span></span><code>fpm build --profile release
+</code></pre></div>
+
+<p>By default, the library is built with double precision (<code>real64</code>) real values. Explicitly specifying the real kind can be done using the following processor flags:</p>
+<table>
+<thead>
+<tr>
+<th>Preprocessor flag</th>
+<th>Kind</th>
+<th>Number of bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>REAL32</code></td>
+<td><code>real(kind=real32)</code></td>
+<td>4</td>
+</tr>
+<tr>
+<td><code>REAL64</code></td>
+<td><code>real(kind=real64)</code></td>
+<td>8</td>
+</tr>
+<tr>
+<td><code>REAL128</code></td>
+<td><code>real(kind=real128)</code></td>
+<td>16</td>
+</tr>
+</tbody>
+</table>
+<p>For example, to build a single precision version of the library, use:</p>
+<div class="codehilite"><pre><span></span><code>fpm build --profile release --flag &quot;-DREAL32&quot;
+</code></pre></div>
+
+<p>To run the unit tests:</p>
+<div class="codehilite"><pre><span></span><code>fpm test
+</code></pre></div>
+
+<p>To use <code>roots-fortran</code> within your fpm project, add the following to your <code>fpm.toml</code> file:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">[dependencies]</span>
+<span class="n">roots-fortran</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="p">=</span><span class="s2">&quot;https://github.com/jacobwilliams/roots-fortran.git&quot;</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+
+<p>or, to use a specific version:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">[dependencies]</span>
+<span class="n">roots-fortran</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="p">=</span><span class="s2">&quot;https://github.com/jacobwilliams/roots-fortran.git&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">tag</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;1.0.0&quot;</span><span class="w">  </span><span class="p">}</span>
+</code></pre></div>
+
+<p>To generate the documentation using <a href="https://github.com/Fortran-FOSS-Programmers/ford">ford</a>, run: <code>ford roots-fortran.md</code></p>
+<h2>Usage</h2>
+<h3>Methods</h3>
+<p>The module contains the following methods:</p>
+<table>
+<thead>
+<tr>
+<th>Procedure</th>
+<th>Description</th>
+<th>Reference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/bisection.html"><code>bisection</code></a></td>
+<td>Classic bisection method</td>
+<td>Bolzano (1817)</td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/regula_falsi.html"><code>regula_falsi</code></a></td>
+<td>Classic regula falsi method</td>
+<td>?</td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/muller.html"><code>muller</code></a></td>
+<td>Improved Muller method (for real roots only)</td>
+<td><a href="https://www.ams.org/journals/mcom/1956-10-056/S0025-5718-1956-0083822-0/S0025-5718-1956-0083822-0.pdf">Muller (1956)</a></td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/brent.html"><code>brent</code></a></td>
+<td>Classic Brent's method (a.k.a. Zeroin)</td>
+<td><a href="https://maths-people.anu.edu.au/~brent/pd/rpb005.pdf">Brent (1971)</a></td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/brenth.html"><code>brenth</code></a></td>
+<td><a href="https://github.com/scipy/scipy/">SciPy</a> variant of <code>brent</code></td>
+<td><a href="https://maths-people.anu.edu.au/~brent/pd/rpb005.pdf">Brent (1971)</a></td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/brentq.html"><code>brentq</code></a></td>
+<td><a href="https://github.com/scipy/scipy/">SciPy</a> variant of <code>brent</code></td>
+<td><a href="https://maths-people.anu.edu.au/~brent/pd/rpb005.pdf">Brent (1971)</a></td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/illinois.html"><code>illinois</code></a></td>
+<td>Illinois method</td>
+<td><a href="https://personal.math.ubc.ca/~loew/mech2/Dowell+Jarratt.pdf">Dowell &amp; Jarratt (1971)</a></td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/pegasus.html"><code>pegasus</code></a></td>
+<td>Pegasus method</td>
+<td><a href="https://link.springer.com/article/10.1007/BF01932959">Dowell &amp; Jarratt (1972)</a></td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/anderson_bjorck.html"><code>anderson_bjorck</code></a></td>
+<td>Anderson-Bjorck method</td>
+<td><a href="https://link.springer.com/article/10.1007/BF01933405">King (1973)</a></td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/abkk.html"><code>abkk</code></a></td>
+<td>A <a href="https://link.springer.com/content/pdf/bbm%3A978-3-642-05175-3%2F1.pdf">variant</a> of <code>anderson_bjorck</code></td>
+<td><a href="https://link.springer.com/article/10.1007/BF01933405">King (1973)</a></td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/ridders.html"><code>ridders</code></a></td>
+<td>Classic Ridders method</td>
+<td><a href="https://cs.fit.edu/~dmitra/SciComp/Resources/RidderMethod.pdf">Ridders (1979)</a></td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/toms748.html"><code>toms748</code></a></td>
+<td>Algorithm 748</td>
+<td><a href="https://dl.acm.org/doi/abs/10.1145/210089.210111">Alefeld, Potra, Shi (1995)</a></td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/chandrupatla.html"><code>chandrupatla</code></a></td>
+<td>Hybrid quadratic/bisection algorithm</td>
+<td><a href="https://dl.acm.org/doi/10.1016/S0965-9978%2896%2900051-8">Chandrupatla (1997)</a></td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/bdqrf.html"><code>bdqrf</code></a></td>
+<td>Bisected Direct Quadratic Regula Falsi</td>
+<td><a href="http://www.m-hikari.com/ams/ams-2010/ams-13-16-2010/gottliebAMS13-16-2010.pdf">Gottlieb &amp; Thompson (2010)</a></td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/zhang.html"><code>zhang</code></a></td>
+<td>Zhang's method (with corrections from Stage)</td>
+<td><a href="https://www.cscjournals.org/download/issuearchive/IJEA/Volume2/IJEA_V2_I1.pdf">Zhang (2011)</a></td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/rbp.html"><code>rbp</code></a></td>
+<td>Regula Falsi-Bisection-Parabolic method</td>
+<td><a href="https://www.sciencedirect.com/science/article/pii/S0893965912000778">Suhadolnik (2012)</a></td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/itp.html"><code>itp</code></a></td>
+<td>Interpolate Truncate and Project method</td>
+<td><a href="https://dl.acm.org/doi/abs/10.1145/3423597">Oliveira &amp; Takahashi (2020)</a></td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/barycentric.html"><code>barycentric</code></a></td>
+<td>Barycentric interpolation method</td>
+<td><a href="https://www.researchgate.net/publication/352162661_A_highly_efficient_numerical_method_to_solve_non-linear_functions_using_barycentric_interpolation">Mendez &amp; Castillo (2021)</a></td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/blendtf.html"><code>blendtf</code></a></td>
+<td>Blended method of trisection and false position</td>
+<td><a href="https://www.mdpi.com/2227-7390/9/11/1306/htm">Badr, Almotairi, Ghamry (2021)</a></td>
+</tr>
+<tr>
+<td><a href="https://jacobwilliams.github.io/roots-fortran/proc/modab.html"><code>modab</code></a></td>
+<td>Modified Anderson-Bjork</td>
+<td><a href="https://iopscience.iop.org/article/10.1088/1757-899X/1276/1/012010">Ganchovski &amp; Traykov (2023)</a></td>
+</tr>
+</tbody>
+</table>
+<p>In general, all the methods are guaranteed to converge. Some will be more efficient (in terms of number of function evaluations) than others for various problems. The methods can be broadly classified into three groups:</p>
+<ul>
+<li>Simple classical methods (<code>bisection</code>, <code>regula_falsi</code>, <code>illinois</code>, <code>ridders</code>).</li>
+<li>Newfangled methods (<code>zhang</code>, <code>barycentric</code>, <code>blendtf</code>, <code>bdqrf</code>, <code>abkk</code>, <code>rbp</code>). These rarely or ever seem to be better than the best methods.</li>
+<li>Best methods (<code>anderson_bjorck</code>, <code>muller</code>, <code>pegasus</code>, <code>toms748</code>, <code>brent</code>, <code>brentq</code>, <code>brenth</code>, <code>chandrupatla</code>, <code>itp</code>). Generally, one of these will be the most efficient method.</li>
+</ul>
+<p>Note that some of the implementations in this library contain additional checks for robustness, and so may behave better than naive implementations of the same algorithms. In addition, all methods have an option to fall back to bisection if the method fails to converge.</p>
+<h3>Functional Interface Example</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">program </span><span class="n">main</span>
+
+<span class="w">  </span><span class="k">use </span><span class="n">root_module</span><span class="p">,</span><span class="w"> </span><span class="n">wp</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">root_module_rk</span>
+
+<span class="w">  </span><span class="k">implicit none</span>
+
+<span class="k">  </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">f</span>
+<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iflag</span>
+
+<span class="w">  </span><span class="k">call </span><span class="n">root_scalar</span><span class="p">(</span><span class="s1">&#39;bisection&#39;</span><span class="p">,</span><span class="n">func</span><span class="p">,</span><span class="o">-</span><span class="mf">9.0_wp</span><span class="p">,</span><span class="mi">3</span><span class="mf">1.0_wp</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">iflag</span><span class="p">)</span>
+
+<span class="w">  </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="s1">&#39;f(&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="s1">&#39;) = &#39;</span><span class="p">,</span><span class="w"> </span><span class="n">f</span>
+<span class="w">  </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="s1">&#39;iflag    = &#39;</span><span class="p">,</span><span class="w"> </span><span class="n">iflag</span>
+
+<span class="k">contains</span>
+
+<span class="k">  function </span><span class="n">func</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="w">  </span><span class="k">implicit none</span>
+
+<span class="k">  </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">x</span>
+<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">f</span>
+
+<span class="w">  </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">20</span><span class="mf">0.0_wp</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">3.0_wp</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
+
+<span class="w">  </span><span class="k">end function </span><span class="n">func</span>
+
+<span class="k">end program </span><span class="n">main</span>
+</code></pre></div>
+
+<h3>Object Oriented Interface Example</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">program </span><span class="n">main</span>
+
+<span class="w">  </span><span class="k">use </span><span class="n">root_module</span><span class="p">,</span><span class="w"> </span><span class="n">wp</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">root_module_rk</span>
+
+<span class="w">  </span><span class="k">implicit none</span>
+
+<span class="k">  type</span><span class="p">,</span><span class="k">extends</span><span class="p">(</span><span class="n">bisection_solver</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">my_solver</span>
+<span class="w">  </span><span class="k">end type </span><span class="n">my_solver</span>
+
+<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">f</span>
+<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iflag</span>
+<span class="w">  </span><span class="k">type</span><span class="p">(</span><span class="n">my_solver</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">solver</span>
+
+<span class="w">  </span><span class="k">call </span><span class="n">solver</span><span class="p">%</span><span class="n">initialize</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+<span class="w">  </span><span class="k">call </span><span class="n">solver</span><span class="p">%</span><span class="n">solve</span><span class="p">(</span><span class="o">-</span><span class="mf">9.0_wp</span><span class="p">,</span><span class="mi">3</span><span class="mf">1.0_wp</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">iflag</span><span class="p">)</span>
+
+<span class="w">  </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="s1">&#39;f(&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="s1">&#39;) = &#39;</span><span class="p">,</span><span class="w"> </span><span class="n">f</span>
+<span class="w">  </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="s1">&#39;iflag    = &#39;</span><span class="p">,</span><span class="w"> </span><span class="n">iflag</span>
+
+<span class="k">contains</span>
+
+<span class="k">  function </span><span class="n">func</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">class</span><span class="p">(</span><span class="n">root_solver</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">me</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">x</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">f</span>
+
+<span class="w">    </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">20</span><span class="mf">0.0_wp</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">3.0_wp</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
+
+<span class="w">  </span><span class="k">end function </span><span class="n">func</span>
+
+<span class="k">end program </span><span class="n">main</span>
+</code></pre></div>
+
+<h3>Result</h3>
+<div class="codehilite"><pre><span></span><code> f( -2.273736754432321E-013 ) =   4.547473508867743E-011
+ iflag    =            0
+</code></pre></div>
+
+<h2>Notes</h2>
+<ul>
+<li>Originally this was an idea for the Fortran <a href="https://github.com/fortran-lang/stdlib">stdlib</a>. See: <a href="https://github.com/fortran-lang/stdlib/issues/87">#87: Optimization, Root finding, and Equation Solvers</a>. Eventually, it may be merged into the other one in one form or another.</li>
+</ul>
+<h2>Documentation</h2>
+<p>The latest API documentation for the <code>master</code> branch can be found <a href="https://jacobwilliams.github.io/roots-fortran/">here</a>. This was generated from the source code using <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>.</p>
+<h2>License</h2>
+<p>The roots-fortran source code and related files and documentation are distributed under a permissive free software <a href="https://github.com/jacobwilliams/roots-fortran/blob/master/LICENSE.md">license</a> (BSD-style).</p>
+<h2>Related Fortran libraries</h2>
+<ul>
+<li><a href="https://github.com/jacobwilliams/polyroots-fortran">polyroots-fortran</a> -- For finding all the roots of polynomials with real or complex coefficients.</li>
+</ul>
+<h2>Similar libraries in other programming languages</h2>
+<table>
+<thead>
+<tr>
+<th>Language</th>
+<th>Library</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>C</td>
+<td><a href="https://www.gnu.org/software/gsl/doc/html/roots.html">GSL</a></td>
+</tr>
+<tr>
+<td>C++</td>
+<td><a href="https://www.boost.org/doc/libs/1_80_0/libs/math/doc/html/root_finding.html">Boost Math Toolkit</a></td>
+</tr>
+<tr>
+<td>Julia</td>
+<td><a href="https://github.com/JuliaMath/Roots.jl">Roots.jl</a></td>
+</tr>
+<tr>
+<td>R</td>
+<td><a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/uniroot.html">uniroot</a></td>
+</tr>
+<tr>
+<td>Rust</td>
+<td><a href="https://docs.rs/roots/latest/roots/">roots</a></td>
+</tr>
+<tr>
+<td>MATLAB</td>
+<td><a href="https://www.mathworks.com/help/matlab/ref/fzero.html">fzero</a></td>
+</tr>
+<tr>
+<td>Python</td>
+<td><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.root_scalar.html">scipy.optimize.root_scalar</a></td>
+</tr>
+</tbody>
+</table>
+<h2>References</h2>
+<ul>
+<li>D. E. Muller, "<a href="https://www.ams.org/journals/mcom/1956-10-056/S0025-5718-1956-0083822-0/S0025-5718-1956-0083822-0.pdf">A Method for Solving Algebraic Equations Using an Automatic Computer</a>", Mathematical Tables and Other Aids to Computation, 10 (1956), 208-215.</li>
+<li>M. Dowell, P. Jarratt, "<a href="https://personal.math.ubc.ca/~loew/mech2/Dowell+Jarratt.pdf">A modified regula falsi method for computing the root of an equation</a>", BIT 11 (1971), 168-174.</li>
+<li>R. P. Brent, "<a href="http://maths-people.anu.edu.au/~brent/pd/rpb005.pdf">An algorithm with guaranteed convergence for finding a zero of a function</a>", The Computer Journal, Vol 14, No. 4., 1971.</li>
+<li>R. P. Brent, "<a href="http://maths-people.anu.edu.au/~brent/pub/pub011.html">Algorithms for minimization without derivatives</a>", Prentice-Hall, Inc., 1973.</li>
+<li>Ridders, C., "<a href="https://cs.fit.edu/~dmitra/SciComp/Resources/RidderMethod.pdf">A new algorithm for computing a single root of a real continuous function</a>", IEEE Trans. on Circuits and Systems, Vol 26, Issue 11, Nov 1979.</li>
+<li>G. E. Alefeld, F. A. Potra and Yixun Shi, "<a href="https://dl.acm.org/doi/abs/10.1145/210089.210111">Algorithm 748: Enclosing Zeros of Continuous Functions</a>", ACM Transactions on Mathematical Software, Vol. 21. No. 3. September 1995. Pages 327-344.</li>
+<li>G.E. Mullges &amp; F. Uhlig, "Numerical Algorithms with Fortran", Springer, 1996. Section 2.8.1, p 32-34.</li>
+<li>T.R. Chandrupatla, "<a href="https://dl.acm.org/doi/10.1016/S0965-9978%2896%2900051-8">A new hybrid quadratic/bisection algorithm for finding the zero of a nonlinear function without derivatives</a>", Advances in Engineering Software, Vol 28, 1997, pp. 145-149.</li>
+<li>R. G. Gottlieb, B. F. Thompson, "<a href="https://www.researchgate.net/publication/228712261_Bisected_Direct_Quadratic_Regula_Falsi">Bisected Direct Quadratic Regula Falsi</a>", Applied Mathematical Sciences, Vol. 4, 2010, no. 15, 709-718.</li>
+<li>A. Zhang, "<a href="https://www.cscjournals.org/download/issuearchive/IJEA/Volume2/IJEA_V2_I1.pdf">An Improvement to the Brent's Method</a>", International Journal of Experimental Algorithms (IJEA), Volume (2) : Issue (1) : 2011.</li>
+<li>E Badr, S Almotairi, A El Ghamry, "<a href="https://www.mdpi.com/2227-7390/9/11/1306">A Comparative Study among New Hybrid Root Finding Algorithms and Traditional Methods</a>", Mathematics 2021, 9, 1306.</li>
+</ul>
+<h2>See also</h2>
+<ul>
+<li><a href="https://app.codecov.io/gh/jacobwilliams/roots-fortran">Code coverage statistics</a> [codecov.io]</li>
+</ul>
+        </div>
+          <div class="col-md-4">
+            <div class="card card-body bg-light">
+              <h2 class="card-title">Developer Info</h2>
+              <h4 class="card-text">Jacob Williams</h4>
+              <p class="card-text"></p>
+                <div class="text-center"><div class="btn-group" role="group">
+                    
+                    <a class="btn btn-lg btn-primary" href="https://github.com/jacobwilliams"><i class="fa fa-github fa-lg"></i></a>
+                    
+                    
+                    
+                    
+                    
+                    
+                </div></div>
+            </div>
+          </div>
+      </div>
+        <div class="row">
+          <hr>
+          <div class="col-xs-6 col-sm-3">
+            <div>
+              <h3>Source Files</h3>
+              <ul><li><a href='sourcefile/root_module.f90.html'>root_module.F90</a></li></ul>
+            </div>
+            <div>
+              <ul>
+                <li><a href="./lists/files.html"><em>All source files&hellip;</em></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-xs-6 col-sm-3">
+            <div>
+              <h3>Modules</h3>
+              <ul><li><a href='module/root_module.html'>root_module</a></li></ul>
+            </div>
+            <div>
+              <ul>
+                <li><a href="./lists/modules.html"><em>All modules&hellip;</em></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-xs-6 col-sm-3">
+            <div>
+              <h3>Procedures</h3>
+              <ul><li><a href='proc/anderson_bjorck.html'>anderson_bjorck</a></li><li><a href='proc/anderson_bjorck_kroger.html'>anderson_bjorck_kroger</a></li><li><a href='proc/barycentric.html'>barycentric</a></li><li><a href='proc/bdqrf.html'>bdqrf</a></li><li><a href='proc/bisect.html'>bisect</a></li><li><a href='proc/bisection.html'>bisection</a></li><li><a href='proc/blendtf.html'>blendtf</a></li><li><a href='proc/brent.html'>brent</a></li><li><a href='proc/brenth.html'>brenth</a></li><li><a href='proc/brentq.html'>brentq</a></li></ul>
+            </div>
+            <div>
+              <ul>
+                <li><a href="./lists/procedures.html"><em>All procedures&hellip;</em></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-xs-6 col-sm-3">
+            <div>
+              <h3>Derived Types</h3>
+              <ul><li><a href='type/anderson_bjorck_kroger_solver.html'>anderson_bjorck_kroger_solver</a></li><li><a href='type/anderson_bjorck_solver.html'>anderson_bjorck_solver</a></li><li><a href='type/barycentric_solver.html'>barycentric_solver</a></li><li><a href='type/bdqrf_solver.html'>bdqrf_solver</a></li><li><a href='type/bisection_solver.html'>bisection_solver</a></li><li><a href='type/blendtf_solver.html'>blendtf_solver</a></li><li><a href='type/brent_solver.html'>brent_solver</a></li><li><a href='type/brenth_solver.html'>brenth_solver</a></li><li><a href='type/brentq_solver.html'>brentq_solver</a></li><li><a href='type/chandrupatla_solver.html'>chandrupatla_solver</a></li></ul>
+            </div>
+            <div>
+              <ul>
+                <li><a href="./lists/types.html"><em>All derived types&hellip;</em></a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              roots-fortran
+ was developed by Jacob Williams<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

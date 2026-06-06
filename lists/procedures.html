@@ -1,0 +1,1351 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Root solvers for modern Fortran">
+    <meta name="author" content="Jacob Williams" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>All Procedures &ndash; roots-fortran
+</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">roots-fortran </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../sourcefile/root_module.f90.html">Source File</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12" id='text'>
+			 <h1>Procedures</h1>
+			 <table class="table table-striped">
+			 <thead><tr><th>Procedure</th><th>Location</th><th>Procedure Type</th><th>Description</th></tr></thead>
+			 <tbody>
+			   <tr>
+                 <td><a href='../proc/anderson_bjorck.html'>anderson_bjorck</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Subroutine</td>
+                 <td><p>Compute the zero of the function f(x) in the interval ax,bx using the Anderson-Bjorck method.</p><a href="../proc/anderson_bjorck.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/anderson_bjorck_kroger.html'>anderson_bjorck_kroger</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Subroutine</td>
+                 <td><p>Modified anderson-bjorck-king method. Same as <a href="../proc/anderson_bjorck.html">anderson_bjorck</a>, but with
+  an extra initial bisection step.</p><a href="../proc/anderson_bjorck_kroger.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/barycentric.html'>barycentric</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Subroutine</td>
+                 <td><p>Barycentric interpolation method.</p><a href="../proc/barycentric.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/bdqrf.html'>bdqrf</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Subroutine</td>
+                 <td><p>Bisected Direct Quadratic Regula Falsi (BDQRF) root solver method
+  to find the root of a 1D function.</p><a href="../proc/bdqrf.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/bisect.html'>bisect</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Function</td>
+                 <td><p>Bisection step.</p></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/bisection.html'>bisection</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Subroutine</td>
+                 <td><p>Compute the zero of the function f(x) in the interval ax,bx using the bisection method.</p><a href="../proc/bisection.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/blendtf.html'>blendtf</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Subroutine</td>
+                 <td><p>BlendTF blended method of trisection and false position methods.</p><a href="../proc/blendtf.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/brent.html'>brent</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Subroutine</td>
+                 <td><p>Find a zero of the function <script type="math/tex"> f(x) </script> in the given interval
+  <script type="math/tex"> [a_x,b_x] </script> to within a tolerance <script type="math/tex"> 4 \epsilon |x| + tol </script>,
+  where <script type="math/tex"> \epsilon </script> is the relative machine precision defined as
+  the smallest representable number such that <script type="math/tex"> 1.0 + \epsilon > 1.0 </script>.</p><a href="../proc/brent.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/brenth.html'>brenth</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Subroutine</td>
+                 <td><p>Brent's method with hyperbolic extrapolation.</p><a href="../proc/brenth.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/brentq.html'>brentq</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Subroutine</td>
+                 <td><p>Classic Brent's method to find a zero of the function f on the sign
+  changing interval [ax, bx], but with a different formula for the extrapolation step.</p><a href="../proc/brentq.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/chandrupatla.html'>chandrupatla</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Subroutine</td>
+                 <td><p>Chandrupatla's method.</p><a href="../proc/chandrupatla.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/choose_best.html'>choose_best</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Subroutine</td>
+                 <td><p>Given two points with two function evaluations, choose the best one
+(the one closest to the root).</p></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/converged.html'>converged</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Function</td>
+                 <td><p>Determines convergence in x based on if the reltol or abstol is satisfied.</p></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/get_fa_fb.html'>get_fa_fb</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Subroutine</td>
+                 <td><p>Returns the function values at <code>ax</code> and <code>bx</code> to start the root finding algorithm.</p></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/illinois.html'>illinois</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Subroutine</td>
+                 <td><p>Illinois method.</p><a href="../proc/illinois.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/initialize_root_solver.html'>initialize_root_solver</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Subroutine</td>
+                 <td><p>Initialize the <a href="../type/root_solver.html">root_solver</a> class.</p><a href="../proc/initialize_root_solver.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/itp.html'>itp</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Subroutine</td>
+                 <td><p>Compute the zero of the function f(x) in the interval ax,bx using the
+  Interpolate Truncate and Project (ITP) method.</p><a href="../proc/itp.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/itp_optional_inputs.html'>itp_optional_inputs</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Subroutine</td>
+                 <td><p>For the <a href="../proc/itp.html">itp</a> method, set the optional inputs.</p></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/lowercase.html'>lowercase</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Function</td>
+                 <td><p>lowercase a string.</p></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/modab.html'>ModAB</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Subroutine</td>
+                 <td><p>Ganchovski &amp; Traykov "Modified Anderson-Bjork" method (with 2026 improvements)</p><a href="../proc/modab.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/muller.html'>muller</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Subroutine</td>
+                 <td><p>Improved Muller method (for real roots only).
+  Will fall back to bisection if any step fails.</p><a href="../proc/muller.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/parabolic.html'>parabolic</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Function</td>
+                 <td><p>Parabolic interpolation, with the option to fall back to bisection
+if the parabolic interpolation fails. Used by <a href="../proc/rbp.html">rbp</a>.</p></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/pegasus.html'>pegasus</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Subroutine</td>
+                 <td><p>Pegasus method to find a root of f(x).</p><a href="../proc/pegasus.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/rbp.html'>rbp</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Subroutine</td>
+                 <td><p>Regula Falsi-Bisection-Parabolic Algorithm (RBP)</p><a href="../proc/rbp.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/regula_falsi.html'>regula_falsi</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Subroutine</td>
+                 <td><p>Compute the zero of the function f(x) in the interval ax,bx using the regula falsi method.</p></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/regula_falsi_step.html'>regula_falsi_step</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Function</td>
+                 <td><p>Regula Falsi step.
+With a protection to fall back to bisection if:</p><a href="../proc/regula_falsi_step.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/ridders.html'>ridders</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Subroutine</td>
+                 <td><p>Ridders method to find a root of f(x).</p><a href="../proc/ridders.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/root_name_to_method.html'>root_name_to_method</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Function</td>
+                 <td><p>Convert a root method name to the corresponding <a href="../type/root_method.html">root_method</a> enum type.</p></td>
+               </tr>
+			   <tr>
+                 <td><a href='../interface/root_scalar.html'>root_scalar</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Interface</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/root_scalar_by_name.html'>root_scalar_by_name</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Subroutine</td>
+                 <td><p>Non-object-oriented wrapper.</p></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/root_scalar_by_type.html'>root_scalar_by_type</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Subroutine</td>
+                 <td><p>Non-object-oriented wrapper.</p></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/secant.html'>secant</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Function</td>
+                 <td><p>Secent step.
+With a protection to fall back to bisection if:</p><a href="../proc/secant.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/solution.html'>solution</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Function</td>
+                 <td><p>Returns true if this is a solution and sets <code>xzero</code> and <code>fzero</code>.</p></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/solve.html'>solve</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Subroutine</td>
+                 <td><p>Main wrapper routine for all the methods.</p></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/swap.html'>swap</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Subroutine</td>
+                 <td><p>Swap two real(wp) values.</p></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/toms748.html'>toms748</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Subroutine</td>
+                 <td><p>TOMS748 rootfinding method.</p><a href="../proc/toms748.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/zhang.html'>zhang</a></td>
+                 <td><a href='../module/root_module.html'>root_module</a></td>
+                 <td>Subroutine</td>
+                 <td><p>Zhang's method (with corrections from Stage).</p><a href="../proc/zhang.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+               </tr>
+			 </tbody></table>
+             <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: call~~graph~~CallGraph Pages: 1 -->
+<svg id="callgraphCallGraph" width="855pt" height="872pt"
+ viewBox="0.00 0.00 855.00 871.97" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="call~~graph~~CallGraph" class="graph" transform="scale(0.89 0.89) rotate(0) translate(4 972)">
+<title>call~~graph~~CallGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-972 953,-972 953,4 -4,4"/>
+<!-- interface~root_scalar -->
+<g id="call~~graph~~CallGraph_node1" class="node">
+<title>interface~root_scalar</title>
+<g id="a_call~~graph~~CallGraph_node1"><a xlink:href="../interface/root_scalar.html" xlink:title="root_scalar">
+<polygon fill="#a7506f" stroke="#a7506f" points="122,-926 51,-926 51,-902 122,-902 122,-926"/>
+<text text-anchor="middle" x="86.5" y="-911.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">root_scalar</text>
+</a>
+</g>
+</g>
+<!-- proc~root_scalar_by_name -->
+<g id="call~~graph~~CallGraph_node30" class="node">
+<title>proc~root_scalar_by_name</title>
+<g id="a_call~~graph~~CallGraph_node30"><a xlink:href="../proc/root_scalar_by_name.html" xlink:title="root_scalar_by_name">
+<polygon fill="#d9534f" stroke="#d9534f" points="334,-947 209,-947 209,-923 334,-923 334,-947"/>
+<text text-anchor="middle" x="271.5" y="-932.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">root_scalar_by_name</text>
+</a>
+</g>
+</g>
+<!-- interface~root_scalar&#45;&gt;proc~root_scalar_by_name -->
+<g id="call~~graph~~CallGraph_edge1" class="edge">
+<title>interface~root_scalar&#45;&gt;proc~root_scalar_by_name</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M122.35,-912.56C146.84,-914.05 180.26,-917.56 209.16,-921.55"/>
+<polygon fill="#000000" stroke="#000000" points="208.77,-925.03 219.17,-922.97 209.76,-918.1 208.77,-925.03"/>
+</g>
+<!-- proc~root_scalar_by_type -->
+<g id="call~~graph~~CallGraph_node31" class="node">
+<title>proc~root_scalar_by_type</title>
+<g id="a_call~~graph~~CallGraph_node31"><a xlink:href="../proc/root_scalar_by_type.html" xlink:title="root_scalar_by_type">
+<polygon fill="#d9534f" stroke="#d9534f" points="330.5,-905 212.5,-905 212.5,-881 330.5,-881 330.5,-905"/>
+<text text-anchor="middle" x="271.5" y="-890.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">root_scalar_by_type</text>
+</a>
+</g>
+</g>
+<!-- interface~root_scalar&#45;&gt;proc~root_scalar_by_type -->
+<g id="call~~graph~~CallGraph_edge2" class="edge">
+<title>interface~root_scalar&#45;&gt;proc~root_scalar_by_type</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M122.35,-910C144.88,-907.42 174.96,-903.96 202.13,-900.85"/>
+<polygon fill="#000000" stroke="#000000" points="202.85,-904.29 212.38,-899.67 202.05,-897.33 202.85,-904.29"/>
+</g>
+<!-- proc~anderson_bjorck -->
+<g id="call~~graph~~CallGraph_node2" class="node">
+<title>proc~anderson_bjorck</title>
+<g id="a_call~~graph~~CallGraph_node2"><a xlink:href="../proc/anderson_bjorck.html" xlink:title="anderson_bjorck_solver%anderson_bjorck">
+<polygon fill="#d9534f" stroke="#d9534f" points="645,-738 410,-738 410,-714 645,-714 645,-738"/>
+<text text-anchor="middle" x="527.5" y="-723.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">anderson_bjorck_solver%anderson_bjorck</text>
+</a>
+</g>
+</g>
+<!-- proc~choose_best -->
+<g id="call~~graph~~CallGraph_node13" class="node">
+<title>proc~choose_best</title>
+<g id="a_call~~graph~~CallGraph_node13"><a xlink:href="../proc/choose_best.html" xlink:title="choose_best">
+<polygon fill="#d9534f" stroke="#d9534f" points="829.5,-586 750.5,-586 750.5,-562 829.5,-562 829.5,-586"/>
+<text text-anchor="middle" x="790" y="-571.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">choose_best</text>
+</a>
+</g>
+</g>
+<!-- proc~anderson_bjorck&#45;&gt;proc~choose_best -->
+<g id="call~~graph~~CallGraph_edge4" class="edge">
+<title>proc~anderson_bjorck&#45;&gt;proc~choose_best</title>
+<path fill="none" stroke="#000000" d="M645.05,-720.56C659.05,-716.99 672.72,-711.97 685,-705 708.54,-691.63 752.97,-628.23 775.36,-594.78"/>
+<polygon fill="#000000" stroke="#000000" points="778.44,-596.47 781.06,-586.21 772.61,-592.6 778.44,-596.47"/>
+</g>
+<!-- proc~converged -->
+<g id="call~~graph~~CallGraph_node14" class="node">
+<title>proc~converged</title>
+<g id="a_call~~graph~~CallGraph_node14"><a xlink:href="../proc/converged.html" xlink:title="root_solver%converged">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="859,-502 721,-502 721,-478 859,-478 859,-502"/>
+<text text-anchor="middle" x="790" y="-487.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">root_solver%converged</text>
+</a>
+</g>
+</g>
+<!-- proc~anderson_bjorck&#45;&gt;proc~converged -->
+<g id="call~~graph~~CallGraph_edge5" class="edge">
+<title>proc~anderson_bjorck&#45;&gt;proc~converged</title>
+<path fill="none" stroke="#000000" d="M645.05,-727.07C659.88,-722.66 673.78,-715.67 685,-705 748.54,-644.56 662.69,-576.5 721,-511 721.88,-510.01 722.8,-509.07 723.76,-508.18"/>
+<polygon fill="#000000" stroke="#000000" points="725.94,-510.92 731.84,-502.12 721.74,-505.32 725.94,-510.92"/>
+</g>
+<!-- proc~secant -->
+<g id="call~~graph~~CallGraph_node32" class="node">
+<title>proc~secant</title>
+<g id="a_call~~graph~~CallGraph_node32"><a xlink:href="../proc/secant.html" xlink:title="secant">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="817,-704 763,-704 763,-680 817,-680 817,-704"/>
+<text text-anchor="middle" x="790" y="-689.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">secant</text>
+</a>
+</g>
+</g>
+<!-- proc~anderson_bjorck&#45;&gt;proc~secant -->
+<g id="call~~graph~~CallGraph_edge6" class="edge">
+<title>proc~anderson_bjorck&#45;&gt;proc~secant</title>
+<path fill="none" stroke="#000000" d="M620.71,-713.97C666.34,-708.01 718.79,-701.16 752.85,-696.72"/>
+<polygon fill="#000000" stroke="#000000" points="753.33,-700.18 762.8,-695.42 752.43,-693.24 753.33,-700.18"/>
+</g>
+<!-- proc~solution -->
+<g id="call~~graph~~CallGraph_node33" class="node">
+<title>proc~solution</title>
+<g id="a_call~~graph~~CallGraph_node33"><a xlink:href="../proc/solution.html" xlink:title="root_solver%solution">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="851.5,-544 728.5,-544 728.5,-520 851.5,-520 851.5,-544"/>
+<text text-anchor="middle" x="790" y="-529.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">root_solver%solution</text>
+</a>
+</g>
+</g>
+<!-- proc~anderson_bjorck&#45;&gt;proc~solution -->
+<g id="call~~graph~~CallGraph_edge7" class="edge">
+<title>proc~anderson_bjorck&#45;&gt;proc~solution</title>
+<path fill="none" stroke="#000000" d="M645.37,-726.33C659.98,-721.98 673.72,-715.21 685,-705 736.46,-658.4 673.58,-603.71 721,-553 721.93,-552.01 722.9,-551.07 723.91,-550.17"/>
+<polygon fill="#000000" stroke="#000000" points="726.27,-552.78 732.35,-544.1 722.19,-547.09 726.27,-552.78"/>
+</g>
+<!-- f -->
+<g id="call~~graph~~CallGraph_node38" class="node">
+<title>f</title>
+<polygon fill="#777777" stroke="#777777" points="817,-384 763,-384 763,-360 817,-360 817,-384"/>
+<text text-anchor="middle" x="790" y="-369.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">f</text>
+</g>
+<!-- proc~anderson_bjorck&#45;&gt;f -->
+<g id="call~~graph~~CallGraph_edge3" class="edge">
+<title>proc~anderson_bjorck&#45;&gt;f</title>
+<path fill="none" stroke="#000000" d="M645.36,-727.39C660.15,-722.94 673.95,-715.85 685,-705 760.7,-630.65 681.51,-567.48 721,-469 732.82,-439.54 755.11,-410.34 770.94,-391.8"/>
+<polygon fill="#000000" stroke="#000000" points="773.76,-393.9 777.7,-384.06 768.49,-389.29 773.76,-393.9"/>
+</g>
+<!-- proc~anderson_bjorck_kroger -->
+<g id="call~~graph~~CallGraph_node3" class="node">
+<title>proc~anderson_bjorck_kroger</title>
+<g id="a_call~~graph~~CallGraph_node3"><a xlink:href="../proc/anderson_bjorck_kroger.html" xlink:title="anderson_bjorck_kroger_solver%anderson_bjorck_kroger">
+<polygon fill="#d9534f" stroke="#d9534f" points="685,-780 370,-780 370,-756 685,-756 685,-780"/>
+<text text-anchor="middle" x="527.5" y="-765.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">anderson_bjorck_kroger_solver%anderson_bjorck_kroger</text>
+</a>
+</g>
+</g>
+<!-- proc~bisect -->
+<g id="call~~graph~~CallGraph_node6" class="node">
+<title>proc~bisect</title>
+<g id="a_call~~graph~~CallGraph_node6"><a xlink:href="../proc/bisect.html" xlink:title="bisect">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="949,-462 895,-462 895,-438 949,-438 949,-462"/>
+<text text-anchor="middle" x="922" y="-447.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">bisect</text>
+</a>
+</g>
+</g>
+<!-- proc~anderson_bjorck_kroger&#45;&gt;proc~bisect -->
+<g id="call~~graph~~CallGraph_edge9" class="edge">
+<title>proc~anderson_bjorck_kroger&#45;&gt;proc~bisect</title>
+<path fill="none" stroke="#000000" d="M685.24,-758.7C757.8,-751.13 833.54,-737.5 859,-713 893.86,-679.46 912.79,-529.25 918.84,-472.14"/>
+<polygon fill="#000000" stroke="#000000" points="922.33,-472.32 919.87,-462.02 915.37,-471.61 922.33,-472.32"/>
+</g>
+<!-- proc~anderson_bjorck_kroger&#45;&gt;proc~choose_best -->
+<g id="call~~graph~~CallGraph_edge10" class="edge">
+<title>proc~anderson_bjorck_kroger&#45;&gt;proc~choose_best</title>
+<path fill="none" stroke="#000000" d="M670.26,-755.99C675.41,-753.38 680.35,-750.4 685,-747 715.18,-724.95 702.21,-703.31 721,-671 737.14,-643.25 758.88,-613.28 773.39,-594.11"/>
+<polygon fill="#000000" stroke="#000000" points="776.21,-596.18 779.5,-586.11 770.65,-591.93 776.21,-596.18"/>
+</g>
+<!-- proc~anderson_bjorck_kroger&#45;&gt;proc~converged -->
+<g id="call~~graph~~CallGraph_edge11" class="edge">
+<title>proc~anderson_bjorck_kroger&#45;&gt;proc~converged</title>
+<path fill="none" stroke="#000000" d="M674.33,-755.8C678.1,-753.19 681.68,-750.27 685,-747 760.7,-672.65 651.73,-591.37 721,-511 721.86,-510 722.77,-509.05 723.72,-508.14"/>
+<polygon fill="#000000" stroke="#000000" points="725.91,-510.87 731.72,-502.01 721.65,-505.31 725.91,-510.87"/>
+</g>
+<!-- proc~anderson_bjorck_kroger&#45;&gt;proc~secant -->
+<g id="call~~graph~~CallGraph_edge12" class="edge">
+<title>proc~anderson_bjorck_kroger&#45;&gt;proc~secant</title>
+<path fill="none" stroke="#000000" d="M659.35,-755.97C668.18,-753.48 676.81,-750.52 685,-747 703.88,-738.89 703.19,-728.24 721,-718 731.07,-712.21 742.67,-707.23 753.4,-703.22"/>
+<polygon fill="#000000" stroke="#000000" points="754.71,-706.47 762.95,-699.82 752.36,-699.88 754.71,-706.47"/>
+</g>
+<!-- proc~anderson_bjorck_kroger&#45;&gt;proc~solution -->
+<g id="call~~graph~~CallGraph_edge13" class="edge">
+<title>proc~anderson_bjorck_kroger&#45;&gt;proc~solution</title>
+<path fill="none" stroke="#000000" d="M673.85,-755.89C677.79,-753.26 681.52,-750.31 685,-747 748.54,-686.56 662.69,-618.5 721,-553 721.88,-552.01 722.8,-551.07 723.76,-550.18"/>
+<polygon fill="#000000" stroke="#000000" points="725.94,-552.92 731.84,-544.12 721.74,-547.32 725.94,-552.92"/>
+</g>
+<!-- proc~anderson_bjorck_kroger&#45;&gt;f -->
+<g id="call~~graph~~CallGraph_edge8" class="edge">
+<title>proc~anderson_bjorck_kroger&#45;&gt;f</title>
+<path fill="none" stroke="#000000" d="M674.42,-755.9C678.17,-753.26 681.71,-750.3 685,-747 728.95,-702.85 698.47,-527.08 721,-469 732.48,-439.4 754.84,-410.23 770.78,-391.73"/>
+<polygon fill="#000000" stroke="#000000" points="773.6,-393.83 777.6,-384.02 768.35,-389.2 773.6,-393.83"/>
+</g>
+<!-- proc~barycentric -->
+<g id="call~~graph~~CallGraph_node4" class="node">
+<title>proc~barycentric</title>
+<g id="a_call~~graph~~CallGraph_node4"><a xlink:href="../proc/barycentric.html" xlink:title="barycentric_solver%barycentric">
+<polygon fill="#d9534f" stroke="#d9534f" points="618,-570 437,-570 437,-546 618,-546 618,-570"/>
+<text text-anchor="middle" x="527.5" y="-555.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">barycentric_solver%barycentric</text>
+</a>
+</g>
+</g>
+<!-- proc~barycentric&#45;&gt;proc~choose_best -->
+<g id="call~~graph~~CallGraph_edge15" class="edge">
+<title>proc~barycentric&#45;&gt;proc~choose_best</title>
+<path fill="none" stroke="#000000" d="M618.15,-563.51C659.1,-566.02 705.99,-568.9 740.28,-571.01"/>
+<polygon fill="#000000" stroke="#000000" points="740.3,-574.52 750.49,-571.63 740.73,-567.53 740.3,-574.52"/>
+</g>
+<!-- proc~barycentric&#45;&gt;proc~converged -->
+<g id="call~~graph~~CallGraph_edge16" class="edge">
+<title>proc~barycentric&#45;&gt;proc~converged</title>
+<path fill="none" stroke="#000000" d="M618.18,-553.62C640.56,-550.47 664.12,-545.33 685,-537 703.33,-529.69 703.34,-519.81 721,-511 724.96,-509.02 729.15,-507.19 733.42,-505.5"/>
+<polygon fill="#000000" stroke="#000000" points="734.68,-508.76 742.84,-502.01 732.25,-502.2 734.68,-508.76"/>
+</g>
+<!-- proc~barycentric&#45;&gt;proc~solution -->
+<g id="call~~graph~~CallGraph_edge17" class="edge">
+<title>proc~barycentric&#45;&gt;proc~solution</title>
+<path fill="none" stroke="#000000" d="M618.15,-549.05C650.81,-545.79 687.25,-542.16 718.07,-539.08"/>
+<polygon fill="#000000" stroke="#000000" points="718.68,-542.54 728.29,-538.06 717.99,-535.57 718.68,-542.54"/>
+</g>
+<!-- proc~barycentric&#45;&gt;f -->
+<g id="call~~graph~~CallGraph_edge14" class="edge">
+<title>proc~barycentric&#45;&gt;f</title>
+<path fill="none" stroke="#000000" d="M618.29,-560.35C641.65,-557.27 665.66,-550.48 685,-537 713.06,-517.45 703.15,-498.17 721,-469 737.76,-441.62 759.36,-411.56 773.67,-392.28"/>
+<polygon fill="#000000" stroke="#000000" points="776.51,-394.33 779.69,-384.22 770.9,-390.14 776.51,-394.33"/>
+</g>
+<!-- proc~bdqrf -->
+<g id="call~~graph~~CallGraph_node5" class="node">
+<title>proc~bdqrf</title>
+<g id="a_call~~graph~~CallGraph_node5"><a xlink:href="../proc/bdqrf.html" xlink:title="bdqrf_solver%bdqrf">
+<polygon fill="#d9534f" stroke="#d9534f" points="586,-612 469,-612 469,-588 586,-588 586,-612"/>
+<text text-anchor="middle" x="527.5" y="-597.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">bdqrf_solver%bdqrf</text>
+</a>
+</g>
+</g>
+<!-- proc~bdqrf&#45;&gt;proc~bisect -->
+<g id="call~~graph~~CallGraph_edge19" class="edge">
+<title>proc~bdqrf&#45;&gt;proc~bisect</title>
+<path fill="none" stroke="#000000" d="M586.22,-606.45C668.92,-614.48 815.93,-623.89 859,-595 900.47,-567.18 914.32,-505.4 918.85,-472.17"/>
+<polygon fill="#000000" stroke="#000000" points="922.35,-472.44 920.06,-462.09 915.4,-471.6 922.35,-472.44"/>
+</g>
+<!-- proc~bdqrf&#45;&gt;proc~choose_best -->
+<g id="call~~graph~~CallGraph_edge20" class="edge">
+<title>proc~bdqrf&#45;&gt;proc~choose_best</title>
+<path fill="none" stroke="#000000" d="M586.31,-594.23C632.52,-589.62 696.57,-583.23 740.22,-578.87"/>
+<polygon fill="#000000" stroke="#000000" points="740.7,-582.34 750.3,-577.86 740.01,-575.37 740.7,-582.34"/>
+</g>
+<!-- proc~bdqrf&#45;&gt;proc~converged -->
+<g id="call~~graph~~CallGraph_edge21" class="edge">
+<title>proc~bdqrf&#45;&gt;proc~converged</title>
+<path fill="none" stroke="#000000" d="M586.28,-604.54C618,-604.19 656.55,-598.83 685,-579 713.06,-559.45 694.66,-532.81 721,-511 722.74,-509.56 724.58,-508.22 726.49,-506.97"/>
+<polygon fill="#000000" stroke="#000000" points="728.27,-509.98 735.29,-502.05 724.85,-503.87 728.27,-509.98"/>
+</g>
+<!-- proc~bdqrf&#45;&gt;proc~solution -->
+<g id="call~~graph~~CallGraph_edge22" class="edge">
+<title>proc~bdqrf&#45;&gt;proc~solution</title>
+<path fill="none" stroke="#000000" d="M586.34,-598.97C616.63,-596.78 653.81,-591.44 685,-579 703.33,-571.69 703.34,-561.81 721,-553 724.96,-551.02 729.15,-549.19 733.42,-547.5"/>
+<polygon fill="#000000" stroke="#000000" points="734.68,-550.76 742.84,-544.01 732.25,-544.2 734.68,-550.76"/>
+</g>
+<!-- proc~bdqrf&#45;&gt;f -->
+<g id="call~~graph~~CallGraph_edge18" class="edge">
+<title>proc~bdqrf&#45;&gt;f</title>
+<path fill="none" stroke="#000000" d="M586.14,-606.33C618.59,-606.73 657.92,-601.53 685,-579 724.54,-546.1 697.99,-515.01 721,-469 735.28,-440.45 757.25,-410.86 772.32,-391.99"/>
+<polygon fill="#000000" stroke="#000000" points="775.13,-394.08 778.72,-384.11 769.7,-389.67 775.13,-394.08"/>
+</g>
+<!-- proc~bisection -->
+<g id="call~~graph~~CallGraph_node7" class="node">
+<title>proc~bisection</title>
+<g id="a_call~~graph~~CallGraph_node7"><a xlink:href="../proc/bisection.html" xlink:title="bisection_solver%bisection">
+<polygon fill="#d9534f" stroke="#d9534f" points="605.5,-654 449.5,-654 449.5,-630 605.5,-630 605.5,-654"/>
+<text text-anchor="middle" x="527.5" y="-639.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">bisection_solver%bisection</text>
+</a>
+</g>
+</g>
+<!-- proc~bisection&#45;&gt;proc~bisect -->
+<g id="call~~graph~~CallGraph_edge24" class="edge">
+<title>proc~bisection&#45;&gt;proc~bisect</title>
+<path fill="none" stroke="#000000" d="M605.88,-645.76C690.89,-648.3 820.49,-646.96 859,-618 905.38,-583.11 917.09,-509.77 920.03,-472.61"/>
+<polygon fill="#000000" stroke="#000000" points="923.54,-472.52 920.69,-462.32 916.55,-472.07 923.54,-472.52"/>
+</g>
+<!-- proc~bisection&#45;&gt;proc~choose_best -->
+<g id="call~~graph~~CallGraph_edge25" class="edge">
+<title>proc~bisection&#45;&gt;proc~choose_best</title>
+<path fill="none" stroke="#000000" d="M605.83,-636.14C631.37,-633.01 659.7,-628.25 685,-621 710.65,-613.65 738.1,-601.03 758.35,-590.71"/>
+<polygon fill="#000000" stroke="#000000" points="760.13,-593.73 767.39,-586.02 756.91,-587.52 760.13,-593.73"/>
+</g>
+<!-- proc~bisection&#45;&gt;proc~converged -->
+<g id="call~~graph~~CallGraph_edge26" class="edge">
+<title>proc~bisection&#45;&gt;proc~converged</title>
+<path fill="none" stroke="#000000" d="M605.72,-647.84C633.43,-646.05 663.19,-639.15 685,-621 724.54,-588.1 684.32,-547.07 721,-511 722.24,-509.78 723.55,-508.63 724.92,-507.55"/>
+<polygon fill="#000000" stroke="#000000" points="726.87,-510.45 733.32,-502.04 723.04,-504.6 726.87,-510.45"/>
+</g>
+<!-- proc~bisection&#45;&gt;proc~solution -->
+<g id="call~~graph~~CallGraph_edge27" class="edge">
+<title>proc~bisection&#45;&gt;proc~solution</title>
+<path fill="none" stroke="#000000" d="M605.76,-645.67C632.84,-643.5 662.17,-636.91 685,-621 713.06,-601.45 694.66,-574.81 721,-553 722.74,-551.56 724.58,-550.22 726.49,-548.97"/>
+<polygon fill="#000000" stroke="#000000" points="728.27,-551.98 735.29,-544.05 724.85,-545.87 728.27,-551.98"/>
+</g>
+<!-- proc~bisection&#45;&gt;f -->
+<g id="call~~graph~~CallGraph_edge23" class="edge">
+<title>proc~bisection&#45;&gt;f</title>
+<path fill="none" stroke="#000000" d="M605.75,-648.84C633.79,-647.26 663.76,-640.23 685,-621 736.46,-574.4 692.57,-532.33 721,-469 734,-440.04 756.05,-410.74 771.5,-392.03"/>
+<polygon fill="#000000" stroke="#000000" points="774.32,-394.13 778.08,-384.23 768.96,-389.62 774.32,-394.13"/>
+</g>
+<!-- proc~blendtf -->
+<g id="call~~graph~~CallGraph_node8" class="node">
+<title>proc~blendtf</title>
+<g id="a_call~~graph~~CallGraph_node8"><a xlink:href="../proc/blendtf.html" xlink:title="blendtf_solver%blendtf">
+<polygon fill="#d9534f" stroke="#d9534f" points="595,-528 460,-528 460,-504 595,-504 595,-528"/>
+<text text-anchor="middle" x="527.5" y="-513.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">blendtf_solver%blendtf</text>
+</a>
+</g>
+</g>
+<!-- proc~blendtf&#45;&gt;proc~choose_best -->
+<g id="call~~graph~~CallGraph_edge29" class="edge">
+<title>proc~blendtf&#45;&gt;proc~choose_best</title>
+<path fill="none" stroke="#000000" d="M595.22,-520.73C623.31,-523.8 656.12,-528.83 685,-537 701.85,-541.77 704.61,-546.85 721,-553 727.3,-555.36 733.99,-557.67 740.62,-559.84"/>
+<polygon fill="#000000" stroke="#000000" points="739.66,-563.2 750.25,-562.9 741.79,-556.53 739.66,-563.2"/>
+</g>
+<!-- proc~blendtf&#45;&gt;proc~converged -->
+<g id="call~~graph~~CallGraph_edge30" class="edge">
+<title>proc~blendtf&#45;&gt;proc~converged</title>
+<path fill="none" stroke="#000000" d="M595.25,-509.34C630.38,-505.83 673.68,-501.51 710.43,-497.84"/>
+<polygon fill="#000000" stroke="#000000" points="711.01,-501.3 720.61,-496.83 710.31,-494.34 711.01,-501.3"/>
+</g>
+<!-- proc~blendtf&#45;&gt;proc~solution -->
+<g id="call~~graph~~CallGraph_edge31" class="edge">
+<title>proc~blendtf&#45;&gt;proc~solution</title>
+<path fill="none" stroke="#000000" d="M595.25,-520.1C632.89,-522.41 679.89,-525.3 718.18,-527.65"/>
+<polygon fill="#000000" stroke="#000000" points="718.03,-531.15 728.22,-528.27 718.46,-524.16 718.03,-531.15"/>
+</g>
+<!-- proc~blendtf&#45;&gt;f -->
+<g id="call~~graph~~CallGraph_edge28" class="edge">
+<title>proc~blendtf&#45;&gt;f</title>
+<path fill="none" stroke="#000000" d="M595.01,-517.59C624.16,-515.72 657.83,-509.88 685,-495 728.41,-471.22 761.51,-421.53 777.8,-393.12"/>
+<polygon fill="#000000" stroke="#000000" points="780.87,-394.81 782.67,-384.37 774.75,-391.4 780.87,-394.81"/>
+</g>
+<!-- proc~brent -->
+<g id="call~~graph~~CallGraph_node9" class="node">
+<title>proc~brent</title>
+<g id="a_call~~graph~~CallGraph_node9"><a xlink:href="../proc/brent.html" xlink:title="brent_solver%brent">
+<polygon fill="#d9534f" stroke="#d9534f" points="585,-66 470,-66 470,-42 585,-42 585,-66"/>
+<text text-anchor="middle" x="527.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">brent_solver%brent</text>
+</a>
+</g>
+</g>
+<!-- proc~brent&#45;&gt;f -->
+<g id="call~~graph~~CallGraph_edge32" class="edge">
+<title>proc~brent&#45;&gt;f</title>
+<path fill="none" stroke="#000000" d="M585.05,-46.02C618.58,-44.66 659.39,-49.44 685,-75 768.82,-158.65 651.5,-243.12 721,-339 728.84,-349.81 741.2,-357.25 753.24,-362.28"/>
+<polygon fill="#000000" stroke="#000000" points="752.14,-365.6 762.73,-365.81 754.58,-359.04 752.14,-365.6"/>
+</g>
+<!-- proc~brenth -->
+<g id="call~~graph~~CallGraph_node10" class="node">
+<title>proc~brenth</title>
+<g id="a_call~~graph~~CallGraph_node10"><a xlink:href="../proc/brenth.html" xlink:title="brenth_solver%brenth">
+<polygon fill="#d9534f" stroke="#d9534f" points="592,-192 463,-192 463,-168 592,-168 592,-192"/>
+<text text-anchor="middle" x="527.5" y="-177.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">brenth_solver%brenth</text>
+</a>
+</g>
+</g>
+<!-- proc~brenth&#45;&gt;f -->
+<g id="call~~graph~~CallGraph_edge33" class="edge">
+<title>proc~brenth&#45;&gt;f</title>
+<path fill="none" stroke="#000000" d="M592.05,-173.02C623.54,-173.07 660.06,-178.92 685,-201 732.47,-243.01 680.8,-290 721,-339 729.41,-349.25 741.76,-356.54 753.65,-361.63"/>
+<polygon fill="#000000" stroke="#000000" points="752.4,-364.9 762.99,-365.24 754.93,-358.37 752.4,-364.9"/>
+</g>
+<!-- proc~brentq -->
+<g id="call~~graph~~CallGraph_node11" class="node">
+<title>proc~brentq</title>
+<g id="a_call~~graph~~CallGraph_node11"><a xlink:href="../proc/brentq.html" xlink:title="brentq_solver%brentq">
+<polygon fill="#d9534f" stroke="#d9534f" points="592,-150 463,-150 463,-126 592,-126 592,-150"/>
+<text text-anchor="middle" x="527.5" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">brentq_solver%brentq</text>
+</a>
+</g>
+</g>
+<!-- proc~brentq&#45;&gt;f -->
+<g id="call~~graph~~CallGraph_edge34" class="edge">
+<title>proc~brentq&#45;&gt;f</title>
+<path fill="none" stroke="#000000" d="M592.2,-130.43C623.92,-130.28 660.61,-136.12 685,-159 744.51,-214.81 671.1,-274.46 721,-339 729.11,-349.48 741.4,-356.83 753.32,-361.89"/>
+<polygon fill="#000000" stroke="#000000" points="752.11,-365.17 762.71,-365.47 754.61,-358.63 752.11,-365.17"/>
+</g>
+<!-- proc~chandrupatla -->
+<g id="call~~graph~~CallGraph_node12" class="node">
+<title>proc~chandrupatla</title>
+<g id="a_call~~graph~~CallGraph_node12"><a xlink:href="../proc/chandrupatla.html" xlink:title="chandrupatla_solver%chandrupatla">
+<polygon fill="#d9534f" stroke="#d9534f" points="628.5,-360 426.5,-360 426.5,-336 628.5,-336 628.5,-360"/>
+<text text-anchor="middle" x="527.5" y="-345.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">chandrupatla_solver%chandrupatla</text>
+</a>
+</g>
+</g>
+<!-- proc~chandrupatla&#45;&gt;proc~solution -->
+<g id="call~~graph~~CallGraph_edge36" class="edge">
+<title>proc~chandrupatla&#45;&gt;proc~solution</title>
+<path fill="none" stroke="#000000" d="M628.74,-343.99C649.33,-347.66 669.45,-355.14 685,-369 733.61,-412.32 676.16,-463.8 721,-511 721.93,-511.98 722.91,-512.92 723.93,-513.81"/>
+<polygon fill="#000000" stroke="#000000" points="722.23,-516.9 732.41,-519.84 726.29,-511.2 722.23,-516.9"/>
+</g>
+<!-- proc~chandrupatla&#45;&gt;f -->
+<g id="call~~graph~~CallGraph_edge35" class="edge">
+<title>proc~chandrupatla&#45;&gt;f</title>
+<path fill="none" stroke="#000000" d="M628.84,-357.24C672.37,-361.25 720.6,-365.7 752.65,-368.65"/>
+<polygon fill="#000000" stroke="#000000" points="752.59,-372.16 762.87,-369.59 753.23,-365.19 752.59,-372.16"/>
+</g>
+<!-- proc~get_fa_fb -->
+<g id="call~~graph~~CallGraph_node15" class="node">
+<title>proc~get_fa_fb</title>
+<g id="a_call~~graph~~CallGraph_node15"><a xlink:href="../proc/get_fa_fb.html" xlink:title="root_solver%get_fa_fb">
+<polygon fill="#d9534f" stroke="#d9534f" points="855,-906 725,-906 725,-882 855,-882 855,-906"/>
+<text text-anchor="middle" x="790" y="-891.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">root_solver%get_fa_fb</text>
+</a>
+</g>
+</g>
+<!-- proc~illinois -->
+<g id="call~~graph~~CallGraph_node16" class="node">
+<title>proc~illinois</title>
+<g id="a_call~~graph~~CallGraph_node16"><a xlink:href="../proc/illinois.html" xlink:title="illinois_solver%illinois">
+<polygon fill="#d9534f" stroke="#d9534f" points="591,-276 464,-276 464,-252 591,-252 591,-276"/>
+<text text-anchor="middle" x="527.5" y="-261.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">illinois_solver%illinois</text>
+</a>
+</g>
+</g>
+<!-- proc~illinois&#45;&gt;proc~choose_best -->
+<g id="call~~graph~~CallGraph_edge38" class="edge">
+<title>proc~illinois&#45;&gt;proc~choose_best</title>
+<path fill="none" stroke="#000000" d="M591.24,-255.82C623.49,-255.29 660.96,-260.97 685,-285 769.99,-369.97 643.36,-461.27 721,-553 726.22,-559.17 733.21,-563.55 740.72,-566.67"/>
+<polygon fill="#000000" stroke="#000000" points="739.84,-570.06 750.43,-569.97 742.09,-563.43 739.84,-570.06"/>
+</g>
+<!-- proc~illinois&#45;&gt;proc~converged -->
+<g id="call~~graph~~CallGraph_edge39" class="edge">
+<title>proc~illinois&#45;&gt;proc~converged</title>
+<path fill="none" stroke="#000000" d="M591.07,-257.71C622.48,-257.91 659.23,-263.68 685,-285 723.98,-317.25 698.24,-347.81 721,-393 735.36,-421.51 757.31,-451.11 772.36,-470"/>
+<polygon fill="#000000" stroke="#000000" points="769.73,-472.31 778.74,-477.88 775.17,-467.9 769.73,-472.31"/>
+</g>
+<!-- proc~regula_falsi_step -->
+<g id="call~~graph~~CallGraph_node27" class="node">
+<title>proc~regula_falsi_step</title>
+<g id="a_call~~graph~~CallGraph_node27"><a xlink:href="../proc/regula_falsi_step.html" xlink:title="regula_falsi_step">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="840.5,-330 739.5,-330 739.5,-306 840.5,-306 840.5,-330"/>
+<text text-anchor="middle" x="790" y="-315.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">regula_falsi_step</text>
+</a>
+</g>
+</g>
+<!-- proc~illinois&#45;&gt;proc~regula_falsi_step -->
+<g id="call~~graph~~CallGraph_edge40" class="edge">
+<title>proc~illinois&#45;&gt;proc~regula_falsi_step</title>
+<path fill="none" stroke="#000000" d="M591.01,-269.87C619.83,-273.22 654.37,-278.14 685,-285 705.53,-289.6 727.81,-296.41 746.47,-302.66"/>
+<polygon fill="#000000" stroke="#000000" points="745.55,-306.05 756.15,-305.96 747.81,-299.42 745.55,-306.05"/>
+</g>
+<!-- proc~illinois&#45;&gt;proc~solution -->
+<g id="call~~graph~~CallGraph_edge41" class="edge">
+<title>proc~illinois&#45;&gt;proc~solution</title>
+<path fill="none" stroke="#000000" d="M591.01,-256.06C623.19,-255.59 660.67,-261.26 685,-285 757.8,-356.03 654.35,-434.17 721,-511 721.87,-512 722.78,-512.95 723.73,-513.85"/>
+<polygon fill="#000000" stroke="#000000" points="721.67,-516.69 731.74,-519.97 725.91,-511.12 721.67,-516.69"/>
+</g>
+<!-- proc~illinois&#45;&gt;f -->
+<g id="call~~graph~~CallGraph_edge37" class="edge">
+<title>proc~illinois&#45;&gt;f</title>
+<path fill="none" stroke="#000000" d="M591.21,-260.76C621.57,-261.97 657.33,-267.72 685,-285 709.47,-300.28 699.26,-320.04 721,-339 730.5,-347.29 742.45,-354 753.67,-359.16"/>
+<polygon fill="#000000" stroke="#000000" points="752.29,-362.38 762.86,-363.13 755.06,-355.95 752.29,-362.38"/>
+</g>
+<!-- proc~initialize_root_solver -->
+<g id="call~~graph~~CallGraph_node17" class="node">
+<title>proc~initialize_root_solver</title>
+<g id="a_call~~graph~~CallGraph_node17"><a xlink:href="../proc/initialize_root_solver.html" xlink:title="root_solver%initialize_root_solver">
+<polygon fill="#d9534f" stroke="#d9534f" points="622,-906 433,-906 433,-882 622,-882 622,-906"/>
+<text text-anchor="middle" x="527.5" y="-891.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">root_solver%initialize_root_solver</text>
+</a>
+</g>
+</g>
+<!-- proc~itp -->
+<g id="call~~graph~~CallGraph_node18" class="node">
+<title>proc~itp</title>
+<g id="a_call~~graph~~CallGraph_node18"><a xlink:href="../proc/itp.html" xlink:title="itp_solver%itp">
+<polygon fill="#d9534f" stroke="#d9534f" points="571,-486 484,-486 484,-462 571,-462 571,-486"/>
+<text text-anchor="middle" x="527.5" y="-471.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">itp_solver%itp</text>
+</a>
+</g>
+</g>
+<!-- proc~itp&#45;&gt;proc~bisect -->
+<g id="call~~graph~~CallGraph_edge43" class="edge">
+<title>proc~itp&#45;&gt;proc~bisect</title>
+<path fill="none" stroke="#000000" d="M571.25,-471.39C648.89,-466.64 811.76,-456.68 884.53,-452.23"/>
+<polygon fill="#000000" stroke="#000000" points="884.82,-455.72 894.59,-451.62 884.39,-448.73 884.82,-455.72"/>
+</g>
+<!-- proc~itp&#45;&gt;proc~choose_best -->
+<g id="call~~graph~~CallGraph_edge44" class="edge">
+<title>proc~itp&#45;&gt;proc~choose_best</title>
+<path fill="none" stroke="#000000" d="M571.05,-470.27C604.59,-469.43 651.17,-473.11 685,-495 710.47,-511.48 696.98,-534.46 721,-553 726.85,-557.52 733.68,-561.07 740.71,-563.86"/>
+<polygon fill="#000000" stroke="#000000" points="739.75,-567.23 750.35,-567.22 742.05,-560.62 739.75,-567.23"/>
+</g>
+<!-- proc~itp&#45;&gt;proc~converged -->
+<g id="call~~graph~~CallGraph_edge45" class="edge">
+<title>proc~itp&#45;&gt;proc~converged</title>
+<path fill="none" stroke="#000000" d="M571.22,-476.62C608.93,-478.94 664.86,-482.38 710.59,-485.18"/>
+<polygon fill="#000000" stroke="#000000" points="710.58,-488.69 720.78,-485.81 711.01,-481.7 710.58,-488.69"/>
+</g>
+<!-- proc~itp&#45;&gt;proc~solution -->
+<g id="call~~graph~~CallGraph_edge46" class="edge">
+<title>proc~itp&#45;&gt;proc~solution</title>
+<path fill="none" stroke="#000000" d="M571.01,-476.42C602.87,-479.02 647.28,-484.32 685,-495 701.85,-499.77 704.61,-504.85 721,-511 726.21,-512.95 731.68,-514.87 737.17,-516.7"/>
+<polygon fill="#000000" stroke="#000000" points="736.43,-520.14 747.02,-519.89 738.59,-513.48 736.43,-520.14"/>
+</g>
+<!-- proc~itp&#45;&gt;f -->
+<g id="call~~graph~~CallGraph_edge42" class="edge">
+<title>proc~itp&#45;&gt;f</title>
+<path fill="none" stroke="#000000" d="M571.25,-474.23C603.63,-473.02 648.6,-468.28 685,-453 718.94,-438.75 751.28,-410.43 770.64,-391.35"/>
+<polygon fill="#000000" stroke="#000000" points="773.32,-393.62 777.87,-384.05 768.35,-388.69 773.32,-393.62"/>
+</g>
+<!-- proc~itp_optional_inputs -->
+<g id="call~~graph~~CallGraph_node19" class="node">
+<title>proc~itp_optional_inputs</title>
+<g id="a_call~~graph~~CallGraph_node19"><a xlink:href="../proc/itp_optional_inputs.html" xlink:title="itp_solver%itp_optional_inputs">
+<polygon fill="#d9534f" stroke="#d9534f" points="173,-968 0,-968 0,-944 173,-944 173,-968"/>
+<text text-anchor="middle" x="86.5" y="-953.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">itp_solver%itp_optional_inputs</text>
+</a>
+</g>
+</g>
+<!-- proc~lowercase -->
+<g id="call~~graph~~CallGraph_node20" class="node">
+<title>proc~lowercase</title>
+<g id="a_call~~graph~~CallGraph_node20"><a xlink:href="../proc/lowercase.html" xlink:title="lowercase">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="823,-948 757,-948 757,-924 823,-924 823,-948"/>
+<text text-anchor="middle" x="790" y="-933.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">lowercase</text>
+</a>
+</g>
+</g>
+<!-- proc~modab -->
+<g id="call~~graph~~CallGraph_node21" class="node">
+<title>proc~modab</title>
+<g id="a_call~~graph~~CallGraph_node21"><a xlink:href="../proc/modab.html" xlink:title="modab_solver%ModAB">
+<polygon fill="#d9534f" stroke="#d9534f" points="595,-318 460,-318 460,-294 595,-294 595,-318"/>
+<text text-anchor="middle" x="527.5" y="-303.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">modab_solver%ModAB</text>
+</a>
+</g>
+</g>
+<!-- proc~modab&#45;&gt;proc~converged -->
+<g id="call~~graph~~CallGraph_edge48" class="edge">
+<title>proc~modab&#45;&gt;proc~converged</title>
+<path fill="none" stroke="#000000" d="M595.38,-301.85C625.1,-303.14 659.14,-309.21 685,-327 712.53,-345.93 703.38,-364.61 721,-393 737.93,-420.28 759.49,-450.35 773.75,-469.67"/>
+<polygon fill="#000000" stroke="#000000" points="770.97,-471.8 779.74,-477.75 776.59,-467.63 770.97,-471.8"/>
+</g>
+<!-- proc~modab&#45;&gt;proc~solution -->
+<g id="call~~graph~~CallGraph_edge49" class="edge">
+<title>proc~modab&#45;&gt;proc~solution</title>
+<path fill="none" stroke="#000000" d="M595.37,-298.39C626.36,-298.63 661.45,-304.82 685,-327 745.66,-384.13 665.29,-449.03 721,-511 721.88,-511.98 722.81,-512.92 723.78,-513.81"/>
+<polygon fill="#000000" stroke="#000000" points="721.77,-516.68 731.88,-519.85 725.95,-511.07 721.77,-516.68"/>
+</g>
+<!-- proc~modab&#45;&gt;f -->
+<g id="call~~graph~~CallGraph_edge47" class="edge">
+<title>proc~modab&#45;&gt;f</title>
+<path fill="none" stroke="#000000" d="M595.18,-310.87C623.26,-313.96 656.08,-318.97 685,-327 710.04,-333.95 736.92,-345.71 757.09,-355.46"/>
+<polygon fill="#000000" stroke="#000000" points="755.61,-358.64 766.13,-359.92 758.7,-352.36 755.61,-358.64"/>
+</g>
+<!-- proc~muller -->
+<g id="call~~graph~~CallGraph_node22" class="node">
+<title>proc~muller</title>
+<g id="a_call~~graph~~CallGraph_node22"><a xlink:href="../proc/muller.html" xlink:title="muller_solver%muller">
+<polygon fill="#d9534f" stroke="#d9534f" points="592,-444 463,-444 463,-420 592,-420 592,-444"/>
+<text text-anchor="middle" x="527.5" y="-429.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">muller_solver%muller</text>
+</a>
+</g>
+</g>
+<!-- proc~muller&#45;&gt;proc~bisect -->
+<g id="call~~graph~~CallGraph_edge51" class="edge">
+<title>proc~muller&#45;&gt;proc~bisect</title>
+<path fill="none" stroke="#000000" d="M592.11,-428.83C658.85,-426.42 766.68,-425.14 859,-436 867.49,-437 876.52,-438.68 884.99,-440.53"/>
+<polygon fill="#000000" stroke="#000000" points="884.43,-443.99 894.96,-442.84 886.01,-437.17 884.43,-443.99"/>
+</g>
+<!-- proc~muller&#45;&gt;proc~choose_best -->
+<g id="call~~graph~~CallGraph_edge52" class="edge">
+<title>proc~muller&#45;&gt;proc~choose_best</title>
+<path fill="none" stroke="#000000" d="M592.02,-425.98C623.12,-426.38 659.3,-432.25 685,-453 721.75,-482.68 686.84,-520.38 721,-553 726.53,-558.28 733.36,-562.23 740.53,-565.2"/>
+<polygon fill="#000000" stroke="#000000" points="739.85,-568.66 750.45,-568.65 742.16,-562.05 739.85,-568.66"/>
+</g>
+<!-- proc~muller&#45;&gt;proc~converged -->
+<g id="call~~graph~~CallGraph_edge53" class="edge">
+<title>proc~muller&#45;&gt;proc~converged</title>
+<path fill="none" stroke="#000000" d="M592.26,-437.51C620.87,-440.76 654.89,-445.71 685,-453 707.31,-458.4 731.5,-466.85 750.94,-474.31"/>
+<polygon fill="#000000" stroke="#000000" points="749.77,-477.6 760.35,-477.98 752.31,-471.08 749.77,-477.6"/>
+</g>
+<!-- proc~muller&#45;&gt;proc~solution -->
+<g id="call~~graph~~CallGraph_edge54" class="edge">
+<title>proc~muller&#45;&gt;proc~solution</title>
+<path fill="none" stroke="#000000" d="M592.23,-428.41C622.47,-429.59 657.84,-435.43 685,-453 710.47,-469.48 696.98,-492.46 721,-511 723.01,-512.55 725.14,-513.99 727.35,-515.32"/>
+<polygon fill="#000000" stroke="#000000" points="725.74,-518.43 736.23,-519.96 728.98,-512.23 725.74,-518.43"/>
+</g>
+<!-- proc~muller&#45;&gt;f -->
+<g id="call~~graph~~CallGraph_edge50" class="edge">
+<title>proc~muller&#45;&gt;f</title>
+<path fill="none" stroke="#000000" d="M592.32,-426.73C620.94,-423.52 654.96,-418.55 685,-411 688.56,-410.11 724.69,-396.47 753.37,-385.58"/>
+<polygon fill="#000000" stroke="#000000" points="754.66,-388.83 762.76,-382.01 752.17,-382.29 754.66,-388.83"/>
+</g>
+<!-- proc~parabolic -->
+<g id="call~~graph~~CallGraph_node23" class="node">
+<title>proc~parabolic</title>
+<g id="a_call~~graph~~CallGraph_node23"><a xlink:href="../proc/parabolic.html" xlink:title="parabolic">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="821.5,-176 758.5,-176 758.5,-152 821.5,-152 821.5,-176"/>
+<text text-anchor="middle" x="790" y="-161.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">parabolic</text>
+</a>
+</g>
+</g>
+<!-- proc~parabolic&#45;&gt;proc~bisect -->
+<g id="call~~graph~~CallGraph_edge55" class="edge">
+<title>proc~parabolic&#45;&gt;proc~bisect</title>
+<path fill="none" stroke="#000000" d="M805.29,-176.1C820.67,-189.86 844.81,-213.71 859,-239 894.51,-302.31 911.47,-387.96 917.85,-427.85"/>
+<polygon fill="#000000" stroke="#000000" points="914.41,-428.48 919.38,-437.83 921.32,-427.42 914.41,-428.48"/>
+</g>
+<!-- proc~pegasus -->
+<g id="call~~graph~~CallGraph_node24" class="node">
+<title>proc~pegasus</title>
+<g id="a_call~~graph~~CallGraph_node24"><a xlink:href="../proc/pegasus.html" xlink:title="pegasus_solver%pegasus">
+<polygon fill="#d9534f" stroke="#d9534f" points="601.5,-696 453.5,-696 453.5,-672 601.5,-672 601.5,-696"/>
+<text text-anchor="middle" x="527.5" y="-681.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">pegasus_solver%pegasus</text>
+</a>
+</g>
+</g>
+<!-- proc~pegasus&#45;&gt;proc~choose_best -->
+<g id="call~~graph~~CallGraph_edge57" class="edge">
+<title>proc~pegasus&#45;&gt;proc~choose_best</title>
+<path fill="none" stroke="#000000" d="M601.76,-682.82C628.86,-680.18 659.23,-674.53 685,-663 720.62,-647.07 753.33,-614.96 772.21,-593.98"/>
+<polygon fill="#000000" stroke="#000000" points="775.01,-596.1 778.98,-586.28 769.75,-591.48 775.01,-596.1"/>
+</g>
+<!-- proc~pegasus&#45;&gt;proc~converged -->
+<g id="call~~graph~~CallGraph_edge58" class="edge">
+<title>proc~pegasus&#45;&gt;proc~converged</title>
+<path fill="none" stroke="#000000" d="M601.73,-691.03C630.9,-689.9 662.75,-683.15 685,-663 736.46,-616.4 673.58,-561.71 721,-511 721.93,-510.01 722.9,-509.07 723.91,-508.17"/>
+<polygon fill="#000000" stroke="#000000" points="726.27,-510.78 732.35,-502.1 722.19,-505.09 726.27,-510.78"/>
+</g>
+<!-- proc~pegasus&#45;&gt;proc~secant -->
+<g id="call~~graph~~CallGraph_edge59" class="edge">
+<title>proc~pegasus&#45;&gt;proc~secant</title>
+<path fill="none" stroke="#000000" d="M601.76,-686.25C651,-687.76 713.79,-689.69 752.69,-690.88"/>
+<polygon fill="#000000" stroke="#000000" points="752.89,-694.39 762.99,-691.2 753.11,-687.4 752.89,-694.39"/>
+</g>
+<!-- proc~pegasus&#45;&gt;proc~solution -->
+<g id="call~~graph~~CallGraph_edge60" class="edge">
+<title>proc~pegasus&#45;&gt;proc~solution</title>
+<path fill="none" stroke="#000000" d="M601.72,-690.07C630.54,-688.69 662.14,-682.02 685,-663 724.54,-630.1 684.32,-589.07 721,-553 722.24,-551.78 723.55,-550.63 724.92,-549.55"/>
+<polygon fill="#000000" stroke="#000000" points="726.87,-552.45 733.32,-544.04 723.04,-546.6 726.87,-552.45"/>
+</g>
+<!-- proc~pegasus&#45;&gt;f -->
+<g id="call~~graph~~CallGraph_edge56" class="edge">
+<title>proc~pegasus&#45;&gt;f</title>
+<path fill="none" stroke="#000000" d="M601.83,-691.58C631.18,-690.58 663.15,-683.78 685,-663 748.54,-602.56 687.06,-549.86 721,-469 733.29,-439.73 755.48,-410.49 771.17,-391.89"/>
+<polygon fill="#000000" stroke="#000000" points="773.98,-393.99 777.85,-384.13 768.67,-389.42 773.98,-393.99"/>
+</g>
+<!-- proc~rbp -->
+<g id="call~~graph~~CallGraph_node25" class="node">
+<title>proc~rbp</title>
+<g id="a_call~~graph~~CallGraph_node25"><a xlink:href="../proc/rbp.html" xlink:title="rbp_solver%rbp">
+<polygon fill="#d9534f" stroke="#d9534f" points="575.5,-24 479.5,-24 479.5,0 575.5,0 575.5,-24"/>
+<text text-anchor="middle" x="527.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rbp_solver%rbp</text>
+</a>
+</g>
+</g>
+<!-- proc~rbp&#45;&gt;proc~bisect -->
+<g id="call~~graph~~CallGraph_edge62" class="edge">
+<title>proc~rbp&#45;&gt;proc~bisect</title>
+<path fill="none" stroke="#000000" d="M575.63,-13.08C607.36,-15.06 649.7,-20.17 685,-33 770.99,-64.25 807.1,-67.65 859,-143 891.3,-189.89 912.24,-365.52 918.8,-427.87"/>
+<polygon fill="#000000" stroke="#000000" points="915.32,-428.23 919.82,-437.82 922.28,-427.52 915.32,-428.23"/>
+</g>
+<!-- proc~rbp&#45;&gt;proc~converged -->
+<g id="call~~graph~~CallGraph_edge63" class="edge">
+<title>proc~rbp&#45;&gt;proc~converged</title>
+<path fill="none" stroke="#000000" d="M575.67,-4.3C610.83,-1.48 657.37,-4.42 685,-33 740.88,-90.8 693.01,-317.63 721,-393 732.04,-422.73 754.45,-451.83 770.53,-470.28"/>
+<polygon fill="#000000" stroke="#000000" points="767.92,-472.61 777.19,-477.74 773.14,-467.95 767.92,-472.61"/>
+</g>
+<!-- proc~rbp&#45;&gt;proc~parabolic -->
+<g id="call~~graph~~CallGraph_edge64" class="edge">
+<title>proc~rbp&#45;&gt;proc~parabolic</title>
+<path fill="none" stroke="#000000" d="M575.57,-9.35C608.26,-9.57 651.75,-14.11 685,-33 730.14,-58.64 762.96,-112.36 778.64,-142.44"/>
+<polygon fill="#000000" stroke="#000000" points="775.67,-144.31 783.3,-151.65 781.92,-141.15 775.67,-144.31"/>
+</g>
+<!-- proc~rbp&#45;&gt;proc~regula_falsi_step -->
+<g id="call~~graph~~CallGraph_edge65" class="edge">
+<title>proc~rbp&#45;&gt;proc~regula_falsi_step</title>
+<path fill="none" stroke="#000000" d="M575.71,-5.3C610.2,-3.2 655.84,-6.6 685,-33 736.46,-79.6 697.03,-119.85 721,-185 736.25,-226.44 761.29,-271.58 776.35,-297.18"/>
+<polygon fill="#000000" stroke="#000000" points="773.47,-299.18 781.6,-305.98 779.49,-295.6 773.47,-299.18"/>
+</g>
+<!-- proc~rbp&#45;&gt;proc~solution -->
+<g id="call~~graph~~CallGraph_edge66" class="edge">
+<title>proc~rbp&#45;&gt;proc~solution</title>
+<path fill="none" stroke="#000000" d="M575.5,-4.14C610.82,-1.17 657.63,-3.99 685,-33 758.1,-110.48 654.58,-427.72 721,-511 721.61,-511.76 722.24,-512.49 722.9,-513.2"/>
+<polygon fill="#000000" stroke="#000000" points="720.89,-516.09 730.8,-519.83 725.39,-510.72 720.89,-516.09"/>
+</g>
+<!-- proc~rbp&#45;&gt;f -->
+<g id="call~~graph~~CallGraph_edge61" class="edge">
+<title>proc~rbp&#45;&gt;f</title>
+<path fill="none" stroke="#000000" d="M575.53,-4.44C610.62,-1.69 657.12,-4.66 685,-33 781.04,-130.61 641.65,-227.39 721,-339 728.8,-349.97 741.27,-357.45 753.41,-362.47"/>
+<polygon fill="#000000" stroke="#000000" points="752.39,-365.82 762.98,-365.99 754.8,-359.25 752.39,-365.82"/>
+</g>
+<!-- proc~regula_falsi -->
+<g id="call~~graph~~CallGraph_node26" class="node">
+<title>proc~regula_falsi</title>
+<g id="a_call~~graph~~CallGraph_node26"><a xlink:href="../proc/regula_falsi.html" xlink:title="regula_falsi_solver%regula_falsi">
+<polygon fill="#d9534f" stroke="#d9534f" points="618,-402 437,-402 437,-378 618,-378 618,-402"/>
+<text text-anchor="middle" x="527.5" y="-387.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">regula_falsi_solver%regula_falsi</text>
+</a>
+</g>
+</g>
+<!-- proc~regula_falsi&#45;&gt;proc~choose_best -->
+<g id="call~~graph~~CallGraph_edge68" class="edge">
+<title>proc~regula_falsi&#45;&gt;proc~choose_best</title>
+<path fill="none" stroke="#000000" d="M618.15,-384.43C642.32,-387.28 666.79,-394.77 685,-411 733.61,-454.32 676.16,-505.8 721,-553 726.45,-558.73 733.42,-562.91 740.81,-565.95"/>
+<polygon fill="#000000" stroke="#000000" points="739.72,-569.28 750.32,-569.23 742.01,-562.66 739.72,-569.28"/>
+</g>
+<!-- proc~regula_falsi&#45;&gt;proc~converged -->
+<g id="call~~graph~~CallGraph_edge69" class="edge">
+<title>proc~regula_falsi&#45;&gt;proc~converged</title>
+<path fill="none" stroke="#000000" d="M618.32,-394.03C640.7,-397.19 664.22,-402.42 685,-411 718.53,-424.84 750.76,-452.23 770.23,-470.83"/>
+<polygon fill="#000000" stroke="#000000" points="767.92,-473.47 777.52,-477.96 772.81,-468.47 767.92,-473.47"/>
+</g>
+<!-- proc~regula_falsi&#45;&gt;proc~regula_falsi_step -->
+<g id="call~~graph~~CallGraph_edge70" class="edge">
+<title>proc~regula_falsi&#45;&gt;proc~regula_falsi_step</title>
+<path fill="none" stroke="#000000" d="M618.16,-383.13C640.32,-380.03 663.78,-375.53 685,-369 702.1,-363.74 704.95,-358.91 721,-351 731.93,-345.62 743.87,-339.8 754.65,-334.57"/>
+<polygon fill="#000000" stroke="#000000" points="756.3,-337.66 763.78,-330.15 753.25,-331.36 756.3,-337.66"/>
+</g>
+<!-- proc~regula_falsi&#45;&gt;proc~solution -->
+<g id="call~~graph~~CallGraph_edge71" class="edge">
+<title>proc~regula_falsi&#45;&gt;proc~solution</title>
+<path fill="none" stroke="#000000" d="M618.39,-385.73C642.15,-388.71 666.34,-395.93 685,-411 721.75,-440.68 686.84,-478.38 721,-511 722.26,-512.2 723.59,-513.34 724.97,-514.41"/>
+<polygon fill="#000000" stroke="#000000" points="723.12,-517.38 733.43,-519.85 726.91,-511.49 723.12,-517.38"/>
+</g>
+<!-- proc~regula_falsi&#45;&gt;f -->
+<g id="call~~graph~~CallGraph_edge67" class="edge">
+<title>proc~regula_falsi&#45;&gt;f</title>
+<path fill="none" stroke="#000000" d="M618.15,-383.81C664.3,-380.62 718,-376.91 752.7,-374.51"/>
+<polygon fill="#000000" stroke="#000000" points="753.09,-377.99 762.83,-373.81 752.61,-371.01 753.09,-377.99"/>
+</g>
+<!-- proc~regula_falsi_step&#45;&gt;proc~bisect -->
+<g id="call~~graph~~CallGraph_edge72" class="edge">
+<title>proc~regula_falsi_step&#45;&gt;proc~bisect</title>
+<path fill="none" stroke="#000000" d="M825.1,-330.06C836.72,-335.28 849.24,-342.23 859,-351 883.36,-372.87 901.65,-406.53 911.84,-428.41"/>
+<polygon fill="#000000" stroke="#000000" points="908.78,-430.13 916.07,-437.82 915.17,-427.27 908.78,-430.13"/>
+</g>
+<!-- proc~ridders -->
+<g id="call~~graph~~CallGraph_node28" class="node">
+<title>proc~ridders</title>
+<g id="a_call~~graph~~CallGraph_node28"><a xlink:href="../proc/ridders.html" xlink:title="ridders_solver%ridders">
+<polygon fill="#d9534f" stroke="#d9534f" points="595,-234 460,-234 460,-210 595,-210 595,-234"/>
+<text text-anchor="middle" x="527.5" y="-219.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">ridders_solver%ridders</text>
+</a>
+</g>
+</g>
+<!-- proc~ridders&#45;&gt;proc~bisect -->
+<g id="call~~graph~~CallGraph_edge74" class="edge">
+<title>proc~ridders&#45;&gt;proc~bisect</title>
+<path fill="none" stroke="#000000" d="M595.33,-218.78C669.12,-218.95 786.99,-230.8 859,-297 897.29,-332.2 912.45,-394.39 918.03,-427.6"/>
+<polygon fill="#000000" stroke="#000000" points="914.6,-428.33 919.58,-437.68 921.52,-427.26 914.6,-428.33"/>
+</g>
+<!-- proc~ridders&#45;&gt;proc~converged -->
+<g id="call~~graph~~CallGraph_edge75" class="edge">
+<title>proc~ridders&#45;&gt;proc~converged</title>
+<path fill="none" stroke="#000000" d="M595.36,-214.84C626.16,-215.22 661.09,-221.42 685,-243 735.89,-288.94 692.83,-330.5 721,-393 734.05,-421.94 756.08,-451.25 771.52,-469.96"/>
+<polygon fill="#000000" stroke="#000000" points="768.98,-472.37 778.1,-477.77 774.34,-467.86 768.98,-472.37"/>
+</g>
+<!-- proc~ridders&#45;&gt;proc~solution -->
+<g id="call~~graph~~CallGraph_edge76" class="edge">
+<title>proc~ridders&#45;&gt;proc~solution</title>
+<path fill="none" stroke="#000000" d="M595.17,-213.79C626.49,-213.77 661.93,-219.93 685,-243 769.99,-327.97 643.36,-419.27 721,-511 721.74,-511.87 722.51,-512.71 723.32,-513.51"/>
+<polygon fill="#000000" stroke="#000000" points="721.32,-516.39 731.34,-519.85 725.66,-510.9 721.32,-516.39"/>
+</g>
+<!-- proc~ridders&#45;&gt;f -->
+<g id="call~~graph~~CallGraph_edge73" class="edge">
+<title>proc~ridders&#45;&gt;f</title>
+<path fill="none" stroke="#000000" d="M595.02,-216.18C625.37,-216.96 660.02,-223.1 685,-243 720.64,-271.39 690.31,-305.31 721,-339 729.7,-348.55 741.76,-355.63 753.32,-360.74"/>
+<polygon fill="#000000" stroke="#000000" points="752.23,-364.07 762.82,-364.57 754.85,-357.58 752.23,-364.07"/>
+</g>
+<!-- proc~root_name_to_method -->
+<g id="call~~graph~~CallGraph_node29" class="node">
+<title>proc~root_name_to_method</title>
+<g id="a_call~~graph~~CallGraph_node29"><a xlink:href="../proc/root_name_to_method.html" xlink:title="root_name_to_method">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="593.5,-948 461.5,-948 461.5,-924 593.5,-924 593.5,-948"/>
+<text text-anchor="middle" x="527.5" y="-933.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">root_name_to_method</text>
+</a>
+</g>
+</g>
+<!-- proc~root_name_to_method&#45;&gt;proc~lowercase -->
+<g id="call~~graph~~CallGraph_edge77" class="edge">
+<title>proc~root_name_to_method&#45;&gt;proc~lowercase</title>
+<path fill="none" stroke="#000000" d="M593.56,-936C641.49,-936 705.29,-936 746.75,-936"/>
+<polygon fill="#000000" stroke="#000000" points="746.78,-939.5 756.78,-936 746.78,-932.5 746.78,-939.5"/>
+</g>
+<!-- proc~root_scalar_by_name&#45;&gt;interface~root_scalar -->
+<g id="call~~graph~~CallGraph_edge78" class="edge">
+<title>proc~root_scalar_by_name&#45;&gt;interface~root_scalar</title>
+<path fill="none" stroke="#000000" d="M208.73,-934.33C183.76,-932.04 155.47,-928.62 132.5,-925.07"/>
+<polygon fill="#000000" stroke="#000000" points="132.78,-921.57 122.35,-923.43 131.67,-928.48 132.78,-921.57"/>
+</g>
+<!-- proc~root_scalar_by_name&#45;&gt;proc~root_name_to_method -->
+<g id="call~~graph~~CallGraph_edge79" class="edge">
+<title>proc~root_scalar_by_name&#45;&gt;proc~root_name_to_method</title>
+<path fill="none" stroke="#000000" d="M334.31,-935.24C369.48,-935.38 413.79,-935.56 451.01,-935.7"/>
+<polygon fill="#000000" stroke="#000000" points="451.29,-939.2 461.3,-935.74 451.32,-932.2 451.29,-939.2"/>
+</g>
+<!-- proc~root_scalar_by_type&#45;&gt;proc~initialize_root_solver -->
+<g id="call~~graph~~CallGraph_edge80" class="edge">
+<title>proc~root_scalar_by_type&#45;&gt;proc~initialize_root_solver</title>
+<path fill="none" stroke="#000000" d="M330.77,-893.23C358,-893.34 391.25,-893.47 422.57,-893.59"/>
+<polygon fill="#000000" stroke="#000000" points="422.65,-897.09 432.66,-893.63 422.68,-890.09 422.65,-897.09"/>
+</g>
+<!-- proc~solve -->
+<g id="call~~graph~~CallGraph_node34" class="node">
+<title>proc~solve</title>
+<g id="a_call~~graph~~CallGraph_node34"><a xlink:href="../proc/solve.html" xlink:title="root_solver%solve">
+<polygon fill="#d9534f" stroke="#d9534f" points="582,-864 473,-864 473,-840 582,-840 582,-864"/>
+<text text-anchor="middle" x="527.5" y="-849.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">root_solver%solve</text>
+</a>
+</g>
+</g>
+<!-- proc~root_scalar_by_type&#45;&gt;proc~solve -->
+<g id="call~~graph~~CallGraph_edge81" class="edge">
+<title>proc~root_scalar_by_type&#45;&gt;proc~solve</title>
+<path fill="none" stroke="#000000" d="M327.8,-880.97C341.56,-878.16 356.29,-875.32 370,-873 400.33,-867.86 434.14,-863.19 462.56,-859.57"/>
+<polygon fill="#000000" stroke="#000000" points="463.28,-863 472.76,-858.28 462.4,-856.06 463.28,-863"/>
+</g>
+<!-- proc~secant&#45;&gt;proc~bisect -->
+<g id="call~~graph~~CallGraph_edge82" class="edge">
+<title>proc~secant&#45;&gt;proc~bisect</title>
+<path fill="none" stroke="#000000" d="M817.13,-687.86C831.33,-684.32 848.15,-677.83 859,-666 910.1,-610.33 919.37,-515.25 920.85,-472.26"/>
+<polygon fill="#000000" stroke="#000000" points="924.35,-472.13 921.09,-462.05 917.36,-471.97 924.35,-472.13"/>
+</g>
+<!-- proc~solve&#45;&gt;interface~root_scalar -->
+<g id="call~~graph~~CallGraph_edge84" class="edge">
+<title>proc~solve&#45;&gt;interface~root_scalar</title>
+<path fill="none" stroke="#000000" d="M472.84,-851C409.25,-850.82 300.38,-853.68 209,-872 179.96,-877.82 148.37,-888.9 124.69,-898.21"/>
+<polygon fill="#000000" stroke="#000000" points="123.36,-894.97 115.38,-901.94 125.96,-901.47 123.36,-894.97"/>
+</g>
+<!-- proc~solve&#45;&gt;proc~get_fa_fb -->
+<g id="call~~graph~~CallGraph_edge85" class="edge">
+<title>proc~solve&#45;&gt;proc~get_fa_fb</title>
+<path fill="none" stroke="#000000" d="M582.23,-858.32C612.49,-862.11 650.94,-867.28 685,-873 697.33,-875.07 710.43,-877.52 723.02,-880"/>
+<polygon fill="#000000" stroke="#000000" points="722.5,-883.46 732.99,-881.99 723.87,-876.6 722.5,-883.46"/>
+</g>
+<!-- proc~solve&#45;&gt;proc~solution -->
+<g id="call~~graph~~CallGraph_edge86" class="edge">
+<title>proc~solve&#45;&gt;proc~solution</title>
+<path fill="none" stroke="#000000" d="M582.09,-859.9C616.17,-861.7 658.7,-857.42 685,-831 772.89,-742.7 640.74,-648.29 721,-553 721.74,-552.13 722.51,-551.29 723.31,-550.48"/>
+<polygon fill="#000000" stroke="#000000" points="725.66,-553.09 731.32,-544.13 721.31,-547.61 725.66,-553.09"/>
+</g>
+<!-- find_root -->
+<g id="call~~graph~~CallGraph_node39" class="node">
+<title>find_root</title>
+<polygon fill="#777777" stroke="#777777" points="819.5,-864 760.5,-864 760.5,-840 819.5,-840 819.5,-864"/>
+<text text-anchor="middle" x="790" y="-849.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">find_root</text>
+</g>
+<!-- proc~solve&#45;&gt;find_root -->
+<g id="call~~graph~~CallGraph_edge83" class="edge">
+<title>proc~solve&#45;&gt;find_root</title>
+<path fill="none" stroke="#000000" d="M582.16,-852C632.21,-852 705.67,-852 750.24,-852"/>
+<polygon fill="#000000" stroke="#000000" points="750.38,-855.5 760.38,-852 750.38,-848.5 750.38,-855.5"/>
+</g>
+<!-- proc~swap -->
+<g id="call~~graph~~CallGraph_node35" class="node">
+<title>proc~swap</title>
+<g id="a_call~~graph~~CallGraph_node35"><a xlink:href="../proc/swap.html" xlink:title="swap">
+<polygon fill="#d9534f" stroke="#d9534f" points="817,-822 763,-822 763,-798 817,-798 817,-822"/>
+<text text-anchor="middle" x="790" y="-807.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">swap</text>
+</a>
+</g>
+</g>
+<!-- proc~toms748 -->
+<g id="call~~graph~~CallGraph_node36" class="node">
+<title>proc~toms748</title>
+<g id="a_call~~graph~~CallGraph_node36"><a xlink:href="../proc/toms748.html" xlink:title="toms748_solver%toms748">
+<polygon fill="#d9534f" stroke="#d9534f" points="604,-108 451,-108 451,-84 604,-84 604,-108"/>
+<text text-anchor="middle" x="527.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">toms748_solver%toms748</text>
+</a>
+</g>
+</g>
+<!-- proc~toms748&#45;&gt;f -->
+<g id="call~~graph~~CallGraph_edge87" class="edge">
+<title>proc~toms748&#45;&gt;f</title>
+<path fill="none" stroke="#000000" d="M604.07,-88.26C632.9,-89.45 663.88,-96.45 685,-117 756.64,-186.71 661.32,-258.82 721,-339 728.98,-349.71 741.36,-357.13 753.38,-362.17"/>
+<polygon fill="#000000" stroke="#000000" points="752.27,-365.49 762.86,-365.72 754.73,-358.93 752.27,-365.49"/>
+</g>
+<!-- proc~zhang -->
+<g id="call~~graph~~CallGraph_node37" class="node">
+<title>proc~zhang</title>
+<g id="a_call~~graph~~CallGraph_node37"><a xlink:href="../proc/zhang.html" xlink:title="zhang_solver%zhang">
+<polygon fill="#d9534f" stroke="#d9534f" points="589.5,-822 465.5,-822 465.5,-798 589.5,-798 589.5,-822"/>
+<text text-anchor="middle" x="527.5" y="-807.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">zhang_solver%zhang</text>
+</a>
+</g>
+</g>
+<!-- proc~zhang&#45;&gt;proc~bisect -->
+<g id="call~~graph~~CallGraph_edge89" class="edge">
+<title>proc~zhang&#45;&gt;proc~bisect</title>
+<path fill="none" stroke="#000000" d="M589.68,-803.28C618.68,-799.71 653.74,-794.85 685,-789 763.2,-774.36 803.63,-804.12 859,-747 897.31,-707.48 914.39,-534.54 919.37,-472.37"/>
+<polygon fill="#000000" stroke="#000000" points="922.88,-472.34 920.16,-462.1 915.9,-471.8 922.88,-472.34"/>
+</g>
+<!-- proc~zhang&#45;&gt;proc~choose_best -->
+<g id="call~~graph~~CallGraph_edge90" class="edge">
+<title>proc~zhang&#45;&gt;proc~choose_best</title>
+<path fill="none" stroke="#000000" d="M589.75,-816.56C621.56,-816.62 659.09,-811 685,-789 726.79,-753.51 696.96,-720.28 721,-671 734.99,-642.31 757.02,-612.75 772.19,-593.92"/>
+<polygon fill="#000000" stroke="#000000" points="774.99,-596.02 778.62,-586.07 769.58,-591.58 774.99,-596.02"/>
+</g>
+<!-- proc~zhang&#45;&gt;proc~converged -->
+<g id="call~~graph~~CallGraph_edge91" class="edge">
+<title>proc~zhang&#45;&gt;proc~converged</title>
+<path fill="none" stroke="#000000" d="M589.73,-818.19C622.34,-818.95 660.63,-813.48 685,-789 772.89,-700.7 640.74,-606.29 721,-511 721.74,-510.13 722.51,-509.29 723.31,-508.48"/>
+<polygon fill="#000000" stroke="#000000" points="725.66,-511.09 731.32,-502.13 721.31,-505.61 725.66,-511.09"/>
+</g>
+<!-- proc~zhang&#45;&gt;proc~secant -->
+<g id="call~~graph~~CallGraph_edge92" class="edge">
+<title>proc~zhang&#45;&gt;proc~secant</title>
+<path fill="none" stroke="#000000" d="M589.65,-810.38C619.62,-808.47 655.51,-802.95 685,-789 686.27,-788.4 738.69,-739.26 768.61,-711.17"/>
+<polygon fill="#000000" stroke="#000000" points="771.14,-713.59 776.03,-704.19 766.35,-708.48 771.14,-713.59"/>
+</g>
+<!-- proc~zhang&#45;&gt;proc~solution -->
+<g id="call~~graph~~CallGraph_edge93" class="edge">
+<title>proc~zhang&#45;&gt;proc~solution</title>
+<path fill="none" stroke="#000000" d="M589.52,-817.98C622.06,-818.67 660.36,-813.2 685,-789 760.7,-714.65 651.73,-633.37 721,-553 721.86,-552 722.77,-551.05 723.72,-550.14"/>
+<polygon fill="#000000" stroke="#000000" points="725.91,-552.87 731.72,-544.01 721.65,-547.31 725.91,-552.87"/>
+</g>
+<!-- proc~zhang&#45;&gt;proc~swap -->
+<g id="call~~graph~~CallGraph_edge94" class="edge">
+<title>proc~zhang&#45;&gt;proc~swap</title>
+<path fill="none" stroke="#000000" d="M589.58,-810C640.18,-810 710.4,-810 752.6,-810"/>
+<polygon fill="#000000" stroke="#000000" points="752.7,-813.5 762.7,-810 752.7,-806.5 752.7,-813.5"/>
+</g>
+<!-- proc~zhang&#45;&gt;f -->
+<g id="call~~graph~~CallGraph_edge88" class="edge">
+<title>proc~zhang&#45;&gt;f</title>
+<path fill="none" stroke="#000000" d="M589.5,-818.34C622.24,-819.2 660.74,-813.78 685,-789 735.06,-737.86 695.68,-535.93 721,-469 732.17,-439.48 754.39,-410.48 770.4,-392"/>
+<polygon fill="#000000" stroke="#000000" points="773.23,-394.09 777.25,-384.28 767.99,-389.44 773.23,-394.09"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var pancallgraphCallGraph = svgPanZoom('#callgraphCallGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              roots-fortran
+ was developed by Jacob Williams<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

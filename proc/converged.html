@@ -1,0 +1,638 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Root solvers for modern Fortran">
+    <meta name="author" content="Jacob Williams" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>converged &ndash; roots-fortran</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">roots-fortran </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../sourcefile/root_module.f90.html">Source File</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>converged
+      <small>Function</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 1.0% of total for procedures.">18 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/root_module.F90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/root_module.f90.html'>root_module.F90</a></li>
+                <li class="breadcrumb-item"><a href='../module/root_module.html'>root_module</a></li>
+            <li class="breadcrumb-item active" aria-current="page">converged</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/converged.html#src">converged</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>private pure function converged(me, a, b)  
+</h2>
+    
+
+    <p>Determines convergence in x based on if the reltol or abstol is satisfied.</p>
+
+    <h3>Type Bound</h3>
+    <p><a href='../type/root_solver.html'>root_solver</a></p>
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-me~28"></span>
+              class(<a href='../type/root_solver.html'>root_solver</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-a~12"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>a</strong></td>
+            <td>
+                <p>old value</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-b~13"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>b</strong></td>
+            <td>
+                <p>new value</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <h3>Return Value
+        <small>
+          <span class="anchor" id="variable-converged~2"></span>
+          logical
+        </small>
+      </h3>
+      
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Called by</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~converged~~CalledByGraph Pages: 1 -->
+<svg id="procconvergedCalledByGraph" width="497pt" height="620pt"
+ viewBox="0.00 0.00 497.00 620.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~converged~~CalledByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 616)">
+<title>proc~~converged~~CalledByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-616 493,-616 493,4 -4,4"/>
+<!-- proc~converged -->
+<g id="proc~~converged~~CalledByGraph_node1" class="node">
+<title>proc~converged</title>
+<polygon fill="none" stroke="black" points="489,-318 351,-318 351,-294 489,-294 489,-318"/>
+<text text-anchor="middle" x="420" y="-303.6" font-family="Helvetica,sans-Serif" font-size="10.50">root_solver%converged</text>
+</g>
+<!-- proc~anderson_bjorck -->
+<g id="proc~~converged~~CalledByGraph_node2" class="node">
+<title>proc~anderson_bjorck</title>
+<g id="a_proc~~converged~~CalledByGraph_node2"><a xlink:href="../proc/anderson_bjorck.html" xlink:title="anderson_bjorck_solver%anderson_bjorck">
+<polygon fill="#d9534f" stroke="#d9534f" points="275,-612 40,-612 40,-588 275,-588 275,-612"/>
+<text text-anchor="middle" x="157.5" y="-597.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">anderson_bjorck_solver%anderson_bjorck</text>
+</a>
+</g>
+</g>
+<!-- proc~anderson_bjorck&#45;&gt;proc~converged -->
+<g id="proc~~converged~~CalledByGraph_edge1" class="edge">
+<title>proc~anderson_bjorck&#45;&gt;proc~converged</title>
+<path fill="none" stroke="#000000" d="M275.38,-598.58C289.73,-594.44 303.4,-588.19 315,-579 395.55,-515.17 413.74,-381.35 417.83,-328.32"/>
+<polygon fill="#000000" stroke="#000000" points="421.34,-328.23 418.52,-318.02 414.36,-327.76 421.34,-328.23"/>
+</g>
+<!-- proc~anderson_bjorck_kroger -->
+<g id="proc~~converged~~CalledByGraph_node3" class="node">
+<title>proc~anderson_bjorck_kroger</title>
+<g id="a_proc~~converged~~CalledByGraph_node3"><a xlink:href="../proc/anderson_bjorck_kroger.html" xlink:title="anderson_bjorck_kroger_solver%anderson_bjorck_kroger">
+<polygon fill="#d9534f" stroke="#d9534f" points="315,-570 0,-570 0,-546 315,-546 315,-570"/>
+<text text-anchor="middle" x="157.5" y="-555.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">anderson_bjorck_kroger_solver%anderson_bjorck_kroger</text>
+</a>
+</g>
+</g>
+<!-- proc~anderson_bjorck_kroger&#45;&gt;proc~converged -->
+<g id="proc~~converged~~CalledByGraph_edge2" class="edge">
+<title>proc~anderson_bjorck_kroger&#45;&gt;proc~converged</title>
+<path fill="none" stroke="#000000" d="M300.71,-545.91C305.71,-543.31 310.49,-540.36 315,-537 384.86,-484.92 408.88,-375.1 416.17,-328.1"/>
+<polygon fill="#000000" stroke="#000000" points="419.65,-328.47 417.61,-318.07 412.72,-327.47 419.65,-328.47"/>
+</g>
+<!-- proc~barycentric -->
+<g id="proc~~converged~~CalledByGraph_node4" class="node">
+<title>proc~barycentric</title>
+<g id="a_proc~~converged~~CalledByGraph_node4"><a xlink:href="../proc/barycentric.html" xlink:title="barycentric_solver%barycentric">
+<polygon fill="#d9534f" stroke="#d9534f" points="248,-528 67,-528 67,-504 248,-504 248,-528"/>
+<text text-anchor="middle" x="157.5" y="-513.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">barycentric_solver%barycentric</text>
+</a>
+</g>
+</g>
+<!-- proc~barycentric&#45;&gt;proc~converged -->
+<g id="proc~~converged~~CalledByGraph_edge3" class="edge">
+<title>proc~barycentric&#45;&gt;proc~converged</title>
+<path fill="none" stroke="#000000" d="M248.15,-518.14C271.51,-515.06 295.55,-508.32 315,-495 374.28,-454.39 403.12,-368.5 413.85,-328"/>
+<polygon fill="#000000" stroke="#000000" points="417.24,-328.85 416.3,-318.3 410.46,-327.14 417.24,-328.85"/>
+</g>
+<!-- proc~bdqrf -->
+<g id="proc~~converged~~CalledByGraph_node5" class="node">
+<title>proc~bdqrf</title>
+<g id="a_proc~~converged~~CalledByGraph_node5"><a xlink:href="../proc/bdqrf.html" xlink:title="bdqrf_solver%bdqrf">
+<polygon fill="#d9534f" stroke="#d9534f" points="216,-486 99,-486 99,-462 216,-462 216,-486"/>
+<text text-anchor="middle" x="157.5" y="-471.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">bdqrf_solver%bdqrf</text>
+</a>
+</g>
+</g>
+<!-- proc~bdqrf&#45;&gt;proc~converged -->
+<g id="proc~~converged~~CalledByGraph_edge4" class="edge">
+<title>proc~bdqrf&#45;&gt;proc~converged</title>
+<path fill="none" stroke="#000000" d="M216.1,-477.08C247.38,-476.21 285.57,-470.81 315,-453 363.99,-423.35 396.12,-360.87 410.43,-327.72"/>
+<polygon fill="#000000" stroke="#000000" points="413.84,-328.65 414.45,-318.07 407.38,-325.95 413.84,-328.65"/>
+</g>
+<!-- proc~bisection -->
+<g id="proc~~converged~~CalledByGraph_node6" class="node">
+<title>proc~bisection</title>
+<g id="a_proc~~converged~~CalledByGraph_node6"><a xlink:href="../proc/bisection.html" xlink:title="bisection_solver%bisection">
+<polygon fill="#d9534f" stroke="#d9534f" points="235.5,-444 79.5,-444 79.5,-420 235.5,-420 235.5,-444"/>
+<text text-anchor="middle" x="157.5" y="-429.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">bisection_solver%bisection</text>
+</a>
+</g>
+</g>
+<!-- proc~bisection&#45;&gt;proc~converged -->
+<g id="proc~~converged~~CalledByGraph_edge5" class="edge">
+<title>proc~bisection&#45;&gt;proc~converged</title>
+<path fill="none" stroke="#000000" d="M235.87,-431.6C262.09,-428.91 290.83,-423.03 315,-411 354.28,-391.45 387.49,-351.17 405.21,-326.57"/>
+<polygon fill="#000000" stroke="#000000" points="408.14,-328.49 411.02,-318.29 402.41,-324.47 408.14,-328.49"/>
+</g>
+<!-- proc~blendtf -->
+<g id="proc~~converged~~CalledByGraph_node7" class="node">
+<title>proc~blendtf</title>
+<g id="a_proc~~converged~~CalledByGraph_node7"><a xlink:href="../proc/blendtf.html" xlink:title="blendtf_solver%blendtf">
+<polygon fill="#d9534f" stroke="#d9534f" points="225,-402 90,-402 90,-378 225,-378 225,-402"/>
+<text text-anchor="middle" x="157.5" y="-387.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">blendtf_solver%blendtf</text>
+</a>
+</g>
+</g>
+<!-- proc~blendtf&#45;&gt;proc~converged -->
+<g id="proc~~converged~~CalledByGraph_edge6" class="edge">
+<title>proc~blendtf&#45;&gt;proc~converged</title>
+<path fill="none" stroke="#000000" d="M225.01,-387.12C253.37,-384.36 286.43,-379.07 315,-369 344.66,-358.54 375.01,-338.93 395.21,-324.35"/>
+<polygon fill="#000000" stroke="#000000" points="397.51,-327.01 403.48,-318.25 393.35,-321.37 397.51,-327.01"/>
+</g>
+<!-- proc~illinois -->
+<g id="proc~~converged~~CalledByGraph_node8" class="node">
+<title>proc~illinois</title>
+<g id="a_proc~~converged~~CalledByGraph_node8"><a xlink:href="../proc/illinois.html" xlink:title="illinois_solver%illinois">
+<polygon fill="#d9534f" stroke="#d9534f" points="221,-360 94,-360 94,-336 221,-336 221,-360"/>
+<text text-anchor="middle" x="157.5" y="-345.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">illinois_solver%illinois</text>
+</a>
+</g>
+</g>
+<!-- proc~illinois&#45;&gt;proc~converged -->
+<g id="proc~~converged~~CalledByGraph_edge7" class="edge">
+<title>proc~illinois&#45;&gt;proc~converged</title>
+<path fill="none" stroke="#000000" d="M221.09,-340.56C249.77,-336.9 284.18,-332.17 315,-327 327.33,-324.93 340.43,-322.48 353.02,-320"/>
+<polygon fill="#000000" stroke="#000000" points="353.87,-323.4 362.99,-318.01 352.5,-316.54 353.87,-323.4"/>
+</g>
+<!-- proc~itp -->
+<g id="proc~~converged~~CalledByGraph_node9" class="node">
+<title>proc~itp</title>
+<g id="a_proc~~converged~~CalledByGraph_node9"><a xlink:href="../proc/itp.html" xlink:title="itp_solver%itp">
+<polygon fill="#d9534f" stroke="#d9534f" points="201,-318 114,-318 114,-294 201,-294 201,-318"/>
+<text text-anchor="middle" x="157.5" y="-303.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">itp_solver%itp</text>
+</a>
+</g>
+</g>
+<!-- proc~itp&#45;&gt;proc~converged -->
+<g id="proc~~converged~~CalledByGraph_edge8" class="edge">
+<title>proc~itp&#45;&gt;proc~converged</title>
+<path fill="none" stroke="#000000" d="M201.22,-306C238.93,-306 294.86,-306 340.59,-306"/>
+<polygon fill="#000000" stroke="#000000" points="340.78,-309.5 350.78,-306 340.78,-302.5 340.78,-309.5"/>
+</g>
+<!-- proc~modab -->
+<g id="proc~~converged~~CalledByGraph_node10" class="node">
+<title>proc~modab</title>
+<g id="a_proc~~converged~~CalledByGraph_node10"><a xlink:href="../proc/modab.html" xlink:title="modab_solver%ModAB">
+<polygon fill="#d9534f" stroke="#d9534f" points="225,-276 90,-276 90,-252 225,-252 225,-276"/>
+<text text-anchor="middle" x="157.5" y="-261.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">modab_solver%ModAB</text>
+</a>
+</g>
+</g>
+<!-- proc~modab&#45;&gt;proc~converged -->
+<g id="proc~~converged~~CalledByGraph_edge9" class="edge">
+<title>proc~modab&#45;&gt;proc~converged</title>
+<path fill="none" stroke="#000000" d="M225.28,-271.98C253.09,-275.55 285.67,-280.08 315,-285 327.33,-287.07 340.43,-289.52 353.02,-292"/>
+<polygon fill="#000000" stroke="#000000" points="352.5,-295.46 362.99,-293.99 353.87,-288.6 352.5,-295.46"/>
+</g>
+<!-- proc~muller -->
+<g id="proc~~converged~~CalledByGraph_node11" class="node">
+<title>proc~muller</title>
+<g id="a_proc~~converged~~CalledByGraph_node11"><a xlink:href="../proc/muller.html" xlink:title="muller_solver%muller">
+<polygon fill="#d9534f" stroke="#d9534f" points="222,-234 93,-234 93,-210 222,-210 222,-234"/>
+<text text-anchor="middle" x="157.5" y="-219.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">muller_solver%muller</text>
+</a>
+</g>
+</g>
+<!-- proc~muller&#45;&gt;proc~converged -->
+<g id="proc~~converged~~CalledByGraph_edge10" class="edge">
+<title>proc~muller&#45;&gt;proc~converged</title>
+<path fill="none" stroke="#000000" d="M222.33,-224.62C251.27,-227.31 285.53,-232.61 315,-243 344.66,-253.46 375.01,-273.07 395.21,-287.65"/>
+<polygon fill="#000000" stroke="#000000" points="393.35,-290.63 403.48,-293.75 397.51,-284.99 393.35,-290.63"/>
+</g>
+<!-- proc~pegasus -->
+<g id="proc~~converged~~CalledByGraph_node12" class="node">
+<title>proc~pegasus</title>
+<g id="a_proc~~converged~~CalledByGraph_node12"><a xlink:href="../proc/pegasus.html" xlink:title="pegasus_solver%pegasus">
+<polygon fill="#d9534f" stroke="#d9534f" points="231.5,-192 83.5,-192 83.5,-168 231.5,-168 231.5,-192"/>
+<text text-anchor="middle" x="157.5" y="-177.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">pegasus_solver%pegasus</text>
+</a>
+</g>
+</g>
+<!-- proc~pegasus&#45;&gt;proc~converged -->
+<g id="proc~~converged~~CalledByGraph_edge11" class="edge">
+<title>proc~pegasus&#45;&gt;proc~converged</title>
+<path fill="none" stroke="#000000" d="M231.51,-179.98C258.86,-182.45 289.48,-188.3 315,-201 354.28,-220.55 387.49,-260.83 405.21,-285.43"/>
+<polygon fill="#000000" stroke="#000000" points="402.41,-287.53 411.02,-293.71 408.14,-283.51 402.41,-287.53"/>
+</g>
+<!-- proc~rbp -->
+<g id="proc~~converged~~CalledByGraph_node13" class="node">
+<title>proc~rbp</title>
+<g id="a_proc~~converged~~CalledByGraph_node13"><a xlink:href="../proc/rbp.html" xlink:title="rbp_solver%rbp">
+<polygon fill="#d9534f" stroke="#d9534f" points="205.5,-150 109.5,-150 109.5,-126 205.5,-126 205.5,-150"/>
+<text text-anchor="middle" x="157.5" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rbp_solver%rbp</text>
+</a>
+</g>
+</g>
+<!-- proc~rbp&#45;&gt;proc~converged -->
+<g id="proc~~converged~~CalledByGraph_edge12" class="edge">
+<title>proc~rbp&#45;&gt;proc~converged</title>
+<path fill="none" stroke="#000000" d="M205.55,-134.79C238.44,-134.71 282.17,-139.13 315,-159 363.99,-188.65 396.12,-251.13 410.43,-284.28"/>
+<polygon fill="#000000" stroke="#000000" points="407.38,-286.05 414.45,-293.93 413.84,-283.35 407.38,-286.05"/>
+</g>
+<!-- proc~regula_falsi -->
+<g id="proc~~converged~~CalledByGraph_node14" class="node">
+<title>proc~regula_falsi</title>
+<g id="a_proc~~converged~~CalledByGraph_node14"><a xlink:href="../proc/regula_falsi.html" xlink:title="regula_falsi_solver%regula_falsi">
+<polygon fill="#d9534f" stroke="#d9534f" points="248,-108 67,-108 67,-84 248,-84 248,-108"/>
+<text text-anchor="middle" x="157.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">regula_falsi_solver%regula_falsi</text>
+</a>
+</g>
+</g>
+<!-- proc~regula_falsi&#45;&gt;proc~converged -->
+<g id="proc~~converged~~CalledByGraph_edge13" class="edge">
+<title>proc~regula_falsi&#45;&gt;proc~converged</title>
+<path fill="none" stroke="#000000" d="M248.15,-93.86C271.51,-96.94 295.55,-103.68 315,-117 374.28,-157.61 403.12,-243.5 413.85,-284"/>
+<polygon fill="#000000" stroke="#000000" points="410.46,-284.86 416.3,-293.7 417.24,-283.15 410.46,-284.86"/>
+</g>
+<!-- proc~ridders -->
+<g id="proc~~converged~~CalledByGraph_node15" class="node">
+<title>proc~ridders</title>
+<g id="a_proc~~converged~~CalledByGraph_node15"><a xlink:href="../proc/ridders.html" xlink:title="ridders_solver%ridders">
+<polygon fill="#d9534f" stroke="#d9534f" points="225,-66 90,-66 90,-42 225,-42 225,-66"/>
+<text text-anchor="middle" x="157.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">ridders_solver%ridders</text>
+</a>
+</g>
+</g>
+<!-- proc~ridders&#45;&gt;proc~converged -->
+<g id="proc~~converged~~CalledByGraph_edge14" class="edge">
+<title>proc~ridders&#45;&gt;proc~converged</title>
+<path fill="none" stroke="#000000" d="M225.24,-48.93C255.28,-49.95 289.61,-56.08 315,-75 384.86,-127.08 408.88,-236.9 416.17,-283.9"/>
+<polygon fill="#000000" stroke="#000000" points="412.72,-284.53 417.61,-293.93 419.65,-283.53 412.72,-284.53"/>
+</g>
+<!-- proc~zhang -->
+<g id="proc~~converged~~CalledByGraph_node16" class="node">
+<title>proc~zhang</title>
+<g id="a_proc~~converged~~CalledByGraph_node16"><a xlink:href="../proc/zhang.html" xlink:title="zhang_solver%zhang">
+<polygon fill="#d9534f" stroke="#d9534f" points="219.5,-24 95.5,-24 95.5,0 219.5,0 219.5,-24"/>
+<text text-anchor="middle" x="157.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">zhang_solver%zhang</text>
+</a>
+</g>
+</g>
+<!-- proc~zhang&#45;&gt;proc~converged -->
+<g id="proc~~converged~~CalledByGraph_edge15" class="edge">
+<title>proc~zhang&#45;&gt;proc~converged</title>
+<path fill="none" stroke="#000000" d="M219.55,-6.16C251.11,-6.35 288.47,-11.97 315,-33 395.55,-96.83 413.74,-230.65 417.83,-283.68"/>
+<polygon fill="#000000" stroke="#000000" points="414.36,-284.24 418.52,-293.98 421.34,-283.77 414.36,-284.24"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">    </span><span class="k">pure function </span><span class="n">converged</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">implicit none</span>
+
+<span class="k">    class</span><span class="p">(</span><span class="n">root_solver</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">me</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="c">!! old value</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="c">!! new value</span>
+<span class="w">    </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">converged</span>
+
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">d</span>
+
+<span class="w">    </span><span class="c">! original way:</span>
+<span class="w">    </span><span class="c">! converged = (abs(b-a) &lt;= abs(b)*me%rtol + me%atol) exit</span>
+
+<span class="w">    </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">d</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">atol</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="c">! absolute</span>
+<span class="w">        </span><span class="n">converged</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">        </span><span class="c">! relative</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="mf">0.0_wp</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            </span><span class="n">converged</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">rtol</span>
+<span class="w">        </span><span class="k">else</span>
+<span class="k">            </span><span class="n">converged</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="w">        </span><span class="k">end if</span>
+<span class="k">    end if</span>
+
+<span class="k">    end function </span><span class="n">converged</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              roots-fortran
+ was developed by Jacob Williams<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

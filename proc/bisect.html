@@ -1,0 +1,626 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Root solvers for modern Fortran">
+    <meta name="author" content="Jacob Williams" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>bisect &ndash; roots-fortran</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">roots-fortran </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../sourcefile/root_module.f90.html">Source File</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>bisect
+      <small>Function</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.3% of total for procedures.">6 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/root_module.F90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/root_module.f90.html'>root_module.F90</a></li>
+                <li class="breadcrumb-item"><a href='../module/root_module.html'>root_module</a></li>
+            <li class="breadcrumb-item active" aria-current="page">bisect</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/bisect.html#src">bisect</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>private pure function bisect(x1, x2) result(x3)  
+</h2>
+    
+
+    <p>Bisection step.</p>
+
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x1~10"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>x1</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x2~10"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>x2</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <h3>Return Value
+        <small>
+          <span class="anchor" id="variable-x3~9"></span>
+          real(kind=wp)
+        </small>
+      </h3>
+      <p>point half way between x1 and x2</p>
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Called by</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~bisect~~CalledByGraph Pages: 1 -->
+<svg id="procbisectCalledByGraph" width="605pt" height="469pt"
+ viewBox="0.00 0.00 605.00 469.39" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~bisect~~CalledByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 465.39)">
+<title>proc~~bisect~~CalledByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-465.39 601,-465.39 601,4 -4,4"/>
+<!-- proc~bisect -->
+<g id="proc~~bisect~~CalledByGraph_node1" class="node">
+<title>proc~bisect</title>
+<polygon fill="none" stroke="black" points="597,-230 543,-230 543,-206 597,-206 597,-230"/>
+<text text-anchor="middle" x="570" y="-215.6" font-family="Helvetica,sans-Serif" font-size="10.50">bisect</text>
+</g>
+<!-- proc~anderson_bjorck_kroger -->
+<g id="proc~~bisect~~CalledByGraph_node2" class="node">
+<title>proc~anderson_bjorck_kroger</title>
+<g id="a_proc~~bisect~~CalledByGraph_node2"><a xlink:href="../proc/anderson_bjorck_kroger.html" xlink:title="anderson_bjorck_kroger_solver%anderson_bjorck_kroger">
+<polygon fill="#d9534f" stroke="#d9534f" points="315,-457 0,-457 0,-433 315,-433 315,-457"/>
+<text text-anchor="middle" x="157.5" y="-442.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">anderson_bjorck_kroger_solver%anderson_bjorck_kroger</text>
+</a>
+</g>
+</g>
+<!-- proc~anderson_bjorck_kroger&#45;&gt;proc~bisect -->
+<g id="proc~~bisect~~CalledByGraph_edge1" class="edge">
+<title>proc~anderson_bjorck_kroger&#45;&gt;proc~bisect</title>
+<path fill="none" stroke="#000000" d="M230.45,-457.01C307.55,-465.61 429.28,-466.32 507,-403 556.82,-362.41 566.85,-280.38 568.7,-240.62"/>
+<polygon fill="#000000" stroke="#000000" points="572.21,-240.49 569.04,-230.38 565.21,-240.26 572.21,-240.49"/>
+</g>
+<!-- proc~secant -->
+<g id="proc~~bisect~~CalledByGraph_node11" class="node">
+<title>proc~secant</title>
+<g id="a_proc~~bisect~~CalledByGraph_node11"><a xlink:href="../proc/secant.html" xlink:title="secant">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="456,-394 402,-394 402,-370 456,-370 456,-394"/>
+<text text-anchor="middle" x="429" y="-379.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">secant</text>
+</a>
+</g>
+</g>
+<!-- proc~anderson_bjorck_kroger&#45;&gt;proc~secant -->
+<g id="proc~~bisect~~CalledByGraph_edge17" class="edge">
+<title>proc~anderson_bjorck_kroger&#45;&gt;proc~secant</title>
+<path fill="none" stroke="#000000" d="M271.06,-432.97C285.94,-430.48 300.9,-427.52 315,-424 341.53,-417.38 370.42,-406.57 392.34,-397.58"/>
+<polygon fill="#000000" stroke="#000000" points="393.71,-400.81 401.59,-393.73 391.01,-394.34 393.71,-400.81"/>
+</g>
+<!-- proc~bdqrf -->
+<g id="proc~~bisect~~CalledByGraph_node3" class="node">
+<title>proc~bdqrf</title>
+<g id="a_proc~~bisect~~CalledByGraph_node3"><a xlink:href="../proc/bdqrf.html" xlink:title="bdqrf_solver%bdqrf">
+<polygon fill="#d9534f" stroke="#d9534f" points="487.5,-314 370.5,-314 370.5,-290 487.5,-290 487.5,-314"/>
+<text text-anchor="middle" x="429" y="-299.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">bdqrf_solver%bdqrf</text>
+</a>
+</g>
+</g>
+<!-- proc~bdqrf&#45;&gt;proc~bisect -->
+<g id="proc~~bisect~~CalledByGraph_edge2" class="edge">
+<title>proc~bdqrf&#45;&gt;proc~bisect</title>
+<path fill="none" stroke="#000000" d="M487.72,-289.89C494.44,-287.44 501.02,-284.5 507,-281 525.64,-270.08 542.53,-252.12 553.96,-238.16"/>
+<polygon fill="#000000" stroke="#000000" points="556.88,-240.11 560.33,-230.09 551.39,-235.77 556.88,-240.11"/>
+</g>
+<!-- proc~bisection -->
+<g id="proc~~bisect~~CalledByGraph_node4" class="node">
+<title>proc~bisection</title>
+<g id="a_proc~~bisect~~CalledByGraph_node4"><a xlink:href="../proc/bisection.html" xlink:title="bisection_solver%bisection">
+<polygon fill="#d9534f" stroke="#d9534f" points="507,-272 351,-272 351,-248 507,-248 507,-272"/>
+<text text-anchor="middle" x="429" y="-257.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">bisection_solver%bisection</text>
+</a>
+</g>
+</g>
+<!-- proc~bisection&#45;&gt;proc~bisect -->
+<g id="proc~~bisect~~CalledByGraph_edge3" class="edge">
+<title>proc~bisection&#45;&gt;proc~bisect</title>
+<path fill="none" stroke="#000000" d="M476.14,-247.9C486.34,-245.09 497.06,-242.04 507,-239 515.52,-236.4 524.63,-233.42 533.17,-230.55"/>
+<polygon fill="#000000" stroke="#000000" points="534.53,-233.78 542.87,-227.24 532.27,-227.15 534.53,-233.78"/>
+</g>
+<!-- proc~itp -->
+<g id="proc~~bisect~~CalledByGraph_node5" class="node">
+<title>proc~itp</title>
+<g id="a_proc~~bisect~~CalledByGraph_node5"><a xlink:href="../proc/itp.html" xlink:title="itp_solver%itp">
+<polygon fill="#d9534f" stroke="#d9534f" points="472.5,-230 385.5,-230 385.5,-206 472.5,-206 472.5,-230"/>
+<text text-anchor="middle" x="429" y="-215.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">itp_solver%itp</text>
+</a>
+</g>
+</g>
+<!-- proc~itp&#45;&gt;proc~bisect -->
+<g id="proc~~bisect~~CalledByGraph_edge4" class="edge">
+<title>proc~itp&#45;&gt;proc~bisect</title>
+<path fill="none" stroke="#000000" d="M472.84,-218C491.91,-218 514.14,-218 532.42,-218"/>
+<polygon fill="#000000" stroke="#000000" points="532.67,-221.5 542.67,-218 532.67,-214.5 532.67,-221.5"/>
+</g>
+<!-- proc~muller -->
+<g id="proc~~bisect~~CalledByGraph_node6" class="node">
+<title>proc~muller</title>
+<g id="a_proc~~bisect~~CalledByGraph_node6"><a xlink:href="../proc/muller.html" xlink:title="muller_solver%muller">
+<polygon fill="#d9534f" stroke="#d9534f" points="493.5,-188 364.5,-188 364.5,-164 493.5,-164 493.5,-188"/>
+<text text-anchor="middle" x="429" y="-173.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">muller_solver%muller</text>
+</a>
+</g>
+</g>
+<!-- proc~muller&#45;&gt;proc~bisect -->
+<g id="proc~~bisect~~CalledByGraph_edge5" class="edge">
+<title>proc~muller&#45;&gt;proc~bisect</title>
+<path fill="none" stroke="#000000" d="M476.14,-188.1C486.34,-190.91 497.06,-193.96 507,-197 515.52,-199.6 524.63,-202.58 533.17,-205.45"/>
+<polygon fill="#000000" stroke="#000000" points="532.27,-208.85 542.87,-208.76 534.53,-202.22 532.27,-208.85"/>
+</g>
+<!-- proc~parabolic -->
+<g id="proc~~bisect~~CalledByGraph_node7" class="node">
+<title>proc~parabolic</title>
+<g id="a_proc~~bisect~~CalledByGraph_node7"><a xlink:href="../proc/parabolic.html" xlink:title="parabolic">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="460.5,-108 397.5,-108 397.5,-84 460.5,-84 460.5,-108"/>
+<text text-anchor="middle" x="429" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">parabolic</text>
+</a>
+</g>
+</g>
+<!-- proc~parabolic&#45;&gt;proc~bisect -->
+<g id="proc~~bisect~~CalledByGraph_edge6" class="edge">
+<title>proc~parabolic&#45;&gt;proc~bisect</title>
+<path fill="none" stroke="#000000" d="M460.79,-101.41C475.89,-105.24 493.64,-111.6 507,-122 532.27,-141.68 550.33,-174.71 560.22,-196.43"/>
+<polygon fill="#000000" stroke="#000000" points="557.09,-198.03 564.3,-205.8 563.51,-195.24 557.09,-198.03"/>
+</g>
+<!-- proc~rbp -->
+<g id="proc~~bisect~~CalledByGraph_node8" class="node">
+<title>proc~rbp</title>
+<g id="a_proc~~bisect~~CalledByGraph_node8"><a xlink:href="../proc/rbp.html" xlink:title="rbp_solver%rbp">
+<polygon fill="#d9534f" stroke="#d9534f" points="205.5,-108 109.5,-108 109.5,-84 205.5,-84 205.5,-108"/>
+<text text-anchor="middle" x="157.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rbp_solver%rbp</text>
+</a>
+</g>
+</g>
+<!-- proc~rbp&#45;&gt;proc~bisect -->
+<g id="proc~~bisect~~CalledByGraph_edge7" class="edge">
+<title>proc~rbp&#45;&gt;proc~bisect</title>
+<path fill="none" stroke="#000000" d="M205.74,-100.37C288.38,-108.6 455.31,-128.05 507,-155 526.27,-165.05 543.19,-183.25 554.47,-197.52"/>
+<polygon fill="#000000" stroke="#000000" points="551.9,-199.93 560.73,-205.79 557.48,-195.7 551.9,-199.93"/>
+</g>
+<!-- proc~rbp&#45;&gt;proc~parabolic -->
+<g id="proc~~bisect~~CalledByGraph_edge12" class="edge">
+<title>proc~rbp&#45;&gt;proc~parabolic</title>
+<path fill="none" stroke="#000000" d="M205.75,-96C257.09,-96 338.27,-96 387.01,-96"/>
+<polygon fill="#000000" stroke="#000000" points="387.18,-99.5 397.18,-96 387.18,-92.5 387.18,-99.5"/>
+</g>
+<!-- proc~regula_falsi_step -->
+<g id="proc~~bisect~~CalledByGraph_node9" class="node">
+<title>proc~regula_falsi_step</title>
+<g id="a_proc~~bisect~~CalledByGraph_node9"><a xlink:href="../proc/regula_falsi_step.html" xlink:title="regula_falsi_step">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="479.5,-66 378.5,-66 378.5,-42 479.5,-42 479.5,-66"/>
+<text text-anchor="middle" x="429" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">regula_falsi_step</text>
+</a>
+</g>
+</g>
+<!-- proc~rbp&#45;&gt;proc~regula_falsi_step -->
+<g id="proc~~bisect~~CalledByGraph_edge14" class="edge">
+<title>proc~rbp&#45;&gt;proc~regula_falsi_step</title>
+<path fill="none" stroke="#000000" d="M205.5,-90.32C236.63,-86.4 278.32,-80.87 315,-75 332.38,-72.22 351.19,-68.86 368.39,-65.66"/>
+<polygon fill="#000000" stroke="#000000" points="369.13,-69.08 378.31,-63.79 367.83,-62.2 369.13,-69.08"/>
+</g>
+<!-- proc~regula_falsi_step&#45;&gt;proc~bisect -->
+<g id="proc~~bisect~~CalledByGraph_edge8" class="edge">
+<title>proc~regula_falsi_step&#45;&gt;proc~bisect</title>
+<path fill="none" stroke="#000000" d="M479.67,-60.57C489.55,-63.7 499.25,-68.29 507,-75 543.77,-106.86 559.47,-164.51 565.56,-196"/>
+<polygon fill="#000000" stroke="#000000" points="562.14,-196.73 567.34,-205.97 569.03,-195.51 562.14,-196.73"/>
+</g>
+<!-- proc~ridders -->
+<g id="proc~~bisect~~CalledByGraph_node10" class="node">
+<title>proc~ridders</title>
+<g id="a_proc~~bisect~~CalledByGraph_node10"><a xlink:href="../proc/ridders.html" xlink:title="ridders_solver%ridders">
+<polygon fill="#d9534f" stroke="#d9534f" points="496.5,-24 361.5,-24 361.5,0 496.5,0 496.5,-24"/>
+<text text-anchor="middle" x="429" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">ridders_solver%ridders</text>
+</a>
+</g>
+</g>
+<!-- proc~ridders&#45;&gt;proc~bisect -->
+<g id="proc~~bisect~~CalledByGraph_edge9" class="edge">
+<title>proc~ridders&#45;&gt;proc~bisect</title>
+<path fill="none" stroke="#000000" d="M494.46,-24.08C499.01,-26.54 503.27,-29.48 507,-33 553.4,-76.82 565.08,-156.34 568.02,-195.28"/>
+<polygon fill="#000000" stroke="#000000" points="564.54,-195.79 568.66,-205.55 571.53,-195.36 564.54,-195.79"/>
+</g>
+<!-- proc~secant&#45;&gt;proc~bisect -->
+<g id="proc~~bisect~~CalledByGraph_edge10" class="edge">
+<title>proc~secant&#45;&gt;proc~bisect</title>
+<path fill="none" stroke="#000000" d="M456.26,-378.57C472.56,-375.24 493,-368.71 507,-356 541.47,-324.71 557.93,-270.6 564.79,-240.27"/>
+<polygon fill="#000000" stroke="#000000" points="568.27,-240.76 566.9,-230.25 561.42,-239.32 568.27,-240.76"/>
+</g>
+<!-- proc~zhang -->
+<g id="proc~~bisect~~CalledByGraph_node12" class="node">
+<title>proc~zhang</title>
+<g id="a_proc~~bisect~~CalledByGraph_node12"><a xlink:href="../proc/zhang.html" xlink:title="zhang_solver%zhang">
+<polygon fill="#d9534f" stroke="#d9534f" points="219.5,-331 95.5,-331 95.5,-307 219.5,-307 219.5,-331"/>
+<text text-anchor="middle" x="157.5" y="-316.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">zhang_solver%zhang</text>
+</a>
+</g>
+</g>
+<!-- proc~zhang&#45;&gt;proc~bisect -->
+<g id="proc~~bisect~~CalledByGraph_edge11" class="edge">
+<title>proc~zhang&#45;&gt;proc~bisect</title>
+<path fill="none" stroke="#000000" d="M219.54,-326.94C306.2,-337.02 459.64,-350.03 507,-323 538.05,-305.28 555.11,-265.24 563.13,-240.05"/>
+<polygon fill="#000000" stroke="#000000" points="566.55,-240.85 566.03,-230.27 559.83,-238.86 566.55,-240.85"/>
+</g>
+<!-- proc~zhang&#45;&gt;proc~secant -->
+<g id="proc~~bisect~~CalledByGraph_edge19" class="edge">
+<title>proc~zhang&#45;&gt;proc~secant</title>
+<path fill="none" stroke="#000000" d="M219.52,-323.13C248.8,-326.13 284.14,-331.27 315,-340 331.85,-344.77 334.69,-349.64 351,-356 364.3,-361.19 379.12,-366.34 392.18,-370.67"/>
+<polygon fill="#000000" stroke="#000000" points="391.17,-374.02 401.77,-373.81 393.35,-367.37 391.17,-374.02"/>
+</g>
+<!-- proc~anderson_bjorck -->
+<g id="proc~~bisect~~CalledByGraph_node13" class="node">
+<title>proc~anderson_bjorck</title>
+<g id="a_proc~~bisect~~CalledByGraph_node13"><a xlink:href="../proc/anderson_bjorck.html" xlink:title="anderson_bjorck_solver%anderson_bjorck">
+<polygon fill="#d9534f" stroke="#d9534f" points="275,-415 40,-415 40,-391 275,-391 275,-415"/>
+<text text-anchor="middle" x="157.5" y="-400.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">anderson_bjorck_solver%anderson_bjorck</text>
+</a>
+</g>
+</g>
+<!-- proc~anderson_bjorck&#45;&gt;proc~secant -->
+<g id="proc~~bisect~~CalledByGraph_edge16" class="edge">
+<title>proc~anderson_bjorck&#45;&gt;proc~secant</title>
+<path fill="none" stroke="#000000" d="M275.14,-393.91C317.26,-390.63 361.79,-387.16 391.85,-384.82"/>
+<polygon fill="#000000" stroke="#000000" points="392.15,-388.3 401.85,-384.04 391.61,-381.33 392.15,-388.3"/>
+</g>
+<!-- proc~illinois -->
+<g id="proc~~bisect~~CalledByGraph_node14" class="node">
+<title>proc~illinois</title>
+<g id="a_proc~~bisect~~CalledByGraph_node14"><a xlink:href="../proc/illinois.html" xlink:title="illinois_solver%illinois">
+<polygon fill="#d9534f" stroke="#d9534f" points="221,-66 94,-66 94,-42 221,-42 221,-66"/>
+<text text-anchor="middle" x="157.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">illinois_solver%illinois</text>
+</a>
+</g>
+</g>
+<!-- proc~illinois&#45;&gt;proc~regula_falsi_step -->
+<g id="proc~~bisect~~CalledByGraph_edge13" class="edge">
+<title>proc~illinois&#45;&gt;proc~regula_falsi_step</title>
+<path fill="none" stroke="#000000" d="M221.01,-54C265.34,-54 324.5,-54 368.21,-54"/>
+<polygon fill="#000000" stroke="#000000" points="368.41,-57.5 378.41,-54 368.41,-50.5 368.41,-57.5"/>
+</g>
+<!-- proc~pegasus -->
+<g id="proc~~bisect~~CalledByGraph_node15" class="node">
+<title>proc~pegasus</title>
+<g id="a_proc~~bisect~~CalledByGraph_node15"><a xlink:href="../proc/pegasus.html" xlink:title="pegasus_solver%pegasus">
+<polygon fill="#d9534f" stroke="#d9534f" points="231.5,-373 83.5,-373 83.5,-349 231.5,-349 231.5,-373"/>
+<text text-anchor="middle" x="157.5" y="-358.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">pegasus_solver%pegasus</text>
+</a>
+</g>
+</g>
+<!-- proc~pegasus&#45;&gt;proc~secant -->
+<g id="proc~~bisect~~CalledByGraph_edge18" class="edge">
+<title>proc~pegasus&#45;&gt;proc~secant</title>
+<path fill="none" stroke="#000000" d="M231.79,-366.71C283.69,-370.76 351.08,-376.01 391.86,-379.18"/>
+<polygon fill="#000000" stroke="#000000" points="391.63,-382.68 401.87,-379.96 392.18,-375.7 391.63,-382.68"/>
+</g>
+<!-- proc~regula_falsi -->
+<g id="proc~~bisect~~CalledByGraph_node16" class="node">
+<title>proc~regula_falsi</title>
+<g id="a_proc~~bisect~~CalledByGraph_node16"><a xlink:href="../proc/regula_falsi.html" xlink:title="regula_falsi_solver%regula_falsi">
+<polygon fill="#d9534f" stroke="#d9534f" points="248,-24 67,-24 67,0 248,0 248,-24"/>
+<text text-anchor="middle" x="157.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">regula_falsi_solver%regula_falsi</text>
+</a>
+</g>
+</g>
+<!-- proc~regula_falsi&#45;&gt;proc~regula_falsi_step -->
+<g id="proc~~bisect~~CalledByGraph_edge15" class="edge">
+<title>proc~regula_falsi&#45;&gt;proc~regula_falsi_step</title>
+<path fill="none" stroke="#000000" d="M248.41,-23.27C270.23,-26.23 293.48,-29.56 315,-33 332.38,-35.78 351.19,-39.14 368.39,-42.34"/>
+<polygon fill="#000000" stroke="#000000" points="367.83,-45.8 378.31,-44.21 369.13,-38.92 367.83,-45.8"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">    </span><span class="k">pure function </span><span class="n">bisect</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">x3</span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">implicit none</span>
+
+<span class="k">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">x3</span><span class="w"> </span><span class="c">!! point half way between x1 and x2</span>
+
+<span class="w">    </span><span class="n">x3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">x1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">x2</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">2.0_wp</span>
+
+<span class="w">    </span><span class="k">end function </span><span class="n">bisect</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              roots-fortran
+ was developed by Jacob Williams<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>
