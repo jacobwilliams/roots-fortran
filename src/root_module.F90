@@ -2776,17 +2776,18 @@
     real(wp),intent(out)   :: fzero   !! value of `f` at the root (`f(xzero)`)
     integer,intent(out)    :: iflag   !! status flag (`0`=root found, `-2`=max iterations reached)
 
-    real(wp) :: x1,x2,x0,x3,y1,y2,y3,ym,m,r,k,threshold
+    real(wp) :: x1,x2,x3,y1,y2,y3,ym,m,r,k
     integer :: i  !! iteration counter
     logical :: root_found, bis
     integer :: side !! for tracking the side
+    real(wp) :: threshold !! threshold to fall back to bisection if AB fails to shrink the interval enough
 
     iflag = 0
     side = 0
     x1 = ax; y1 = fax
     x2 = bx; y2 = fbx
     bis = .true.
-    threshold = x2-x1 !! threshold to fall back to bisection if AB fails to shrink the interval enough
+    threshold = x2-x1
     do i = 1, me%maxiter
         if (bis) then
             x3 = 0.5_wp*(x1+x2)
@@ -2794,8 +2795,8 @@
             if (me%solution(x3,y3,xzero,fzero)) return
             ym = 0.5_wp*(y1+y2)
             r  = 1.0_wp - abs(ym/(y2-y1))  ! symmetry factor
-            k  = r*r                         ! deviation factor
-            if (abs(ym-y3) < k*(abs(ym) + abs(y3))) then
+            k  = r*r                       ! deviation factor
+            if (abs(ym-y3) < k*(abs(ym) + abs(y3))) then ! function is close enough to linear
                 bis = .false.
                 threshold = 16.0_wp*(x2-x1)   ! safety factor of 4 bisection iters = 2^4
             end if
