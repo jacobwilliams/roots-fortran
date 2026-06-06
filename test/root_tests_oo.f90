@@ -21,7 +21,7 @@ program root_tests_oo
     character(len=*),parameter :: fmt  = '(A25,   1X,A25,   1X,A25,  1X,A5,1X,A5)' !! format for header
     character(len=*),parameter :: dfmt = '(E25.10,1X,E25.10,1X,E25.6,1X,I5,1X,I5)' !! format for results
 
-    type,extends(modab_solver) :: my_solver
+    type,extends(brenth_solver) :: my_solver
         integer :: ifunc = 0
         integer :: n = 1
     end type my_solver

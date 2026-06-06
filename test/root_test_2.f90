@@ -7,7 +7,7 @@ program root_test_2
     real(wp) :: xzero
     integer :: k, iflag
     real(wp),dimension(n) :: p, out
-    type(modab_solver) :: solver
+    type(brenth_solver) :: solver
 
     write(*,*) ''
     write(*,*) '-------------------------------------------------'
