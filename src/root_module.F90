@@ -2760,7 +2760,7 @@
 !    non-linear equations in structural mechanics", IOP Conf. Ser.: Mater. Sci. Eng. 1276,
 !    Feb. 2023.
 !  * Ganchovski, N.; Smith, O.; Rackauckas, C.; Tomov, L.; Traykov, A.
-!    Improvements to the Modified Anderson–Björck (modAB) Root-Finding Algorithm.
+!    Improvements to the Modified Anderson-Björck (modAB) Root-Finding Algorithm.
 !    Algorithms 2026, 19, 332. https://doi.org/10.3390/a19050332
 
     subroutine ModAB(me,ax,bx,fax,fbx,xzero,fzero,iflag)
