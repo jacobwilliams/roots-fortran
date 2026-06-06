@@ -2753,12 +2753,15 @@
 
 !*****************************************************************************************
 !>
-!  Ganchovski & Traykov "Modified Anderson-Bjork" method.
+!  Ganchovski & Traykov "Modified Anderson-Bjork" method (with 2026 improvements)
 !
 !### See also
 !  * N Ganchovski and A Traykov, "Modified Anderson-Bjork's method for solving
 !    non-linear equations in structural mechanics", IOP Conf. Ser.: Mater. Sci. Eng. 1276,
 !    Feb. 2023.
+!  * Ganchovski, N.; Smith, O.; Rackauckas, C.; Tomov, L.; Traykov, A.
+!    Improvements to the Modified Anderson-Björck (modAB) Root-Finding Algorithm.
+!    Algorithms 2026, 19, 332. https://doi.org/10.3390/a19050332
 
     subroutine ModAB(me,ax,bx,fax,fbx,xzero,fzero,iflag)
 
@@ -2773,56 +2776,65 @@
     real(wp),intent(out)   :: fzero   !! value of `f` at the root (`f(xzero)`)
     integer,intent(out)    :: iflag   !! status flag (`0`=root found, `-2`=max iterations reached)
 
-    real(wp) :: x1,x2,x0,x3,y1,y2,y3,ym,m
+    real(wp) :: x1,x2,x0,x3,y1,y2,y3,ym,m,r,k,threshold
     integer :: i  !! iteration counter
     logical :: root_found, bis
     integer :: side !! for tracking the side
-
-    integer,parameter :: expected_iters = -int(log(epsilon(1.0_wp))/2.0_wp) + 1
 
     iflag = 0
     side = 0
     x1 = ax; y1 = fax
     x2 = bx; y2 = fbx
-    x0 = x1
     bis = .true.
-
+    threshold = x2-x1 !! threshold to fall back to bisection if AB fails to shrink the interval enough
     do i = 1, me%maxiter
-
         if (bis) then
-            x3 = bisect(x1,x2)
+            x3 = 0.5_wp*(x1+x2)
             y3 = me%f(x3)
             if (me%solution(x3,y3,xzero,fzero)) return
-            ym = bisect(y1,y2)
-            if (abs(ym-y3) < 0.25_wp*(abs(ym) + abs(y3))) bis = .false.
+            ym = 0.5_wp*(y1+y2)
+            r  = 1.0_wp - abs(ym/(y2-y1))  ! symmetry factor
+            k  = r*r                         ! deviation factor
+            if (abs(ym-y3) < k*(abs(ym) + abs(y3))) then
+                bis = .false.
+                threshold = 16.0_wp*(x2-x1)   ! safety factor of 4 bisection iters = 2^4
+            end if
         else
-            x3 = regula_falsi_step(x1,x2,y1,y2,ax,bx)
-            y3 = me%f(x3)
-            if (me%solution(x3,y3,xzero,fzero)) return
+            x3 = (x1*y2-y1*x2)/(y2-y1)
+            ! Clamp secant point to the interval to handle floating-point errors
+            if (x3 <= x1) then
+                x3 = x1
+                y3 = y1  ! clamped: reuse known y1
+            else if (x3 >= x2) then
+                x3 = x2
+                y3 = y2  ! clamped: reuse known y2
+            else
+                y3 = me%f(x3)  ! not clamped: evaluate y3
+                if (me%solution(x3,y3,xzero,fzero)) return
+            end if
+            threshold = 0.5_wp * threshold
         end if
 
         ! convergence check:
-        root_found = me%converged(x3,x0)
+        root_found = me%converged(x1,x2)
         if (root_found .or. i==me%maxiter) then
             xzero = x3
             fzero = y3
             if (.not. root_found) iflag = -2  ! max iterations reached
             exit
         end if
-
-        x0 = x3
         select case (side)
         case(1)
             m = 1.0_wp - y3/y1
             if (m<=0.0_wp) then
-                y2 = y2 / 2.0_wp
+                y2 = y2 * 0.5_wp
             else
                 y2 = y2 * m
             end if
         case(2)
             m = 1.0_wp - y3/y2
             if (m<=0.0_wp) then
-                y1 = y1 / 2.0_wp
+                y1 = y1 * 0.5_wp
             else
                 y1 = y1 * m
             end if
@@ -2837,9 +2849,8 @@
             x2 = x3
             y2 = y3
         end if
-        if (mod(i,expected_iters) == 0) then
-            ! reset to bisection if expected number of iterations is exceeded
-            bis = .true.
+        if (x2-x1 > threshold) then ! if Anderson-Bjork is not shrinking the interval fast enough
+            bis  = .true. ! reset to bisection.
             side = 0
         end if
 
