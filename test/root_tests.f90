@@ -52,7 +52,6 @@ program root_tests
             'itp                   ', &
             'bdqrf                 ', &
             'rbp                   ', &
-            'modab                 ', &
             'pegasus               ', &
             'toms748               ', &
             'brent                 ', &
@@ -60,6 +59,7 @@ program root_tests
             'anderson_bjorck       ', &
             'brenth                ', &
             'muller                ', &
+            'modab                 ', &
             'chandrupatla          ' ] !! method names - the order here is roughly the order of worst to best (see the root report output file). - but with bis and rf as the first wo
 
     integer,dimension(number_of_methods) :: number_of_wins, ivec, number_of_failures, ivec2

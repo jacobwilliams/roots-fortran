@@ -2762,6 +2762,17 @@
 !  * Ganchovski, N.; Smith, O.; Rackauckas, C.; Tomov, L.; Traykov, A.
 !    Improvements to the Modified Anderson-Björck (modAB) Root-Finding Algorithm.
 !    Algorithms 2026, 19, 332. https://doi.org/10.3390/a19050332
+!  * Includes additional fixes proposed by L. Tomov, as follows:
+!    1. The secant point is clamped to the interval [p1.X, p2.X] before the X-convergence exit
+!    2. The original function values y1 and y2 (without A&B corrections) are stored for later use in bisection fallback
+!  * The A&B phase adds two changes:
+!    1. Rational correction: the A&B secant is corrected for curvature by a 3-point rational
+!       model through the A&B-corrected bracket and the endpoint it most recently dropped
+!       ([[rational_step]]), with the step kept within 0.7 of the distance from the A&B secant
+!       point to the nearer endpoint. The plain A&B secant is used when the correction is NaN
+!       or the curvature changes sign within the bracket.
+!    2. Closing step: an A&B point is kept at least half the x-tolerance away from the endpoint
+!       that was just evaluated, so that one-sided convergence still closes the bracket.
 
     subroutine ModAB(me,ax,bx,fax,fbx,xzero,fzero,iflag)
 
@@ -2771,44 +2782,90 @@
     real(wp),intent(in)    :: ax      !! left endpoint of initial interval
     real(wp),intent(in)    :: bx      !! right endpoint of initial interval
     real(wp),intent(in)    :: fax     !! `f(ax)`
-    real(wp),intent(in)    :: fbx     !! `f(ax)`
+    real(wp),intent(in)    :: fbx     !! `f(bx)`
     real(wp),intent(out)   :: xzero   !! abscissa approximating a zero of `f` in the interval `ax`,`bx`
     real(wp),intent(out)   :: fzero   !! value of `f` at the root (`f(xzero)`)
-    integer,intent(out)    :: iflag   !! status flag (`0`=root found, `-2`=max iterations reached)
+    integer,intent(out)    :: iflag   !! status flag (`0`=root found, `-1`=NaN residual, `-2`=max iterations reached)
 
-    real(wp) :: x1,x2,x3,y1,y2,y3,ym,m,r,k
+    real(wp) :: x1,x2,x3,y1,y2,y3,f1,f2,yl,yr,ym,r,k,dy,h
+    real(wp) :: threshold !! threshold to fall back to bisection if AB fails to shrink the interval enough
+    real(wp) :: xl,fl,xr,fr !! last endpoints dropped on the left and on the right
+    logical :: have_l,have_r !! whether `xl` and `xr` are set
+    logical :: bends !! the curvature changes sign within the bracket
+    integer :: last !! endpoint set by the last evaluation: `1` = `x1`, `2` = `x2`, `0` = none
     integer :: i  !! iteration counter
     logical :: root_found, bis
     integer :: side !! for tracking the side
-    real(wp) :: threshold !! threshold to fall back to bisection if AB fails to shrink the interval enough
+    logical :: switching !! this bisection switches to A&B
+    real(wp) :: margin !! margin factor of the switching test
+    integer,parameter :: max_residual_steps = 3 !! max consecutive A&B steps kept by a 4x residual reduction alone
+    integer :: residual_steps !! consecutive A&B steps kept by the residual reduction alone
+    real(wp) :: y_min !! best true residual of the bracket before the update
+    real(wp),parameter :: plateau_ratio = 0.99_wp
+        !! A switching bisection whose midpoint reduces the residual of the replaced endpoint by less
+        !! than 1 % lies on a plateau; the first A&B step is then not rescaled.
 
     iflag = 0
     side = 0
-    x1 = ax; y1 = fax
-    x2 = bx; y2 = fbx
+    x1 = ax; y1 = fax; f1 = y1   ! f1, f2: true residuals, kept unmodified by A&B corrections
+    x2 = bx; y2 = fbx; f2 = y2
     bis = .true.
+    ! Each return from A&B to bisection halves the margin of the switching test, so that
+    ! borderline switches are rejected after unsuccessful A&B phases.
+    margin = 1.0_wp
+    residual_steps = 0
     threshold = x2-x1
+    last = 0
+    have_l = .false.; have_r = .false.
+    xl = 0.0_wp; fl = 0.0_wp; xr = 0.0_wp; fr = 0.0_wp
     do i = 1, me%maxiter
+        switching = .false.
         if (bis) then
-            x3 = 0.5_wp*(x1+x2)
+            x3 = safe_midpoint(x1,x2)
             y3 = me%f(x3)
             if (me%solution(x3,y3,xzero,fzero)) return
-            ym = 0.5_wp*(y1+y2)
-            r  = 1.0_wp - abs(ym/(y2-y1))  ! symmetry factor
-            k  = r*r                       ! deviation factor
-            if (abs(ym-y3) < k*(abs(ym) + abs(y3))) then ! function is close enough to linear
-                bis = .false.
-                threshold = 16.0_wp*(x2-x1)   ! safety factor of 4 bisection iters = 2^4
+            dy = f2-f1
+            if (is_finite(dy)) then           ! avoids overflow in the calculations below
+                ym = (f1+f2)*0.5_wp            ! chord ordinate at the midpoint; f1, f2 have opposite signs
+                r = 1.0_wp - abs(ym/dy)        ! symmetry factor
+                k = r*r                        ! deviation factor
+                ! k*|ym| + k*|y3| cannot overflow; an infinite y3 fails the test.
+                if (abs(ym-y3) < (k*abs(ym) + k*abs(y3))*margin) then
+                    bis = .false.
+                    switching = .true.
+                    threshold = 2.0_wp*(x2-x1)   ! safety factor
+                    y1 = f1; y2 = f2             ! A&B starts from the true residuals
+                end if
             end if
         else
-            x3 = (x1*y2-y1*x2)/(y2-y1)
-            ! Clamp secant point to the interval to handle floating-point errors
-            if (x3 <= x1) then
-                x3 = x1
-                y3 = y1  ! clamped: reuse known y1
-            else if (x3 >= x2) then
-                x3 = x2
-                y3 = y2  ! clamped: reuse known y2
+            ! Rational correction through the endpoint dropped by the last update, or the A&B
+            ! secant when the curvature changes sign within the bracket. `have_l` and `have_r`
+            ! tell which dropped endpoints exist; the curvature test needs both.
+            bends = .false.
+            if (have_l .and. have_r) bends = curvature_changes_sign(xl,fl,x1,f1,x2,f2,xr,fr)
+            if (bends) then
+                x3 = safe_secant(x1,y1,x2,y2)
+            else if (last == 1 .and. have_l) then
+                x3 = rational_step(x1,y1,x2,y2,xl,fl)
+            else if (last == 2 .and. have_r) then
+                x3 = rational_step(x1,y1,x2,y2,xr,fr)
+            else
+                x3 = safe_secant(x1,y1,x2,y2)
+            end if
+            ! Closing step: when A&B converges from one side, its next point lands within half
+            ! the x-tolerance of the endpoint just evaluated and the bracket does not shrink.
+            ! A step of that size towards the far side then crosses the root and closes the bracket.
+            h = 0.5_wp*max(me%atol, me%rtol*abs(x3))
+            if (last == 1) then
+                if (x3-x1 < h .and. x1+h < x2) x3 = x1+h
+            else if (x2-x3 < h .and. x2-h > x1) then
+                x3 = x2-h
+            end if
+            ! If x3 got clamped, reuse the true residual stored at the endpoint.
+            if (x3 == x1) then
+                y3 = f1
+            else if (x3 == x2) then
+                y3 = f2
             else
                 y3 = me%f(x3)  ! not clamped: evaluate y3
                 if (me%solution(x3,y3,xzero,fzero)) return
@@ -2824,40 +2881,336 @@
             if (.not. root_found) iflag = -2  ! max iterations reached
             exit
         end if
-        select case (side)
-        case(1)
-            m = 1.0_wp - y3/y1
-            if (m<=0.0_wp) then
-                y2 = y2 * 0.5_wp
-            else
-                y2 = y2 * m
-            end if
-        case(2)
-            m = 1.0_wp - y3/y2
-            if (m<=0.0_wp) then
-                y1 = y1 * 0.5_wp
-            else
-                y1 = y1 * m
-            end if
-        end select
 
-        if (sign(1.0_wp,y1) == sign(1.0_wp,y3)) then
-            if (.not. bis) side = 1
-            x1 = x3
-            y1 = y3
-        else
-            if (.not. bis) side = 2
-            x2 = x3
-            y2 = y3
+        ! A NaN residual has no usable sign, so the bracket cannot be updated
+        ! and [[same_sign]] must not be reached with it.
+        if (is_nan(y3)) then
+            xzero = x3
+            fzero = y3
+            iflag = -1   ! error: the function returned NaN
+            exit
         end if
-        if (x2-x1 > threshold) then ! if Anderson-Bjork is not shrinking the interval fast enough
-            bis  = .true. ! reset to bisection.
-            side = 0
+
+        ! The sign tests use the true residual f1: the auxiliary y1 may have
+        ! underflowed to zero after repeated A&B corrections.
+        if (bis) then ! Bisection step: only the true residuals are tracked
+            if (same_sign(f1,y3)) then
+                xl = x1; fl = f1; have_l = .true.
+                x1 = x3; f1 = y3; last = 1
+            else
+                xr = x2; fr = f2; have_r = .true.
+                x2 = x3; f2 = y3; last = 2
+            end if
+        else ! Anderson-Bjork step
+            yl = f1; yr = f2   ! true residuals of the bracket before the update
+            if (same_sign(f1,y3)) then
+                if (side == 1) then
+                    y2 = y2*ab_factor(y3,y1) ! A&B correction of the right side
+                else if (.not. switching .or. abs(y3) <= plateau_ratio*abs(yl)) then
+                    side = 1 ! a switching bisection on a plateau starts the A&B phase afresh
+                end if
+                if (x3 /= x1) then
+                    xl = x1; fl = f1; have_l = .true.
+                end if
+                x1 = x3; y1 = y3; f1 = y3; last = 1
+            else
+                if (side == 2) then
+                    y1 = y1*ab_factor(y3,y2) ! A&B correction of the left side
+                else if (.not. switching .or. abs(y3) <= plateau_ratio*abs(yr)) then
+                    side = 2 ! a switching bisection on a plateau starts the A&B phase afresh
+                end if
+                if (x3 /= x2) then
+                    xr = x2; fr = f2; have_r = .true.
+                end if
+                x2 = x3; y2 = y3; f2 = y3; last = 2
+            end if
+            ! if Anderson-Bjork is not shrinking the interval fast enough, fall back to bisection,
+            ! unless it still shrinks the residual more than 42 times
+            ! (2^(1074/200) = 41.4: at this rate the residual underflows within 200 steps from |y| = 1),
+            ! or more than 4 times for no more than max_residual_steps consecutive steps. Near a root
+            ! where |f| grows as x^2, a 4x smaller residual halves the distance to the root, as bisection does.
+            if (x2-x1 > threshold) then
+                y_min = min(abs(yl),abs(yr))
+                if (42.0_wp*abs(y3) < y_min) then
+                    ! fast residual progress: needs no cap
+                else if (residual_steps < max_residual_steps .and. 4.0_wp*abs(y3) < y_min) then
+                    residual_steps = residual_steps + 1
+                else
+                    bis  = .true. ! reset to bisection.
+                    side = 0
+                    margin = 0.5_wp*margin
+                    residual_steps = 0
+                end if
+            else
+                residual_steps = 0
+            end if
         end if
 
     end do
 
     end subroutine ModAB
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Shared safeguards for the bracketing solvers.
+!
+!  These helpers carry the overflow/NaN postconditions that [[ModAB]] relies on.
+!  They are the Fortran form of the C# reference implementation in
+!  https://github.com/Proektsoft-EOOD/ModAB-Root-Finding (`C#/Root/Node.cs` and
+!  `C#/Root/Solvers/{Solver,RModAB}.cs`), so a change to the numerics belongs
+!  in one place rather than inline in the solver.
+!
+!  NaN and infinity are detected with ordered comparisons ([[is_nan]],
+!  [[is_finite]]) rather than `ieee_arithmetic`. A procedure that uses that
+!  module must save and restore the floating-point environment on every call,
+!  which cost ModAB 1.3 us per solve (5x its run time) with gfortran on Windows.
+!  Ordered comparisons are exact under IEEE semantics; they would only break
+!  under `-ffast-math` / `-ffinite-math-only`, which no fpm profile uses.
+
+!*****************************************************************************************
+!>
+!  Returns true only when `x` is NaN: every ordered comparison with NaN is false.
+
+    elemental function is_nan(x) result(nan)
+
+    implicit none
+
+    real(wp),intent(in) :: x
+    logical :: nan
+
+    nan = .not. (abs(x) >= 0.0_wp)
+
+    end function is_nan
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Returns true only when `x` is neither infinite nor NaN.
+
+    elemental function is_finite(x) result(finite)
+
+    implicit none
+
+    real(wp),intent(in) :: x
+    logical :: finite
+
+    finite = abs(x) <= huge(x)
+
+    end function is_finite
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Returns true only when both values have the same non-zero sign.
+!
+!  Comparisons with NaN are false, so a caller must reject NaN before using this
+!  predicate to update a bracket.
+
+    pure function same_sign(x,y) result(same)
+
+    implicit none
+
+    real(wp),intent(in) :: x
+    real(wp),intent(in) :: y
+    logical :: same
+
+    same = (x < 0.0_wp .and. y < 0.0_wp) .or. (x > 0.0_wp .and. y > 0.0_wp)
+
+    end function same_sign
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Midpoint without first forming `x1 + x2`, which can overflow for finite
+!  endpoints of the same sign.
+!
+!  For finite ordered endpoints the result lies in the closed bracket, so
+!  callers need no extra clamp.
+
+    pure function safe_midpoint(x1,x2) result(xm)
+
+    implicit none
+
+    real(wp),intent(in) :: x1
+    real(wp),intent(in) :: x2
+    real(wp) :: xm
+
+    xm = 0.5_wp*x1 + 0.5_wp*x2
+
+    end function safe_midpoint
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Safeguarded false-position/secant point for an ordered bracket `[x1,x2]`.
+!
+!  The textbook formula `(x1*y2 - x2*y1)/(y2 - y1)` may overflow although the
+!  mathematical intersection is finite. With opposite-sign ordinates, writing
+!  `a = |y1|` and `b = |y2|` gives the equivalent convex combination
+!
+!  `x = (b/(a+b))*x1 + (a/(a+b))*x2`
+!
+!  whose weights lie in `[0,1]` and sum to 1. This helper owns the complete
+!  postcondition every caller needs: the returned point is finite and lies in
+!  `[x1,x2]`. Where the secant geometry cannot deliver that, the safe midpoint
+!  is returned instead.
+
+    pure function safe_secant(x1,y1,x2,y2) result(x)
+
+    implicit none
+
+    real(wp),intent(in) :: x1
+    real(wp),intent(in) :: y1
+    real(wp),intent(in) :: x2
+    real(wp),intent(in) :: y2
+    real(wp) :: x
+
+    real(wp) :: a,b,den
+
+    a = abs(y1)
+    b = abs(y2)
+    den = a + b
+
+    ! One test on the denominator covers every unusable case: a NaN ordinate
+    ! propagates into it, two zero ordinates make it zero, and an infinite
+    ! ordinate or an overflowing sum makes it infinite. A zero magnitude does
+    ! NOT indicate a root here, because the ordinates may be Anderson-Bjorck
+    ! auxiliary values, so bisection is the safe and neutral fallback.
+    if (.not. (den > 0.0_wp)) then
+        x = safe_midpoint(x1,x2)
+        return
+    end if
+
+    if (.not. is_finite(den)) then
+        ! An infinite ordinate carries no usable slope. Otherwise a + b merely
+        ! overflowed, and halving both restores it without changing the ratio
+        ! that defines the weights.
+        if (.not. is_finite(a) .or. .not. is_finite(b)) then
+            x = safe_midpoint(x1,x2)
+            return
+        end if
+        a = 0.5_wp*a
+        b = 0.5_wp*b
+        den = a + b
+    end if
+
+    x = (b/den)*x1 + (a/den)*x2
+
+    ! In exact arithmetic the convex combination is strictly inside the bracket;
+    ! the projection only corrects a possible last-ulp excursion.
+    x = min(max(x,x1),x2)
+
+    end function safe_secant
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Root of the linear-fractional model `f(x) = (x - r)/(p*x + q)` through the bracket
+!  `(x1,y1)`, `(x2,y2)` and a third point `(x3,f3)` outside it. The bracket ordinates are
+!  the A&B-corrected residuals and `f3` is the true residual of the dropped endpoint. The
+!  model fits both nearly-quadratic shapes and functions with a pole; for a straight line
+!  it gives the secant point. With `w = x2 - x1`, `u = x3 - x1` and the residuals relative
+!  to `y2`, `q1 = y1/y2` and `q3 = f3/y2` (so the step does not depend on the scale of
+!  `f`), and `c = 1 - q1 > 1`, the root is
+!
+!  `r = x1 + t`,   `t = w*u*q1*(q3 - 1)/(w*(q3 - q1) - u*q3*c)`,
+!
+!  two divisions per step, `1/y2` and this one. The A&B secant point is `xs = x1 - w*q1/c`
+!  and its distance to the nearer endpoint is `d = w*min(|q1|, 1)/c`. The step is kept
+!  within `0.7*d` of `xs` (on a plateau the model degenerates towards a step function), so
+!  it stays at least `0.3*d` inside the bracket. Multiplied by `c`, the test reads
+!  `|t*c + w*q1| <= 0.7*w*min(|q1|, 1)`, with no division. A step outside it is clamped to
+!  `xs +- 0.7*d` on the side the model points to; this did better than the A&B secant in
+!  randomized-bracket tests and on 200,000 random functions, where factors 0.6 to
+!  0.9 differed little.
+!  A non-finite `1/y2` (a zero or subnormal `y2`) or a non-finite `t` (overflow in its
+!  terms) returns the A&B secant point, and so does a step that rounds onto `x2`.
+
+    pure function rational_step(x1,y1,x2,y2,x3,f3) result(x)
+
+    implicit none
+
+    real(wp),intent(in) :: x1
+    real(wp),intent(in) :: y1
+    real(wp),intent(in) :: x2
+    real(wp),intent(in) :: y2
+    real(wp),intent(in) :: x3
+    real(wp),intent(in) :: f3
+    real(wp) :: x
+
+    real(wp) :: k,q1,q3,c,w,u,t,lim,dev
+
+    k = 1.0_wp/y2
+    if (.not. is_finite(k)) then
+        x = safe_secant(x1,y1,x2,y2)
+        return
+    end if
+    q1 = y1*k
+    q3 = f3*k
+    c = 1.0_wp - q1
+    w = x2 - x1
+    u = x3 - x1
+    t = w*u*q1*(q3 - 1.0_wp)/(w*(q3 - q1) - u*q3*c)
+    if (.not. is_finite(t)) then
+        x = safe_secant(x1,y1,x2,y2)
+        return
+    end if
+    lim = 0.7_wp*w*min(abs(q1),1.0_wp)   ! c*0.7*d
+    dev = t*c + w*q1                     ! c*(x - xs)
+    ! Clamp: t = ts +- 0.7*d.
+    if (abs(dev) > lim) t = (sign(lim,dev) - w*q1)/c
+    x = x1 + t
+    ! Rounding can put x on x2 when the bracket is a few ulps wide.
+    if (x < x2) return
+    x = safe_secant(x1,y1,x2,y2)
+
+    end function rational_step
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  True if the second divided differences on the left `(xl,x1,x2)` and on the right
+!  `(x1,x2,xr)` have opposite signs: an inflection within the bracket, where a model with
+!  one-signed curvature does worse than the secant. Scaled by positive factors, they are
+!  `pl = (f2 - f1)*(x1 - xl) - (f1 - fl)*(x2 - x1)` and
+!  `pr = (fr - f2)*(x2 - x1) - (f2 - f1)*(xr - x2)`,
+!  so only their signs are compared, with no division or product of the two.
+
+    pure function curvature_changes_sign(xl,fl,x1,f1,x2,f2,xr,fr) result(changes)
+
+    implicit none
+
+    real(wp),intent(in) :: xl,fl,x1,f1,x2,f2,xr,fr
+    logical :: changes
+
+    real(wp) :: df,w,pl,pr
+
+    df = f2 - f1
+    w = x2 - x1
+    pl = df*(x1 - xl) - (f1 - fl)*w
+    pr = (fr - f2)*w - df*(xr - x2)
+    changes = (pl < 0.0_wp .and. pr > 0.0_wp) .or. (pl > 0.0_wp .and. pr < 0.0_wp)
+
+    end function curvature_changes_sign
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  The Anderson-Bjorck contraction factor for the ordinate that did not move.
+
+    pure function ab_factor(y3,y_moved) result(m)
+
+    implicit none
+
+    real(wp),intent(in) :: y3
+    real(wp),intent(in) :: y_moved
+    real(wp) :: m
+
+    m = 1.0_wp - y3/y_moved
+    if (.not. (m > 0.0_wp)) m = 0.5_wp
+
+    end function ab_factor
 !*****************************************************************************************
 
 !*****************************************************************************************
